@@ -10,5 +10,5 @@ testMethod:
             - key: $.num2
               value: 98
         assertion:
-          - key: $.result
+          - key: $.data.result
             value: 197

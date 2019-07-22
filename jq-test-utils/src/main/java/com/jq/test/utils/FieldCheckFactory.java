@@ -23,9 +23,17 @@ public class FieldCheckFactory {
      */
     private int code;
     /**
+     * code在响应中的jsonPath
+     */
+    private String codePath = "$.code";
+    /**
      * 预期响应msg
      */
     private String msg;
+    /**
+     * msg在响应中的jsonPath
+     */
+    private String msgPath = "$.msg";
     /**
      * 测试名称
      */
@@ -60,13 +68,13 @@ public class FieldCheckFactory {
         List<Assertion> assertions = new ArrayList<>();
         if (StringUtils.isNotBlank(this.msg)) {
             Assertion msg = new Assertion();
-            msg.setKey("$.msg");
+            msg.setKey(this.getMsgPath());
             msg.setValue(this.msg);
             assertions.add(msg);
         }
         if (this.code != 0) {
             Assertion code = new Assertion();
-            code.setKey("$.code");
+            code.setKey(this.getCodePath());
             code.setValue(this.code);
             assertions.add(code);
         }

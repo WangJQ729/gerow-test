@@ -10,7 +10,7 @@ testMethod:
           {"num1": 2,"num2": 4}
         #修改检验结果
         assertion:
-          - key: $.result
+          - key: $.data.result
             value: 6
       #通过关键字“GET请求”，复制相关请求信息
       - byName: GET请求

@@ -6,6 +6,8 @@ testMethod:
         name: 参数校验
     fieldCheck:
       #修改body中的num1为空字符串
-      - {key: $.num1, value: "",msg: 参数1不应该为空}
+      #msgPath默认为$.msg、这里修改为$.data.msg
+      #codePath默认为$.code、这里不需要修改
+      - {key: $.num1, value: "",msgPath: "$.data.msg",msg: 参数1不应该为空,code: 20000}
       #修改body中的num2为空字符串
-      - {key: $.num2, value: "",msg: 参数2不应该为空}
+      - {key: $.num2, value: "",msgPath: "$.data.msg",msg: 参数2不应该为空,code: 20000}

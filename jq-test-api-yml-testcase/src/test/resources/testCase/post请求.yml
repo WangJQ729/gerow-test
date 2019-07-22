@@ -10,5 +10,5 @@ testMethod:
         body: |
           {"num1": 1,"num2": 2}
         assertion:
-          - key: $.result
+          - key: $.data.result
             value: 3
