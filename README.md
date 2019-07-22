@@ -1,4 +1,12 @@
-# 一、环境配置
+# 一、项目结构
+
+##### 1、jq-test-utils相关工具类
+##### 2、jq-test-serve被的serve
+##### 3、jq-test-api-yml测试框架实现代码
+##### 4、jq-test-api-yml-testcase测试用例
+
+
+# 二、环境配置
 
 ### 1、maven、java 
 
@@ -12,7 +20,7 @@
 
     3、安装allure ：scoop install allure
 
-# 二、测试执行
+# 三、测试执行
 
     1、在根目录下运行命令：mvn clean install -DskipTests将代码编译到本地的maven仓库
     
@@ -42,11 +50,11 @@
     
     注：powershell会将“.”拆分，用cmd执行，在powershell先执行命令cmd即可。
 
-# 三、生成测试结果
+# 四、生成测试结果
 
     执行命令：allure serve xxxx\target\allure-results
  
-# 四、多环境配置
+# 五、多环境配置
 
     1、同springboot配置
     
@@ -82,7 +90,7 @@
           value: $.token
           name: token
         
-# 五、JMeter Functions支持
+# 六、JMeter Functions支持
 
 ### 1、function调用
     
@@ -160,6 +168,6 @@ public class RandomDate extends AbstractFunction {
 
         调用${__RandomDay(yyyy-MM-dd,180,endDate)}：取当前时间开始往后180天随机的某一天，并赋值给endDate
 
-# 六、测试用例编写
+# 七、测试用例编写
 
     详见jq-test-api-yml-testcase下的readme
