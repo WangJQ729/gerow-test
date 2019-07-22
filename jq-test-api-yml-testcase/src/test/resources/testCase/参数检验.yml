@@ -1,0 +1,9 @@
+name: 参数校验
+testMethod:
+  - name: 参数校验
+    step:
+      - byName: POST请求
+        name: 参数校验
+    fieldCheck:
+      - {key: $.num1, value: "",msg: 参数1不应该为空}
+      - {key: $.num2, value: "",msg: 参数2不应该为空}

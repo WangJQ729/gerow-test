@@ -1,0 +1,13 @@
+name: 关键字
+testMethod:
+  - name: 关键字
+    step:
+      - byName: POST请求
+        name: 关键字
+        body: |
+          {"num1": 2,"num2": 4}
+        assertion:
+          - key: $.result
+            value: 6
+      - byName: GET请求
+      - byName: POST请求

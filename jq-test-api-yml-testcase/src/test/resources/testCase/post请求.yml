@@ -1,0 +1,14 @@
+name: POST请求
+testMethod:
+  - name: POST请求
+    step:
+      - name: POST请求
+        url: /post
+        headers:
+          Authorization: ${token}
+        method: POST
+        body: |
+          {"num1": 1,"num2": 2}
+        assertion:
+          - key: $.result
+            value: 3

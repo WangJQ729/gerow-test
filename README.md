@@ -28,15 +28,15 @@
 
 ### 2、单独用例执行
     
-    1、根据excel名称 -Dtest.file.name=xxx1,xxx2  
+    1、根据测试类名称 -Dtest.file.name=xxx1,xxx2  
     
     2、根据测试名称 -Dtest.name=xxx 
                 
 ### example
        
-    执行“测试环境”下file名称为“数据魔方”下的所有测试用例
+    执行“测试环境”下file名称为“GET请求”下的所有测试用例
     
-    mvn clean test -Dspring.profiles.active=uat -Dtest.file.name=数据魔方
+    mvn clean test -Dspring.profiles.active=uat -Dtest.file.name=GET请求
             
     执行完成后会在jq-test-api-excel-testcase\target\allure-results生成allure测试结果
     
@@ -48,7 +48,7 @@
  
 # 四、多环境配置
 
-    1、配置文件放在jq-test-resource\src\main\resources下
+    1、同springboot配置
     
     2、application-xxx.properties 即为各个环境的配置
     
@@ -68,55 +68,19 @@
 #####    调用格式
 
 ######      example1：
-      - name: 执行登录
-        url: /api/v1/login
-        method: POST
-        body: |
-          {
-            "account":"${account}",
-            "password":"${password}",
-            "isLoading":false,
-            "errorInfo":{
-                "type":"",
-                "message":""
-            },
-          }
-    
-######      example2：
-      - name: 上传照片
-        step:
-          - name: 上传图片到图片服务器
-            host: http://${fileHost}
-            url: /img/upload
-            headers:
-              Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryFpysmuwiViygvqs0
-              Host: ${fileHost}
-            file:
-              path: src/test/resources/图片上传.jpg
-            method: POST
-            form:
-              project: neuron
-              module: photos
-              cutSize: 150x150
-            save:
-              - value: $.data[0].thumbnailPath
-                name: thumbnailPath
-              - value: $.data[0].url
-                name: url
-              - value: $.data[0].path
-                name: path
-    
-######    执行结果
-
-        {
-            "account":"xxxxxx",
-            "password":"xxxxxx",
-            "isLoading":false,
-            "errorInfo":{
-                "type":"",
-                "message":""
-            }
-        }
+    - name: 执行登录
+      url: /login
+      variables:
+        username: ${username}
+        password: ${password}
+      method: GET
+      assertion:
+        - key: $.msg
+          value: 登录成功！
+      save:
+        - site: TESTSUIT
+          value: $.token
+          name: token
         
 # 五、JMeter Functions支持
 

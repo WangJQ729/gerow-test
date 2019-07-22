@@ -1,0 +1,28 @@
+name: login
+beforeSuite:
+  name: 前置处理
+  step:
+    - name: 执行登录
+      url: /login
+      variables:
+        username: ${username}
+        password: ${password}
+      method: GET
+      assertion:
+        - key: $.msg
+          value: 登录成功！
+      save:
+        - site: TESTSUIT
+          value: $.token
+          name: token
+testMethod:
+  - name: 登录校验
+    step:
+      - name: GET请求
+        url: /get
+        #headers:
+        #  Authorization: ${token}
+        method: GET
+        assertion:
+          - key: $.msg
+            value: 用户未登录！

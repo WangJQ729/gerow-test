@@ -1,8 +1,8 @@
 package com.jq.test;
 
-import com.jq.test.task.YmlTestSuite;
 import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestSuite;
+import com.jq.test.task.YmlTestSuite;
 import com.jq.test.utils.JavassistUtils;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -33,7 +33,7 @@ public class JQYmlApiTest extends JQAbstractApiTest {
             Map<String, String> params = testClass.getParams();
             //生成测试类的名称
             String className = testClass.getName().replace(".", "");
-            if (params.containsKey("classNum") && !StringUtils.equals(params.get("classNum"), "0")) {
+            if (params.containsKey("classNum") && !StringUtils.equals(params.get("classNum"), "00")) {
                 className = className + "_" + params.get("classNum");
             }
             ClassPool pool = ClassPool.getDefault();

@@ -1,0 +1,12 @@
+name: GET请求
+testMethod:
+  - name: GET请求
+    step:
+      - name: GET请求
+        url: /get
+        headers:
+          Authorization: ${token}
+        method: GET
+        assertion:
+          - key: $.name
+            value: jqTest

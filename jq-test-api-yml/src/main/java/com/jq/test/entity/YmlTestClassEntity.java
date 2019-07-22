@@ -64,9 +64,11 @@ public class YmlTestClassEntity {
         }
         List<ITestClass> result = new ArrayList<>();
         for (int i = 0; i < invocationCount; i++) {
+            int j = 0;
             for (Map<String, String> data : dataProvider) {
-                YmlTestClass testClass = buildTestClass(testSuite, file, data, i);
+                YmlTestClass testClass = buildTestClass(testSuite, file, data, "" + i + j);
                 result.add(testClass);
+                j++;
             }
         }
         if (beforeSuite != null)
@@ -80,12 +82,12 @@ public class YmlTestClassEntity {
      * @param testSuite testSuite
      * @param file      文件对象用于设置测试名称
      * @param data      参数
-     * @param i         第几次
+     * @param classNum  唯一标识
      * @return 测试方法
      */
-    private YmlTestClass buildTestClass(ITestSuite testSuite, File file, Map<String, String> data, Integer i) {
+    private YmlTestClass buildTestClass(ITestSuite testSuite, File file, Map<String, String> data, String classNum) {
         Map<String, String> map = new LinkedHashMap<>(data);
-        map.put("classNum", i.toString());
+        map.put("classNum", classNum);
         YmlTestClass testClass = new YmlTestClass();
         if (StringUtils.isBlank(name)) {
             this.name = file.getName();
