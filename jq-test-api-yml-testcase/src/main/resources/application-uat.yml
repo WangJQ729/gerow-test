@@ -1,0 +1,7 @@
+server:
+  port: 8082
+data:
+  test:
+    baseURI: "localhost:8082"
+    username: username
+    password: 123456
