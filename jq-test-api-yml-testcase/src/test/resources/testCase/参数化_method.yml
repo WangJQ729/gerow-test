@@ -1,6 +1,9 @@
 name: 参数化_method
 testMethod:
   - name: 参数化_method
+    #testMethod执行2次
+    invocationCount: 2
+    #有4组参数，实际执行2*4次
     dataProvider:
       - num1: 1
         num2: 2

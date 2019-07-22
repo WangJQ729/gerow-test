@@ -5,5 +5,7 @@ testMethod:
       - byName: POST请求
         name: 参数校验
     fieldCheck:
+      #修改body中的num1为空字符串
       - {key: $.num1, value: "",msg: 参数1不应该为空}
+      #修改body中的num2为空字符串
       - {key: $.num2, value: "",msg: 参数2不应该为空}

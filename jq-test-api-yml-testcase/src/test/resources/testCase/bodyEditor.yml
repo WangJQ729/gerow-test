@@ -1,0 +1,14 @@
+name: bodyEditor
+testMethod:
+  - name: bodyEditor
+    step:
+      - byName: POST请求
+        bodyEditor:
+          key: $.num1
+          value: 99
+          fields:
+            - key: $.num2
+              value: 98
+        assertion:
+          - key: $.result
+            value: 197

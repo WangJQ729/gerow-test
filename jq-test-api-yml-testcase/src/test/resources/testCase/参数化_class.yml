@@ -1,4 +1,7 @@
 name: 参数化
+#整个class执行2次
+invocationCount: 2
+#有4组参数执行4*2次
 dataProvider:
   - num1: 1
     num2: 2

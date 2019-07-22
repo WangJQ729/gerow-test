@@ -1,17 +1,21 @@
 name: login
+#所有测试执行前执行
 beforeSuite:
   name: 前置处理
   step:
     - name: 执行登录
       url: /login
       variables:
+        #获取配置文件中的username
         username: ${username}
+        #获取配置文件中的password
         password: ${password}
       method: GET
       assertion:
         - key: $.msg
           value: 登录成功！
       save:
+        # TESTSUIT 将数据保存到整个测试中，所有地方都可以调用
         - site: TESTSUIT
           value: $.token
           name: token
@@ -20,8 +24,8 @@ testMethod:
     step:
       - name: GET请求
         url: /get
-        #headers:
-        #  Authorization: ${token}
+#        headers:
+#          Authorization: ${token}
         method: GET
         assertion:
           - key: $.msg
