@@ -11,6 +11,9 @@ testMethod:
       - num1: 2
         num2: 7
         result: 9
+      - num1: ${__Random(1,100)}
+        num2: ${__Random(1,100)}
+        result: ${__BeanShell(${num1}+${num2})}
     step:
       - byName: POST请求
         body: |

@@ -74,6 +74,7 @@ public class YmlTestStep implements ITestStep {
 
     @Override
     public void doing() {
+        this.buildParams();
         this.step = buildStep(step);
         if (step.getSleep() != 0) {
             try {
@@ -88,6 +89,12 @@ public class YmlTestStep implements ITestStep {
                         step.getName(), step.getByName()).orElse("testStep"));
         Allure.step(stepName, () -> doWithWait(System.currentTimeMillis()));
 
+    }
+
+    private void buildParams() {
+        for (String key : params.keySet()) {
+            params.put(key, replace(params.get(key)));
+        }
     }
 
     /**
