@@ -19,7 +19,7 @@ testMethod:
         #实际body: {}
         code: 20000
         fields: !!map
-          $.num1: ""
+          $.num1: ~
       - key: $.num1
         value: ~
         #自定义参数校验
