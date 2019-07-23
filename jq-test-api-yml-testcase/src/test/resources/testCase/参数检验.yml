@@ -8,6 +8,21 @@ testMethod:
       #修改body中的num1为空字符串
       #msgPath默认为$.msg、这里修改为$.data.msg
       #codePath默认为$.code、这里不需要修改
-      - {key: $.num1, value: "",msgPath: "$.data.msg",msg: 参数1不应该为空,code: 20000}
-      #修改body中的num2为空字符串
-      - {key: $.num2, value: "",msgPath: "$.data.msg",msg: 参数2不应该为空,code: 20000}
+      #实际body: {"num2":2}
+      - {key: $.num1, value: ~,msgPath: "$.data.msg",msg: 参数1不应该为空,code: 20000}
+      #修改body中的num2为空字符串 实际body:
+      #实际body: {"num1":1}
+      - {key: $.num2, value: ~,msgPath: "$.data.msg",msg: 参数2不应该为空,code: 20000}
+      - key: $.num2
+        name: 多参数变更
+        value: ~
+        #实际body: {}
+        code: 20000
+        fields: !!map
+          $.num1: ""
+      - key: $.num1
+        value: ~
+        #自定义参数校验
+        checker: !!map
+          "$.data.msg": 参数1不应该为空
+          "$.code": 20000

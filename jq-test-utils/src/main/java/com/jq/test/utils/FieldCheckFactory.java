@@ -4,9 +4,7 @@ import com.jq.test.json.JsonPathUtils;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Data
 public class FieldCheckFactory {
@@ -34,6 +32,8 @@ public class FieldCheckFactory {
      * msg在响应中的jsonPath
      */
     private String msgPath = "$.msg";
+
+    private Map<String, Object> checker = new HashMap<>();
     /**
      * 测试名称
      */
@@ -41,7 +41,7 @@ public class FieldCheckFactory {
     /**
      * 条件字段
      */
-    private List<ConditionField> fields = new ArrayList<>();
+    private Map<String, Object> fields = new HashMap<>();
 
     /**
      * 构造请求体
@@ -53,8 +53,8 @@ public class FieldCheckFactory {
         if (StringUtils.isNotBlank(key)) {
             body = JsonPathUtils.put(body, key, value);
         }
-        for (ConditionField field : fields) {
-            body = JsonPathUtils.put(body, field.getKey(), field.getValue());
+        for (String key : fields.keySet()) {
+            body = JsonPathUtils.put(body, key, fields.get(key));
         }
         return body;
     }
@@ -77,6 +77,12 @@ public class FieldCheckFactory {
             code.setKey(this.getCodePath());
             code.setValue(this.code);
             assertions.add(code);
+        }
+        for (String key : checker.keySet()) {
+            Assertion assertion = new Assertion();
+            assertion.setKey(key);
+            assertion.setValue(checker.get(key));
+            assertions.add(assertion);
         }
         return assertions;
     }

@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @RestController
 public class TestController {
     @RequestMapping("/get")
-    @ResponseBody
     public Map get() {
         Map<String, String> map = new HashMap<>();
         map.put("name", "jqTest");

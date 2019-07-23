@@ -6,9 +6,8 @@ testMethod:
         bodyEditor:
           key: $.num1
           value: 99
-          fields:
-            - key: $.num2
-              value: 98
+          fields: !!map
+            $.num2: 98
         assertion:
           - key: $.data.result
             value: 197
