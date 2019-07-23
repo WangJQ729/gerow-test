@@ -20,9 +20,8 @@ testMethod:
         code: 20000
         fields: !!map
           $.num1: ~
-      - key: $.num1
-        value: ~
-        #自定义参数校验
+      - fields: !!map
+          $.num1: ~
         checker: !!map
           "$.data.msg": 参数1不应该为空
           "$.code": 20000
