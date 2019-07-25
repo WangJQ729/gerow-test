@@ -187,7 +187,7 @@ public class YmlTestStep implements ITestStep {
 
         if (!step.getAssertion().isEmpty()) copyStep.setAssertion(step.getAssertion());
 
-        if (!step.getSave().isEmpty()) copyStep.setSave(step.getSave());
+        if (!step.getExtractor().isEmpty()) copyStep.setExtractor(step.getExtractor());
 
         if (step.getFile() != null) copyStep.setFile(step.getFile());
 
@@ -198,8 +198,6 @@ public class YmlTestStep implements ITestStep {
         if (step.getUntilWait() != 0) copyStep.setUntilWait(step.getUntilWait());
 
         if (step.getSleep() != 0) copyStep.setSleep(step.getSleep());
-
-        if (!step.getResExtractor().isEmpty()) copyStep.setResExtractor(step.getResExtractor());
 
         if (step.getBodyEditor() != null) copyStep.setBodyEditor(step.getBodyEditor());
 
@@ -278,32 +276,18 @@ public class YmlTestStep implements ITestStep {
 
     @Override
     public <T> void saveParam(ResponseEntity<T> entity) {
-        List<SaveParam> saveParamList = buildSaveParams();
+        List<SaveParam> saveParamList = new ArrayList<>(step.getExtractor());
         for (SaveParam saveParam : saveParamList) {
-            SaveParam save = saveParam.copy(this);
-            Allure.step("获取参数:" + save.getName(), () -> save.save(entity, testMethod));
+            saveParam.save(entity, testMethod);
         }
     }
 
     @Override
     public void saveParam() {
-        List<SaveParam> saveParamList = buildSaveParams();
+        List<SaveParam> saveParamList = new ArrayList<>(step.getExtractor());
         for (SaveParam saveParam : saveParamList) {
-            SaveParam save = saveParam.copy(this);
-            Allure.step("获取参数:" + save.getName(), () -> save.save(testMethod));
+            saveParam.save(testMethod);
         }
-    }
-
-    private List<SaveParam> buildSaveParams() {
-        List<SaveParam> saveParamList = new ArrayList<>();
-        for (String key : step.getResExtractor().keySet()) {
-            SaveParam saveParam = new SaveParam();
-            saveParam.setName(key);
-            saveParam.setValue(step.getResExtractor().get(key));
-            saveParamList.add(saveParam);
-        }
-        saveParamList.addAll(step.getSave());
-        return saveParamList;
     }
 
     @Override

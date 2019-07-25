@@ -14,11 +14,11 @@ beforeSuite:
       assertion:
         - json:
             $.msg: 登录成功！
-      save:
+      extractor:
         # TESTSUIT 将数据保存到整个测试中，所有地方都可以调用
         - site: TESTSUIT
-          value: $.token
-          name: token
+          json:
+            token: $.token
 testMethod:
   - name: 登录校验
     step:

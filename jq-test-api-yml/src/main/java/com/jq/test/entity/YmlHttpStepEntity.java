@@ -2,9 +2,9 @@ package com.jq.test.entity;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.jq.test.task.YmlTestStep;
 import com.jq.test.task.ITestMethod;
 import com.jq.test.task.ITestStep;
+import com.jq.test.task.YmlTestStep;
 import com.jq.test.utils.Assertion;
 import com.jq.test.utils.FieldCheckFactory;
 import com.jq.test.utils.FileInfo;
@@ -71,7 +71,7 @@ public class YmlHttpStepEntity {
     /**
      * 参数提取对象
      */
-    private List<SaveParam> save = new ArrayList<>();
+    private List<SaveParam> extractor = new ArrayList<>();
     /**
      * 参数化
      */
@@ -84,7 +84,6 @@ public class YmlHttpStepEntity {
      * 字段检查对象
      */
     private List<FieldCheckFactory> fieldCheck = new ArrayList<>();
-    private Map<String, String> resExtractor = new HashMap<>();
     private FieldCheckFactory bodyEditor;
 
     /**

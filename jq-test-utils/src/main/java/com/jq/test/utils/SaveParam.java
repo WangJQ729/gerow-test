@@ -52,6 +52,8 @@ public class SaveParam {
      */
     private Option[] options = new Option[]{};
 
+    private Map<String, String> json = new HashMap<>();
+
     /**
      * 保存参数
      *
@@ -60,6 +62,16 @@ public class SaveParam {
      * @param <T>    响应体类型
      */
     public <T> void save(ResponseEntity<T> entity, ITestMethod test) {
+        for (String key : json.keySet()) {
+            SaveParam saveParam = build(key);
+            saveParam.save(entity, test);
+        }
+        if (StringUtils.isNotBlank(name)) {
+            Allure.step("获取参数:" + name, () -> doSave(entity, test));
+        }
+    }
+
+    private <T> void doSave(ResponseEntity<T> entity, ITestMethod test) {
         ITest save = getTest(test);
         switch (type) {
             case DATA:
@@ -143,8 +155,13 @@ public class SaveParam {
      */
     public void save(ITestMethod test) {
         ITest save = getTest(test);
-        Allure.step(value);
-        save.save(name, value);
+        for (String key : json.keySet()) {
+            SaveParam saveParam = build(key);
+            saveParam.save(test);
+        }
+        if (StringUtils.isNotBlank(name)) {
+            Allure.step("获取参数:" + name, () -> save.save(name, value));
+        }
     }
 
     /**
@@ -177,16 +194,16 @@ public class SaveParam {
         return JSONObject.toJSONString(this);
     }
 
-    public SaveParam copy(ITestStep step) {
-        SaveParam save = new SaveParam();
-        save.setSite(getSite());
-        save.setType(getType());
-        save.setOptions(getOptions());
-        save.setSize(getSize());
-        save.setSeparator(getSeparator());
-        save.setData(step.replace(getData()));
-        save.setName(step.replace(getName()));
-        save.setValue(step.replace(getValue()));
-        return save;
+    private SaveParam build(String key) {
+        SaveParam saveParam = new SaveParam();
+        saveParam.setName(key);
+        saveParam.setValue(json.get(key));
+        saveParam.setData(data);
+        saveParam.setOptions(options);
+        saveParam.setSeparator(separator);
+        saveParam.setSite(site);
+        saveParam.setSize(size);
+        saveParam.setType(type);
+        return saveParam;
     }
 }
