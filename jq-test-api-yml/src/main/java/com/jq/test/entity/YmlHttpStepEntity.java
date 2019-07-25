@@ -8,7 +8,7 @@ import com.jq.test.task.YmlTestStep;
 import com.jq.test.utils.Assertion;
 import com.jq.test.utils.FieldCheckFactory;
 import com.jq.test.utils.FileInfo;
-import com.jq.test.utils.SaveParam;
+import com.jq.test.utils.Extractor;
 import lombok.Data;
 
 import java.util.*;
@@ -71,7 +71,7 @@ public class YmlHttpStepEntity {
     /**
      * 参数提取对象
      */
-    private List<SaveParam> extractor = new ArrayList<>();
+    private List<Extractor> extractor = new ArrayList<>();
     /**
      * 参数化
      */

@@ -5,7 +5,6 @@ import com.jayway.jsonpath.Option;
 import com.jq.test.json.JsonPathUtils;
 import com.jq.test.task.ITest;
 import com.jq.test.task.ITestMethod;
-import com.jq.test.task.ITestStep;
 import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Setter
 @Getter
-public class SaveParam {
+public class Extractor {
     /**
      * 保存参数的位置
      */
@@ -63,8 +62,8 @@ public class SaveParam {
      */
     public <T> void save(ResponseEntity<T> entity, ITestMethod test) {
         for (String key : json.keySet()) {
-            SaveParam saveParam = build(key);
-            saveParam.save(entity, test);
+            Extractor extractor = build(key);
+            extractor.save(entity, test);
         }
         if (StringUtils.isNotBlank(name)) {
             Allure.step("获取参数:" + name, () -> doSave(entity, test));
@@ -156,8 +155,8 @@ public class SaveParam {
     public void save(ITestMethod test) {
         ITest save = getTest(test);
         for (String key : json.keySet()) {
-            SaveParam saveParam = build(key);
-            saveParam.save(test);
+            Extractor extractor = build(key);
+            extractor.save(test);
         }
         if (StringUtils.isNotBlank(name)) {
             Allure.step("获取参数:" + name, () -> save.save(name, value));
@@ -194,16 +193,16 @@ public class SaveParam {
         return JSONObject.toJSONString(this);
     }
 
-    private SaveParam build(String key) {
-        SaveParam saveParam = new SaveParam();
-        saveParam.setName(key);
-        saveParam.setValue(json.get(key));
-        saveParam.setData(data);
-        saveParam.setOptions(options);
-        saveParam.setSeparator(separator);
-        saveParam.setSite(site);
-        saveParam.setSize(size);
-        saveParam.setType(type);
-        return saveParam;
+    private Extractor build(String key) {
+        Extractor extractor = new Extractor();
+        extractor.setName(key);
+        extractor.setValue(json.get(key));
+        extractor.setData(data);
+        extractor.setOptions(options);
+        extractor.setSeparator(separator);
+        extractor.setSite(site);
+        extractor.setSize(size);
+        extractor.setType(type);
+        return extractor;
     }
 }

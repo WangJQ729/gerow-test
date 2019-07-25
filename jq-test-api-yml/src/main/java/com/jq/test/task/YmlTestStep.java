@@ -276,17 +276,17 @@ public class YmlTestStep implements ITestStep {
 
     @Override
     public <T> void saveParam(ResponseEntity<T> entity) {
-        List<SaveParam> saveParamList = new ArrayList<>(step.getExtractor());
-        for (SaveParam saveParam : saveParamList) {
-            saveParam.save(entity, testMethod);
+        List<Extractor> extractorList = new ArrayList<>(step.getExtractor());
+        for (Extractor extractor : extractorList) {
+            extractor.save(entity, testMethod);
         }
     }
 
     @Override
     public void saveParam() {
-        List<SaveParam> saveParamList = new ArrayList<>(step.getExtractor());
-        for (SaveParam saveParam : saveParamList) {
-            saveParam.save(testMethod);
+        List<Extractor> extractorList = new ArrayList<>(step.getExtractor());
+        for (Extractor extractor : extractorList) {
+            extractor.save(testMethod);
         }
     }
 
