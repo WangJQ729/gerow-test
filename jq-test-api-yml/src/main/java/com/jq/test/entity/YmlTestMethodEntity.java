@@ -79,7 +79,7 @@ public class YmlTestMethodEntity {
         testMethod.setParams(map);
         testMethod.setBug(this.bug);
         testMethod.setStories(this.stories);
-        String name = TestUtils.firstNonEmpty(factory.getName(), factory.getMsg()).orElse("");
+        String name = TestUtils.firstNonEmpty(factory.getName()).orElse("");
         if (name.isEmpty()) {
             testMethod.setName(this.name);
         } else {

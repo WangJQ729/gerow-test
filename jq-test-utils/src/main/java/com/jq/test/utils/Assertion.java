@@ -183,7 +183,7 @@ public class Assertion {
      * @param value  期望值
      */
     private void assertion(Object actual, Object value) {
-        Allure.step("判断结果:" + actual + " -> " + value, () -> {
+        Allure.step("判断结果:" + actual + " " + assertionType + " " + value, () -> {
             //根据不同的判断类型进行判断
             switch (assertionType) {
                 case EQ:

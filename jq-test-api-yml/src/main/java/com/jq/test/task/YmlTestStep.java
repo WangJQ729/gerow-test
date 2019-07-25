@@ -85,7 +85,6 @@ public class YmlTestStep implements ITestStep {
         }
         String stepName =
                 replace(TestUtils.firstNonEmpty(factory.getName(),
-                        factory.getMsg(),
                         step.getName(), step.getByName()).orElse("testStep"));
         Allure.step(stepName, () -> doWithWait(System.currentTimeMillis()));
 

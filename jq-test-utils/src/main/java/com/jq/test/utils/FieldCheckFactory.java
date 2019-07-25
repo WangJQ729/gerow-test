@@ -16,24 +16,7 @@ public class FieldCheckFactory {
      * 值
      */
     private Object value;
-    /**
-     * 预期响应code
-     */
-    private int code;
-    /**
-     * code在响应中的jsonPath
-     */
-    private String codePath = "$.code";
-    /**
-     * 预期响应msg
-     */
-    private String msg;
-    /**
-     * msg在响应中的jsonPath
-     */
-    private String msgPath = "$.msg";
-
-    private Map<String, Object> assertion = new HashMap<>();
+    private List<Assertion> assertion = new ArrayList<>();
     private Map<String, Object> containsOnlyAssertion = new HashMap<>();
 
     /**
@@ -67,25 +50,7 @@ public class FieldCheckFactory {
      * @return 断言
      */
     public List<Assertion> builderAssertion() {
-        List<Assertion> assertions = new ArrayList<>();
-        if (StringUtils.isNotBlank(this.msg)) {
-            Assertion msg = new Assertion();
-            msg.setKey(this.getMsgPath());
-            msg.setValue(this.msg);
-            assertions.add(msg);
-        }
-        if (this.code != 0) {
-            Assertion code = new Assertion();
-            code.setKey(this.getCodePath());
-            code.setValue(this.code);
-            assertions.add(code);
-        }
-        for (String key : assertion.keySet()) {
-            Assertion assertion = new Assertion();
-            assertion.setKey(key);
-            assertion.setValue(this.assertion.get(key));
-            assertions.add(assertion);
-        }
+        List<Assertion> assertions = assertion;
         for (String key : containsOnlyAssertion.keySet()) {
             Assertion assertion = new Assertion();
             assertion.setAssertionType(AssertionType.CONTAINSONLY);
@@ -106,6 +71,6 @@ public class FieldCheckFactory {
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, value, code, msg, name);
+        return Objects.hash(key, value, assertion, containsOnlyAssertion, name, fields);
     }
 }

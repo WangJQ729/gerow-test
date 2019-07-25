@@ -5,23 +5,30 @@ testMethod:
       - byName: POST请求
         name: 参数校验_step
         fieldCheck:
-          #修改body中的num1为空字符串
-          #msgPath默认为$.msg、这里修改为$.data.msg
-          #codePath默认为$.code、这里不需要修改
-          #实际body: {"num2":2}
-          - {key: $.num1, value: ~,msgPath: "$.data.msg",msg: 参数1不应该为空,code: 20000}
-          #修改body中的num2为空字符串 实际body:
-          #实际body: {"num1":1}
-          - {key: $.num2, value: ~,msgPath: "$.data.msg",msg: 参数2不应该为空,code: 20000}
-          - key: $.num2
-            name: 多参数变更
-            value: ~
-            #实际body: {}
-            code: 20000
+          - name: 参数校验-参数1为空
             fields:
               $.num1: ~
-          - fields:
+            assertion:
+              - json:
+                  "$.data.msg": 参数1不应该为空
+                  "$.code": 20000
+          - name: 参数校验-参数2为空
+            fields:
+              $.num2: ~
+            assertion:
+              - json:
+                  "$.data.msg": 参数2不应该为空
+                  "$.code": 20000
+          - name: 参数校验-参数1、2为空
+            fields:
+              $.num2: ~
               $.num1: ~
             assertion:
-              "$.data.msg": 参数1不应该为空
-              "$.code": 20000
+              - json:
+                  "$.code": 20000
+              - assertionType: CONTAINS
+                json:
+                  "$.data.msg": 参数1不应该为空
+              - assertionType: CONTAINS
+                json:
+                  "$.data.msg": 参数2不应该为空
