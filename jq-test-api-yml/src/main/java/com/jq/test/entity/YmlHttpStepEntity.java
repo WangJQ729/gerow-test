@@ -84,7 +84,7 @@ public class YmlHttpStepEntity {
      * 字段检查对象
      */
     private List<FieldCheckFactory> fieldCheck = new ArrayList<>();
-
+    private Map<String, String> resExtractor = new HashMap<>();
     private FieldCheckFactory bodyEditor;
 
     /**

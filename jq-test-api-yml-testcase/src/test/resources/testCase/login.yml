@@ -12,8 +12,8 @@ beforeSuite:
         password: ${password}
       method: GET
       assertion:
-        - key: $.msg
-          value: 登录成功！
+        - json:
+            $.msg: 登录成功！
       save:
         # TESTSUIT 将数据保存到整个测试中，所有地方都可以调用
         - site: TESTSUIT
@@ -24,9 +24,9 @@ testMethod:
     step:
       - name: GET请求
         url: /get
-#        headers:
-#          Authorization: ${token}
+        #headers:
+        # Authorization: ${token}
         method: GET
         assertion:
-          - key: $.msg
-            value: 用户未登录！
+          - json:
+              $.msg: 用户未登录！

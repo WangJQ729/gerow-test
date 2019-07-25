@@ -8,5 +8,5 @@ testMethod:
           Authorization: ${token}
         method: GET
         assertion:
-          - key: $.name
-            value: jqTest
+          - json:
+              $.name: jqTest

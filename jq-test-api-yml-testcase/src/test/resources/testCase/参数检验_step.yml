@@ -18,10 +18,10 @@ testMethod:
             value: ~
             #实际body: {}
             code: 20000
-            fields: !!omap
+            fields:
               $.num1: ~
-          - fields: !!map
+          - fields:
               $.num1: ~
-            checker: !!map
+            assertion:
               "$.data.msg": 参数1不应该为空
               "$.code": 20000

@@ -200,6 +200,8 @@ public class YmlTestStep implements ITestStep {
 
         if (step.getSleep() != 0) copyStep.setSleep(step.getSleep());
 
+        if (!step.getResExtractor().isEmpty()) copyStep.setResExtractor(step.getResExtractor());
+
         if (step.getBodyEditor() != null) copyStep.setBodyEditor(step.getBodyEditor());
 
         //如果copyStep也是byName查找，执行递归
@@ -277,7 +279,7 @@ public class YmlTestStep implements ITestStep {
 
     @Override
     public <T> void saveParam(ResponseEntity<T> entity) {
-        List<SaveParam> saveParamList = step.getSave();
+        List<SaveParam> saveParamList = buildSaveParams();
         for (SaveParam saveParam : saveParamList) {
             SaveParam save = saveParam.copy(this);
             Allure.step("获取参数:" + save.getName(), () -> save.save(entity, testMethod));
@@ -286,11 +288,23 @@ public class YmlTestStep implements ITestStep {
 
     @Override
     public void saveParam() {
-        List<SaveParam> saveParamList = step.getSave();
+        List<SaveParam> saveParamList = buildSaveParams();
         for (SaveParam saveParam : saveParamList) {
             SaveParam save = saveParam.copy(this);
             Allure.step("获取参数:" + save.getName(), () -> save.save(testMethod));
         }
+    }
+
+    private List<SaveParam> buildSaveParams() {
+        List<SaveParam> saveParamList = new ArrayList<>();
+        for (String key : step.getResExtractor().keySet()) {
+            SaveParam saveParam = new SaveParam();
+            saveParam.setName(key);
+            saveParam.setValue(step.getResExtractor().get(key));
+            saveParamList.add(saveParam);
+        }
+        saveParamList.addAll(step.getSave());
+        return saveParamList;
     }
 
     @Override
@@ -311,7 +325,7 @@ public class YmlTestStep implements ITestStep {
                 //assertion的value类型不定，所以这里统一转换为json来处理变量
                 String content = replace(JSONObject.toJSONString(assertion));
                 Assertion newAssert = JSONObject.parseObject(content, Assertion.class);
-                Allure.step("校验结果:" + newAssert.getKey(), () -> newAssert.check(entity));
+                newAssert.check(entity);
             } catch (Error e) {
                 errors.add(e);
             }

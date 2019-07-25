@@ -33,7 +33,9 @@ public class FieldCheckFactory {
      */
     private String msgPath = "$.msg";
 
-    private Map<String, Object> checker = new HashMap<>();
+    private Map<String, Object> assertion = new HashMap<>();
+    private Map<String, Object> containsOnlyAssertion = new HashMap<>();
+
     /**
      * 测试名称
      */
@@ -78,10 +80,17 @@ public class FieldCheckFactory {
             code.setValue(this.code);
             assertions.add(code);
         }
-        for (String key : checker.keySet()) {
+        for (String key : assertion.keySet()) {
             Assertion assertion = new Assertion();
             assertion.setKey(key);
-            assertion.setValue(checker.get(key));
+            assertion.setValue(this.assertion.get(key));
+            assertions.add(assertion);
+        }
+        for (String key : containsOnlyAssertion.keySet()) {
+            Assertion assertion = new Assertion();
+            assertion.setAssertionType(AssertionType.CONTAINSONLY);
+            assertion.setKey(key);
+            assertion.setValue(this.containsOnlyAssertion.get(key));
             assertions.add(assertion);
         }
         return assertions;

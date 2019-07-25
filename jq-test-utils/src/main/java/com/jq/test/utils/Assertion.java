@@ -6,11 +6,14 @@ import com.jq.test.json.JsonPathUtils;
 import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -40,6 +43,8 @@ public class Assertion {
      */
     private Option[] options = new Option[]{};
 
+    private Map<String, Object> json = new HashMap<>();
+
     /**
      * 判断响应是否正确
      *
@@ -47,9 +52,25 @@ public class Assertion {
      * @param <T>    响应体类型
      */
     public <T> void check(ResponseEntity<T> entity) {
-        Object actual = buildActual(entity);
-        Object value = buildExpect(actual);
-        assertion(actual, value);
+        if (!json.isEmpty()) {
+            for (String key : json.keySet()) {
+                Assertion assertion = new Assertion();
+                assertion.setKey(key);
+                assertion.setValue(json.get(key));
+                assertion.setOptions(options);
+                assertion.setAssertionType(assertionType);
+                assertion.setType(type);
+                assertion.setValueType(valueType);
+                assertion.check(entity);
+            }
+        }
+        if (StringUtils.isNotBlank(key)) {
+            Allure.step("校验结果:" + key, () -> {
+                Object actual = buildActual(entity);
+                Object value = buildExpect(actual);
+                assertion(actual, value);
+            });
+        }
     }
 
     /**
