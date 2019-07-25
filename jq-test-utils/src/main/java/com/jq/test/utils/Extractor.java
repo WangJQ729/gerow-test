@@ -5,6 +5,7 @@ import com.jayway.jsonpath.Option;
 import com.jq.test.json.JsonPathUtils;
 import com.jq.test.task.ITest;
 import com.jq.test.task.ITestMethod;
+import com.jq.test.task.ITestStep;
 import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,9 +24,13 @@ public class Extractor {
      */
     private Site site = Site.DEFAULT;
     /**
-     * 数据来源类型
+     * 数据类型
      */
     private DataType type = DataType.JSON;
+    /**
+     * 数据来源
+     */
+    private DataSources sources = DataSources.BODY;
     /**
      * 提取参数个数
      */
@@ -62,7 +67,7 @@ public class Extractor {
      */
     public <T> void save(ResponseEntity<T> entity, ITestMethod test) {
         for (String key : json.keySet()) {
-            Extractor extractor = build(key);
+            Extractor extractor = buildJsonExtractor(key);
             extractor.save(entity, test);
         }
         if (StringUtils.isNotBlank(name)) {
@@ -72,15 +77,30 @@ public class Extractor {
 
     private <T> void doSave(ResponseEntity<T> entity, ITestMethod test) {
         ITest save = getTest(test);
-        switch (type) {
+        if (StringUtils.isNotBlank(data)) {
+            sources = DataSources.DATA;
+        }
+        switch (sources) {
             case DATA:
-                saveJsonPath(save, JsonPathUtils.read(data, value, options));
+                switch (type) {
+                    case JSON:
+                        saveJsonPath(save, JsonPathUtils.read(data, value, options));
+                        break;
+                    case XML:
+                    case DEFAULT:
+                    default:
+                        break;
+                }
                 break;
-            case JSON:
-                if (StringUtils.isNotBlank(data)) {
-                    saveJsonPath(save, JsonPathUtils.read(data, value, options));
-                } else {
-                    saveJsonPath(save, JsonPathUtils.read(entity.getBody(), value, options));
+            case BODY:
+                switch (type) {
+                    case JSON:
+                        saveJsonPath(save, JsonPathUtils.read(entity.getBody(), value, options));
+                        break;
+                    case XML:
+                    case DEFAULT:
+                    default:
+                        break;
                 }
                 break;
             case HEADER:
@@ -88,11 +108,10 @@ public class Extractor {
                 Allure.step(value);
                 save.save(name, value);
                 break;
-            case CONSTANT:
+            case DEFAULT:
                 Allure.step(this.value);
                 save.save(name, this.value);
                 break;
-            case XML:
             default:
                 break;
         }
@@ -155,7 +174,7 @@ public class Extractor {
     public void save(ITestMethod test) {
         ITest save = getTest(test);
         for (String key : json.keySet()) {
-            Extractor extractor = build(key);
+            Extractor extractor = buildJsonExtractor(key);
             extractor.save(test);
         }
         if (StringUtils.isNotBlank(name)) {
@@ -193,7 +212,7 @@ public class Extractor {
         return JSONObject.toJSONString(this);
     }
 
-    private Extractor build(String key) {
+    private Extractor buildJsonExtractor(String key) {
         Extractor extractor = new Extractor();
         extractor.setName(key);
         extractor.setValue(json.get(key));
@@ -202,7 +221,25 @@ public class Extractor {
         extractor.setSeparator(separator);
         extractor.setSite(site);
         extractor.setSize(size);
-        extractor.setType(type);
+        extractor.setType(DataType.JSON);
+        return extractor;
+    }
+
+    public Extractor replace(ITestStep step) {
+        Extractor extractor = new Extractor();
+        extractor.setSite(getSite());
+        extractor.setType(getType());
+        extractor.setOptions(getOptions());
+        extractor.setSize(getSize());
+        extractor.setSeparator(getSeparator());
+        extractor.setData(step.replace(getData()));
+        extractor.setName(step.replace(getName()));
+        extractor.setValue(step.replace(getValue()));
+        Map<String, String> json = new HashMap<>();
+        for (String key : this.json.keySet()) {
+            json.put(step.replace(key), step.replace(this.json.get(key)));
+        }
+        extractor.setJson(json);
         return extractor;
     }
 }

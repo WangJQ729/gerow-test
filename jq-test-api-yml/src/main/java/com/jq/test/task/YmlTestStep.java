@@ -13,10 +13,7 @@ import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -278,15 +275,15 @@ public class YmlTestStep implements ITestStep {
     public <T> void saveParam(ResponseEntity<T> entity) {
         List<Extractor> extractorList = new ArrayList<>(step.getExtractor());
         for (Extractor extractor : extractorList) {
-            extractor.save(entity, testMethod);
+            extractor.replace(this).save(entity, testMethod);
         }
     }
 
     @Override
     public void saveParam() {
-        List<Extractor> extractorList = new ArrayList<>(step.getExtractor());
+        List<Extractor> extractorList = new LinkedList<>(step.getExtractor());
         for (Extractor extractor : extractorList) {
-            extractor.save(testMethod);
+            extractor.replace(this).save(testMethod);
         }
     }
 

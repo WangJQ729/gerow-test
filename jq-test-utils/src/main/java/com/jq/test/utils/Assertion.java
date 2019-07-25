@@ -19,9 +19,9 @@ import java.util.Map;
 @Setter
 public class Assertion {
     /**
-     * 数据来源
+     * 数据类型
      */
-    private DataType type = DataType.DEFAULT;
+    private DataSources type = DataSources.BODY;
     /**
      * 值的类型
      */
@@ -118,8 +118,7 @@ public class Assertion {
         Object actual = null;
         //根据数据来源提取响应的实际值
         switch (type) {
-            case JSON:
-            case DEFAULT:
+            case BODY:
                 T body = entity.getBody();
                 assert body != null;
                 actual = JsonPathUtils.read(body, key, options);
@@ -133,7 +132,7 @@ public class Assertion {
             case STATUS:
                 actual = entity.getStatusCode().value();
                 break;
-            case XML:
+            case DEFAULT:
             default:
                 break;
         }
