@@ -6,7 +6,7 @@ import com.jq.test.task.ITestMethod;
 import com.jq.test.task.ITestStep;
 import com.jq.test.task.YmlTestStep;
 import com.jq.test.utils.Assertion;
-import com.jq.test.utils.FieldCheckFactory;
+import com.jq.test.utils.StepEditor;
 import com.jq.test.utils.FileInfo;
 import com.jq.test.utils.Extractor;
 import lombok.Data;
@@ -83,8 +83,8 @@ public class YmlHttpStepEntity {
     /**
      * 字段检查对象
      */
-    private List<FieldCheckFactory> fieldCheck = new ArrayList<>();
-    private FieldCheckFactory bodyEditor;
+    private List<StepEditor> editor = new ArrayList<>();
+    private StepEditor bodyEditor;
 
     /**
      * 构造测试步骤
@@ -93,26 +93,26 @@ public class YmlHttpStepEntity {
      * @param factory    字段检查构造参数
      * @return 测试步骤
      */
-    public List<ITestStep> build(ITestMethod testMethod, FieldCheckFactory factory) {
+    public List<ITestStep> build(ITestMethod testMethod, StepEditor factory) {
         if (dataProvider.isEmpty()) {
             dataProvider = Collections.singletonList(new LinkedHashMap<>());
         }
-        if (fieldCheck.isEmpty()) {
-            fieldCheck = Collections.singletonList(new FieldCheckFactory());
+        if (editor.isEmpty()) {
+            editor = Collections.singletonList(new StepEditor());
         }
         List<ITestStep> result = new ArrayList<>();
-        for (FieldCheckFactory checkFactory : fieldCheck) {
-            FieldCheckFactory fieldCheckFactory;
-            if (checkFactory.equals(new FieldCheckFactory())) {
-                fieldCheckFactory = factory;
+        for (StepEditor checkFactory : editor) {
+            StepEditor stepEditor;
+            if (checkFactory.equals(new StepEditor())) {
+                stepEditor = factory;
             } else {
-                fieldCheckFactory = checkFactory;
+                stepEditor = checkFactory;
             }
             for (int i = 0; i < invocationCount; i++) {
                 for (Map<String, String> data : dataProvider) {
                     Map<String, String> map = new LinkedHashMap<>(data);
                     map.put("stepNum", String.valueOf(i));
-                    YmlTestStep testStep = new YmlTestStep(this.copy(), map, testMethod, fieldCheckFactory);
+                    YmlTestStep testStep = new YmlTestStep(this.copy(), map, testMethod, stepEditor);
                     result.add(testStep);
                 }
             }

@@ -8,6 +8,8 @@ import io.qameta.allure.Allure;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -36,12 +38,14 @@ public class YmlTestStep implements ITestStep {
     /**
      * 字段检查工厂
      */
-    private FieldCheckFactory factory;
+    private StepEditor factory;
 
     /**
      * 参数
      */
     private Map<String, String> params;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 构造方法
@@ -51,7 +55,7 @@ public class YmlTestStep implements ITestStep {
      * @param testMethod 测试方法
      * @param factory    字段检查工厂
      */
-    public YmlTestStep(YmlHttpStepEntity step, Map<String, String> params, ITestMethod testMethod, FieldCheckFactory factory) {
+    public YmlTestStep(YmlHttpStepEntity step, Map<String, String> params, ITestMethod testMethod, StepEditor factory) {
         this.step = step;
         this.testMethod = testMethod;
         this.params = params;
@@ -250,7 +254,12 @@ public class YmlTestStep implements ITestStep {
             }
             return new HttpEntity<>(form, httpHeaders);
         }
-        String body = replace(step.getBody());
+        String body = step.getBody();
+        try {
+            body = replace(body);
+        } catch (Error e) {
+            logger.debug(e.getMessage());
+        }
         if (step.getBodyEditor() != null) {
             //根据bodyBuilder构造请求体
             body = step.getBodyEditor().builderBody(body);

@@ -3,7 +3,7 @@ package com.jq.test.entity;
 import com.jq.test.task.YmlTestMethod;
 import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestMethod;
-import com.jq.test.utils.FieldCheckFactory;
+import com.jq.test.utils.StepEditor;
 import com.jq.test.utils.TestUtils;
 import lombok.Data;
 
@@ -39,7 +39,7 @@ public class YmlTestMethodEntity {
     /**
      * 字段检查构造工厂
      */
-    private List<FieldCheckFactory> fieldCheck = new ArrayList<>();
+    private List<StepEditor> editor = new ArrayList<>();
 
     /**
      * @param testClass 测试类
@@ -49,13 +49,13 @@ public class YmlTestMethodEntity {
         if (dataProvider.isEmpty()) {
             dataProvider = Collections.singletonList(new LinkedHashMap<>());
         }
-        if (fieldCheck.isEmpty()) {
-            fieldCheck = Collections.singletonList(new FieldCheckFactory());
+        if (editor.isEmpty()) {
+            editor = Collections.singletonList(new StepEditor());
         }
         List<ITestMethod> result = new ArrayList<>();
         for (int i = 0; i < invocationCount; i++) {
             for (Map<String, String> data : dataProvider) {
-                for (FieldCheckFactory factory : fieldCheck) {
+                for (StepEditor factory : editor) {
                     YmlTestMethod testMethod = buildTestMethod(testClass, data, i, factory);
                     result.add(testMethod);
                 }
@@ -71,7 +71,7 @@ public class YmlTestMethodEntity {
      * @param factory   字段检查构造工厂
      * @return 测试方法
      */
-    private YmlTestMethod buildTestMethod(ITestClass testClass, Map<String, String> data, Integer i, FieldCheckFactory factory) {
+    private YmlTestMethod buildTestMethod(ITestClass testClass, Map<String, String> data, Integer i, StepEditor factory) {
         Map<String, String> map = new LinkedHashMap<>(data);
         map.put("methodNum", i.toString());
         YmlTestMethod testMethod = new YmlTestMethod();

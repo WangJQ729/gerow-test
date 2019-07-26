@@ -6,7 +6,7 @@ testMethod:
         bodyEditor:
           key: $.num1
           value: 99
-          fields:
+          json:
             $.num2: 98
         assertion:
           - json:

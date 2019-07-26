@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 
 @Data
-public class FieldCheckFactory {
+public class StepEditor {
     /**
      * jsonPath
      */
@@ -26,7 +26,7 @@ public class FieldCheckFactory {
     /**
      * 条件字段
      */
-    private Map<String, Object> fields = new HashMap<>();
+    private Map<String, Object> json = new HashMap<>();
 
     /**
      * 构造请求体
@@ -38,8 +38,8 @@ public class FieldCheckFactory {
         if (StringUtils.isNotBlank(key)) {
             body = JsonPathUtils.put(body, key, value);
         }
-        for (String key : fields.keySet()) {
-            body = JsonPathUtils.put(body, key, fields.get(key));
+        for (String key : json.keySet()) {
+            body = JsonPathUtils.put(body, key, json.get(key));
         }
         return body;
     }
@@ -65,12 +65,12 @@ public class FieldCheckFactory {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FieldCheckFactory that = (FieldCheckFactory) o;
+        StepEditor that = (StepEditor) o;
         return this.hashCode() == that.hashCode();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, value, assertion, containsOnlyAssertion, name, fields);
+        return Objects.hash(key, value, assertion, containsOnlyAssertion, name, json);
     }
 }

@@ -3,23 +3,23 @@ testMethod:
   - name: 参数校验
     step:
       - byName: POST请求
-    fieldCheck:
+    editor:
       - name: 参数校验-参数1为空
-        fields:
+        json:
           $.num1: ~
         assertion:
           - json:
               "$.data.msg": 参数1不应该为空
               "$.code": 20000
       - name: 参数校验-参数2为空
-        fields:
+        json:
           $.num2: ~
         assertion:
           - json:
               "$.data.msg": 参数2不应该为空
               "$.code": 20000
       - name: 参数校验-参数1、2为空
-        fields:
+        json:
           $.num2: ~
           $.num1: ~
         assertion:
