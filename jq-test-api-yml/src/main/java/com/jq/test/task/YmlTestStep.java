@@ -202,6 +202,8 @@ public class YmlTestStep implements ITestStep {
 
         if (step.getBodyEditor() != null) copyStep.setBodyEditor(step.getBodyEditor());
 
+        if (StringUtils.isNotBlank(step.getName())) copyStep.setName(step.getName());
+
         //如果copyStep也是byName查找，执行递归
         if (StringUtils.isNotBlank(copyStep.getByName())) copyStep = buildStep(copyStep);
 
