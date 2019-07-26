@@ -9,11 +9,10 @@ import java.util.*;
 @Data
 public abstract class AbstractTestMethod implements ITestMethod {
     private String name;
-    private String bug;
-    private String stories;
     private ITestClass testClass;
     private Map<String, String> params = new HashMap<>();
     private List<ITestStep> testSteps;
+    private Map<String, String> links = new HashMap<>();
 
     @Override
     public void doing() {

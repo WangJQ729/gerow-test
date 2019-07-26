@@ -32,15 +32,8 @@ public interface ITestMethod extends ITest {
      */
     List<ITestStep> getTestSteps();
 
-    /**
-     * 设置关联bug的url
-     *
-     * @param bug bug的链接
-     */
-    void setBug(String bug);
 
-    /**
-     * @return bug的url
-     */
-    String getBug();
+    Map<String, String> getLinks();
+
+    void setLinks(Map<String, String> links);
 }

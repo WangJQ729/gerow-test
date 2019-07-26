@@ -1,8 +1,8 @@
 package com.jq.test.entity;
 
-import com.jq.test.task.YmlTestMethod;
 import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestMethod;
+import com.jq.test.task.YmlTestMethod;
 import com.jq.test.utils.StepEditor;
 import com.jq.test.utils.TestUtils;
 import lombok.Data;
@@ -21,16 +21,9 @@ public class YmlTestMethodEntity {
      */
     private String name;
     /**
-     * 需求地址
-     */
-    private String stories;
-    /**
-     * 测试对应bug地址
-     */
-    private String bug;
-    /**
      * 测试步骤
      */
+    private Map<String, String> links = new HashMap<>();
     private List<YmlHttpStepEntity> step = new ArrayList<>();
     /**
      * 执行次数
@@ -77,8 +70,6 @@ public class YmlTestMethodEntity {
         YmlTestMethod testMethod = new YmlTestMethod();
         testMethod.setTestClass(testClass);
         testMethod.setParams(map);
-        testMethod.setBug(this.bug);
-        testMethod.setStories(this.stories);
         String name = TestUtils.firstNonEmpty(factory.getName()).orElse("");
         if (name.isEmpty()) {
             testMethod.setName(this.name);
