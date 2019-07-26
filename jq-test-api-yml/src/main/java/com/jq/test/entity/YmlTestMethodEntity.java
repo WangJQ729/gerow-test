@@ -23,8 +23,8 @@ public class YmlTestMethodEntity {
     /**
      * 测试步骤
      */
-    private Map<String, String> links = new HashMap<>();
     private List<YmlHttpStepEntity> step = new ArrayList<>();
+    private Map<String, String> links = new HashMap<>();
     /**
      * 执行次数
      */
@@ -70,6 +70,7 @@ public class YmlTestMethodEntity {
         YmlTestMethod testMethod = new YmlTestMethod();
         testMethod.setTestClass(testClass);
         testMethod.setParams(map);
+        testMethod.setLinks(links);
         String name = TestUtils.firstNonEmpty(factory.getName()).orElse("");
         if (name.isEmpty()) {
             testMethod.setName(this.name);
