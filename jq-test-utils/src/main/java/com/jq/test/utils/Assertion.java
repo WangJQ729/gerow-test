@@ -159,7 +159,7 @@ public class Assertion {
 
     private Object buildInteger(Object actual) {
         if (actual instanceof Collection) {
-            actual = ((Collection) actual).stream().map(o -> Integer.valueOf(o.toString())).toArray();
+            actual = ((Collection<Object>) actual).stream().map(o -> Integer.valueOf(o.toString())).toArray();
         } else {
             actual = Integer.valueOf(actual.toString());
         }
@@ -168,7 +168,7 @@ public class Assertion {
 
     private Object buildBigDecimal(Object actual) {
         if (actual instanceof Collection) {
-            actual = ((Collection) actual).stream().map(o -> new BigDecimal(o.toString()).doubleValue()).toArray();
+            actual = ((Collection<Object>) actual).stream().map(o -> new BigDecimal(o.toString()).doubleValue()).toArray();
         } else {
             actual = new BigDecimal(actual.toString()).doubleValue();
         }
@@ -185,18 +185,26 @@ public class Assertion {
         Allure.step("判断结果:" + actual + " " + assertionType + " " + value, () -> {
             //根据不同的判断类型进行判断
             switch (assertionType) {
+                case CONTAINS:
+                    if (actual instanceof Collection) {
+                        Assertions.assertThat((Collection<Object>) actual).contains(value);
+                    } else {
+                        Assertions.assertThat(actual.toString()).contains(value.toString());
+                    }
+                    break;
+                case AllCONTAINS:
+                    ((Collection<Object>) actual).forEach(o -> Assertions.assertThat(o.toString()).contains(value.toString()));
+                    break;
+                case ALLIS:
+                    Assertions.assertThat((Collection<Object>) actual).containsOnly(value);
+                    break;
                 case EQ:
+                default:
                     //null转换为空字符串进行判断
                     Assertions.assertThat(actual == null ? "" : actual)
                             .as(key + "应该为：" + value)
                             .isEqualTo(value == null ? "" : value);
                     break;
-                case CONTAINS:
-                    if (actual instanceof Collection) {
-                        Assertions.assertThat((Collection) actual).contains(value);
-                    } else {
-                        Assertions.assertThat(actual.toString()).contains(value.toString());
-                    }
             }
         });
     }

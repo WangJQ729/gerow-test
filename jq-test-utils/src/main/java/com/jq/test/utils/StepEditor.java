@@ -16,13 +16,20 @@ public class StepEditor {
      * 值
      */
     private Object value;
-    private List<Assertion> assertion = new ArrayList<>();
-    private Map<String, Object> containsOnlyAssertion = new HashMap<>();
-
+    /**
+     * 预期响应code
+     */
+    private int code;
+    /**
+     * 预期响应msg
+     */
+    private String msg;
     /**
      * 测试名称
      */
     private String name;
+
+    private List<Assertion> assertion = new ArrayList<>();
     /**
      * 条件字段
      */
@@ -51,12 +58,17 @@ public class StepEditor {
      */
     public List<Assertion> builderAssertion() {
         List<Assertion> assertions = assertion;
-        for (String key : containsOnlyAssertion.keySet()) {
-            Assertion assertion = new Assertion();
-            assertion.setAssertionType(AssertionType.CONTAINSONLY);
-            assertion.setKey(key);
-            assertion.setValue(this.containsOnlyAssertion.get(key));
-            assertions.add(assertion);
+        if (StringUtils.isNotBlank(this.msg)) {
+            Assertion msg = new Assertion();
+            msg.setKey("$.msg");
+            msg.setValue(this.msg);
+            assertions.add(msg);
+        }
+        if (this.code != 0) {
+            Assertion code = new Assertion();
+            code.setKey("$.code");
+            code.setValue(this.code);
+            assertions.add(code);
         }
         return assertions;
     }
@@ -71,6 +83,6 @@ public class StepEditor {
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, value, assertion, containsOnlyAssertion, name, json);
+        return Objects.hash(key, value, code, msg, name, assertion, json);
     }
 }
