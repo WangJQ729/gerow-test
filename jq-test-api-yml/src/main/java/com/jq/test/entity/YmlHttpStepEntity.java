@@ -5,10 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jq.test.task.ITestMethod;
 import com.jq.test.task.ITestStep;
 import com.jq.test.task.YmlTestStep;
-import com.jq.test.utils.Assertion;
-import com.jq.test.utils.StepEditor;
-import com.jq.test.utils.FileInfo;
-import com.jq.test.utils.Extractor;
+import com.jq.test.utils.*;
 import lombok.Data;
 
 import java.util.*;
@@ -84,7 +81,10 @@ public class YmlHttpStepEntity {
      * 字段检查对象
      */
     private List<StepEditor> editor = new ArrayList<>();
+
     private StepEditor bodyEditor;
+
+    private DataType responseType = DataType.JSON;
 
     /**
      * 构造测试步骤

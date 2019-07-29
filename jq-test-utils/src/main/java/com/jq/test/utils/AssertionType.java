@@ -8,6 +8,11 @@ public enum AssertionType {
     /**
      * 实际包含期望值
      */
-    CONTAINS, ALLIS,
-    AllCONTAINS
+    CONTAINS,
+    ALLIS,
+    AllCONTAINS,
+    GREATEROREQUALTO,
+    LESSTHANOREQUALTO,
+    ALLGREATEROREQUALTO,
+    ALLLESSTHANOREQUALTO
 }

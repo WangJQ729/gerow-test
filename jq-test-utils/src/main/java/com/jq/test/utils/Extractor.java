@@ -56,7 +56,7 @@ public class Extractor {
      */
     private Option[] options = new Option[]{};
 
-    private Map<String, String> json = new HashMap<>();
+    private LinkedHashMap<String, String> json = new LinkedHashMap<>();
 
     /**
      * 保存参数
@@ -65,13 +65,14 @@ public class Extractor {
      * @param test   测试方法
      * @param <T>    响应体类型
      */
-    public <T> void save(ResponseEntity<T> entity, ITestMethod test) {
+    public <T> void save(ITestStep testStep, ResponseEntity<T> entity, ITestMethod test) {
         for (String key : json.keySet()) {
             Extractor extractor = buildJsonExtractor(key);
-            extractor.save(entity, test);
+            extractor.save(testStep, entity, test);
         }
+        Extractor extractor = replace(testStep);
         if (StringUtils.isNotBlank(name)) {
-            Allure.step("获取参数:" + name, () -> doSave(entity, test));
+            Allure.step("获取参数:" + name, () -> extractor.doSave(entity, test));
         }
     }
 
@@ -235,7 +236,7 @@ public class Extractor {
         extractor.setData(step.replace(getData()));
         extractor.setName(step.replace(getName()));
         extractor.setValue(step.replace(getValue()));
-        Map<String, String> json = new HashMap<>();
+        LinkedHashMap<String, String> json = new LinkedHashMap<>();
         for (String key : this.json.keySet()) {
             json.put(step.replace(key), step.replace(this.json.get(key)));
         }

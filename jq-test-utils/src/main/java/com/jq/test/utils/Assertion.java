@@ -7,21 +7,29 @@ import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.assertj.core.api.Assertions;
 import org.springframework.http.ResponseEntity;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Getter
 @Setter
 public class Assertion {
     /**
-     * 数据类型
+     * 数据来源
      */
     private DataSources type = DataSources.BODY;
+    /**
+     * 数据来源类型
+     */
+    private DataType dataType = DataType.JSON;
     /**
      * 值的类型
      */
@@ -43,7 +51,8 @@ public class Assertion {
      */
     private Option[] options = new Option[]{};
 
-    private Map<String, Object> json = new HashMap<>();
+    private LinkedHashMap<String, Object> json = new LinkedHashMap<>();
+    private LinkedHashMap<String, Object> excel = new LinkedHashMap<>();
 
     /**
      * 判断响应是否正确
@@ -52,24 +61,30 @@ public class Assertion {
      * @param <T>    响应体类型
      */
     public <T> void check(ResponseEntity<T> entity) {
-        if (!json.isEmpty()) {
-            for (String key : json.keySet()) {
-                Assertion assertion = new Assertion();
-                assertion.setKey(key);
-                assertion.setValue(json.get(key));
-                assertion.setOptions(options);
-                assertion.setAssertionType(assertionType);
-                assertion.setType(type);
-                assertion.setValueType(valueType);
-                assertion.check(entity);
-            }
-        }
+        check(json, DataType.JSON, entity);
+        check(excel, DataType.EXCEL, entity);
         if (StringUtils.isNotBlank(key)) {
             Allure.step("校验结果:" + key, () -> {
                 Object actual = buildActual(entity);
                 Object value = buildExpect(actual);
                 assertion(actual, value);
             });
+        }
+    }
+
+    private <T> void check(Map<String, Object> map, DataType dataType, ResponseEntity<T> entity) {
+        if (!map.isEmpty()) {
+            for (String key : map.keySet()) {
+                Assertion assertion = new Assertion();
+                assertion.setKey(key);
+                assertion.setValue(map.get(key));
+                assertion.setOptions(options);
+                assertion.setAssertionType(assertionType);
+                assertion.setDataType(dataType);
+                assertion.setType(type);
+                assertion.setValueType(valueType);
+                assertion.check(entity);
+            }
         }
     }
 
@@ -114,14 +129,25 @@ public class Assertion {
      * @param <T>    响应体类型
      * @return 实际值
      */
-    private <T> Object buildActual(ResponseEntity<T> entity) {
+    private <T> Object buildActual(ResponseEntity<T> entity) throws IOException {
         Object actual = null;
         //根据数据来源提取响应的实际值
         switch (type) {
             case BODY:
                 T body = entity.getBody();
                 assert body != null;
-                actual = JsonPathUtils.read(body, key, options);
+                switch (dataType) {
+                    case EXCEL:
+                        String[] keys = StringUtils.split(key, "-");
+                        HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream((byte[]) body));
+                        actual = workbook.getSheetAt(Integer.valueOf(keys[0])).getRow(Integer.valueOf(keys[1])).getCell(Integer.valueOf(keys[2])).getStringCellValue();
+                        break;
+                    case JSON:
+                    case DEFAULT:
+                    default:
+                        actual = JsonPathUtils.read(body, key, options);
+                        break;
+                }
                 break;
             case HEADER:
                 String[] split = value.toString().split(":");
@@ -185,6 +211,12 @@ public class Assertion {
         Allure.step("判断结果:" + actual + " " + assertionType + " " + value, () -> {
             //根据不同的判断类型进行判断
             switch (assertionType) {
+                case GREATEROREQUALTO:
+                    Assertions.assertThat(new BigDecimal(actual.toString())).isGreaterThanOrEqualTo(new BigDecimal(value.toString()));
+                    break;
+                case LESSTHANOREQUALTO:
+                    Assertions.assertThat(new BigDecimal(actual.toString())).isLessThanOrEqualTo(new BigDecimal(value.toString()));
+                    break;
                 case CONTAINS:
                     if (actual instanceof Collection) {
                         Assertions.assertThat((Collection<Object>) actual).contains(value);
@@ -197,6 +229,12 @@ public class Assertion {
                     break;
                 case ALLIS:
                     Assertions.assertThat((Collection<Object>) actual).containsOnly(value);
+                    break;
+                case ALLGREATEROREQUALTO:
+                    ((Collection<Object>) actual).forEach(o -> Assertions.assertThat(new BigDecimal(o.toString())).isGreaterThanOrEqualTo(new BigDecimal(value.toString())));
+                    break;
+                case ALLLESSTHANOREQUALTO:
+                    ((Collection<Object>) actual).forEach(o -> Assertions.assertThat(new BigDecimal(o.toString())).isLessThanOrEqualTo(new BigDecimal(value.toString())));
                     break;
                 case EQ:
                 default:

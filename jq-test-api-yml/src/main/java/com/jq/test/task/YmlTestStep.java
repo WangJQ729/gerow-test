@@ -131,9 +131,10 @@ public class YmlTestStep implements ITestStep {
             String url = buildUrl();
             HttpEntity entity = buildHttpEntity();
             HttpMethod method = HttpMethod.valueOf(StringUtils.upperCase(step.getMethod()));
-            ResponseEntity<JSONObject> responseEntity = HttpUtils.composer(url, method, entity, JSONObject.class);
-            check(responseEntity);
-            saveParam(responseEntity);
+            Class<?> type = step.getResponseType().getType();
+            ResponseEntity<?> response = HttpUtils.composer(url, method, entity, type);
+            check(response);
+            saveParam(response);
         } else {
             saveParam();
         }
@@ -203,7 +204,6 @@ public class YmlTestStep implements ITestStep {
         if (step.getBodyEditor() != null) copyStep.setBodyEditor(step.getBodyEditor());
 
         if (StringUtils.isNotBlank(step.getName())) copyStep.setName(step.getName());
-
         //如果copyStep也是byName查找，执行递归
         if (StringUtils.isNotBlank(copyStep.getByName())) copyStep = buildStep(copyStep);
 
@@ -217,7 +217,7 @@ public class YmlTestStep implements ITestStep {
      */
     private String buildUrl() {
         String host = ConfigManager.getUrl();
-        if (StringUtils.isNotBlank(step.getHost())) {
+        if (step.getHost() != null) {
             host = replace(step.getHost());
         }
         StringBuilder builder = new StringBuilder(host)
@@ -284,9 +284,9 @@ public class YmlTestStep implements ITestStep {
 
     @Override
     public <T> void saveParam(ResponseEntity<T> entity) {
-        List<Extractor> extractorList = new ArrayList<>(step.getExtractor());
+        List<Extractor> extractorList = new LinkedList<>(step.getExtractor());
         for (Extractor extractor : extractorList) {
-            extractor.replace(this).save(entity, testMethod);
+            extractor.save(this, entity, testMethod);
         }
     }
 
@@ -294,7 +294,7 @@ public class YmlTestStep implements ITestStep {
     public void saveParam() {
         List<Extractor> extractorList = new LinkedList<>(step.getExtractor());
         for (Extractor extractor : extractorList) {
-            extractor.replace(this).save(testMethod);
+            extractor.save(testMethod);
         }
     }
 
