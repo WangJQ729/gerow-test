@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+jq-test-api-yml-testcase/allure-results/
+jq-test-api-yml-testcase/target/
+jq-test-api-yml/target/
+jq-test-serve/target/
+jq-test-utils/target/
