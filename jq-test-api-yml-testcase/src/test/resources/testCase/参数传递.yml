@@ -1,0 +1,21 @@
+name: 参数传递
+testMethod:
+  - name: 参数传递
+    step:
+      - byName: POST请求
+        name: 获取计算结果
+        body: |
+          {"num1": ${__Random(1,100,num1)},"num2": ${__Random(1,100,num2)}}
+        assertion:
+          - json:
+              $.data.result: ${__BeanShell(${num1}+${num2})}
+        extractor:
+          - json:
+              result: $.data.result
+      - byName: POST请求
+        name: 使用result进行计算
+        body: |
+          {"num1": ${result},"num2": ${result}}
+        assertion:
+          - json:
+              $.data.result: ${__BeanShell(${result}+${result})}
