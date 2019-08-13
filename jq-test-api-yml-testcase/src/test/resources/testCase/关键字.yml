@@ -1,6 +1,7 @@
 name: 关键字
 testMethod:
   - name: 关键字
+    severity: TRIVIAL
     step:
       #通过关键字“POST请求”，复制相关请求信息
       - byName: POST请求

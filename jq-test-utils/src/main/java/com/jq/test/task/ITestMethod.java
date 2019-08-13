@@ -1,5 +1,7 @@
 package com.jq.test.task;
 
+import io.qameta.allure.SeverityLevel;
+
 import java.util.List;
 import java.util.Map;
 
@@ -36,4 +38,6 @@ public interface ITestMethod extends ITest {
     Map<String, String> getLinks();
 
     void setLinks(Map<String, String> links);
+
+    SeverityLevel getSeverityLevel();
 }

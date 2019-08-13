@@ -1,6 +1,7 @@
 name: GET请求
 testMethod:
   - name: GET请求
+    severity: MINOR
     step:
       - name: GET请求
         url: /get

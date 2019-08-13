@@ -1,6 +1,7 @@
 name: POST请求
 testMethod:
   - name: POST请求
+    severity: BLOCKER
     step:
       - name: POST请求
         url: /post

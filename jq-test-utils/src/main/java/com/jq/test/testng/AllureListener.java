@@ -219,6 +219,7 @@ public class AllureListener implements
                 createParentSuiteLabel(safeExtractSuiteName(testClass)),
                 createSuiteLabel(safeExtractTestTag(testClass, params)),
                 createSubSuiteLabel(safeExtractTestClassName(testClass)),
+                createSeverityLabel(getSeverity(params)),
 
                 //Timeline grouping
                 createHostLabel(),
@@ -243,6 +244,18 @@ public class AllureListener implements
         processDescription(getClass().getClassLoader(), method.getConstructorOrMethod().getMethod(), result);
         getLifecycle().scheduleTestCase(parentUuid, result);
         getLifecycle().startTestCase(uuid);
+    }
+
+    private SeverityLevel getSeverity(Object[] params) {
+        for (Object param : params) {
+            if (param instanceof ITestMethod) {
+                try {
+                    return ((ITestMethod) param).getSeverityLevel();
+                } catch (NullPointerException e) {
+                }
+            }
+        }
+        return SeverityLevel.NORMAL;
     }
 
     private String safeExtractTestTag(ITestClass testClass, Object[] params) {

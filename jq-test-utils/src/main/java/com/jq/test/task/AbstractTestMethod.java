@@ -2,12 +2,14 @@ package com.jq.test.task;
 
 import com.jq.test.utils.TestUtils;
 import io.qameta.allure.Allure;
+import io.qameta.allure.SeverityLevel;
 import lombok.Data;
 
 import java.util.*;
 
 @Data
 public abstract class AbstractTestMethod implements ITestMethod {
+    private SeverityLevel severityLevel;
     private String name;
     private ITestClass testClass;
     private Map<String, String> params = new HashMap<>();

@@ -5,6 +5,7 @@ import com.jq.test.task.ITestMethod;
 import com.jq.test.task.YmlTestMethod;
 import com.jq.test.utils.StepEditor;
 import com.jq.test.utils.TestUtils;
+import io.qameta.allure.SeverityLevel;
 import lombok.Data;
 
 import java.util.*;
@@ -20,6 +21,7 @@ public class YmlTestMethodEntity {
      * 测试名称
      */
     private String name;
+    private SeverityLevel severity = SeverityLevel.NORMAL;
     /**
      * 测试步骤
      */
@@ -70,6 +72,7 @@ public class YmlTestMethodEntity {
         YmlTestMethod testMethod = new YmlTestMethod();
         testMethod.setTestClass(testClass);
         testMethod.setParams(map);
+        testMethod.setSeverityLevel(severity);
         testMethod.setLinks(links);
         String name = TestUtils.firstNonEmpty(factory.getName()).orElse("");
         if (name.isEmpty()) {
