@@ -1,0 +1,146 @@
+name: 催单消息
+dataProvider:
+  - order_state: created
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - name: 获取task_id
+      url: /api/admin/reminder/v2/manage/task/list
+      variables:
+        template_keys: 0,1
+        node_type: ${order_state}
+      method: GET
+      headers:
+        Cookie: ${cookie}
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            task_id: $.data.tasks[*].id
+    - name: 获取task模板
+      url: /api/admin/reminder/v2/manage/task/template
+      variables:
+        node_type: ${order_state}
+        template_key: 0
+      method: GET
+      headers:
+        Cookie: ${cookie}
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            task_info: $.data
+testMethod:
+  - name: 催单消息校验-${message}
+    dataProvider:
+      - message: 您好，您有未支付订单，请尽快支付哦
+        text_with_vars: 您好，您有未支付订单，请尽快支付哦
+      - message: "{{子账号名称}}"
+        text_with_vars: ${seller_name}
+      - message: '商品总数：{商品总数}'
+        text_with_vars: "商品总数：1"
+      - message: '订单商品明细：{订单商品明细}'
+        text_with_vars: "订单商品明细：元老古董炫酷SAP防弹短袖-4: 1"
+      - message: '应付金额：{应付金额}'
+        text_with_vars: "应付金额：20.00"
+      - message: '{姓名}'
+        text_with_vars: 晓多AI
+      - message: '{地址}'
+        text_with_vars: 四川省成都市高新区软件园A5-8
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、修改reminder</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      """
+    severity: BLOCKER
+    step:
+      - name: 修改的task内容
+        url: /api/admin/reminder/v2/manage/task/update
+        headers:
+          Cookie: ${cookie}
+        method: POST
+        body: ${task_info}
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+        assertion: [json: {$.code: 0}]
+      - name: 同步订单消息
+        host: ${mock_host}
+        sleep: 2 #等待oplog服务
+        url: /mock/pdd_sync_order_info
+        form:
+          1: 1
+        headers:
+          Content-Type: multipart/form-data
+        method: POST
+        extractor:
+          - json:
+              order_id: $.data
+      - name: 获取催单消息
+        url: /api/admin/reminder/v2/client/reminder/messages
+        untilWait: 10
+        variables:
+          sign: ${sign}
+          shop_id: ${shop_id}
+          seller_id: ${shopName}
+          platform: ${platform}
+        headers:
+          Cookie: ${cookie}
+        method: GET
+        assertion:
+          - json:
+              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
+                - ${text_with_vars}
+  - name: 催单消息校验-订单链接
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、修改reminder</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      """
+    severity: BLOCKER
+    step:
+      - byName: 修改的task内容
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: '查看订单 {订单链接}'
+      - byName: 客户端同步订单消息
+      - byName: 获取催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
+                - '查看订单 https://mobile.yangkeduo.com/order.html?order_sn=${order_id}'
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - name: 根据订单查询trace
+      host: ${reminder_pdd_host}
+      url: /reminder/v2/trace/search/order
+      variables:
+        platform: pdd
+        order_id: ${order_id}
+      method: GET
+      untilWait: 5
+      extractor:
+        - json:
+            trace_id: $.data.traces[?(@.order_state=='${order_state}')].trace_id
+    #          options: [DEFAULT_PATH_LEAF_TO_NULL]
+    - name: 查看trace详情
+      host: ${reminder_pdd_host}
+      url: /reminder/v2/trace/info
+      variables:
+        trace_id: ${trace_id}
+      method: GET

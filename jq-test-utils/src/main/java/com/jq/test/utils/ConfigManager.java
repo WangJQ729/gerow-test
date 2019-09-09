@@ -15,6 +15,7 @@ public class ConfigManager {
     private static Config config;
     private static ClientInfo clientInfo;
 
+
     @Autowired
     public void setConfig(Config config) {
         ConfigManager.config = config;
@@ -43,7 +44,7 @@ public class ConfigManager {
      * @return 默认地址
      */
     public static String getUrl() {
-        return clientInfo.getProtocol() + "://" + config.getTest().get("baseURI");
+        return clientInfo.getProtocol() + "://" + config.getTest().get("host");
     }
 
     /**

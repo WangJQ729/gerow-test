@@ -6,14 +6,17 @@ import org.apache.jmeter.engine.util.CompoundVariable;
 import org.apache.jmeter.threads.JMeterContextService;
 import org.apache.jmeter.threads.JMeterVariables;
 
+import java.io.File;
 import java.util.*;
 
 @Data
 public abstract class AbstractTestClass implements ITestClass {
     private String name;
+    private String feature;
     private List<ITestMethod> testMethods = new ArrayList<>();
     public Map<String, String> params = new LinkedHashMap<>();
     private ITestSuite testSuite;
+    private File file;
     private List<ITestMethod> beforeClass = new ArrayList<>();
     private List<ITestMethod> afterClass = new ArrayList<>();
     private List<ITestMethod> before = new ArrayList<>();
@@ -90,6 +93,17 @@ public abstract class AbstractTestClass implements ITestClass {
 
     @Override
     public String toString() {
-        return name;
+        return replace(name);
+    }
+
+    @Override
+    public String getName() {
+        return replace(name);
+    }
+
+
+    @Override
+    public String getFeature() {
+        return replace(feature);
     }
 }

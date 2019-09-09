@@ -1,0 +1,25 @@
+name: 统一前置处理
+#所有测试执行前执行
+beforeSuite:
+  name: 登录mp后台
+  step:
+    - name: 获取MP后台地址
+      url: /api/auth/mp_switcher
+      variables:
+        full_nick: ${shopName}
+      method: GET
+      assertion:
+        - json:
+            $.message: 成功
+      extractor:
+        - json:
+            auth_url: $.url
+    - name: 进入主页
+      host: ""
+      url: ${auth_url}
+      method: GET
+      responseType: DEFAULT
+      extractor:
+        - headers:
+            cookie: Set-Cookie
+          site: TESTSUIT

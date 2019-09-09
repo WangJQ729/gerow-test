@@ -16,6 +16,7 @@ public class YmlTestClassEntity {
      * 测试名称
      */
     private String name;
+    private String feature;
     /**
      * 参数化
      */
@@ -92,7 +93,9 @@ public class YmlTestClassEntity {
         if (StringUtils.isBlank(name)) {
             this.name = file.getName();
         }
+        testClass.setFile(file);
         testClass.setName(this.name);
+        testClass.setFeature(this.feature);
         testClass.setTestMethods(testMethod.parallelStream().flatMap(entity -> entity.build(testClass).stream()).collect(Collectors.toList()));
         if (beforeClass != null) {
             testClass.setBeforeClass(beforeClass.build(testClass));

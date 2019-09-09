@@ -11,6 +11,7 @@ import java.util.*;
 public abstract class AbstractTestMethod implements ITestMethod {
     private SeverityLevel severityLevel;
     private String name;
+    private String description;
     private ITestClass testClass;
     private Map<String, String> params = new HashMap<>();
     private List<ITestStep> testSteps;
@@ -63,6 +64,11 @@ public abstract class AbstractTestMethod implements ITestMethod {
     }
 
     @Override
+    public String getName() {
+        return replace(this.name);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -73,5 +79,9 @@ public abstract class AbstractTestMethod implements ITestMethod {
     @Override
     public String toString() {
         return String.valueOf(hashCode());
+    }
+
+    public String getDescription() {
+        return replace(description);
     }
 }

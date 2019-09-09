@@ -1,0 +1,8 @@
+logging:
+  level:
+    root: FATAL
+client:
+  protocol: http
+  timeOut: 30
+  headers:
+    Content-Type: "application/json;charset=UTF-8"

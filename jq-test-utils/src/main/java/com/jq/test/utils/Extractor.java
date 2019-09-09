@@ -57,6 +57,7 @@ public class Extractor {
     private Option[] options = new Option[]{};
 
     private LinkedHashMap<String, String> json = new LinkedHashMap<>();
+    private LinkedHashMap<String, String> headers = new LinkedHashMap<>();
 
     /**
      * 保存参数
@@ -67,7 +68,11 @@ public class Extractor {
      */
     public <T> void save(ITestStep testStep, ResponseEntity<T> entity, ITestMethod test) {
         for (String key : json.keySet()) {
-            Extractor extractor = buildJsonExtractor(key);
+            Extractor extractor = buildExtractorByType(DataSources.BODY, key, json.get(key));
+            extractor.save(testStep, entity, test);
+        }
+        for (String key : headers.keySet()) {
+            Extractor extractor = buildExtractorByType(DataSources.HEADER, key, headers.get(key));
             extractor.save(testStep, entity, test);
         }
         Extractor extractor = replace(testStep);
@@ -175,7 +180,7 @@ public class Extractor {
     public void save(ITestMethod test) {
         ITest save = getTest(test);
         for (String key : json.keySet()) {
-            Extractor extractor = buildJsonExtractor(key);
+            Extractor extractor = buildExtractorByType(DataSources.BODY, key, json.get(key));
             extractor.save(test);
         }
         if (StringUtils.isNotBlank(name)) {
@@ -213,16 +218,17 @@ public class Extractor {
         return JSONObject.toJSONString(this);
     }
 
-    private Extractor buildJsonExtractor(String key) {
+    private Extractor buildExtractorByType(DataSources sources, String key, String value) {
         Extractor extractor = new Extractor();
         extractor.setName(key);
-        extractor.setValue(json.get(key));
+        extractor.setValue(value);
         extractor.setData(data);
         extractor.setOptions(options);
         extractor.setSeparator(separator);
         extractor.setSite(site);
         extractor.setSize(size);
         extractor.setType(DataType.JSON);
+        extractor.setSources(sources);
         return extractor;
     }
 
@@ -236,6 +242,7 @@ public class Extractor {
         extractor.setData(step.replace(getData()));
         extractor.setName(step.replace(getName()));
         extractor.setValue(step.replace(getValue()));
+        extractor.setSources(getSources());
         LinkedHashMap<String, String> json = new LinkedHashMap<>();
         for (String key : this.json.keySet()) {
             json.put(step.replace(key), step.replace(this.json.get(key)));

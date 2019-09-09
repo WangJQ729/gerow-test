@@ -15,6 +15,8 @@ import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -126,7 +128,7 @@ public class YmlTestStep implements ITestStep {
     /**
      * 执行具体操作
      */
-    private void doExecute() {
+    private void doExecute() throws UnsupportedEncodingException {
         if (StringUtils.isNotBlank(step.getMethod())) {
             String url = buildUrl();
             HttpEntity entity = buildHttpEntity();
@@ -136,6 +138,7 @@ public class YmlTestStep implements ITestStep {
             check(response);
             saveParam(response);
         } else {
+            check(new ResponseEntity<>(HttpStatus.OK));
             saveParam();
         }
     }
@@ -215,7 +218,7 @@ public class YmlTestStep implements ITestStep {
      *
      * @return url
      */
-    private String buildUrl() {
+    private String buildUrl() throws UnsupportedEncodingException {
         String host = ConfigManager.getUrl();
         if (step.getHost() != null) {
             host = replace(step.getHost());
@@ -230,7 +233,8 @@ public class YmlTestStep implements ITestStep {
         if (StringUtils.isNotBlank(result)) {
             builder.append("?").append(result);
         }
-        return StringUtils.remove(builder.toString(), "\n");
+        String url = StringUtils.remove(builder.toString(), "\n");
+        return URLDecoder.decode(url, "UTF-8");
     }
 
     /**
@@ -256,6 +260,14 @@ public class YmlTestStep implements ITestStep {
             }
             return new HttpEntity<>(form, httpHeaders);
         }
+        if (!step.getForm().isEmpty()) {
+            MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
+            Map<String, String> stepForm = step.getForm();
+            for (String key : stepForm.keySet()) {
+                form.add(replace(key), replace(stepForm.get(key)));
+            }
+            return new HttpEntity<>(form, httpHeaders);
+        }
         String body = step.getBody();
         try {
             body = replace(body);
@@ -273,11 +285,13 @@ public class YmlTestStep implements ITestStep {
         if (MediaType.APPLICATION_FORM_URLENCODED.equals(httpHeaders.getContentType())) {
             return new HttpEntity<>(body, httpHeaders);
         }
-        Object parse = null;
-        try {
-            parse = JSONObject.parse(body);
-        } catch (Exception e) {
-            Assertions.fail("JSON 格式错误:\n" + body);
+        Object parse = body;
+        if (!StringUtils.containsIgnoreCase(header.get("Content-Type"), "form")) {
+            try {
+                parse = JSONObject.parse(body);
+            } catch (Exception e) {
+                Assertions.fail("JSON 格式错误:\n" + body);
+            }
         }
         return new HttpEntity<>(parse, httpHeaders);
     }

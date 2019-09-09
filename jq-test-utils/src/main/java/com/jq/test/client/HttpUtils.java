@@ -2,7 +2,6 @@ package com.jq.test.client;
 
 import com.jq.test.utils.ConfigManager;
 import io.qameta.allure.Allure;
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,8 +24,7 @@ public class HttpUtils {
      * 协议名称
      */
     private final static String protocol = StringUtils.upperCase(ConfigManager.getProtocol() + "/1.1");
-    @Setter
-    private static String token = "";
+
 
     /**
      * @param url          url地址
@@ -39,9 +37,6 @@ public class HttpUtils {
      */
     public static <T> ResponseEntity<T> composer(String url, HttpMethod method, Object body, Class<T> responseType, Object... uriVariables) {
         HttpHeaders headers = new HttpHeaders();
-        if (StringUtils.isNotBlank(token)) {
-            headers.add("Authorization", token);
-        }
         HttpEntity entity = new HttpEntity<>(body, headers);
         return HttpUtils.composer(url, method, entity, responseType, uriVariables);
     }

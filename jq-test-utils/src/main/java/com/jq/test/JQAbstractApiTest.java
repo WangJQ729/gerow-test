@@ -92,7 +92,11 @@ public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTe
 
     @AfterMethod
     public void tearDownBeforeMethod() {
-        testClass.tearDown();
+        try {
+            testClass.tearDown();
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override

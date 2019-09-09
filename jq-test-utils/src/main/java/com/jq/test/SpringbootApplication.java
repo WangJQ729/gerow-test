@@ -23,5 +23,4 @@ public class SpringbootApplication implements WebMvcConfigurer {
         ir.addPathPatterns("/**");
         ir.excludePathPatterns("/login");
     }
-
 }

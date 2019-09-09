@@ -1,0 +1,45 @@
+name: 催单消息
+feature: ${reminder_type}
+dataProvider:
+  - order_state: succeeded
+    pdd_order_type: pdd_trade_TradeSuccess
+    reminder_type: 交易成功
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取task模板
+testMethod:
+  - name: 催单消息校验-好评链接
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、修改reminder</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      """
+    severity: BLOCKER
+    step:
+      - byName: 修改的task内容
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: '亲，是不是找不到好评链接呢？快来点这里吧！{好评链接}'
+      - byName: 拼多多推送订单状态变更消息
+      - byName: 客户端获取订单状态变更列表
+      - byName: 客户端同步订单消息
+      - byName: 获取催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
+                - '亲，是不是找不到好评链接呢？快来点这里吧！https://mobile.yangkeduo.com/comments.html?goods_id=31499530416&order_sn=${order_id}'
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情

@@ -21,6 +21,7 @@ public class YmlTestMethodEntity {
      * 测试名称
      */
     private String name;
+    private String description;
     private SeverityLevel severity = SeverityLevel.NORMAL;
     /**
      * 测试步骤
@@ -72,6 +73,7 @@ public class YmlTestMethodEntity {
         YmlTestMethod testMethod = new YmlTestMethod();
         testMethod.setTestClass(testClass);
         testMethod.setParams(map);
+        testMethod.setDescription(description);
         testMethod.setSeverityLevel(severity);
         testMethod.setLinks(links);
         String name = TestUtils.firstNonEmpty(factory.getName()).orElse("");

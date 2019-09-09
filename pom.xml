@@ -12,6 +12,7 @@
         <module>jq-test-api-yml</module>
         <module>jq-test-api-yml-testcase</module>
         <module>jq-test-serve</module>
+        <module>pdd-reminder-testcase</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

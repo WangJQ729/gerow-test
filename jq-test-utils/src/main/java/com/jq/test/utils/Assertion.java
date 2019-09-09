@@ -15,7 +15,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -42,6 +41,8 @@ public class Assertion {
      * 值的key
      */
     private String key;
+
+    private String data;
     /**
      * 期望值
      */
@@ -158,6 +159,8 @@ public class Assertion {
             case STATUS:
                 actual = entity.getStatusCode().value();
                 break;
+            case DATA:
+                actual = JsonPathUtils.read(data, key, options);
             case DEFAULT:
             default:
                 break;

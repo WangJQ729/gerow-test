@@ -2,6 +2,7 @@ package com.jq.test.task;
 
 import org.apache.jmeter.threads.JMeterVariables;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -68,5 +69,11 @@ public interface ITestClass extends ITest {
      */
     List<ITestMethod> getAfter();
 
+    File getFile();
 
+    String getFeature();
+
+    void setFeature(String feature);
+
+    void setFile(File file);
 }

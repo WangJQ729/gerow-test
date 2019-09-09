@@ -6,7 +6,6 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.jq.test.utils.ConfigManager;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -44,7 +43,8 @@ public class RestTemplateTool extends RestTemplate {
         //设置client
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
         HttpClient httpClient = HttpClientBuilder.create()
-                .setRedirectStrategy(new LaxRedirectStrategy())
+                .disableRedirectHandling()
+//                .setRedirectStrategy(new LaxRedirectStrategy())
                 .build();
         httpRequestFactory.setHttpClient(httpClient);
         httpRequestFactory.setConnectionRequestTimeout(ConfigManager.getTimeOut() * 1000);
