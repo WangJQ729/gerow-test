@@ -23,3 +23,13 @@ beforeSuite:
         - headers:
             cookie: Set-Cookie
           site: TESTSUIT
+    - name: 开启主账号催单设置
+      url: /api/admin/user/shop_subnick_client_config_edit_v3
+      headers:
+        Cookie: ${cookie}
+        Content-Type: multipart/form-data
+      method: POST
+      form:
+        sub_nick: ${shopName}
+        reminder_type: mine,silence
+      assertion: [json: {$.code: 0}]
