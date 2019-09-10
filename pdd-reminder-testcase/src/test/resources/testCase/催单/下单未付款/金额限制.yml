@@ -13,7 +13,7 @@ testMethod:
     dataProvider:
       - payment: 5
       - payment: 5.01
-      - payment: 15
+#      - payment: 15
       - payment: 19.99
       - payment: 20
     description: |
@@ -46,11 +46,11 @@ testMethod:
       - byName: 获取催单消息
   - name: 金额限制-不满足-${payment}
     dataProvider:
-      - payment: 2
+#      - payment: 2
       - payment: 4.99
       - payment: 20.01
-      - payment: 30
-      - payment: 100
+#      - payment: 30
+#      - payment: 100
     description: |
       """</br>
       用例描述：</br>
@@ -76,16 +76,16 @@ testMethod:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [pay_amount_limit]
   - name: 金额限制-关闭-${payment}
     dataProvider:
+#      - payment: 2
+      - payment: 4.99
       - payment: 5
       - payment: 5.01
-      - payment: 15
+#      - payment: 15
       - payment: 19.99
       - payment: 20
-      - payment: 2
-      - payment: 4.99
       - payment: 20.01
-      - payment: 30
-      - payment: 100
+#      - payment: 30
+#      - payment: 100
     description: |
       """</br>
       用例描述：</br>

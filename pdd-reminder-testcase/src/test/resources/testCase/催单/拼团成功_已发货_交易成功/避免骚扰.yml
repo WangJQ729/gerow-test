@@ -46,7 +46,7 @@ testMethod:
         name: 指定uid的订单消息
         form:
           order_id: ${order_id}
-          u_id: ${__Random(100000000,999999999,u_id)}
+          uid: ${__Random(10000000000,99999999999,u_id)}
       - byName: 获取催单消息
       - byName: 拼多多推送订单状态变更消息
       - byName: 客户端获取订单状态变更列表

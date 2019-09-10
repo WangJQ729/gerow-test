@@ -33,7 +33,8 @@ public class PddReminderApiTest extends JQAbstractApiTest {
         private static Object buildTestClass(ITestClass testClass) {
             Map<String, String> params = testClass.getParams();
             //生成测试类的名称
-            String className = testClass.getFile().getParentFile().getName() + "_" + testClass.getName().replace(".", "");
+            String feature = StringUtils.isNotBlank(testClass.getFeature()) ? testClass.getFeature() : testClass.getFile().getParentFile().getName();
+            String className = feature + "_" + testClass.getName().replace(".", "");
             if (params.containsKey("classNum") && !StringUtils.equals(params.get("classNum"), "00")) {
                 className = className + "_" + params.get("classNum");
             }
