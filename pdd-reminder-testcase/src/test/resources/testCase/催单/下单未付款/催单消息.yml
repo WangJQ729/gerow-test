@@ -43,6 +43,8 @@ testMethod:
         text_with_vars: "应付金额：20.00"
       - message: '{姓名}'
         text_with_vars: 晓多AI
+      - message: '电话：{电话}'
+        text_with_vars: "电话：17721883949"
       - message: '{地址}'
         text_with_vars: 四川省成都市高新区软件园A5-8
     description: |
