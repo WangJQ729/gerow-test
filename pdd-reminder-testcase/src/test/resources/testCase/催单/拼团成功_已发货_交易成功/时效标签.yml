@@ -146,3 +146,4 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
+    - byName: 删除时效标签

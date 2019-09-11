@@ -117,10 +117,6 @@ testMethod:
           ageing_type: ${ageing_type}
           everyday_start_time: ${everyday_start_time}
           everyday_end_time: ${everyday_end_time}
-        assertion: [json: {$.code: 0}]
-        extractor:
-          - json:
-              ageing_id: $.ageing.id
       - byName: 设置时效标签
       - byName: 同步订单消息
       - byName: 获取催单消息
@@ -163,3 +159,12 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
+    - name: 删除时效标签
+      url: /api/admin/config2/ageing/delete
+      headers:
+        Cookie: ${cookie}
+        Content-Type: multipart/form-data
+      method: POST
+      form:
+        id: ${ageing_id}
+      assertion: [json: {$.code: 0}]
