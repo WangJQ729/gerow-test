@@ -32,6 +32,7 @@ testMethod:
           json:
             $.id: ${task_id}
             $.enable: true
+            $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_limit')].args.enable: true
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
@@ -71,6 +72,7 @@ testMethod:
           json:
             $.id: ${task_id}
             $.enable: true
+            $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}

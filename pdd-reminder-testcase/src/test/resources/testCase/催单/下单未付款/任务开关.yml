@@ -28,6 +28,7 @@ testMethod:
           json:
             $.id: ${task_id}
             $.enable: true
+            $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
       - byName: 同步订单消息

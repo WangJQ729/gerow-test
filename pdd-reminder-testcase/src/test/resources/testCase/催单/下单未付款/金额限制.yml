@@ -35,6 +35,7 @@ testMethod:
           json:
             $.id: ${task_id}
             $.enable: true
+            $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='pay_amount_limit')].args.enable: true
@@ -105,6 +106,7 @@ testMethod:
           json:
             $.id: ${task_id}
             $.enable: true
+            $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='pay_amount_limit')].args.enable: false
