@@ -23,7 +23,7 @@ beforeSuite:
         - headers:
             cookie: Set-Cookie
           site: TESTSUIT
-    - name: 开启主账号催单设置
+    - name: 催单设置为自己和静默
       url: /api/admin/user/shop_subnick_client_config_edit_v3
       headers:
         Cookie: ${cookie}

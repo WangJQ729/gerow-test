@@ -78,7 +78,7 @@ testMethod:
         sleep: 2 #等待oplog服务
         url: /mock/pdd_sync_order_info
         form:
-          1: 1
+          uid: ${buyer}
         headers:
           Content-Type: multipart/form-data
         method: POST

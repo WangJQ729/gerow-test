@@ -37,6 +37,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
       - byName: 同步订单消息
+        name: 指定随机用户同步订单消息
         form:
           uid: ${__Random(10000000,99999999,uid)}
       - byName: 获取催单消息
@@ -76,9 +77,7 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 同步订单消息
-        form:
-          uid: ${__Random(10000000,99999999,uid)}
+      - byName: 指定随机用户同步订单消息
       - byName: 获取催单消息
       - byName: 同步订单消息
         form:
