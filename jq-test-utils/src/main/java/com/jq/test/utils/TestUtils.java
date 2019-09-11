@@ -8,16 +8,25 @@ import org.apache.jmeter.engine.util.CompoundVariable;
 import org.apache.jmeter.functions.Function;
 import org.apache.jmeter.threads.JMeterContextService;
 import org.apache.jmeter.threads.JMeterVariables;
+import org.apache.tomcat.util.buf.HexUtils;
 import org.assertj.core.api.Assertions;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 
+import javax.crypto.*;
+import javax.crypto.spec.DESedeKeySpec;
+import javax.crypto.spec.IvParameterSpec;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -210,5 +219,22 @@ public class TestUtils {
      */
     public static Optional<String> firstNonEmpty(String... items) {
         return Stream.of(items).filter(Objects::nonNull).filter(item -> !item.isEmpty()).findFirst();
+    }
+
+    public static String des3Cipher(String key, String iv, int mode, String data) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
+        DESedeKeySpec spec = new DESedeKeySpec(key.getBytes());
+        SecretKeyFactory keyfactory = SecretKeyFactory.getInstance("desede");
+        Key deskey = keyfactory.generateSecret(spec);
+        Cipher cipher = Cipher.getInstance("desede" + "/CBC/PKCS5Padding");
+        IvParameterSpec ips = new IvParameterSpec(iv.getBytes());
+        cipher.init(mode, deskey, ips);
+        if (mode == 1) {
+            return HexUtils.toHexString(cipher.doFinal(data.getBytes()));
+        } else if (mode == 2) {
+            byte[] bytes = HexUtils.fromHexString(data);
+            return new String(cipher.doFinal(bytes));
+        } else {
+            return "";
+        }
     }
 }

@@ -13,6 +13,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.springframework.http.ResponseEntity;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,6 +54,7 @@ public class Extractor {
      * 数据
      */
     private String data;
+    private boolean need_decode = false;
     /**
      * 数据类型参数的分隔符
      */
@@ -81,7 +89,7 @@ public class Extractor {
         }
     }
 
-    private <T> void doSave(ResponseEntity<T> entity, ITestMethod test) {
+    private <T> void doSave(ResponseEntity<T> entity, ITestMethod test) throws NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
         ITest save = getTest(test);
         if (StringUtils.isNotBlank(data)) {
             sources = DataSources.DATA;
@@ -101,11 +109,19 @@ public class Extractor {
             case BODY:
                 switch (type) {
                     case JSON:
-                        saveJsonPath(save, JsonPathUtils.read(entity.getBody(), value, options));
+                        if (need_decode)
+                            saveJsonPath(save, JsonPathUtils.read(
+                                    TestUtils.des3Cipher("828d1bc65eefc6c88ca1a5d4", "828d1bc6", 2,
+                                            Objects.requireNonNull(entity.getBody()).toString()), value, options));
+                        else
+                            saveJsonPath(save, JsonPathUtils.read(entity.getBody(), value, options));
                         break;
                     case XML:
                     case DEFAULT:
                     default:
+                        String value = Objects.requireNonNull(entity.getBody()).toString();
+                        Allure.step(value);
+                        save.save(name, value);
                         break;
                 }
                 break;
@@ -223,6 +239,7 @@ public class Extractor {
         extractor.setName(key);
         extractor.setValue(value);
         extractor.setData(data);
+        extractor.setNeed_decode(isNeed_decode());
         extractor.setOptions(options);
         extractor.setSeparator(separator);
         extractor.setSite(site);
@@ -238,6 +255,7 @@ public class Extractor {
         extractor.setType(getType());
         extractor.setOptions(getOptions());
         extractor.setSize(getSize());
+        extractor.setNeed_decode(isNeed_decode());
         extractor.setSeparator(getSeparator());
         extractor.setData(step.replace(getData()));
         extractor.setName(step.replace(getName()));
