@@ -75,7 +75,7 @@ testMethod:
         assertion: [json: {$.code: 0}]
       - name: 同步订单消息
         host: ${mock_host}
-        sleep: 5 #等待oplog服务
+        sleep: 2 #等待oplog服务
         url: /mock/pdd_sync_order_info
         form:
           1: 1
@@ -123,6 +123,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: '查看订单 {订单链接}'
       - byName: 客户端同步订单消息
+        sleep: 10
       - byName: 获取催单消息
         name: 催单消息订单链接
         assertion:

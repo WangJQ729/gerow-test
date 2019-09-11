@@ -1,0 +1,67 @@
+name: 与客服会话
+feature: ${reminder_type}
+dataProvider:
+  - order_state: succeeded
+    pdd_order_type: pdd_trade_TradeSuccess
+    reminder_type: 交易成功
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取task模板
+testMethod:
+  - name: 消息发送前给商家发过消息的买家-开启
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、修改reminder</br>
+      2、创建订单</br>
+      3、发送消息给商家
+      4、校验催单信息</br>
+      """
+    severity: BLOCKER
+    step:
+      - byName: 修改的task内容
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 5
+            $.rules[?(@.type=='send_message')].args.receive_message_filter: true
+            $.rules[?(@.type=='send_message')].args.message: 'this is message!'
+      - byName: 拼多多推送订单状态变更消息
+      - byName: 客户端获取订单状态变更列表
+      - byName: 客户端同步订单消息
+      - name: 发送消息给商家
+        url: /robot/answer
+        variables:
+          version_num: 1.0.6P.6T
+          pin: cnpdd${buyer}
+          msg_time: ${__time(/1000,msg_time)}
+          msgid: 010049f0976c562b75634e84208e0877
+          q: ${__DES3Cipher(在吗)}
+          platform: pdd
+          qianniu_version_num: 2.1.0
+          service_status: 7
+          usr_shut: 0
+          spin: cnpdd${shopName}
+        headers:
+          Cookie: ${cookie}
+          Content-Type: multipart/form-data
+        method: GET
+        responseType: DEFAULT
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
