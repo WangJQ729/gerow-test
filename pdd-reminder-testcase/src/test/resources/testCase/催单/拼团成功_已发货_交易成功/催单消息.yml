@@ -60,7 +60,7 @@ testMethod:
               order_id: $.order_id
       - name: 客户端获取订单状态变更列表
         host: ${pdd_api_host}
-        url: /pdd-msg-receiver/api/v1/pdd/get_order_info
+        url: /api/client/receiver/v1/pdd/get_order_info
         method: POST
         untilWait: 5
         body: |
