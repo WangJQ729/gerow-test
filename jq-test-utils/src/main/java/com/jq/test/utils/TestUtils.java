@@ -4,6 +4,8 @@ import com.jq.test.task.ITest;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.jmeter.engine.util.CompoundVariable;
 import org.apache.jmeter.functions.Function;
 import org.apache.jmeter.threads.JMeterContextService;
@@ -33,6 +35,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class TestUtils {
+
+    private final static Log logger = LogFactory.getLog(TestUtils.class);
 
     /**
      * 初始化JMeter的functions
@@ -232,7 +236,9 @@ public class TestUtils {
             return HexUtils.toHexString(cipher.doFinal(data.getBytes()));
         } else if (mode == 2) {
             byte[] bytes = HexUtils.fromHexString(data);
-            return new String(cipher.doFinal(bytes));
+            String result = new String(cipher.doFinal(bytes));
+            logger.info("decode:\n" + result);
+            return result;
         } else {
             return "";
         }
