@@ -67,7 +67,7 @@ testMethod:
               qstr: $.answer
             need_decode: true
       - byName: 查看trace详情
-        sleep: 5
+        sleep: 8
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
