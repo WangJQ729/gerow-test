@@ -123,7 +123,6 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: '查看订单 {订单链接}'
       - byName: 客户端同步订单消息
-        sleep: 10
       - byName: 获取催单消息
         name: 催单消息订单链接
         assertion:
