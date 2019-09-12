@@ -100,7 +100,8 @@ public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTe
         } catch (Throwable e) {
             System.out.println(e.getMessage());
         }
-        logger.info("测试结束：" + testName + result.getStatus());
+
+        logger.info(testName + "测试结果：" + (result.getStatus() == 1 ? "成功" : "失败"));
         logger.info("-----------------------------------------------------------");
     }
 
