@@ -99,7 +99,7 @@ public class HttpUtils {
     private static <T> void addResponseAttachment(ResponseEntity<T> responseEntity) {
         String resType = protocol + " " + responseEntity.getStatusCode().value();
         Allure.addAttachment(resType, resType + "\n" + buildEntityString(responseEntity));
-        logger.info(resType + "\n" + buildEntityString(responseEntity));
+        logger.info("\n" + resType + "\n" + buildEntityString(responseEntity));
     }
 
     /**
@@ -114,7 +114,7 @@ public class HttpUtils {
         String request = reqType + "\n"
                 + buildEntityString(Objects.requireNonNull(httpEntity));
         Allure.addAttachment(reqType, request);
-        logger.info(request);
+        logger.info("\n" + request);
     }
 
     /**
