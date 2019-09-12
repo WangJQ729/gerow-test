@@ -3,6 +3,8 @@ package com.jq.test.client;
 import com.jq.test.utils.ConfigManager;
 import io.qameta.allure.Allure;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -25,6 +27,7 @@ public class HttpUtils {
      */
     private final static String protocol = StringUtils.upperCase(ConfigManager.getProtocol() + "/1.1");
 
+    private final static Log logger = LogFactory.getLog(HttpUtils.class);
 
     /**
      * @param url          url地址
@@ -96,6 +99,7 @@ public class HttpUtils {
     private static <T> void addResponseAttachment(ResponseEntity<T> responseEntity) {
         String resType = protocol + " " + responseEntity.getStatusCode().value();
         Allure.addAttachment(resType, resType + "\n" + buildEntityString(responseEntity));
+        logger.info(resType + "\n" + buildEntityString(responseEntity));
     }
 
     /**
@@ -110,6 +114,7 @@ public class HttpUtils {
         String request = reqType + "\n"
                 + buildEntityString(Objects.requireNonNull(httpEntity));
         Allure.addAttachment(reqType, request);
+        logger.info(request);
     }
 
     /**
