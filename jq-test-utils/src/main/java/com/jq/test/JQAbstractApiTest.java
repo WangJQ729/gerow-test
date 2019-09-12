@@ -7,6 +7,7 @@ import com.jq.test.task.JQTest;
 import com.jq.test.testng.AllureListener;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
@@ -43,6 +44,8 @@ public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTe
                 this.testName = testMethod.getName();
             }
         }
+        logger.info("-----------------------------------------------------------");
+        logger.info("开始执行：" + testName);
         testClass.setUp();
     }
 
@@ -91,12 +94,14 @@ public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTe
     }
 
     @AfterMethod
-    public void tearDownBeforeMethod() {
+    public void tearDownAfterMethod(ITestResult result) {
         try {
             testClass.tearDown();
         } catch (Throwable e) {
             System.out.println(e.getMessage());
         }
+        logger.info("测试结束：" + testName + result.getStatus());
+        logger.info("-----------------------------------------------------------");
     }
 
     @Override
