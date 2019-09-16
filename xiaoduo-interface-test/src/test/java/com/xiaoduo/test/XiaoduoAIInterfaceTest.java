@@ -10,7 +10,9 @@ import javassist.CtClass;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.Factory;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
+import java.net.URLDecoder;
 import java.util.Map;
 import java.util.Objects;
 
@@ -22,7 +24,7 @@ public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
 
     public static class JQApiTestFactory {
         @Factory
-        public static Object[] dataFactory() {
+        public static Object[] dataFactory() throws UnsupportedEncodingException {
             String platform = System.getProperty("platform");
             String features = System.getProperty("features");
             String testDir = "testCase";
@@ -33,7 +35,7 @@ public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
                 }
             }
             String testDirPath = Objects.requireNonNull(XiaoduoAIInterfaceTest.class.getClassLoader().getResource(testDir)).getFile();
-            ITestSuite testSuite = YmlTestSuite.getInstance(testDirPath);
+            ITestSuite testSuite = YmlTestSuite.getInstance(URLDecoder.decode(testDirPath, "UTF-8"));
             return testSuite.getTestClass().parallelStream()
                     //根据sheetName过滤测试
                     .filter(ITestClass::enable)
