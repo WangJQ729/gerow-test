@@ -1,4 +1,4 @@
-package test;
+package com.xiaoduo.pdd.test;
 
 import com.jq.test.JQAbstractApiTest;
 import com.jq.test.task.ITestClass;
