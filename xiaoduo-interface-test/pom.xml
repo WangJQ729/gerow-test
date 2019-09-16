@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pdd-reminder</artifactId>
+    <artifactId>xiaoduo-interface-test</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.jq</groupId>

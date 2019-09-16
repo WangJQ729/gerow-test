@@ -1,4 +1,4 @@
-package com.xiaoduo.pdd.test;
+package com.xiaoduo.test;
 
 import com.jq.test.JQAbstractApiTest;
 import com.jq.test.task.ITestClass;
@@ -14,16 +14,23 @@ import java.lang.reflect.Constructor;
 import java.util.Map;
 import java.util.Objects;
 
-public class PddReminderApiTest extends JQAbstractApiTest {
+public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
 
-    public PddReminderApiTest(ITestClass testClass) {
+    public XiaoduoAIInterfaceTest(ITestClass testClass) {
         super(testClass);
     }
 
     public static class JQApiTestFactory {
         @Factory
         public static Object[] dataFactory() {
-            ITestSuite testSuite = YmlTestSuite.getInstance(Objects.requireNonNull(PddReminderApiTest.class.getClassLoader().getResource("testCase")).getFile());
+            String platform = System.getProperty("platform");
+            String features = System.getProperty("features");
+            String testDir = "testCase/" + platform;
+            if (StringUtils.isNotBlank(features)) {
+                testDir = testDir + "/" + features;
+            }
+            String testDirPath = Objects.requireNonNull(XiaoduoAIInterfaceTest.class.getClassLoader().getResource(testDir)).getFile();
+            ITestSuite testSuite = YmlTestSuite.getInstance(testDirPath);
             return testSuite.getTestClass().parallelStream()
                     //根据sheetName过滤测试
                     .filter(ITestClass::enable)
@@ -42,14 +49,14 @@ public class PddReminderApiTest extends JQAbstractApiTest {
             CtClass ct = pool.makeClass(className);//创建类
             try {
                 //生成构造方法并实例化
-                JavassistUtils.setConstructor(pool, className, ct, PddReminderApiTest.class);
+                JavassistUtils.setConstructor(pool, className, ct, XiaoduoAIInterfaceTest.class);
                 ct.writeFile("target/test-classes");
                 Class<?> aClass = ct.toClass();
                 Constructor<?> method = aClass.getConstructor(ITestClass.class);
                 return method.newInstance(testClass);
             } catch (Exception ignored) {
             }
-            return new PddReminderApiTest(testClass);
+            return new XiaoduoAIInterfaceTest(testClass);
         }
     }
 }
