@@ -25,9 +25,12 @@ public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
         public static Object[] dataFactory() {
             String platform = System.getProperty("platform");
             String features = System.getProperty("features");
-            String testDir = "testCase/" + platform;
-            if (StringUtils.isNotBlank(features)) {
-                testDir = testDir + "/" + features;
+            String testDir = "testCase";
+            if (StringUtils.isNotBlank(platform)) {
+                testDir = testDir + "/" + platform;
+                if (StringUtils.isNotBlank(features)) {
+                    testDir = testDir + "/" + features;
+                }
             }
             String testDirPath = Objects.requireNonNull(XiaoduoAIInterfaceTest.class.getClassLoader().getResource(testDir)).getFile();
             ITestSuite testSuite = YmlTestSuite.getInstance(testDirPath);
