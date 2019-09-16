@@ -30,7 +30,7 @@ public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
             String testDir = "testCase";
             if (StringUtils.isNotBlank(platform)) {
                 testDir = testDir + "/" + platform;
-                if (StringUtils.isNotBlank(features)) {
+                if (StringUtils.isNotBlank(features) && !StringUtils.equals(features, "ALL")) {
                     testDir = testDir + "/" + features;
                 }
             }

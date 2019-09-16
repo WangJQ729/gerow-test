@@ -24,6 +24,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -236,7 +237,7 @@ public class TestUtils {
             return HexUtils.toHexString(cipher.doFinal(data.getBytes()));
         } else if (mode == 2) {
             byte[] bytes = HexUtils.fromHexString(data);
-            String result = new String(cipher.doFinal(bytes));
+            String result = new String(cipher.doFinal(bytes), StandardCharsets.UTF_8);
             logger.info("decode:\n" + result);
             return result;
         } else {
