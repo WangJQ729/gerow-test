@@ -44,6 +44,7 @@ testMethod:
       - byName: 同步订单消息
         form:
           payment: ${payment}
+          mall_id: ${mall_id}
       - byName: 获取催单消息
   - name: 金额限制-不满足-${payment}
     dataProvider:
@@ -69,6 +70,7 @@ testMethod:
       - byName: 同步订单消息
         form:
           payment: ${payment}
+          mall_id: ${mall_id}
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
       - byName: 查看trace详情
@@ -115,6 +117,7 @@ testMethod:
       - byName: 同步订单消息
         form:
           payment: ${payment}
+          mall_id: ${mall_id}
       - byName: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace

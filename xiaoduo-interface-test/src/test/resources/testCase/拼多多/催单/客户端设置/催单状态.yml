@@ -99,6 +99,7 @@ testMethod:
         name: 同步订单消息指定之前的随机用户
         form:
           uid: ${u_id}
+          mall_id: ${mall_id}
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空

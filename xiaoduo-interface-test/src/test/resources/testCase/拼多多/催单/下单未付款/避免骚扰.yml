@@ -40,10 +40,12 @@ testMethod:
         name: 指定随机用户同步订单消息
         form:
           uid: ${__Random(10000000,99999999,uid)}
+          mall_id: ${mall_id}
       - byName: 获取催单消息
       - byName: 同步订单消息
         form:
           uid: ${uid}
+          mall_id: ${mall_id}
       - byName: 根据订单查询trace
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情
@@ -82,6 +84,7 @@ testMethod:
       - byName: 同步订单消息
         form:
           uid: ${uid}
+          mall_id: ${mall_id}
       - byName: 根据订单查询trace
       - byName: 获取催单消息
 afterMethod:

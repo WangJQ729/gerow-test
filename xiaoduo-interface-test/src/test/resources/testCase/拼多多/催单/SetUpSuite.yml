@@ -33,3 +33,11 @@ beforeSuite:
         sub_nick: ${shopName}
         reminder_type: mine,silence
       assertion: [json: {$.code: 0}]
+    - name: 设置单个顾客单日最高催单数
+      url: /api/admin/reminder/v2/manage/shop/setting
+      headers:
+        Cookie: ${cookie}
+      method: POST
+      body: |
+        {"user_daily_limit":10000,"no_answer_filter":false,"task_remove_duplicates":true,"duplicated_order_switches":[]}
+      assertion: [json: {$.code: 0}]

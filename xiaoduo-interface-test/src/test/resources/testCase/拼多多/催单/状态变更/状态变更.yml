@@ -1,0 +1,43 @@
+name: 状态变更
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取task模板
+testMethod:
+  - name: 不催单-自己的客户
+    description: |
+      """</br>
+      用例描述：</br>
+      1、下单未付款-已支付-已发货-交易完成</br>
+      </br>
+      测试步骤</br>
+      1、客户端设置为不催单
+      2、开启任务</br>
+      3、创建订单</br>
+      4、校验trace(提示客户端已关闭催单)</br>
+      5、校验催单消息</br>
+      """
+    severity: BLOCKER
+    step:
+      - byName: 发送消息给商家
+      - byName: 催单设置为自己和静默
+        name: 催单设置-不催单
+        form:
+          sub_nick: ${shopName}
+          reminder_type: close
+      - byName: 开启催单任务
+      - byName: 同步订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        name: 查看trace详情-客户端已关闭催单
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='InQueueReject')].in_queue_reject_reason: ["reject, client disable sending message, client=${shopName}"]
+      - byName: 获取催单消息-消息为空
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 催单设置为自己和静默
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情

@@ -4,11 +4,12 @@ data:
     pdd_api_host: http://pdd-api-test.xiaoduoai.com
     mock_host: http://mock-server-pdd.xiaoduoai.com
     reminder_pdd_host: http://reminder-pdd-test.xiaoduoai.com
-    shopName: 会话中台组:pdd66974974631
-    seller_name: pdd66974974631
-    shop: 会话中台组
+    shopName: JQ铅笔:pdd78335301079
+    mall_id: 783353010
+    seller_name: pdd78335301079
+    shop: JQ铅笔
     sign: ca61da42f143ef040fc22afee498a622
-    shop_id: 5d4b9518dfc90e000ad6ca95
+    shop_id: 5d902764237402000c59decd
     buyer: 5083583826
     platform: pdd
-    child_seller: 会话中台组:ZZZLLL
+    child_seller: JQ铅笔:xiaoduo_auto_test

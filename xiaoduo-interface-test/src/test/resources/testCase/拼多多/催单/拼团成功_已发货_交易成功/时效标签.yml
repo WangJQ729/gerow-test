@@ -78,7 +78,7 @@ testMethod:
       - byName: 查看trace详情
         assertion:
           - json:
-              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
+              $.data.traces[?(@.phase=='Task')].task_end_rule: [send_message]
   - name: 时效标签(每日重复-生效)-${everyday_start_time}--${everyday_end_time}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}

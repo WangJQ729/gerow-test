@@ -79,6 +79,7 @@ testMethod:
         url: /mock/pdd_sync_order_info
         form:
           uid: ${buyer}
+          mall_id: ${mall_id}
         headers:
           Content-Type: multipart/form-data
         method: POST
