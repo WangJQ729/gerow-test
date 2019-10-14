@@ -168,3 +168,4 @@ afterMethod:
       form:
         id: ${ageing_id}
       assertion: [json: {$.code: 0}]
+    - byName: 关闭催单任务

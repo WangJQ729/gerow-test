@@ -43,13 +43,9 @@ testMethod:
     severity: BLOCKER
     step:
       - byName: 设置金额限制为5-20元
+      - byName: 指定金额同步订单消息
       - byName: 拼多多推送订单状态变更消息
       - byName: 客户端获取订单状态变更列表
-      - byName: 客户端同步订单消息
-        form:
-          payment: ${payment}
-          order_id: ${order_id}
-          mall_id: ${mall_id}
       - byName: 获取催单消息
   - name: 金额限制-不满足-${payment}
     dataProvider:
@@ -72,13 +68,9 @@ testMethod:
     severity: BLOCKER
     step:
       - byName: 设置金额限制为5-20元
+      - byName: 指定金额同步订单消息
       - byName: 拼多多推送订单状态变更消息
       - byName: 客户端获取订单状态变更列表
-      - byName: 客户端同步订单消息
-        form:
-          payment: ${payment}
-          order_id: ${order_id}
-          mall_id: ${mall_id}
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
       - byName: 查看trace详情
@@ -111,16 +103,13 @@ testMethod:
     severity: BLOCKER
     step:
       - byName: 关闭金额限制
+      - byName: 指定金额同步订单消息
       - byName: 拼多多推送订单状态变更消息
       - byName: 客户端获取订单状态变更列表
-      - byName: 客户端同步订单消息
-        form:
-          payment: ${payment}
-          order_id: ${order_id}
-          mall_id: ${mall_id}
       - byName: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
+    - byName: 关闭催单任务

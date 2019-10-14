@@ -84,7 +84,7 @@ testMethod:
         name: 随机用户发送消息给子账号
         variables:
           version_num: 1.0.6P.6T
-          pin: cnpdd${__Random(10000000000,99999999999,u_id)}
+          pin: cnpdd${__Random(10000000000,99999999999,uid)}
           msg_time: ${__time(/1000,msg_time)}
           msgid: ${__RandomString(32,1234567890abcdef,)}
           q: ${__DES3Cipher(哈哈啥班哈哈啥班哈哈啥班哈哈啥班哈哈啥班,,)}
@@ -98,7 +98,7 @@ testMethod:
       - byName: 同步订单消息
         name: 同步订单消息指定之前的随机用户
         form:
-          uid: ${u_id}
+          uid: ${uid}
           mall_id: ${mall_id}
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
@@ -300,3 +300,4 @@ afterMethod:
     - byName: 催单设置为自己和静默
     - byName: 根据订单查询trace
     - byName: 查看trace详情
+    - byName: 关闭催单任务

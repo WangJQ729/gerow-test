@@ -31,9 +31,9 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: '亲，是不是找不到好评链接呢？快来点这里吧！{好评链接}'
+      - byName: 同步订单消息
       - byName: 拼多多推送订单状态变更消息
       - byName: 客户端获取订单状态变更列表
-      - byName: 客户端同步订单消息
       - byName: 获取催单消息
         assertion:
           - json:
@@ -44,3 +44,4 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
+    - byName: 关闭催单任务

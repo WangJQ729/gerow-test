@@ -92,3 +92,4 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
+    - byName: 关闭催单任务

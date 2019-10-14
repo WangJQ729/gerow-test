@@ -90,7 +90,7 @@ testMethod:
         url: /api/admin/reminder/v2/client/reminder/messages
         untilWait: 10
         variables:
-          sign: ${sign}
+#          sign: ${sign}
           shop_id: ${shop_id}
           seller_id: ${shopName}
           platform: ${platform}
@@ -152,3 +152,4 @@ afterMethod:
       variables:
         trace_id: ${trace_id}
       method: GET
+    - byName: 关闭催单任务

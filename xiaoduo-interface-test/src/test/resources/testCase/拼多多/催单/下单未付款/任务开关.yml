@@ -54,6 +54,7 @@ testMethod:
             $.enable: false
       - byName: 同步订单消息
       - byName: 获取催单消息
+        sleep: 5
         name: 获取催单消息-消息为空
         assertion:
           - json:
@@ -69,3 +70,4 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
+    - byName: 关闭催单任务
