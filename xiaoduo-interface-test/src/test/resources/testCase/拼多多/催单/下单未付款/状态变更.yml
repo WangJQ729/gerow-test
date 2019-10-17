@@ -62,6 +62,33 @@ testMethod:
           - json:
               $.data.traces[-1].phase: ReceiveEvent
               $.data.traces[-1].event_type: Timer-Expired
+  - name: 状态变更为-待成团
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务</br>
+      2、创建订单</br>
+      4、消息发送前状态变更
+      5、校验催单消息</br>
+      """
+    severity: BLOCKER
+    step:
+      - byName: 开启催单任务-10秒后触发
+      - byName: 同步订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 同步待成团订单消息
+        form:
+          uid: ${buyer}
+          mall_id: ${mall_id}
+          status: 1
+          group_status: 0
+          order_id: ${order_id}
+      - byName: 获取催单消息-消息为空
+      - byName: 查看trace详情-订单状态变更
 afterMethod:
   name: 测试结束后查看订单trace
   step:

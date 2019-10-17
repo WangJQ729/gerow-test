@@ -1,0 +1,102 @@
+name: 金额限制
+dataProvider:
+  - order_state: ungroup
+    message: 您好，您有未支付订单，请尽快支付哦
+    text_with_vars: ${message}
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取task模板
+testMethod:
+  - name: 金额限制-满足-${payment}
+    dataProvider:
+      - payment: 5
+      - payment: 5.01
+#      - payment: 15
+      - payment: 19.99
+      - payment: 20
+    description: |
+      """</br>
+      用例描述：</br>
+      1、满足金额限制的订单应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置金额限制为5-20元</br>
+      2、创建${payment}元的订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: BLOCKER
+    step:
+      - byName: 设置金额限制为5-20元
+      - byName: 同步待成团订单消息
+        name: 同步指定金额待成团订单消息
+        form:
+          mall_id: ${mall_id}
+          payment: ${payment}
+          status: 1
+          group_status: 0
+      - byName: 获取催单消息
+  - name: 金额限制-不满足-${payment}
+    dataProvider:
+#      - payment: 2
+      - payment: 4.99
+      - payment: 20.01
+#      - payment: 30
+#      - payment: 100
+    description: |
+      """</br>
+      用例描述：</br>
+      1、不满足金额限制的订单不应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置金额限制为5-20元</br>
+      2、创建${payment}元的订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: BLOCKER
+    step:
+      - byName: 设置金额限制为5-20元
+      - byName: 同步指定金额待成团订单消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [pay_amount_limit]
+  - name: 金额限制-关闭-${payment}
+    dataProvider:
+#      - payment: 2
+      - payment: 4.99
+      - payment: 5
+      - payment: 5.01
+#      - payment: 15
+      - payment: 19.99
+      - payment: 20
+      - payment: 20.01
+#      - payment: 30
+#      - payment: 100
+    description: |
+      """</br>
+      用例描述：</br>
+      1、关闭金额限制后，所有金额的订单都会触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置金额限制为5-20元</br>
+      2、创建${payment}元的订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: BLOCKER
+    step:
+      - byName: 关闭金额限制
+      - byName: 同步指定金额待成团订单消息
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+    - byName: 关闭催单任务
