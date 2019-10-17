@@ -4,7 +4,7 @@ dataProvider:
   - order_state: ungroup
     message: 您好，您有未支付订单，请尽快支付哦
     text_with_vars: ${message}
-    reminder_type: 下单未付款
+    reminder_type: 待成团
 beforeClass:
   name: 获取taskID和模板
   step:
