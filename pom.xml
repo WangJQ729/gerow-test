@@ -13,7 +13,6 @@
         <module>jq-test-api-yml-testcase</module>
         <module>jq-test-serve</module>
         <module>xiaoduo-interface-test</module>
-        <module>jmeter_tools</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
