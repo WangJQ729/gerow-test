@@ -9,8 +9,8 @@ beforeClass:
 testMethod:
   - name: 催单消息校验-${message}
     dataProvider:
-      - message: 您好，您有未支付订单，请尽快支付哦
-        text_with_vars: 您好，您有未支付订单，请尽快支付哦
+      - message: 您好，您的订单未成团，邀请好友一起助力{{邀请链接}}
+        text_with_vars: 您好，您的订单未成团，邀请好友一起助力{{邀请链接}}
       - message: "{{子账号名称}}"
         text_with_vars: ${seller_name}
       - message: '商品总数：{商品总数}'
