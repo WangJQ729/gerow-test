@@ -85,12 +85,13 @@ testMethod:
         method: POST
         extractor:
           - json:
-              order_id: $.data
+              order_id: $.data.order_id
+              group_order_id: $.data.group_order_id
       - name: 获取催单消息
         url: /api/admin/reminder/v2/client/reminder/messages
         untilWait: 10
         variables:
-#          sign: ${sign}
+          #          sign: ${sign}
           shop_id: ${shop_id}
           seller_id: ${shopName}
           platform: ${platform}

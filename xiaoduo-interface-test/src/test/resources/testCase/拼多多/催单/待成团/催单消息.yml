@@ -84,7 +84,7 @@ testMethod:
         assertion:
           - json:
               $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
-                - 'https://mobile.yangkeduo.com/group500.html?group_order_id=${order_id}'
+                - 'https://mobile.yangkeduo.com/group500.html?group_order_id=${group_order_id}'
 afterMethod:
   name: 测试结束后查看订单trace
   step:
