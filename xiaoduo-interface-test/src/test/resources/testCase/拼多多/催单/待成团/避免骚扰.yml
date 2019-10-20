@@ -1,7 +1,7 @@
 name: 避免骚扰
 dataProvider:
   - order_state: ungroup
-    message: 您好，您有未支付订单，请尽快支付哦
+    message: 您好，您的订单未成团，邀请好友一起助力
     text_with_vars: ${message}
 beforeClass:
   name: 获取taskID和模板
