@@ -146,7 +146,7 @@ afterMethod:
             trace_id: $.data.traces[?(@.order_state=='${order_state}')].trace_id
     #          options: [DEFAULT_PATH_LEAF_TO_NULL]
     - name: 查看trace详情
-      untilWait: 5
+      untilWait: 10
       host: ${reminder_pdd_host}
       url: /reminder/v2/trace/info
       variables:
