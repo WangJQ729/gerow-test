@@ -65,7 +65,7 @@ testMethod:
         assertion:
           - json:
               $.data.messages[?(@.order_id=='${order_id}')].text_with_vars: []
-      - byName: 根据订单查询trace
+      - byName: 根据待成团订单查询trace
       - byName: 查看trace详情
         name: 查看trace详情-任务关闭
         assertion:
@@ -75,5 +75,9 @@ afterMethod:
   name: 测试结束后查看订单trace
   step:
     - byName: 根据订单查询trace
+      name: 根据待成团订单查询trace
+      extractor:
+        - json:
+            trace_id: $.data.traces[?(@.order_state=='unGroup')].trace_id
     - byName: 查看trace详情
     - byName: 关闭催单任务

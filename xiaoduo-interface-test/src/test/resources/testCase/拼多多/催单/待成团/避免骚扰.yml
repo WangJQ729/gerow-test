@@ -35,7 +35,7 @@ testMethod:
           mall_id: ${mall_id}
           status: 1
           group_status: 0
-      - byName: 根据订单查询trace
+      - byName: 根据待成团订单查询trace
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情
         assertion:
@@ -67,11 +67,11 @@ testMethod:
           mall_id: ${mall_id}
           status: 1
           group_status: 0
-      - byName: 根据订单查询trace
+      - byName: 根据待成团订单查询trace
       - byName: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
+    - byName: 根据待成团订单查询trace
     - byName: 查看trace详情
     - byName: 关闭催单任务

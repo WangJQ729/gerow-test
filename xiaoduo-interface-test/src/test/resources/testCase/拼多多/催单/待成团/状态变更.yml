@@ -34,7 +34,7 @@ testMethod:
     step:
       - byName: 开启催单任务-10秒后触发
       - byName: 同步待成团订单消息
-      - byName: 根据订单查询trace
+      - byName: 根据待成团订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 拼多多推送订单状态变更-下一个状态
       - byName: 获取催单消息-消息为空
@@ -42,6 +42,6 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
+    - byName: 根据待成团订单查询trace
     - byName: 查看trace详情
     - byName: 关闭催单任务

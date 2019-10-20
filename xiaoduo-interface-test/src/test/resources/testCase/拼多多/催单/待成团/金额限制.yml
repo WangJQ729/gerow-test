@@ -61,7 +61,7 @@ testMethod:
       - byName: 设置金额限制为5-20元
       - byName: 同步指定金额待成团订单消息
       - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
+      - byName: 根据待成团订单查询trace
       - byName: 查看trace详情
         assertion:
           - json:
@@ -97,6 +97,6 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
+    - byName: 根据待成团订单查询trace
     - byName: 查看trace详情
     - byName: 关闭催单任务
