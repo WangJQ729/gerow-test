@@ -2,6 +2,7 @@ package com.jq.test.task;
 
 import com.jq.test.utils.TestUtils;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.jmeter.engine.util.CompoundVariable;
 import org.apache.jmeter.threads.JMeterContextService;
 import org.apache.jmeter.threads.JMeterVariables;
@@ -104,6 +105,9 @@ public abstract class AbstractTestClass implements ITestClass {
 
     @Override
     public String getFeature() {
-        return replace(feature);
+        String result = replace(feature);
+        if (StringUtils.isBlank(result))
+            result = this.file.getParentFile().getName();
+        return result;
     }
 }
