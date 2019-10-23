@@ -41,3 +41,14 @@ beforeSuite:
       body: |
         {"user_daily_limit":10000,"no_answer_filter":false,"task_remove_duplicates":true,"duplicated_order_switches":[]}
       assertion: [json: {$.code: 0}]
+    - name: 拉一下催单消息
+      url: /api/admin/reminder/v2/client/reminder/messages
+      untilWait: 10
+      variables:
+        #          sign: ${sign}
+        shop_id: ${shop_id}
+        seller_id: ${shopName}
+        platform: ${platform}
+      headers:
+        Cookie: ${cookie}
+      method: GET
