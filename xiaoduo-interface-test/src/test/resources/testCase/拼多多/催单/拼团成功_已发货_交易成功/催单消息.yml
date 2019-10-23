@@ -49,7 +49,7 @@ testMethod:
       - byName: 修改的task内容
       - byName: 同步订单消息
       - name: 拼多多推送订单状态变更消息
-        sleep: 1
+        sleep: 0
         host: ${mock_host}
         url: /mock/pdd_sdk_push_message
         form:
