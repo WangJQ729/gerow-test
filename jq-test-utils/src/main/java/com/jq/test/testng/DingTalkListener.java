@@ -65,13 +65,13 @@ public class DingTalkListener implements ISuiteListener {
             builder.append("> ###### total Failed：").append(failed).append("\n");
             int skipped = tc.getSkippedTests().getAllResults().size();
             builder.append("> ###### total Skipped：").append(skipped).append("\n");
-            builder.append("> ###### 失败case列表：\n").append(skipped);
+            builder.append("> ###### 失败case列表：\n");
             for (ITestResult allResult : tc.getFailedTests().getAllResults()) {
                 String failedList = ((ITestMethod) allResult.getParameters()[0]).getTestClass().getFeature() + "-" + allResult.getTestName();
                 builder.append("> ######    ").append(failedList).append("\n");
             }
         }
-        builder.append("> ###### 点击查看(http://10.0.0.152:8080/job/java-interface-test/allure/) \n");
+        builder.append("> ###### [点击查看测试报告](http://10.0.0.152:8080/job/java-interface-test/allure/) \n");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         builder.append("> ###### 结束时间： ").append(df.format(new Date())).append("\n");
         markdown.setText(builder.toString());

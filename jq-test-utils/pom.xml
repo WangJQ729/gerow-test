@@ -74,7 +74,7 @@
             <artifactId>taobao-sdk</artifactId>
             <version>0.0.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/taobao-sdk-java-auto_1479188381469-20191024.jar
+            <systemPath>${project.basedir}/../jq-test-utils/lib/taobao-sdk-java-auto_1479188381469-20191024.jar
             </systemPath>
         </dependency>
         <dependency>
