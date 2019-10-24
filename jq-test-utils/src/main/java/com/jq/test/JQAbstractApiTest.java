@@ -5,6 +5,7 @@ import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestMethod;
 import com.jq.test.task.JQTest;
 import com.jq.test.testng.AllureListener;
+import com.jq.test.testng.DingTalkListener;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.ITestResult;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Listeners(AllureListener.class)
+@Listeners({AllureListener.class, DingTalkListener.class})
 public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTest, org.testng.ITest {
 
     @Getter
