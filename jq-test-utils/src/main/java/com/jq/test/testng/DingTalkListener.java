@@ -27,13 +27,13 @@ public class DingTalkListener implements ISuiteListener {
         markdown.setTitle("脚本开始运行");
         StringBuilder builder = new StringBuilder();
         builder.append("开始运行自动化测试：\n");
-        builder.append(String.format(">#### 平台：%s\n", platform));
-        builder.append(String.format(">#### 功能：%s\n", features));
+        builder.append(String.format("> #### 平台：%s\n", platform));
+        builder.append(String.format("> #### 功能：%s\n", features));
         if (!StringUtils.isEmpty(test_feature)) {
-            builder.append(String.format(">#### 节点：%s\n", test_feature));
+            builder.append(String.format("> #### 节点：%s\n", test_feature));
         }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        builder.append(">###### 开始时间： ").append(df.format(new Date())).append("\n");
+        builder.append("> ###### 开始时间： ").append(df.format(new Date())).append("\n");
         markdown.setText(builder.toString());
         request.setMarkdown(markdown);
         try {
@@ -51,28 +51,29 @@ public class DingTalkListener implements ISuiteListener {
         markdown.setTitle("脚本测试结果");
         StringBuilder builder = new StringBuilder();
         builder.append("测试结果：\n");
-        builder.append(String.format(">#### 平台：%s\n", platform));
-        builder.append(String.format(">#### 功能：%s\n", features));
+        builder.append(String.format("> #### 平台：%s\n", platform));
+        builder.append(String.format("> #### 功能：%s\n", features));
         if (!StringUtils.isEmpty(test_feature)) {
-            builder.append(String.format(">#### 节点：%s\n", test_feature));
+            builder.append(String.format("> #### 节点：%s\n", test_feature));
         }
         Map<String, ISuiteResult> suiteResults = suite.getResults();
         for (ISuiteResult result : suiteResults.values()) {
             ITestContext tc = result.getTestContext();
             int pass = tc.getPassedTests().getAllResults().size();
-            builder.append(">###### total Passed：").append(pass).append("\n");
+            builder.append("> ###### total Passed：").append(pass).append("\n");
             int failed = tc.getFailedTests().getAllResults().size();
-            builder.append(">###### total Failed：").append(failed).append("\n");
+            builder.append("> ###### total Failed：").append(failed).append("\n");
             int skipped = tc.getSkippedTests().getAllResults().size();
-            builder.append(">###### total Skipped：").append(skipped).append("\n");
-            builder.append(">###### 失败case列表：\n").append(skipped);
+            builder.append("> ###### total Skipped：").append(skipped).append("\n");
+            builder.append("> ###### 失败case列表：\n").append(skipped);
             for (ITestResult allResult : tc.getFailedTests().getAllResults()) {
                 String failedList = ((ITestMethod) allResult.getParameters()[0]).getTestClass().getFeature() + "-" + allResult.getTestName();
-                builder.append(">######    ").append(failedList).append("\n");
+                builder.append("> ######    ").append(failedList).append("\n");
             }
         }
+        builder.append("> ###### 点击查看(http://10.0.0.152:8080/job/java-interface-test/allure/) \n");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        builder.append(">###### 结束时间： ").append(df.format(new Date())).append("\n");
+        builder.append("> ###### 结束时间： ").append(df.format(new Date())).append("\n");
         markdown.setText(builder.toString());
         request.setMarkdown(markdown);
         try {
