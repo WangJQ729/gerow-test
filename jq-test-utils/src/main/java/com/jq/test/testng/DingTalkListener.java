@@ -48,7 +48,7 @@ public class DingTalkListener implements ISuiteListener {
         OapiRobotSendRequest request = new OapiRobotSendRequest();
         request.setMsgtype("markdown");
         OapiRobotSendRequest.Markdown markdown = new OapiRobotSendRequest.Markdown();
-        markdown.setTitle("自动化测试结果");
+        markdown.setTitle("脚本测试结果");
         StringBuilder builder = new StringBuilder();
         builder.append("测试结果：\n");
         builder.append(String.format(">#### 平台：%s\n", platform));
