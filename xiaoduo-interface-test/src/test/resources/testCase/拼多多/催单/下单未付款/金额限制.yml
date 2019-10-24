@@ -45,7 +45,6 @@ testMethod:
         name: 指定金额同步订单消息
         form:
           payment: ${payment}
-          mall_id: ${mall_id}
       - byName: 获取催单消息
   - name: 金额限制-不满足-${payment}
     dataProvider:

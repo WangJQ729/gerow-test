@@ -112,8 +112,6 @@ testMethod:
       - byName: 添加时效标签
         name: 添加时效标签(每日重复)
         form:
-          name: ${name}
-          ageing_type: ${ageing_type}
           everyday_start_time: ${everyday_start_time}
           everyday_end_time: ${everyday_end_time}
       - byName: 设置时效标签

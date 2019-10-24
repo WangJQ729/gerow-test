@@ -53,8 +53,6 @@ testMethod:
         name: 拼多多推送订单状态变更-下一个状态
         form:
           status: ${pdd_order_type_new}
-          mall_id: ${mall_id}
-          order_id: ${order_id}
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情
         name: 查看trace详情-订单状态变更
@@ -82,10 +80,6 @@ testMethod:
       - byName: 查看trace详情-TaskSetTimer
       - byName: 同步待成团订单消息
         form:
-          uid: ${buyer}
-          mall_id: ${mall_id}
-          status: 1
-          group_status: 0
           order_id: ${order_id}
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更

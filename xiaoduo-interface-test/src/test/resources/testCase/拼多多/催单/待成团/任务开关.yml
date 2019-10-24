@@ -55,8 +55,6 @@ testMethod:
       - byName: 同步订单消息
         name: 同步待成团订单消息
         form:
-          uid: ${buyer}
-          mall_id: ${mall_id}
           status: 1
           group_status: 0
       - byName: 获取催单消息

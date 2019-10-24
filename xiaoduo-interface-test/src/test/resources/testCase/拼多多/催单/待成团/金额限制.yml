@@ -33,10 +33,7 @@ testMethod:
       - byName: 同步待成团订单消息
         name: 同步指定金额待成团订单消息
         form:
-          mall_id: ${mall_id}
           payment: ${payment}
-          status: 1
-          group_status: 0
       - byName: 获取催单消息
   - name: 金额限制-不满足-${payment}
     dataProvider:

@@ -28,7 +28,6 @@ testMethod:
       - byName: 催单设置为自己和静默
         name: 催单设置-不催单
         form:
-          sub_nick: ${shopName}
           reminder_type: close
       - byName: 开启催单任务
       - byName: 同步订单消息
@@ -88,7 +87,7 @@ testMethod:
           msg_time: ${__time(/1000,msg_time)}
           msgid: ${__RandomString(32,1234567890abcdef,)}
           q: ${__DES3Cipher(哈哈啥班哈哈啥班哈哈啥班哈哈啥班哈哈啥班,,)}
-          platform: pdd
+          platform: ${platform}
           qianniu_version_num: 2.1.0
           service_status: 7
           usr_shut: 0
@@ -99,7 +98,6 @@ testMethod:
         name: 同步订单消息指定之前的随机用户
         form:
           uid: ${uid}
-          mall_id: ${mall_id}
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
@@ -121,7 +119,6 @@ testMethod:
       - byName: 催单设置为自己和静默
         name: 催单设置-仅自己
         form:
-          sub_nick: ${shopName}
           reminder_type: mine
       - byName: 开启催单任务
       - byName: 同步订单消息
@@ -188,7 +185,6 @@ testMethod:
       - byName: 催单设置为自己和静默
         name: 催单设置-仅静默
         form:
-          sub_nick: ${shopName}
           reminder_type: silence
       - byName: 开启催单任务
       - byName: 同步订单消息

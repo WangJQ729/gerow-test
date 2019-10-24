@@ -196,7 +196,9 @@ public class YmlTestStep implements ITestStep {
 
         if (step.getFile() != null) copyStep.setFile(step.getFile());
 
-        if (!step.getForm().isEmpty()) copyStep.setForm(step.getForm());
+        if (!step.getForm().isEmpty())
+            for (String s : step.getForm().keySet()) copyStep.getForm().put(s, step.getForm().get(s));
+
 
         if (StringUtils.isNotBlank(step.getHost())) copyStep.setHost(step.getHost());
 
