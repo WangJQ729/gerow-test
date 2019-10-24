@@ -19,14 +19,13 @@ beforeSuite:
       url: ${auth_url}
       method: GET
       responseType: DEFAULT
-      extractor:
-        - headers:
-            cookie: Set-Cookie
-          site: TESTSUIT
+#      extractor:
+#        - headers:
+#            cookie: Set-Cookie
+#          site: TESTSUIT
     - name: 催单设置为自己和静默
       url: /api/admin/user/shop_subnick_client_config_edit_v3
       headers:
-        Cookie: ${cookie}
         Content-Type: multipart/form-data
       method: POST
       form:
@@ -35,8 +34,6 @@ beforeSuite:
       assertion: [json: {$.code: 0}]
     - name: 设置单个顾客单日最高催单数
       url: /api/admin/reminder/v2/manage/shop/setting
-      headers:
-        Cookie: ${cookie}
       method: POST
       body: |
         {"user_daily_limit":10000,"no_answer_filter":false,"task_remove_duplicates":true,"duplicated_order_switches":[]}
@@ -45,10 +42,7 @@ beforeSuite:
       url: /api/admin/reminder/v2/client/reminder/messages
       untilWait: 10
       variables:
-        #          sign: ${sign}
         shop_id: ${shop_id}
         seller_id: ${shopName}
         platform: ${platform}
-      headers:
-        Cookie: ${cookie}
       method: GET

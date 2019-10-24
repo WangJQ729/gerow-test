@@ -32,7 +32,6 @@ testMethod:
       - name: 添加时效标签
         url: /api/admin/config2/ageing/add
         headers:
-          Cookie: ${cookie}
           Content-Type: multipart/form-data
         method: POST
         form:
@@ -162,7 +161,6 @@ afterMethod:
     - name: 删除时效标签
       url: /api/admin/config2/ageing/delete
       headers:
-        Cookie: ${cookie}
         Content-Type: multipart/form-data
       method: POST
       form:

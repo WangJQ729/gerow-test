@@ -10,8 +10,6 @@ beforeClass:
         template_keys: 0,1
         node_type: ${order_state}
       method: GET
-      headers:
-        Cookie: ${cookie}
       assertion: [json: {$.code: 0}]
       extractor:
         - json:
@@ -22,8 +20,6 @@ beforeClass:
         node_type: ${order_state}
         template_key: 0
       method: GET
-      headers:
-        Cookie: ${cookie}
       assertion: [json: {$.code: 0}]
       extractor:
         - json:
@@ -61,8 +57,6 @@ testMethod:
     step:
       - name: 修改的task内容
         url: /api/admin/reminder/v2/manage/task/update
-        headers:
-          Cookie: ${cookie}
         method: POST
         body: ${task_info}
         bodyEditor:

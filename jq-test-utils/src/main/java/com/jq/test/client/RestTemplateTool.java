@@ -4,8 +4,10 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.jq.test.utils.ConfigManager;
-import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -20,9 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 使用RestTemplate发送请求
@@ -41,12 +41,12 @@ public class RestTemplateTool extends RestTemplate {
     private RestTemplateTool() {
         super();
         //设置client
-        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-        HttpClient httpClient = HttpClientBuilder.create()
+        CloseableHttpClient httpClient = HttpClientBuilder.create()
                 .disableRedirectHandling()
-//                .setRedirectStrategy(new LaxRedirectStrategy())
+                .setRedirectStrategy(new LaxRedirectStrategy())
+//                .disableCookieManagement()
                 .build();
-        httpRequestFactory.setHttpClient(httpClient);
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
         httpRequestFactory.setConnectionRequestTimeout(ConfigManager.getTimeOut() * 1000);
         httpRequestFactory.setConnectTimeout(ConfigManager.getTimeOut() * 1000);
         httpRequestFactory.setReadTimeout(ConfigManager.getTimeOut() * 1000);
@@ -83,9 +83,19 @@ public class RestTemplateTool extends RestTemplate {
         @Override
         public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
                 throws IOException {
+            HttpHeaders headers = request.getHeaders();
+            if (!cookies.isEmpty()) {
+                if (headers.containsKey(HttpHeaders.COOKIE)) {
+                    Objects.requireNonNull(headers.get(HttpHeaders.COOKIE)).addAll(cookies);
+                } else {
+                    headers.add(HttpHeaders.COOKIE, String.join(";", cookies));
+                }
+            }
             return execution.execute(request, body);
         }
     }
+
+    private static List<String> cookies = new ArrayList<>();
 
     private static class MyResponseErrorHandler implements ResponseErrorHandler {
         @Override
@@ -95,6 +105,11 @@ public class RestTemplateTool extends RestTemplate {
 
         @Override
         public void handleError(ClientHttpResponse response) {
+            HttpHeaders headers = response.getHeaders();
+            List<String> cookie = headers.get("Set-Cookie");
+            if (cookie != null) {
+                cookies.addAll(cookie);
+            }
         }
     }
 }

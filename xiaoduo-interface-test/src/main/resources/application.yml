@@ -3,7 +3,7 @@ logging:
     root: INFO
     org.apache.jmeter.util: OFF
     io.qameta.allure: OFF
-#    org.mongodb.driver.cluster: OFF
+    org.mongodb.driver.cluster: OFF
 client:
   protocol: http
   timeOut: 30

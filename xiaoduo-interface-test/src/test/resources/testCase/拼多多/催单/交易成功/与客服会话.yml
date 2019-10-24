@@ -58,7 +58,6 @@ testMethod:
           usr_shut: 0
           spin: cnpdd${shopName}
         headers:
-          Cookie: ${cookie}
           Content-Type: multipart/form-data
         method: GET
         responseType: DEFAULT

@@ -126,4 +126,11 @@ public class YmlHttpStepEntity {
     public YmlHttpStepEntity copy() {
         return JSONObject.parseObject(JSONObject.toJSONString(this, SerializerFeature.WriteMapNullValue), YmlHttpStepEntity.class);
     }
+
+    public Map<String, String> getHeaders() {
+        if (headers == null) {
+            return new HashMap<>();
+        }
+        return headers;
+    }
 }
