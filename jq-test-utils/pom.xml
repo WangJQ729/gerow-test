@@ -70,14 +70,6 @@
             <artifactId>httpclient</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.taobao.sdk</groupId>
-            <artifactId>taobao-sdk</artifactId>
-            <version>0.0.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../jq-test-utils/lib/taobao-sdk-java-auto_1479188381469-20191024.jar
-            </systemPath>
-        </dependency>
-        <dependency>
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
             <version>3.12.1.GA</version>
