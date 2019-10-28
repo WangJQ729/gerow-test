@@ -53,7 +53,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单信息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - name: 修改的task内容
         url: /api/admin/reminder/v2/manage/task/update
@@ -98,7 +98,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单信息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 修改的task内容
         name: 修改task为订单链接

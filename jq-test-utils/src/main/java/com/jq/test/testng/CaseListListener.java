@@ -25,7 +25,6 @@ public class CaseListListener implements ITestListener {
         String severityLevel = testMethod.getSeverityLevel().value();
         String description = testMethod.getDescription();
         CaseInfo caseInfo = new CaseInfo();
-
         caseInfo.setCase_name(suite + "-" + feature + "-" + name);
         caseInfo.setDescription(description);
         caseInfo.setFeature(feature);

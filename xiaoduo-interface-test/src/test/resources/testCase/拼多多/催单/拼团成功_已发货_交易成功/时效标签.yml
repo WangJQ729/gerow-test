@@ -17,7 +17,7 @@ beforeClass:
     - byName: 获取task_id
     - byName: 获取task模板
 testMethod:
-  - name: 时效标签(固定时段-生效)-${start_time}--${end_time}
+  - name: 时效标签(固定时段-生效)-今日生效
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 1
@@ -35,7 +35,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单信息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 添加时效标签
       - byName: 设置时效标签
@@ -43,16 +43,18 @@ testMethod:
       - byName: 拼多多推送订单状态变更消息
       - byName: 客户端获取订单状态变更列表
       - byName: 获取催单消息
-  - name: 时效标签(固定时段-失效)-${start_time}--${end_time}
+  - name: 时效标签(固定时段-失效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 1
         start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,-1,start_time)}
         end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,-1,end_time)}
+        ageing_name: 1天前
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 1
         start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,1,start_time)}
         end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,1,end_time)}
+        ageing_name: 1天后
     description: |
       """</br>
       用例描述：</br>
@@ -66,7 +68,7 @@ testMethod:
       3、校验催单信息</br>
       4、校验traces</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 添加时效标签
       - byName: 设置时效标签
@@ -79,7 +81,7 @@ testMethod:
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
-  - name: 时效标签(每日重复-生效)-${everyday_start_time}--${everyday_end_time}
+  - name: 时效标签(每日重复-生效)-2小时前到2小时后
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 2
@@ -97,7 +99,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单信息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 添加时效标签(每日重复)
       - byName: 设置时效标签
@@ -105,16 +107,18 @@ testMethod:
       - byName: 拼多多推送订单状态变更消息
       - byName: 客户端获取订单状态变更列表
       - byName: 获取催单消息
-  - name: 时效标签(每日重复-失效)-${everyday_start_time}--${everyday_end_time}
+  - name: 时效标签(每日重复-失效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 2
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,everyday_start_time)}
         everyday_end_time: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,everyday_end_time)}
+        ageing_name: 2小时前到1小时前
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 2
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,everyday_start_time)}
         everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,everyday_end_time)}
+        ageing_name: 1小时后到2小时后
     description: |
       """</br>
       用例描述：</br>
@@ -128,7 +132,7 @@ testMethod:
       3、校验催单信息</br>
       4、校验traces</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 添加时效标签(每日重复)
       - byName: 设置时效标签

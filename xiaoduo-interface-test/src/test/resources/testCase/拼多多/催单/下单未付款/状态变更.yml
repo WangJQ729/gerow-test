@@ -23,7 +23,7 @@ testMethod:
       4、消息发送前状态变更
       5、校验催单消息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     dataProvider:
       - pdd_order_type_new: pdd_trade_TradeConfirmed
         new_type_name: 拼团成功
@@ -72,7 +72,7 @@ testMethod:
       4、消息发送前状态变更
       5、校验催单消息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 开启催单任务-10秒后触发
       - byName: 同步订单消息

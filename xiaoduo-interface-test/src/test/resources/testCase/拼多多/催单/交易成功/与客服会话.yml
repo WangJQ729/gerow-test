@@ -24,7 +24,7 @@ testMethod:
       3、发送消息给商家
       4、校验催单信息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 修改的task内容
         name: 开启与客服会话过滤
@@ -83,7 +83,7 @@ testMethod:
       3、创建订单</br>
       4、校验催单信息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 开启与客服会话过滤
       - byName: 发送消息给商家

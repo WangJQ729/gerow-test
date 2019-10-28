@@ -24,7 +24,7 @@ testMethod:
       4、消息发送前状态变更
       5、校验催单消息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     dataProvider:
       - pdd_order_type_new: pdd_trade_TradeSuccess
         new_type_name: 交易成功

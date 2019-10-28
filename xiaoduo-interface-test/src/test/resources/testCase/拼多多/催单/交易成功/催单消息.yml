@@ -21,7 +21,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单信息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 修改的task内容
         bodyEditor:

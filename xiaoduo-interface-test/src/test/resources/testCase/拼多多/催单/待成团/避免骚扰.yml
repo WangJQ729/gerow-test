@@ -24,7 +24,7 @@ testMethod:
       6、校验催单信息</br>
       7、校验traces</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 开启避免骚扰
       - byName: 指定用户同步待成团订单消息
@@ -57,7 +57,7 @@ testMethod:
       6、校验催单信息</br>
       7、校验traces</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 关闭避免骚扰
       - byName: 指定随机用户同步待成团订单消息

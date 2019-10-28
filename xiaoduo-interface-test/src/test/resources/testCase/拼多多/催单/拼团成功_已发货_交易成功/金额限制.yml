@@ -40,7 +40,7 @@ testMethod:
       3、校验催单信息</br>
       4、校验traces</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 设置金额限制为5-20元
       - byName: 指定金额同步订单消息
@@ -65,7 +65,7 @@ testMethod:
       3、校验催单信息</br>
       4、校验traces</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 设置金额限制为5-20元
       - byName: 指定金额同步订单消息
@@ -100,7 +100,7 @@ testMethod:
       3、校验催单信息</br>
       4、校验traces</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 关闭金额限制
       - byName: 指定金额同步订单消息

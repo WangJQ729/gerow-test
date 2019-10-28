@@ -33,7 +33,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单消息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 开启催单任务
       - byName: 同步订单消息
@@ -51,7 +51,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单消息</br>
       """
-    severity: BLOCKER
+    severity: NORMAL
     step:
       - byName: 关闭催单任务
       - byName: 同步订单消息
