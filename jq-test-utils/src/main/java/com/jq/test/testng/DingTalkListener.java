@@ -79,7 +79,11 @@ public class DingTalkListener implements ISuiteListener {
                 builder.append("> ######    ").append(failedList).append("\n");
             }
         }
-        builder.append("> ###### [点击查看测试报告](http://10.0.0.152:8080/job/java-interface-test/allure/) \n");
+        if (StringUtils.equals(platform, "拼多多")) {
+            builder.append("> ###### [点击查看测试报告](http://10.0.0.152:8080/job/java-interface-test-pdd/allure/) \n");
+        } else if (StringUtils.equals(platform, "京东SOP")) {
+            builder.append("> ###### [点击查看测试报告](http://10.0.0.152:8080/job/java-interface-test-jdsop/allure/) \n");
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         doPost(body, builder);
     }
