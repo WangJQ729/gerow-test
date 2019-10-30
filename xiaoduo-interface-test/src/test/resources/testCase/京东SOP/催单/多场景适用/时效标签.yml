@@ -22,7 +22,7 @@ dataProvider:
     text_with_vars: ${message}
     reminder_type: 订单取消
   - node_state: finished
-    order_state: 交易成功
+    order_state: FINISHED_L
     message: 交易成功了
     text_with_vars: ${message}
     reminder_type: 交易成功
