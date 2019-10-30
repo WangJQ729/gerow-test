@@ -1,0 +1,104 @@
+name: 任务开关
+feature: ${reminder_type}
+dataProvider:
+  - node_state: shipped
+    order_state: WAIT_GOODS_RECEIVE_CONFIRM
+    message: 已发货
+    text_with_vars: ${message}
+    reminder_type: 已发货
+  - node_state: paused
+    order_state: PAUSE
+    message: 订单暂停了哈
+    text_with_vars: ${message}
+    reminder_type: 订单暂停
+  - node_state: locked
+    order_state: LOCKED
+    message: 订单锁定了哈
+    text_with_vars: ${message}
+    reminder_type: 订单锁定
+  - node_state: trade_canceled
+    order_state: TRADE_CANCELED
+    message: 订单取消了哈
+    text_with_vars: ${message}
+    reminder_type: 订单取消
+  - node_state: finished
+    order_state: 交易成功
+    message: 交易成功了
+    text_with_vars: ${message}
+    reminder_type: 交易成功
+  - node_state: paid
+    order_state: WAIT_SELLER_STOCK_OUT
+    message: 您好，我们已收到你的订单啦~~我们会尽快为您发货，请您耐心等待。
+    text_with_vars: ${message}
+    reminder_type: 等待出库
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取task模板
+testMethod:
+  - name: 开启任务
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务</br>
+      2、创建订单</br>
+      3、校验催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改的task内容
+        name: 开启催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 同步订单消息
+      - byName: 获取催单消息
+  - name: 关闭任务
+    description: |
+      """</br>
+      用例描述：</br>
+      1、关闭后不会触发。</br>
+      </br>
+      测试步骤</br>
+      1、关闭任务</br>
+      2、创建订单</br>
+      3、校验催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改的task内容
+        name: 关闭催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: false
+            $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 同步订单消息
+      - byName: 获取催单消息
+        sleep: 5
+        name: 获取催单消息-消息为空
+        assertion:
+          - json:
+              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars: []
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        name: 查看trace详情-任务关闭
+        assertion:
+          - json:
+              $.data.traces.length(): 1
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+    - byName: 关闭催单任务

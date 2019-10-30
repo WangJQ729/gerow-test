@@ -1,9 +1,7 @@
 data:
   test:
     host: pdd-test.xiaoduoai.com
-    pdd_api_host: http://pdd-api-test.xiaoduoai.com
     mock_host: http://mock-server-pdd.xiaoduoai.com
-    reminder_pdd_host: http://reminder-pdd-test.xiaoduoai.com
     shopName: JQ铅笔:pdd78335301079
     mall_id: 783353010
     seller_name: pdd78335301079
