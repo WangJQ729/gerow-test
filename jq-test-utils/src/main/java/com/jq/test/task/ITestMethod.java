@@ -42,4 +42,8 @@ public interface ITestMethod extends ITest {
     SeverityLevel getSeverityLevel();
 
     String getDescription();
+
+    String getAuthor();
+
+
 }

@@ -12,6 +12,7 @@ public abstract class AbstractTestMethod implements ITestMethod {
     private SeverityLevel severityLevel;
     private String name;
     private String description;
+    private String author;
     private ITestClass testClass;
     private Map<String, String> params = new HashMap<>();
     private List<ITestStep> testSteps;

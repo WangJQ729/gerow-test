@@ -10,6 +10,7 @@ public class CaseInfo {
     private String story;
     private String feature;
     private String severity;
+    private String creator;
 
     @Override
     public String toString() {

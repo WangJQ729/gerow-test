@@ -24,10 +24,12 @@ public class CaseListListener implements ITestListener {
         String name = testMethod.getName();
         String severityLevel = testMethod.getSeverityLevel().value();
         String description = testMethod.getDescription();
+        String creator = testMethod.getAuthor();
         CaseInfo caseInfo = new CaseInfo();
         caseInfo.setCase_name(suite + "-" + feature + "-" + name);
         caseInfo.setDescription(description);
         caseInfo.setFeature(feature);
+        caseInfo.setCreator(creator);
         caseInfo.setStory(suite);
         caseInfo.setSeverity(severityLevel);
         doPost(caseInfo);
