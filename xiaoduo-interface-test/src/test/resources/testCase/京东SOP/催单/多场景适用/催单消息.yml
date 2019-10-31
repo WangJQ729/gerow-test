@@ -92,7 +92,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
         assertion: [json: {$.code: 0}]
-      - name: 同步订单消息
+      - name: 通过pulsar推送订单消息
         host: ${mock_host}
         sleep: 2 #等待oplog服务
         url: /mock/push_message_to_pulsar
@@ -100,7 +100,7 @@ testMethod:
           p_path: pulsar://pulsar-test-1:6650
           topic: persistent://zhongtai/reminder/rmd-trade-jd
           word: |
-            {"platform":"jd","order_id":"${__RandomString(13,1234567890,order_id)}","shop_id":"5d522cb46f7d26000f36d97e","buyer_id":"${buyer}","address":"AATRkxbhRDexFQqaaj1DmxwFYrnn87mGyjhngO9AagZ47mJcjBXnOpFgAZ7Qomf4RvACXmETqDOfY5cT5GCflciwGx1BSmOVRJ3lMUg8vu9F77ka+pr8z96FU5KkdCjGDtbijUTr187JHufPh09JKsvP","status":"${order_state}","created_at":1572263720,"updated_at":1572265460,"item_ids":["10348221568"],"jdext":{"state_desc":"未付款","items":[{"item_id":"10348221568","sku_id":"13306184664","sku_name":"佳通轮胎 155R12 6PR VAN600 适配哈飞 松花江 经济耐磨载货升级600V1花纹 155R12C","count":1}],"receiver":{"name":"AATRkxbhRDexFQqaaj1DmxwFaYWe8eL5vWMbkBc/MrjDRApjYGTU/JUrVrDvAyUfQig=","phone":"AATRkxbhRDexFQqaaj1DmxwFu3TZXcy+gaBNHatTq7FEZv6aYgn1PJGgNzkGtTIl2DM="}}}
+            {"platform":"jd","order_id":"${__RandomString(13,1234567890,order_id)}","shop_id":"${shop_id}","buyer_id":"${buyer}","address":"AATRkxbhRDexFQqaaj1DmxwFYrnn87mGyjhngO9AagZ47mJcjBXnOpFgAZ7Qomf4RvACXmETqDOfY5cT5GCflciwGx1BSmOVRJ3lMUg8vu9F77ka+pr8z96FU5KkdCjGDtbijUTr187JHufPh09JKsvP","status":"${order_state}","created_at":1572263720,"updated_at":1572265460,"item_ids":["10348221568"],"jdext":{"state_desc":"未付款","items":[{"item_id":"10348221568","sku_id":"13306184664","sku_name":"佳通轮胎 155R12 6PR VAN600 适配哈飞 松花江 经济耐磨载货升级600V1花纹 155R12C","count":1}],"receiver":{"name":"AATRkxbhRDexFQqaaj1DmxwFaYWe8eL5vWMbkBc/MrjDRApjYGTU/JUrVrDvAyUfQig=","phone":"AATRkxbhRDexFQqaaj1DmxwFu3TZXcy+gaBNHatTq7FEZv6aYgn1PJGgNzkGtTIl2DM="}}}
         headers:
           Content-Type: multipart/form-data
         method: POST
@@ -133,7 +133,7 @@ testMethod:
 #            $.rules[?(@.type=='send_limit')].args.enable: false
 #            $.rules[?(@.type=='send_message')].args.state_delay: 0
 #            $.rules[?(@.type=='send_message')].args.message: '查看订单 {订单链接}'
-#      - byName: 同步订单消息
+#      - byName: 通过pulsar推送订单消息
 #      - byName: 获取催单消息
 #        name: 催单消息订单链接
 #        assertion:

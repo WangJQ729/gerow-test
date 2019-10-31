@@ -44,13 +44,9 @@ testMethod:
       1、1小时内只触发一次。</br>
       </br>
       测试步骤</br>
-      1、开启避免骚扰</br>
-      2、创建第一个订单</br>
-      3、校验催单信息</br>
-      4、校验traces</br>
-      5、创建第二个订单</br>
-      6、校验催单信息</br>
-      7、校验traces</br>
+      1、设置20秒后发送催单消息</br>
+      2、创建订单</br>
+      3、获取催单消息</br>
       """
     severity: NORMAL
     step:
@@ -64,7 +60,7 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 20
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 同步订单消息
+      - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情
         name: 查看trace详情-TaskSetTimer

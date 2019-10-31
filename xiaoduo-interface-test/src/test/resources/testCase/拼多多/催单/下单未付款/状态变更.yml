@@ -20,7 +20,8 @@ testMethod:
       测试步骤</br>
       1、开启任务</br>
       2、创建订单</br>
-      4、消息发送前状态变更
+      3、建议订单trace是否已经settimer</br>
+      4、将订单状态变更为${new_type_name}</br>
       5、校验催单消息</br>
       """
     severity: NORMAL
