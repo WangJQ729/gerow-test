@@ -179,40 +179,41 @@ public class YmlTestStep implements ITestStep {
     }
 
     /**
-     * @param copyStep 所要copy的step
-     * @param step     老的step
+     * @param newStep 所要copy的step
+     * @param oldStep 老的step
      * @return copy结果
      */
-    private YmlHttpStepEntity copyStep(YmlHttpStepEntity copyStep, YmlHttpStepEntity step) {
-        if (!step.getHeaders().isEmpty()) copyStep.setHeaders(step.getHeaders());
+    private YmlHttpStepEntity copyStep(YmlHttpStepEntity newStep, YmlHttpStepEntity oldStep) {
+        if (!oldStep.getHeaders().isEmpty()) newStep.setHeaders(oldStep.getHeaders());
 
-        if (!step.getVariables().isEmpty()) copyStep.setVariables(step.getVariables());
+        if (StringUtils.isNotBlank(oldStep.getBody())) newStep.setBody(oldStep.getBody());
 
-        if (StringUtils.isNotBlank(step.getBody())) copyStep.setBody(step.getBody());
+        if (!oldStep.getAssertion().isEmpty()) newStep.setAssertion(oldStep.getAssertion());
 
-        if (!step.getAssertion().isEmpty()) copyStep.setAssertion(step.getAssertion());
+        if (!oldStep.getExtractor().isEmpty()) newStep.setExtractor(oldStep.getExtractor());
 
-        if (!step.getExtractor().isEmpty()) copyStep.setExtractor(step.getExtractor());
+        if (oldStep.getFile() != null) newStep.setFile(oldStep.getFile());
 
-        if (step.getFile() != null) copyStep.setFile(step.getFile());
+        if (!oldStep.getForm().isEmpty())
+            for (String s : oldStep.getForm().keySet()) newStep.getForm().put(s, oldStep.getForm().get(s));
 
-        if (!step.getForm().isEmpty())
-            for (String s : step.getForm().keySet()) copyStep.getForm().put(s, step.getForm().get(s));
+        if (!oldStep.getVariables().isEmpty())
+            for (String s : oldStep.getVariables().keySet())
+                newStep.getVariables().put(s, oldStep.getVariables().get(s));
 
+        if (StringUtils.isNotBlank(oldStep.getHost())) newStep.setHost(oldStep.getHost());
 
-        if (StringUtils.isNotBlank(step.getHost())) copyStep.setHost(step.getHost());
+        if (oldStep.getUntilWait() != 0) newStep.setUntilWait(oldStep.getUntilWait());
 
-        if (step.getUntilWait() != 0) copyStep.setUntilWait(step.getUntilWait());
+        if (oldStep.getSleep() != 0) newStep.setSleep(oldStep.getSleep());
 
-        if (step.getSleep() != 0) copyStep.setSleep(step.getSleep());
+        if (oldStep.getBodyEditor() != null) newStep.setBodyEditor(oldStep.getBodyEditor());
 
-        if (step.getBodyEditor() != null) copyStep.setBodyEditor(step.getBodyEditor());
-
-        if (StringUtils.isNotBlank(step.getName())) copyStep.setName(step.getName());
+        if (StringUtils.isNotBlank(oldStep.getName())) newStep.setName(oldStep.getName());
         //如果copyStep也是byName查找，执行递归
-        if (StringUtils.isNotBlank(copyStep.getByName())) copyStep = buildStep(copyStep);
+        if (StringUtils.isNotBlank(newStep.getByName())) newStep = buildStep(newStep);
 
-        return copyStep;
+        return newStep;
     }
 
     /**
