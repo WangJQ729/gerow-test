@@ -22,8 +22,6 @@ public class YmlTestMethod extends AbstractTestMethod {
         for (String key : getLinks().keySet()) {
             Allure.link(key, getLinks().get(key));
         }
-        if (StringUtils.isNotBlank(getDescription())) {
-            Allure.descriptionHtml(getDescription());
-        }
+        Allure.descriptionHtml(getDescription() + "</br>Author: " + getAuthor());
     }
 }
