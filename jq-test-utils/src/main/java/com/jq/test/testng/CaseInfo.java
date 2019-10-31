@@ -11,6 +11,7 @@ public class CaseInfo {
     private String feature;
     private String severity;
     private String creator;
+    private String platform;
 
     @Override
     public String toString() {

@@ -29,6 +29,7 @@ public class CaseListListener implements ITestListener {
         caseInfo.setCase_name(suite + "-" + feature + "-" + name);
         caseInfo.setDescription(description);
         caseInfo.setFeature(feature);
+        caseInfo.setPlatform(System.getProperty("platform"));
         caseInfo.setCreator(creator);
         caseInfo.setStory(suite);
         caseInfo.setSeverity(severityLevel);
