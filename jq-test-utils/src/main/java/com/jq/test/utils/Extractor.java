@@ -109,11 +109,13 @@ public class Extractor {
             case BODY:
                 switch (type) {
                     case JSON:
-                        if (need_decode)
-                            saveJsonPath(save, JsonPathUtils.read(
+                        if (need_decode) {
+                            Object result = JsonPathUtils.read(
                                     TestUtils.des3Cipher("828d1bc65eefc6c88ca1a5d4", "828d1bc6", 2,
-                                            Objects.requireNonNull(entity.getBody()).toString()), value, options));
-                        else
+                                            Objects.requireNonNull(entity.getBody()).toString()), value, options);
+                            Allure.addAttachment("解密结果：", result.toString());
+                            saveJsonPath(save, result);
+                        } else
                             saveJsonPath(save, JsonPathUtils.read(entity.getBody(), value, options));
                         break;
                     case XML:
