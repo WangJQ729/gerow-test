@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -89,7 +90,7 @@ public class Extractor {
         }
     }
 
-    private <T> void doSave(ResponseEntity<T> entity, ITestMethod test) throws NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
+    private <T> void doSave(ResponseEntity<T> entity, ITestMethod test) throws NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException, UnsupportedEncodingException {
         ITest save = getTest(test);
         if (StringUtils.isNotBlank(data)) {
             sources = DataSources.DATA;
