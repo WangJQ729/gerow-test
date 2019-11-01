@@ -22,6 +22,7 @@ import javax.crypto.spec.IvParameterSpec;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
@@ -226,7 +227,7 @@ public class TestUtils {
         return Stream.of(items).filter(Objects::nonNull).filter(item -> !item.isEmpty()).findFirst();
     }
 
-    public static String des3Cipher(String key, String iv, int mode, String data) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
+    public static String des3Cipher(String key, String iv, int mode, String data) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException {
         DESedeKeySpec spec = new DESedeKeySpec(key.getBytes());
         SecretKeyFactory keyfactory = SecretKeyFactory.getInstance("desede");
         Key deskey = keyfactory.generateSecret(spec);
@@ -234,7 +235,7 @@ public class TestUtils {
         IvParameterSpec ips = new IvParameterSpec(iv.getBytes());
         cipher.init(mode, deskey, ips);
         if (mode == 1) {
-            return HexUtils.toHexString(cipher.doFinal(data.getBytes()));
+            return HexUtils.toHexString(cipher.doFinal(data.getBytes(StandardCharsets.UTF_8)));
         } else if (mode == 2) {
             byte[] bytes = HexUtils.fromHexString(data);
             String result = new String(cipher.doFinal(bytes), StandardCharsets.UTF_8);
