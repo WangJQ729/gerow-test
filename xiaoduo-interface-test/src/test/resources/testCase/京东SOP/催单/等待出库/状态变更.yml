@@ -37,8 +37,6 @@ testMethod:
         new_order_state_name: 订单取消
       - new_order_state: FINISHED_L
         new_order_state_name: 交易成功
-      - new_order_state: WAIT_SELLER_STOCK_OUT
-        new_order_state_name: 等待出库
     step:
       - byName: 开启催单任务
         name: 设置10秒后发送催单消息
