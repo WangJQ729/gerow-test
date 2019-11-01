@@ -75,7 +75,7 @@ public class DingTalkListener implements ISuiteListener {
             builder.append("> ###### total Skipped：").append(skipped).append("\n");
             builder.append("> ###### 失败case列表：\n");
             for (ITestResult allResult : tc.getFailedTests().getAllResults()) {
-                String failedList = ((ITestMethod) allResult.getParameters()[0]).getTestClass().getFeature() + "-" + allResult.getName();
+                String failedList = ((ITestMethod) allResult.getParameters()[0]).getTestClass().getStory() + "-" + allResult.getName();
                 builder.append("> ######    ").append(failedList).append("\n");
             }
         }

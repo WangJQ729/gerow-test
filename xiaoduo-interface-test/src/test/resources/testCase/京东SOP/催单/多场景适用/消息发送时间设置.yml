@@ -1,5 +1,5 @@
 name: 消息发送时间设置
-feature: ${reminder_type}
+story: ${reminder_type}
 dataProvider:
   - node_state: shipped
     order_state: WAIT_GOODS_RECEIVE_CONFIRM

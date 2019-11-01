@@ -13,8 +13,8 @@ public class YmlTestMethod extends AbstractTestMethod {
     @Override
     protected void setAllure() {
         Allure.epic(getTestClass().getFile().getParentFile().getParentFile().getName());
-        if (StringUtils.isNotBlank(getTestClass().getFeature())) {
-            Allure.feature(getTestClass().getFeature());
+        if (StringUtils.isNotBlank(getTestClass().getStory())) {
+            Allure.feature(getTestClass().getStory());
         } else {
             Allure.feature(getTestClass().getFile().getParentFile().getName());
         }

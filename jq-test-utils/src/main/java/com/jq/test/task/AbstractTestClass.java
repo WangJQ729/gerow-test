@@ -13,7 +13,7 @@ import java.util.*;
 @Data
 public abstract class AbstractTestClass implements ITestClass {
     private String name;
-    private String feature;
+    private String story;
     private List<ITestMethod> testMethods = new ArrayList<>();
     public Map<String, String> params = new LinkedHashMap<>();
     private ITestSuite testSuite;
@@ -104,8 +104,8 @@ public abstract class AbstractTestClass implements ITestClass {
 
 
     @Override
-    public String getFeature() {
-        String result = replace(feature);
+    public String getStory() {
+        String result = replace(story);
         if (StringUtils.isBlank(result))
             result = this.file.getParentFile().getName();
         return result;

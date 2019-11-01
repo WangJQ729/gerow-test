@@ -1,4 +1,4 @@
-feature: ${reminder_type}
+story: ${reminder_type}
 name: 催单消息
 dataProvider:
   - order_state: group

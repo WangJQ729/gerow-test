@@ -1,5 +1,5 @@
 name: 状态变更
-feature: ${reminder_type}
+story: ${reminder_type}
 dataProvider:
   - node_state: trade_canceled
     order_state: TRADE_CANCELED

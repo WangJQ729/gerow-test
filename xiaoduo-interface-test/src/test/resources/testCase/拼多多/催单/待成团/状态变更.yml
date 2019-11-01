@@ -1,5 +1,5 @@
 name: 状态变更
-feature: ${reminder_type}
+story: ${reminder_type}
 dataProvider:
   - order_state: ungroup
     message: 您好，您的订单未成团，邀请好友一起助力

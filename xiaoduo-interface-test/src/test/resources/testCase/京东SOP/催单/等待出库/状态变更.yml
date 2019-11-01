@@ -1,5 +1,5 @@
 name: 状态变更
-feature: ${reminder_type}
+story: ${reminder_type}
 dataProvider:
   - node_state: paid
     order_state: WAIT_SELLER_STOCK_OUT

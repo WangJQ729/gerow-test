@@ -71,9 +71,9 @@ public interface ITestClass extends ITest {
 
     File getFile();
 
-    String getFeature();
+    String getStory();
 
-    void setFeature(String feature);
+    void setStory(String story);
 
     void setFile(File file);
 }

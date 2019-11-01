@@ -6,6 +6,7 @@ import com.jq.test.task.ITestMethod;
 import com.jq.test.task.JQTest;
 import com.jq.test.testng.AllureListener;
 import com.jq.test.testng.CaseListListener;
+import com.jq.test.testng.ClearRedisListener;
 import com.jq.test.testng.DingTalkListener;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Listeners({AllureListener.class, DingTalkListener.class, CaseListListener.class})
+@Listeners({AllureListener.class, DingTalkListener.class, ClearRedisListener.class, CaseListListener.class})
 public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTest, org.testng.ITest {
 
     @Getter

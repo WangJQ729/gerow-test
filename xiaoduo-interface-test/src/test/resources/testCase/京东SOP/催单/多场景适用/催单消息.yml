@@ -1,5 +1,5 @@
 name: 催单消息
-feature: ${reminder_type}
+story: ${reminder_type}
 dataProvider:
   - node_state: shipped
     order_state: WAIT_GOODS_RECEIVE_CONFIRM
@@ -45,28 +45,12 @@ beforeClass:
 testMethod:
   - name: 催单消息校验-${message}
     dataProvider:
-      - message: 已发货
-        text_with_vars: 已发货
+      - message: 纯文字催单消息
+        text_with_vars: 纯文字催单消息
       - message: "{{子账号名称}}"
         text_with_vars: ${shopName}
       - message: "1{↓1秒后分行发送↓}2"
         text_with_vars: "1{↓1秒后分行发送↓}2"
-    #      - message: "{推荐商品话术}"
-    #        text_with_vars: "{推荐商品话术}"
-    #      - message: "{推荐商品链接}"
-    #        text_with_vars: "{推荐商品链接}"
-    #      - message: '商品总数：{商品总数}'
-    #        text_with_vars: "商品总数：1"
-    #      - message: '订单商品明细：{订单商品明细}'
-    #        text_with_vars: "订单商品明细：元老古董炫酷SAP防弹短袖-4: 1"
-    #      - message: '应付金额：{应付金额}'
-    #        text_with_vars: "应付金额：20.00"
-    #      - message: '{姓名}'
-    #        text_with_vars: 晓多AI
-    #      - message: '电话：{电话}'
-    #        text_with_vars: "电话：17721883949"
-    #      - message: '{地址}'
-    #        text_with_vars: 四川省成都市高新区软件园A5-8
     description: |
       """</br>
       用例描述：</br>
@@ -110,36 +94,6 @@ testMethod:
           - json:
               $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
                 - ${text_with_vars}
-#  - name: 催单消息校验-查看订单 {订单链接}
-#    description: |
-#      """</br>
-#      用例描述：</br>
-#      1、催单消息的内容正确。</br>
-#      </br>
-#      测试步骤</br>
-#      1、修改reminder</br>
-#      2、创建订单</br>
-#      3、校验催单信息</br>
-#      """
-#    severity: NORMAL
-#    step:
-#      - byName: 修改的task内容
-#        name: 修改task为订单链接
-#        bodyEditor:
-#          json:
-#            $.id: ${task_id}
-#            $.enable: true
-#            $.shop_id: ${shop_id}
-#            $.rules[?(@.type=='send_limit')].args.enable: false
-#            $.rules[?(@.type=='send_message')].args.state_delay: 0
-#            $.rules[?(@.type=='send_message')].args.message: '查看订单 {订单链接}'
-#      - byName: 通过pulsar推送订单消息
-#      - byName: 获取催单消息
-#        name: 催单消息订单链接
-#        assertion:
-#          - json:
-#              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
-#                - '查看订单 https://mobile.yangkeduo.com/order.html?order_sn=${order_id}'
 afterMethod:
   name: 测试结束后查看订单trace
   step:

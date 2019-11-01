@@ -1,5 +1,5 @@
 name: 避免骚扰
-feature: ${reminder_type}
+story: ${reminder_type}
 dataProvider:
   - order_state: group
     pdd_order_type: pdd_trade_TradeConfirmed

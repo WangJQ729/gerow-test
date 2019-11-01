@@ -1,5 +1,5 @@
 name: 状态变更
-feature: ${reminder_type}
+story: ${reminder_type}
 dataProvider:
   - order_state: shipped
     pdd_order_type: pdd_trade_TradeSellerShip
