@@ -19,6 +19,7 @@ public class CaseListListener implements ITestListener {
     @Override
     public void onTestStart(ITestResult result) {
         ITestMethod testMethod = (ITestMethod) (result.getParameters()[0]);
+        String platform = System.getProperty("platform");
         String suite = testMethod.getTestClass().getTestSuite().getName();
         String feature = testMethod.getTestClass().getStory();
         String name = testMethod.getName();
@@ -26,11 +27,11 @@ public class CaseListListener implements ITestListener {
         String description = testMethod.getDescription();
         String creator = testMethod.getAuthor();
         CaseInfo caseInfo = new CaseInfo();
-        caseInfo.setCase_name(suite + "-" + feature + "-" + name);
-        caseInfo.setFeature(suite);
+        caseInfo.setCase_name(platform + suite + "-" + feature + "-" + name);
+        caseInfo.setFeature(platform + suite);
+        caseInfo.setPlatform(platform);
         caseInfo.setStory(feature);
         caseInfo.setDescription(description);
-        caseInfo.setPlatform(System.getProperty("platform"));
         caseInfo.setCreator(creator);
         caseInfo.setSeverity(severityLevel);
         doPost(caseInfo);
