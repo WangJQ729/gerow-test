@@ -1,8 +1,11 @@
 name: 任务开关
+story: ${reminder_type}
 dataProvider:
-  - order_state: created
-    message: 您好，您有未支付订单，请尽快支付哦
+  - node_state: created
+    order_state: NOT_PAY
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
     text_with_vars: ${message}
+    reminder_type: 下单未付款
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -23,15 +26,15 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 修改task内容
-        name: 开启催单任务
         bodyEditor:
           json:
             $.id: ${task_id}
             $.enable: true
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 同步订单消息
+      - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
   - name: 关闭任务
     description: |
@@ -46,25 +49,11 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改task内容
-        name: 关闭催单任务
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: false
-      - byName: 同步订单消息
-      - byName: 获取催单消息
-        sleep: 5
-        name: 获取催单消息-消息为空
-        assertion:
-          - json:
-              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars: []
+      - byName: 关闭催单任务
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
-      - byName: 查看trace详情
-        name: 查看trace详情-任务关闭
-        assertion:
-          - json:
-              $.data.traces.length(): 1
+      - byName: 查看trace详情-任务关闭
 afterMethod:
   name: 测试结束后查看订单trace
   step:

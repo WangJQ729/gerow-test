@@ -1,4 +1,4 @@
-name: 消息发送时间设置
+name: 触发后发送消息时间设置
 story: ${reminder_type}
 dataProvider:
   - node_state: shipped
@@ -50,8 +50,8 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改的task内容
-        name: 设置指定时间发送订单消息
+      - byName: 修改task内容
+        name: 设置指定时间发送催单消息
         bodyEditor:
           json:
             $.id: ${task_id}

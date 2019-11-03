@@ -37,7 +37,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改的task内容
+      - byName: 修改task内容
       - byName: 同步待成团订单消息
       - byName: 获取催单消息
   - name: 催单消息校验-查看订单 {订单链接}
@@ -69,7 +69,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改的task内容
+      - byName: 修改task内容
         name: 修改task为分享链接
         bodyEditor:
           json:

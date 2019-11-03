@@ -1,0 +1,47 @@
+name: 触发后发送消息时间设置
+story: ${reminder_type}
+dataProvider:
+  - node_state: created
+    order_state: NOT_PAY
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+    text_with_vars: ${message}
+    reminder_type: 下单未付款
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取task模板
+testMethod:
+  - name: 设置20秒后发送催单消息
+    description: |
+      """</br>
+      用例描述：</br>
+      1、1小时内只触发一次。</br>
+      </br>
+      测试步骤</br>
+      1、设置20秒后发送催单消息</br>
+      2、创建订单</br>
+      3、获取催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改task内容
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='state_delay')].args.delay: 20
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 通过pulsar推送订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 获取催单消息
+        sleep: 15
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+    - byName: 关闭催单任务

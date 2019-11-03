@@ -8,7 +8,7 @@ beforeClass:
   step:
     - byName: 获取task_id
     - byName: 获取task模板
-    - byName: 修改的task内容
+    - byName: 修改task内容
       name: 开启所有首轮催拍
       bodyEditor:
         json:

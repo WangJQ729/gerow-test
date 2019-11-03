@@ -43,7 +43,7 @@ testMethod:
         extractor:
           - json:
               ageing_id: $.ageing.id
-      - byName: 修改的task内容
+      - byName: 修改task内容
         name: 设置时效标签
         bodyEditor:
           json:

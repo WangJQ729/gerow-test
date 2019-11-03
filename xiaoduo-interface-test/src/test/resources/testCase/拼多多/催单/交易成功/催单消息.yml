@@ -23,7 +23,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改的task内容
+      - byName: 修改task内容
         bodyEditor:
           json:
             $.id: ${task_id}

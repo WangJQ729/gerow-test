@@ -26,7 +26,6 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启催单任务
-        name: 设置10秒后发送催单消息
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -53,7 +52,6 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启催单任务
-        name: 设置10秒后发送催单消息
         bodyEditor:
           json:
             $.id: ${task_id}

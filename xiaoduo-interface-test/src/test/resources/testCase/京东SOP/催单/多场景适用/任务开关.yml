@@ -50,7 +50,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改的task内容
+      - byName: 修改task内容
         name: 开启催单任务
         bodyEditor:
           json:
@@ -75,7 +75,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改的task内容
+      - byName: 修改task内容
         name: 关闭催单任务
         bodyEditor:
           json:

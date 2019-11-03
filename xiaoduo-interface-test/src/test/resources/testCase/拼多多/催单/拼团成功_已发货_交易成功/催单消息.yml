@@ -46,7 +46,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改的task内容
+      - byName: 修改task内容
       - byName: 同步订单消息
       - name: 拼多多推送订单状态变更消息
         sleep: 0
