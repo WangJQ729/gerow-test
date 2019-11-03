@@ -18,6 +18,7 @@ public class CaseListListener implements ITestListener {
 
     private static String token;
     private final static Log logger = LogFactory.getLog(CaseListListener.class);
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Override
     public void onTestStart(ITestResult result) {
@@ -44,8 +45,8 @@ public class CaseListListener implements ITestListener {
         }
     }
 
+
     private void doPost(CaseInfo caseInfo) {
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         String host = "http://zhy-test1.xiaoduoai.com";
