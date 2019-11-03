@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.Map;
 
 public class DingTalkListener implements ISuiteListener {
-    private String url = "https://oapi.dingtalk.com/robot/send?access_token=aa9a76956e0bcf39e7d5ddccc5437fc9afd11e81fecb41569d4b5415dd95c8e9";
     private String platform = System.getProperty("platform");
     private String features = System.getProperty("features");
     private String test_feature = System.getProperty("test.feature");
@@ -94,6 +93,9 @@ public class DingTalkListener implements ISuiteListener {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         HttpEntity entity = new HttpEntity<>(format, headers);
-        String result = restTemplate.postForObject(url, entity, String.class);
+        String test_url = "https://oapi.dingtalk.com/robot/send?access_token=aa9a76956e0bcf39e7d5ddccc5437fc9afd11e81fecb41569d4b5415dd95c8e9";
+        restTemplate.postForObject(test_url, entity, String.class);
+        String dev_url = "https://oapi.dingtalk.com/robot/send?access_token=aa9a76956e0bcf39e7d5ddccc5437fc9afd11e81fecb41569d4b5415dd95c8e9";
+        restTemplate.postForObject(dev_url, entity, String.class);
     }
 }

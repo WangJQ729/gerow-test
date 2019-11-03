@@ -20,7 +20,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Listeners({AllureListener.class, DingTalkListener.class, ClearRedisListener.class, CaseListListener.class})
+@Listeners({AllureListener.class,
+        DingTalkListener.class,
+        ClearRedisListener.class,
+        CaseListListener.class})
 public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTest, org.testng.ITest {
 
     @Getter
