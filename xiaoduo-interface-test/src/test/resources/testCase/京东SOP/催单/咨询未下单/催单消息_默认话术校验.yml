@@ -88,4 +88,3 @@ afterMethod:
   step:
     - byName: 根据聊天记录查询trace
     - byName: 查看trace详情
-    - byName: 关闭催单任务
