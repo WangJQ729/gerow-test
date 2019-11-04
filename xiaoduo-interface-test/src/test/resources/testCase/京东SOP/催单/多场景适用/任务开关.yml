@@ -81,8 +81,6 @@ testMethod:
           json:
             $.id: ${task_id}
             $.enable: false
-            $.rules[?(@.type=='send_limit')].args.enable: false
-            $.rules[?(@.type=='send_message')].args.message: ${message}
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
         sleep: 5
