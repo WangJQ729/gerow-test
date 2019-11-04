@@ -1,6 +1,7 @@
 package com.jq.test.testng;
 
 import com.jq.test.task.ITestMethod;
+import com.jq.test.utils.ConfigManager;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +12,7 @@ import org.testng.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 public class DingTalkListener implements ISuiteListener {
     private String platform = System.getProperty("platform");
@@ -22,7 +24,7 @@ public class DingTalkListener implements ISuiteListener {
         String body = "{\n" +
                 "     \"msgtype\": \"markdown\",\n" +
                 "     \"markdown\": {\n" +
-                "         \"title\":\"脚本开始运行\",\n" +
+                "         \"title\":\"催单脚本通知\",\n" +
                 "         \"text\": \"%s\"\n" +
                 "     },\n" +
                 "    \"at\": {\n" +
@@ -30,17 +32,10 @@ public class DingTalkListener implements ISuiteListener {
                 "        \"isAtAll\": false\n" +
                 "    }\n" +
                 " }";
-        StringBuilder builder = new StringBuilder();
-        builder.append("开始运行自动化测试：\n");
-        builder.append(String.format("> #### 平台：%s\n", platform));
-        builder.append(String.format("> #### 功能：%s\n", features));
-        if (!StringUtils.isEmpty(test_feature)) {
-            builder.append(String.format("> #### 节点：%s\n", test_feature));
-        }
+        StringBuilder builder = builderMessageBody("脚本开始运行：\n");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         builder.append("> ###### 开始时间： ").append(df.format(new Date())).append("\n");
         doPost(body, builder);
-
     }
 
     @Override
@@ -48,7 +43,7 @@ public class DingTalkListener implements ISuiteListener {
         String body = "{\n" +
                 "     \"msgtype\": \"markdown\",\n" +
                 "     \"markdown\": {\n" +
-                "         \"title\":\"脚本测试结果\",\n" +
+                "         \"title\":\"催单脚本通知\",\n" +
                 "         \"text\": \"%s\"\n" +
                 "     },\n" +
                 "    \"at\": {\n" +
@@ -56,35 +51,66 @@ public class DingTalkListener implements ISuiteListener {
                 "        \"isAtAll\": false\n" +
                 "    }\n" +
                 " }";
+        StringBuilder builder = builderMessageBody("脚本运行结果：\n");
+        builder.append(buildMessageResult(suite));
+        builder.append(String.format("> ###### [点击查看测试报告](%s) \n", ConfigManager.getProperties().get("jenkins_url")));
+        doPost(body, builder);
+    }
+
+    private StringBuilder buildMessageResult(ISuite suite) {
         StringBuilder builder = new StringBuilder();
-        builder.append("测试结果：\n");
+        Map<String, ISuiteResult> suiteResults = suite.getResults();
+        for (ISuiteResult result : suiteResults.values()) {
+            ITestContext tc = result.getTestContext();
+            int pass = tc.getPassedTests().getAllResults().size();
+            builder.append("> ###### total Passed: ").append(pass).append("\n");
+            Set<ITestResult> failedResult = tc.getFailedTests().getAllResults();
+            int failed = failedResult.size();
+            builder.append("> ###### total Failed: ").append(failed).append("\n");
+            Set<ITestResult> skippedResult = tc.getSkippedTests().getAllResults();
+            int skipped = skippedResult.size();
+            builder.append("> ###### total Skipped: ").append(skipped).append("\n");
+            builder.append(buildTimeCost(tc.getEndDate().toInstant().getEpochSecond() - tc.getStartDate().toInstant().getEpochSecond()));
+            if (failed > 0) {
+                builder.append("> ###### Failed list:\n");
+                for (ITestResult allResult : failedResult) {
+                    String failedName = ((ITestMethod) allResult.getParameters()[0]).getTestClass().getStory() + "-" + allResult.getName();
+                    builder.append("> ######    ").append(failedName).append("\n");
+                }
+            }
+            if (skipped > 0) {
+                builder.append("> ###### Skipped list:\n");
+                for (ITestResult allResult : skippedResult) {
+                    String skippedName = ((ITestMethod) allResult.getParameters()[0]).getTestClass().getStory() + "-" + allResult.getName();
+                    builder.append("> ######    ").append(skippedName).append("\n");
+                }
+            }
+        }
+        return builder;
+    }
+
+    private StringBuilder buildTimeCost(long compare) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("> ###### 耗时: ");
+        if (compare / 60 > 60) {
+            builder.append(compare / 60 / 60).append("小时");
+            builder.append(compare / 60 % 60).append("分");
+        } else {
+            builder.append(compare / 60).append("分");
+        }
+        builder.append(compare % 60).append("秒").append("\n");
+        return builder;
+    }
+
+    private StringBuilder builderMessageBody(String title) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(title).append("\n");
         builder.append(String.format("> #### 平台：%s\n", platform));
         builder.append(String.format("> #### 功能：%s\n", features));
         if (!StringUtils.isEmpty(test_feature)) {
             builder.append(String.format("> #### 节点：%s\n", test_feature));
         }
-        Map<String, ISuiteResult> suiteResults = suite.getResults();
-        for (ISuiteResult result : suiteResults.values()) {
-            ITestContext tc = result.getTestContext();
-            int pass = tc.getPassedTests().getAllResults().size();
-            builder.append("> ###### total Passed：").append(pass).append("\n");
-            int failed = tc.getFailedTests().getAllResults().size();
-            builder.append("> ###### total Failed：").append(failed).append("\n");
-            int skipped = tc.getSkippedTests().getAllResults().size();
-            builder.append("> ###### total Skipped：").append(skipped).append("\n");
-            builder.append("> ###### 失败case列表：\n");
-            for (ITestResult allResult : tc.getFailedTests().getAllResults()) {
-                String failedList = ((ITestMethod) allResult.getParameters()[0]).getTestClass().getStory() + "-" + allResult.getName();
-                builder.append("> ######    ").append(failedList).append("\n");
-            }
-        }
-        if (StringUtils.equals(platform, "拼多多")) {
-            builder.append("> ###### [点击查看测试报告](http://10.0.0.152:8080/job/java-interface-test-pdd/allure/) \n");
-        } else if (StringUtils.equals(platform, "京东SOP")) {
-            builder.append("> ###### [点击查看测试报告](http://10.0.0.152:8080/job/java-interface-test-jdsop/allure/) \n");
-        }
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        doPost(body, builder);
+        return builder;
     }
 
     private void doPost(String body, StringBuilder builder) {
