@@ -26,6 +26,7 @@ beforeClass:
             task_info: $.data
 testMethod:
   - name: 催单消息校验-${message}
+    author: 王健强
     dataProvider:
       - message: 您好，您有未支付订单，请尽快支付哦
         text_with_vars: 您好，您有未支付订单，请尽快支付哦
@@ -58,7 +59,9 @@ testMethod:
       - name: 修改task内容
         url: /api/admin/reminder/v2/manage/task/update
         method: POST
+        #task_info为测试开始前获取到的任务模板
         body: ${task_info}
+        #bodyEditor根据设置的jsonPath修改对应的参数
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -88,6 +91,7 @@ testMethod:
               $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
                 - ${text_with_vars}
   - name: 催单消息校验-查看订单 {订单链接}
+    author: 王健强
     description: |
       """</br>
       用例描述：</br>
