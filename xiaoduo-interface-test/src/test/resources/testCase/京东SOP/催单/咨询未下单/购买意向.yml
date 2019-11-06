@@ -1,0 +1,47 @@
+name: 购买意向
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取task模板
+testMethod:
+  - name: 购买意向 - 暂不拍
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、发送消息给商家</br>
+      2、校验催单信息</br>
+      """
+    dataProvider:
+      - question: 在吗
+        text_with_vars: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
+    severity: NORMAL
+    step:
+      - byName: 开启所有首轮催拍
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].enable: true
+            $.rules[?(@.type=='user_intention_filter')].args.intentions: [no,high]
+      - byName: 发送消息给商家
+      - byName: 获取催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
+                - ${text_with_vars}
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据聊天记录查询trace
+    - byName: 查看trace详情
+    - byName: 关闭催单任务
