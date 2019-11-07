@@ -10,7 +10,7 @@ public class YmlTestClass extends AbstractTestClass {
     @Override
     public boolean enable() {
         boolean feature = TestUtils.isRun(this.getStory(), System.getProperty("story"));
-        boolean name = TestUtils.isRun(this.getName(), System.getProperty("test.file.name"));
+        boolean name = TestUtils.isRun(this.getName(), System.getProperty("component"));
         return feature && name;
     }
 }
