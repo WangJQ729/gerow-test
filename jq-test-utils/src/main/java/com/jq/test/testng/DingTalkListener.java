@@ -17,7 +17,8 @@ import java.util.Set;
 public class DingTalkListener implements ISuiteListener {
     private String platform = System.getProperty("platform");
     private String features = System.getProperty("features");
-    private String test_feature = System.getProperty("test.feature");
+    private String story = System.getProperty("story");
+    private String component = System.getProperty("component");
 
     @Override
     public void onStart(ISuite suite) {
@@ -107,8 +108,11 @@ public class DingTalkListener implements ISuiteListener {
         builder.append(title).append("\n");
         builder.append(String.format("> #### 平台：%s\n", platform));
         builder.append(String.format("> #### 功能：%s\n", features));
-        if (!StringUtils.isEmpty(test_feature)) {
-            builder.append(String.format("> #### 节点：%s\n", test_feature));
+        if (!StringUtils.isEmpty(story)) {
+            builder.append(String.format("> #### 催单类型：%s\n", story));
+        }
+        if (!StringUtils.isEmpty(component)) {
+            builder.append(String.format("> #### 组件：%s\n", component));
         }
         return builder;
     }
