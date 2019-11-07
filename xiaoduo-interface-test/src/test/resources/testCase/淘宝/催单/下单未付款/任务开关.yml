@@ -1,0 +1,63 @@
+name: 任务开关
+story: ${reminder_type}
+dataProvider:
+  - node_state: created
+    order_state: created
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+    text_with_vars: ${message}
+    reminder_type: 下单未付款
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取task模板
+testMethod:
+  - name: 开启任务
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务</br>
+      2、创建订单</br>
+      3、校验催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息
+  - name: 关闭任务
+    description: |
+      """</br>
+      用例描述：</br>
+      1、关闭后不会触发。</br>
+      </br>
+      测试步骤</br>
+      1、关闭任务</br>
+      2、创建订单</br>
+      3、校验催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 关闭催单任务
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息
+        sleep: 5
+        name: 获取催单消息-消息为空
+        assertion:
+          - json:
+              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars: []
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        name: 查看trace详情-任务关闭
+        assertion:
+          - json:
+              $.data.traces.length(): 1
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+    - byName: 关闭催单任务

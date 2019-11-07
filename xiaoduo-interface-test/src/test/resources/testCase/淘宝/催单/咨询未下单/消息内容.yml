@@ -11,26 +11,26 @@ beforeClass:
 testMethod:
   - name: 消息内容-${message}
     dataProvider:
-      - message: 纯文字催单消息
-        question: 在吗
+      - question: 在吗
+        message: 纯文字催单消息
         text_with_vars: 纯文字催单消息
-      - message: "/:^$^/:^$^"
-        question: 在吗
+      - question: 在吗
+        message: "/:^$^/:^$^"
         text_with_vars: "/:^$^/:^$^"
       - message: "{{子账号名称}}"
         question: 在吗
         text_with_vars: ${shopName}
-      - message: "1{↓1秒后分行发送↓}2"
-        question: 在吗
+      - question: 在吗
+        message: "1{↓1秒后分行发送↓}2"
         text_with_vars: "1{↓1秒后分行发送↓}2"
-      - message: "{推荐商品话术}"
-        question: https://item.taobao.com/item.htm?id=604423906694
+      - question: https://item.taobao.com/item.htm?id=604423906694
+        message: "{推荐商品话术}"
         text_with_vars: 这款商品卖得很火爆哦，快来点开看看吧！
-      - message: "{推荐商品链接}"
-        question: https://item.taobao.com/item.htm?id=604423906694
+      - question: https://item.taobao.com/item.htm?id=604423906694
+        message: "{推荐商品链接}"
         text_with_vars: https://item.taobao.com/item.htm?id=604423906694
-      - message: "{商品营销话术}"
-        question: https://item.taobao.com/item.htm?id=604423906694
+      - question: https://item.taobao.com/item.htm?id=604423906694
+        message: "{商品营销话术}"
         text_with_vars: ${shopName}
     description: |
       """</br>

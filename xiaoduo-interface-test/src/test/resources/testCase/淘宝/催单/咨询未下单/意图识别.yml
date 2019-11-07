@@ -80,7 +80,7 @@ testMethod:
         text_with_vars: 你好~我们家宝贝质量都是有保障的哦，收到不满意支持7天无理由退换呢，您可以放心购买的~
       - question: 可以包邮吗
         text_with_vars: 您好，加个已经是品牌最优惠价格了哦，运费是快递公司收取的哦，我们是薄利润冲量，实在是不能包邮了哦，但是我们会有小礼品送你，喜欢就下单吧~
-      - question: 可以送东西吗
+      - question: 有赠品吗？
         text_with_vars: 您好～真的很抱歉没礼品呢，我们是薄利多销，大多数顾客都是冲着我们商品本身的质量和款式来的呢，性价比已经很好的哦～另外您可以关注下我们店铺的优惠卷活动呢～
       - question: 发的什么快递
         text_with_vars: 您好～喜欢就不要犹豫啦，我们会给您安排尽快发货，让你早点收到宝贝哦～
@@ -133,7 +133,7 @@ afterMethod:
     - name: 查看trace详情
       #获取trace详情，会在测试报告中体现，用于定位任务为什么失败
       untilWait: 10
-      url: /api/client/client/reminder/v2/trace/info
+      url: /api/client/reminder/v2/trace/info
       variables:
         trace_id: ${trace_id}
       method: GET

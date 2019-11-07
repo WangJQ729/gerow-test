@@ -1,4 +1,4 @@
-name: 触发后发送消息时间设置
+name: 消息发送延时设置
 story: ${reminder_type}
 dataProvider:
   - node_state: created
