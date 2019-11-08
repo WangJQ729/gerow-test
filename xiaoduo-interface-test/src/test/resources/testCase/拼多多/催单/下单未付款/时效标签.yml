@@ -53,6 +53,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='send_message')].args.ageing_id: ${ageing_id}
+            $.rules[?(@.type=='send_message')].args.disabled: false
       - byName: 同步订单消息
       - byName: 获取催单消息
   - name: 时效标签(固定时段-失效)-${ageing_name}
