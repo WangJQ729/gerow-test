@@ -106,6 +106,8 @@ public class DingTalkListener implements ISuiteListener {
     private StringBuilder builderMessageBody(String title) {
         StringBuilder builder = new StringBuilder();
         builder.append(title).append("\n");
+        String host = ConfigManager.getProperties().get("host");
+        builder.append(String.format("> #### host：%s\n", host));
         builder.append(String.format("> #### 平台：%s\n", platform));
         builder.append(String.format("> #### 功能：%s\n", features));
         if (!StringUtils.isEmpty(story)) {
