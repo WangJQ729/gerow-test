@@ -5,11 +5,11 @@ data:
     seller_name: wangjq_1990
     shop: wangjq_1990
     sign: ca61da42f143ef040fc22afee498a622
-    shop_id: 5d81f3c669da40000d6b97bb
+    shop_id: 5d8328d4237402000e960ae8
     buyer: wangjq_xd
     platform: tb
     jenkins_url: http://10.0.0.152:8080/job/java-interface-test-tb/allure/
     mock_host: http://mock-server.xiaoduoai.com
     p_path: pulsar://pulsar-test-1:6650
-    topic: persistent://public/default/rmd-trade-tb-test3
-    test_tools: http://zhy-test3.xiaoduoai.com
+    topic: persistent://public/default/rmd-trade-tb-test2
+    test_tools: http://zhy-test2.xiaoduoai.com

@@ -11,3 +11,4 @@ data:
     platform: jd
     child_seller: 友发轮胎专营店:测试ckm
     jenkins_url: http://10.0.0.152:8080/job/java-interface-test-jdsop/allure/
+    test_tools: http://zhy-jd.xiaoduoai.com

@@ -12,3 +12,4 @@ data:
     platform: pdd
     child_seller: JQ铅笔:xiaoduo_auto_test
     jenkins_url: http://10.0.0.152:8080/job/java-interface-test-pdd/allure/
+    test_tools: http://zhy-pdd.xiaoduoai.com

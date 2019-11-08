@@ -11,7 +11,7 @@ public class ClearRedisListener implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
-        RestTemplateTool.getInstance().getForObject(ConfigManager.getProperties().get("mock_host") + "/api/clearCache", String.class);
+        RestTemplateTool.getInstance().getForObject(ConfigManager.getProperties().get("test_tools") + "/api/v1/tools/clearTaskCache", String.class);
     }
 
     @Override

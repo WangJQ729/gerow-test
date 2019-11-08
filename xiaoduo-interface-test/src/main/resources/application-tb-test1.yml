@@ -1,15 +1,15 @@
 data:
   test:
-    host: wangcai-test3.xiaoduoai.com
+    host: wangcai-test.xiaoduoai.com
     shopName: wangjq_1990
     seller_name: wangjq_1990
     shop: wangjq_1990
     sign: ca61da42f143ef040fc22afee498a622
-    shop_id: 5d81f3c669da40000d6b97bb
+    shop_id: 5d5cec1f6f7d26000b9af2eb
     buyer: wangjq_xd
     platform: tb
     jenkins_url: http://10.0.0.152:8080/job/java-interface-test-tb/allure/
     mock_host: http://mock-server.xiaoduoai.com
     p_path: pulsar://pulsar-test-1:6650
-    topic: persistent://public/default/rmd-trade-tb-test3
-    test_tools: http://zhy-test3.xiaoduoai.com
+    topic: persistent://public/default/rmd-trade-tb-test
+    test_tools: http://zhy-test1.xiaoduoai.com
