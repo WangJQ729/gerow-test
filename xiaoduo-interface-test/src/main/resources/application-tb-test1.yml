@@ -1,11 +1,11 @@
 data:
   test:
-    host: wangcai-test.xiaoduoai.com
+    host: wangcai-test1.xiaoduoai.com
     shopName: wangjq_1990
     seller_name: wangjq_1990
     shop: wangjq_1990
     sign: ca61da42f143ef040fc22afee498a622
-    shop_id: 5d5cec1f6f7d26000b9af2eb
+    shop_id: 5d5be95298ef41001222f790
     buyer: wangjq_xd
     platform: tb
     jenkins_url: http://10.0.0.152:8080/job/java-interface-test-tb/allure/
