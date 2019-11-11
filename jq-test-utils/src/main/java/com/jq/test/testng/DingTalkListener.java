@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import org.testng.*;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -116,8 +117,8 @@ public class DingTalkListener implements ISuiteListener {
         StringBuilder builder = new StringBuilder();
         builder.append(title).append("\n");
         builder.append(String.format("> #### 平台：%s\n", platform));
-        builder.append(String.format("> #### 目标测试环境：%s\n", properties.getProperty("host")));
-        builder.append(String.format("> #### 店铺：%s\n", properties.getProperty("shopName")));
+        builder.append(String.format("> #### 目标测试环境：%s\n", new String(properties.getProperty("host").getBytes(), StandardCharsets.UTF_8)));
+        builder.append(String.format("> #### 店铺：%s\n", new String(properties.getProperty("shopName").getBytes(), StandardCharsets.UTF_8)));
         builder.append(String.format("> #### 功能：%s\n", features));
         if (!StringUtils.isEmpty(story)) {
             builder.append(String.format("> #### 催单类型：%s\n", story));
