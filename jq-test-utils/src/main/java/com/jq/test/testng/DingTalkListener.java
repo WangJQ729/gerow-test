@@ -3,15 +3,18 @@ package com.jq.test.testng;
 import com.jq.test.task.ITestMethod;
 import com.jq.test.utils.ConfigManager;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 import org.testng.*;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 public class DingTalkListener implements ISuiteListener {
@@ -19,6 +22,7 @@ public class DingTalkListener implements ISuiteListener {
     private String features = System.getProperty("features");
     private String story = System.getProperty("story");
     private String component = System.getProperty("component");
+    private String profiles = System.getProperty("spring.profiles.active");
 
     @Override
     public void onStart(ISuite suite) {
@@ -104,10 +108,18 @@ public class DingTalkListener implements ISuiteListener {
     }
 
     private StringBuilder builderMessageBody(String title) {
+        Properties properties = new Properties();
+        try {
+            properties = PropertiesLoaderUtils.loadAllProperties(String.format("application-%s.yml", profiles));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         StringBuilder builder = new StringBuilder();
         builder.append(title).append("\n");
         builder.append(String.format("> #### 平台：%s\n", platform));
         builder.append(String.format("> #### 功能：%s\n", features));
+        builder.append(String.format("> #### Host：%s\n", properties.getProperty("host")));
+        builder.append(String.format("> #### 店铺：%s\n", properties.getProperty("shopName")));
         if (!StringUtils.isEmpty(story)) {
             builder.append(String.format("> #### 催单类型：%s\n", story));
         }
