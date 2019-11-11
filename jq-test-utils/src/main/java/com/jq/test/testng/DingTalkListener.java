@@ -2,7 +2,6 @@ package com.jq.test.testng;
 
 import com.jq.test.task.ITestMethod;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -10,12 +9,11 @@ import org.springframework.web.client.RestTemplate;
 import org.testng.*;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 public class DingTalkListener implements ISuiteListener {
     private String platform = System.getProperty("platform");
@@ -108,23 +106,24 @@ public class DingTalkListener implements ISuiteListener {
     }
 
     private StringBuilder builderMessageBody(String title) {
+        StringBuilder builder = new StringBuilder();
         Properties properties = new Properties();
-        try {
-            properties = PropertiesLoaderUtils.loadAllProperties(String.format("application-%s.yml", profiles));
+        String file = String.format("application-%s.yml", profiles);
+        try (InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(file)) {
+            properties.load(new InputStreamReader(Objects.requireNonNull(resourceAsStream), StandardCharsets.UTF_8));
+            builder.append(title).append("\n");
+            builder.append(String.format("> #### 平台：%s\n", platform));
+            builder.append(String.format("> #### 目标测试环境：%s\n", properties.getProperty("host")));
+            builder.append(String.format("> #### 店铺：%s\n", properties.getProperty("shopName")));
+            builder.append(String.format("> #### 功能：%s\n", features));
+            if (!StringUtils.isEmpty(story)) {
+                builder.append(String.format("> #### 催单类型：%s\n", story));
+            }
+            if (!StringUtils.isEmpty(component)) {
+                builder.append(String.format("> #### 组件：%s\n", component));
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        StringBuilder builder = new StringBuilder();
-        builder.append(title).append("\n");
-        builder.append(String.format("> #### 平台：%s\n", platform));
-        builder.append(String.format("> #### 目标测试环境：%s\n", new String(properties.getProperty("host").getBytes(), StandardCharsets.UTF_8)));
-        builder.append(String.format("> #### 店铺：%s\n", new String(properties.getProperty("shopName").getBytes(), StandardCharsets.UTF_8)));
-        builder.append(String.format("> #### 功能：%s\n", features));
-        if (!StringUtils.isEmpty(story)) {
-            builder.append(String.format("> #### 催单类型：%s\n", story));
-        }
-        if (!StringUtils.isEmpty(component)) {
-            builder.append(String.format("> #### 组件：%s\n", component));
         }
         return builder;
     }
