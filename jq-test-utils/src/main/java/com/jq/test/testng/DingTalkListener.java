@@ -124,8 +124,8 @@ public class DingTalkListener implements ISuiteListener {
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         HttpEntity entity = new HttpEntity<>(format, headers);
         String test_url = "https://oapi.dingtalk.com/robot/send?access_token=aa9a76956e0bcf39e7d5ddccc5437fc9afd11e81fecb41569d4b5415dd95c8e9";
-//        restTemplate.postForObject(test_url, entity, String.class);
+        restTemplate.postForObject(test_url, entity, String.class);
         String dev_url = "https://oapi.dingtalk.com/robot/send?access_token=5227f6880b79746e70bd5258a69f5839c4f5a29bf33f69f99143fad9775a569c";
-//        restTemplate.postForObject(dev_url, entity, String.class);
+        restTemplate.postForObject(dev_url, entity, String.class);
     }
 }
