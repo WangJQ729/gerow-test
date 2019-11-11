@@ -111,15 +111,19 @@ public class DingTalkListener implements ISuiteListener {
         Properties properties = new Properties();
         try {
             properties = PropertiesLoaderUtils.loadAllProperties(String.format("application-%s.yml", profiles));
+            System.out.println("---------------------------");
+            System.out.println(System.getProperty("env.BUILD_URL"));
+            System.out.println(System.getProperty("env"));
+            System.out.println("---------------------------");
         } catch (IOException e) {
             e.printStackTrace();
         }
         StringBuilder builder = new StringBuilder();
         builder.append(title).append("\n");
         builder.append(String.format("> #### 平台：%s\n", platform));
-        builder.append(String.format("> #### 功能：%s\n", features));
-        builder.append(String.format("> #### Host：%s\n", properties.getProperty("host")));
+        builder.append(String.format("> #### 目标测试环境：%s\n", properties.getProperty("host")));
         builder.append(String.format("> #### 店铺：%s\n", properties.getProperty("shopName")));
+        builder.append(String.format("> #### 功能：%s\n", features));
         if (!StringUtils.isEmpty(story)) {
             builder.append(String.format("> #### 催单类型：%s\n", story));
         }
