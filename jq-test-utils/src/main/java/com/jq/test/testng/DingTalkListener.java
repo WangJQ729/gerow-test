@@ -1,7 +1,6 @@
 package com.jq.test.testng;
 
 import com.jq.test.task.ITestMethod;
-import com.jq.test.utils.ConfigManager;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.http.HttpEntity;
@@ -58,7 +57,7 @@ public class DingTalkListener implements ISuiteListener {
                 " }";
         StringBuilder builder = builderMessageBody("脚本运行结果：\n");
         builder.append(buildMessageResult(suite));
-        builder.append(String.format("> ###### [点击查看测试报告](%s) \n", ConfigManager.getProperties().get("jenkins_url")));
+        builder.append(String.format("> ###### [点击查看测试报告](%s) \n", System.getProperty("build_url") + "/allure/"));
         doPost(body, builder);
     }
 
@@ -111,10 +110,6 @@ public class DingTalkListener implements ISuiteListener {
         Properties properties = new Properties();
         try {
             properties = PropertiesLoaderUtils.loadAllProperties(String.format("application-%s.yml", profiles));
-            System.out.println("---------------------------");
-            System.out.println(System.getProperty("env.BUILD_URL"));
-            System.out.println(System.getProperty("env"));
-            System.out.println("---------------------------");
         } catch (IOException e) {
             e.printStackTrace();
         }

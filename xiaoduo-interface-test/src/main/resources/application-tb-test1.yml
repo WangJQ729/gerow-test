@@ -8,7 +8,6 @@ data:
     shop_id: 5d5be95298ef41001222f790
     buyer: wangjq_xd
     platform: tb
-    jenkins_url: http://10.0.0.152:8080/job/java-interface-test-tb/allure/
     mock_host: http://mock-server.xiaoduoai.com
     p_path: pulsar://pulsar-test-1:6650
     topic: persistent://public/default/rmd-trade-tb-test
