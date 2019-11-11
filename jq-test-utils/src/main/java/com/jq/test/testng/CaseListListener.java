@@ -49,7 +49,7 @@ public class CaseListListener implements ITestListener {
     private void doPost(CaseInfo caseInfo) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        String host = "http://zhy-test1.xiaoduoai.com";
+        String host = "http://zhy-test3.xiaoduoai.com";
         if (StringUtils.isEmpty(token)) {
             HttpEntity entity = new HttpEntity<>("{\"username\":\"wangjianqiang\",\"password\":\"wangjianqiang123456\"}\n", headers);
             String login = "/api/v1/login/";
