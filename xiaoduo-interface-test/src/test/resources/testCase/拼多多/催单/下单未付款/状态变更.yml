@@ -48,7 +48,7 @@ testMethod:
         name: 查看trace详情-TaskSetTimer
         assertion:
           - json:
-              $.data.traces[-1].phase: TaskSetTimer
+              $.data.traces[?(@.task_end_rule=='send_message')].phase: [TaskSetTimer]
       - byName: 拼多多推送订单状态变更消息
         sleep: 5
         name: 拼多多推送订单状态变更-下一个状态

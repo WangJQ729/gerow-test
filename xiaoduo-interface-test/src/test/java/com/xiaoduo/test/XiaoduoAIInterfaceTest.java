@@ -59,7 +59,7 @@ public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
                 Class<?> aClass = ct.toClass();
                 Constructor<?> method = aClass.getConstructor(ITestClass.class);
                 return method.newInstance(testClass);
-            } catch (Exception ignored) {
+            } catch (Throwable ignored) {
             }
             return new XiaoduoAIInterfaceTest(testClass);
         }
