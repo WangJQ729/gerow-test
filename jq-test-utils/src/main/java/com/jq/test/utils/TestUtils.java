@@ -171,6 +171,14 @@ public class TestUtils {
         }
     }
 
+    public static boolean isSkip(String name, String pattern) {
+        if (StringUtils.isBlank(pattern)) {
+            return false;
+        } else {
+            return Arrays.asList(pattern.split(",")).contains(name);
+        }
+    }
+
     /**
      * 将JMeterVariables里的参数添加到params中
      *
