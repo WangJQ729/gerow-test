@@ -56,7 +56,7 @@ public class DingTalkListener implements ISuiteListener {
                 " }";
         StringBuilder builder = builderMessageBody("脚本运行结果：\n");
         builder.append(buildMessageResult(suite));
-        builder.append(String.format("> ###### [点击查看测试报告](%s) \n", System.getProperty("build_url") + "/allure/"));
+        builder.append(String.format("> ###### [点击查看测试报告](%s) \n", System.getProperty("build_url") + "allure/"));
         doPost(body, builder);
     }
 
