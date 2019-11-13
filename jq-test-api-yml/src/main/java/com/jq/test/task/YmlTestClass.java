@@ -15,13 +15,13 @@ public class YmlTestClass extends AbstractTestClass {
             return false;
         }
         boolean storySkip = TestUtils.isSkip(this.getName(), System.getProperty("skipStory"));
-        if (!storySkip) {
+        if (storySkip) {
             return false;
         }
         boolean component = TestUtils.isRun(this.getName(), System.getProperty("component"));
         if (!component) {
             return false;
         }
-        return TestUtils.isSkip(this.getName(), System.getProperty("skipComponent"));
+        return !TestUtils.isSkip(this.getName(), System.getProperty("skipComponent"));
     }
 }
