@@ -35,8 +35,9 @@ testMethod:
       - byName: 查看trace详情
         name: 查看trace详情-客户端已关闭催单
         assertion:
+          assertionType: CONTAINS
           - json:
-              $.data.traces[?(@.phase=='InQueueReject')].in_queue_reject_reason: ["reject, client disable sending message, client=${shopName}"]
+              $.data.traces[?(@.phase=='InQueueReject')].in_queue_reject_reason: ["reject, client disable sending message"]
       - byName: 获取催单消息-消息为空
   - name: 不催单-静默用户
     description: |
