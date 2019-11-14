@@ -9,8 +9,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
+    - byName: 获取所有的task_id
     - byName: 获取task模板
+    - byName: 关闭其他催单任务
+    - byName: 使用模板新建一个task
 testMethod:
   - name: 催单消息校验-${message}
     dataProvider:
@@ -86,4 +88,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-    - byName: 关闭催单任务
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

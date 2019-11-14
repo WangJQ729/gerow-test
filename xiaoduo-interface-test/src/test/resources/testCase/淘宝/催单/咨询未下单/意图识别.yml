@@ -6,7 +6,7 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - name: 获取task_id
+    - name: 获取所有的task_id
       url: /api/admin/reminder/v2/manage/task/list
       variables:
         template_keys: 0,1
@@ -15,7 +15,9 @@ beforeClass:
       assertion: [json: {$.code: 0}]
       extractor:
         - json:
-            task_id: $.data.tasks[*].id
+            task_list: $.data.tasks[*].id
+          size: 100
+          options: [DEFAULT_PATH_LEAF_TO_NULL]
     - name: 获取task模板
       url: /api/admin/reminder/v2/manage/task/template
       variables:
@@ -28,6 +30,18 @@ beforeClass:
         - json:
             #提取响应体中的task模板内容,保存为参数task_info
             task_info: $.data
+    - byName: 关闭催单任务
+      name: 关闭其他催单任务
+      iter:
+        task_id: ${task_list}
+    - name: 使用模板新建一个task
+      url: /api/admin/reminder/v2/manage/task/create
+      method: POST
+      body: ${task_info}
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            task_id: $.data.id
     - name: 修改咨询未下单内容
       url: /api/admin/reminder/v2/manage/task/update
       method: POST
@@ -137,3 +151,7 @@ afterMethod:
       variables:
         trace_id: ${trace_id}
       method: GET
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

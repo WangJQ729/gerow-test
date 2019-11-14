@@ -34,8 +34,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
+    - byName: 获取所有的task_id
     - byName: 获取task模板
+    - byName: 关闭其他催单任务
+    - byName: 使用模板新建一个task
 testMethod:
   - name: 催单消息校验-${message}
     dataProvider:
@@ -134,10 +136,11 @@ afterMethod:
             #根据测试步骤中获取到的order_id获取trace_id
             trace_id: $.data.traces[?(@.order_state=='${order_state}')].trace_id
     - byName: 查看trace详情
-    - byName: 开启催单任务
-      name: 关闭催单任务
-      bodyEditor:
-        json:
-          $.id: ${task_id}
-          $.enable: false
-          $.shop_id: ${shop_id}
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - name: 删除催单任务
+      url: /api/admin/reminder/v2/manage/task/delete
+      method: POST
+      body: |
+        {"id":"${task_id}"}

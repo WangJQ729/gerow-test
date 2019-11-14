@@ -34,8 +34,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
+    - byName: 获取所有的task_id
     - byName: 获取task模板
+    - byName: 关闭其他催单任务
+    - byName: 使用模板新建一个task
 testMethod:
   - name: 开启任务
     description: |
@@ -66,7 +68,13 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 关闭催单任务
+      - byName: 开启催单任务
+        name: 关闭催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: false
+            $.shop_id: ${shop_id}
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
         sleep: 5
@@ -85,4 +93,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-    - byName: 关闭催单任务
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
