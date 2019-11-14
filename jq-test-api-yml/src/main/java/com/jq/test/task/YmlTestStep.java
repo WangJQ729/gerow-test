@@ -79,24 +79,43 @@ public class YmlTestStep implements ITestStep {
     public void doing() {
         this.buildParams();
         this.step = buildStep(step);
-        if (step.getSleep() != 0) {
-            try {
-                Thread.sleep(step.getSleep() * 1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        if (step.getIter().isEmpty()) {
+            if (step.getSleep() != 0) {
+                try {
+                    Thread.sleep(step.getSleep() * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            String stepName =
+                    replace(TestUtils.firstNonEmpty(factory.getName(),
+                            step.getName(), step.getByName()).orElse("testStep"));
+            Allure.step(stepName, () -> doWithWait(System.currentTimeMillis()));
+        } else {
+            Map<String, String[]> dataList = new HashMap<>();
+            step.getIter().forEach((k, v) -> dataList.put(k, replace(v).split(",")));
+            OptionalInt min = dataList.values().stream().map(s -> s.length).mapToInt(Integer::valueOf).min();
+            if (min.isPresent()) {
+                for (int i = 0; i < min.getAsInt(); i++) {
+                    Map<String, String> newParams = new HashMap<>(params);
+                    int finalI = i;
+                    dataList.forEach((k, v) ->
+                            newParams.put(k, v[finalI])
+                    );
+                    if (newParams.containsValue(StringUtils.EMPTY)) {
+                        break;
+                    }
+                    YmlHttpStepEntity copy = step.copy();
+                    copy.setIter(new HashMap<>());
+                    YmlTestStep newStep = new YmlTestStep(copy, newParams, testMethod, factory);
+                    newStep.doing();
+                }
             }
         }
-        String stepName =
-                replace(TestUtils.firstNonEmpty(factory.getName(),
-                        step.getName(), step.getByName()).orElse("testStep"));
-        Allure.step(stepName, () -> doWithWait(System.currentTimeMillis()));
-
     }
 
     private void buildParams() {
-        for (String key : params.keySet()) {
-            params.put(key, replace(params.get(key)));
-        }
+        params.replaceAll((k, v) -> replace(params.get(k)));
     }
 
     /**
@@ -202,6 +221,8 @@ public class YmlTestStep implements ITestStep {
                 newStep.getVariables().put(s, oldStep.getVariables().get(s));
 
         if (StringUtils.isNotBlank(oldStep.getHost())) newStep.setHost(oldStep.getHost());
+
+        if (!oldStep.getIter().isEmpty()) newStep.setIter(oldStep.getIter());
 
         if (oldStep.getUntilWait() != 0) newStep.setUntilWait(oldStep.getUntilWait());
 

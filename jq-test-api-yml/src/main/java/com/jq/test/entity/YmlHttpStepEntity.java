@@ -41,6 +41,9 @@ public class YmlHttpStepEntity {
      * 这个时间内回一直
      */
     private int untilWait = 0;
+
+
+    private Map<String, String> iter = new HashMap<>();
     /**
      * form表达
      */
