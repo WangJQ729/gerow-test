@@ -16,6 +16,15 @@ beforeClass:
         - json:
             #提取响应体中的taskid,保存为参数task_id
             task_id: $.data.tasks[*].id
+    - name: 获取老的task配置
+      url: /api/admin/reminder/v2/manage/task/info
+      variables:
+        task_id: ${task_id}
+      method: GET
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            old_task_info: $.data
     - name: 获取task模板
       url: /api/admin/reminder/v2/manage/task/template
       variables:
@@ -140,6 +149,12 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
+    - name: 还原催单任务
+      byName: 修改task内容
+      body: ${old_task_info}
+      bodyEditor:
+        json:
+          $.id: ${task_id}
     - name: 根据订单查询trace
       url: /api/client/reminder/v2/trace/search/order
       variables:
@@ -161,4 +176,3 @@ afterMethod:
       variables:
         trace_id: ${trace_id}
       method: GET
-    - byName: 关闭催单任务

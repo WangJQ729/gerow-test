@@ -15,6 +15,7 @@ beforeClass:
   name: 获取taskID和模板
   step:
     - byName: 获取task_id
+    - byName: 获取老的task配置
     - byName: 获取task模板
 testMethod:
   - name: 时效标签(固定时段-生效)-今日生效
@@ -148,7 +149,7 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
+    - byName: 还原催单任务
     - byName: 根据订单查询trace
     - byName: 查看trace详情
     - byName: 删除时效标签
-    - byName: 关闭催单任务
