@@ -1,11 +1,39 @@
 name: 意图识别
 story: ${reminder_type}
+invocationCount: 72
 dataProvider:
   - node_state: asked
     reminder_type: 咨询未下单
 beforeClass:
   name: 获取taskID和模板
   step:
+    - name: 随机获取一个类目
+      host: ${dataadmin}
+      url: /api/admin/guide/category_list
+      headers:
+        Content-Type: multipart/form-data
+      method: POST
+      form:
+        platform: ${platform}
+        nick: ${seller_name}
+      extractor:
+        - json:
+            categorys: $.categorys[${invocationCount}]
+        - json:
+            category_id: $.id
+            category_name: $.name
+          data: ${categorys}
+    - name: 切换到类目-${category_name}
+      host: ${dataadmin}
+      url: /proxy/admin/guide/shop_category/setup
+      headers:
+        Content-Type: multipart/form-data
+      method: POST
+      form:
+        platform: ${platform}
+        nick: ${seller_name}
+        category_id: ${category_id}
+      assertion: [json: {$.code: 0}]
     - name: 获取所有的task_id
       url: /api/admin/reminder/v2/manage/task/list
       variables:
@@ -73,7 +101,7 @@ beforeClass:
               message: 您好～喜欢就不要犹豫啦，我们会给您安排尽快发货，让你早点收到宝贝哦～
       assertion: [json: {$.code: 0}]
 testMethod:
-  - name: 第一轮催拍消息-${question}
+  - name: ${category_name}-第一轮催拍消息-${question}
     description: |
       """</br>
       用例描述：</br>

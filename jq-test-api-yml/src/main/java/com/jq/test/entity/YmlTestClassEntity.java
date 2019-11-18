@@ -67,7 +67,7 @@ public class YmlTestClassEntity {
         for (int i = 0; i < invocationCount; i++) {
             int j = 0;
             for (Map<String, String> data : dataProvider) {
-                YmlTestClass testClass = buildTestClass(testSuite, file, data, "" + i + j);
+                YmlTestClass testClass = buildTestClass(testSuite, file, data, "" + i + j, i);
                 result.add(testClass);
                 j++;
             }
@@ -86,9 +86,10 @@ public class YmlTestClassEntity {
      * @param classNum  唯一标识
      * @return 测试方法
      */
-    private YmlTestClass buildTestClass(ITestSuite testSuite, File file, Map<String, String> data, String classNum) {
+    private YmlTestClass buildTestClass(ITestSuite testSuite, File file, Map<String, String> data, String classNum, int i) {
         Map<String, String> map = new LinkedHashMap<>(data);
         map.put("classNum", classNum);
+        map.put("invocationCount", String.valueOf(i));
         YmlTestClass testClass = new YmlTestClass();
         if (StringUtils.isBlank(name)) {
             this.name = file.getName();
