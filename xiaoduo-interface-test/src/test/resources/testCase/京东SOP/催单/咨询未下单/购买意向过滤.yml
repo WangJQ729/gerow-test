@@ -7,6 +7,7 @@ beforeClass:
   name: 获取taskID和模板
   step:
     - byName: 获取task_id
+    - byName: 获取老的task配置
     - byName: 获取task模板
 testMethod:
   - name: 购买意向 - 暂不拍
@@ -45,4 +46,7 @@ afterMethod:
   step:
     - byName: 根据聊天记录查询trace
     - byName: 查看trace详情
-    - byName: 关闭催单任务
+afterClass:
+  name: 测试结束后还原task
+  step:
+    - byName: 还原催单任务

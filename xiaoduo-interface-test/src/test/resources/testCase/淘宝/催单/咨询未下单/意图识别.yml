@@ -19,7 +19,7 @@ beforeClass:
       extractor:
         - json:
             categorys: $.categorys[*]
-#            categorys: $.categorys[${invocationCount}]
+            #categorys: $.categorys[${invocationCount}]
         - json:
             category_id: $.id
             category_name: $.name

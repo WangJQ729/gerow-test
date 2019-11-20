@@ -35,6 +35,7 @@ beforeClass:
   name: 获取taskID和模板
   step:
     - byName: 获取task_id
+    - byName: 获取老的task配置
     - byName: 获取task模板
 testMethod:
   - name: 设置20秒后发送催单消息
@@ -74,4 +75,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-    - byName: 关闭催单任务
+afterClass:
+  name: 测试结束后还原task
+  step:
+    - byName: 还原催单任务
