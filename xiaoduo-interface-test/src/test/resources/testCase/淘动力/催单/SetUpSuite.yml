@@ -1,0 +1,53 @@
+name: 统一前置处理
+#所有测试执行前执行
+beforeSuite:
+  name: 登录mp后台
+  step:
+    - name: 登录统一管理平台
+      host: ${co_test}
+      url: /api/admin/company/login
+      headers:
+        Content-Type: multipart/form-data
+      method: POST
+      form:
+        username: ${co_test_username}
+        password: ${co_test_password}
+      assertion: [json: {$.code: 0}]
+    - name: 登录MP后台
+      host: ${co_test}
+      url: /api/admin/company/mp/login_url
+      method: GET
+      variables:
+        shop_id: ${shop_id}
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            auth_url: $.url
+    - name: 进入主页
+      host: ""
+      url: ${auth_url}
+      method: GET
+      responseType: DEFAULT
+    - name: 催单设置为自己和静默
+      url: /api/admin/user/shop_subnick_client_config_edit_v3
+      headers:
+        Content-Type: multipart/form-data
+      method: POST
+      form:
+        sub_nick: ${shopName}
+        reminder_type: mine,silence
+      assertion: [json: {$.code: 0}]
+    - name: 设置单个顾客单日最高催单数
+      url: /api/admin/reminder/v2/manage/shop/setting
+      method: POST
+      body: |
+        {"user_daily_limit":10000,"no_answer_filter":false,"task_remove_duplicates":true,"duplicated_order_switches":[]}
+      assertion: [json: {$.code: 0}]
+    - name: 拉一下催单消息
+      url: /api/admin/reminder/v2/client/reminder/messages
+      untilWait: 10
+      variables:
+        shop_id: ${shop_id}
+        seller_id: ${shopName}
+        platform: ${platform}
+      method: GET
