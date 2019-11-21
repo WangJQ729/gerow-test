@@ -104,15 +104,18 @@ testMethod:
       - name: 发送消息给商家
         url: /robot/answer
         variables:
-          version_num: 3.1.1.2T
+          employee_role: 20
+          pin: cntaobao${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiop1234567890,buyer_id)}
+          msg_time: ${__time(/1000,msg_time)}
+          version_num: dist
+          q: ${__DES3Cipher(${question},,)}
+          platform: ${platform}
+          qianniu_version_num: 7.12.05N
+          service_status: 6
+          employee_name: kfa
           msgid: ${__RandomString(32,1234567890abcdef,)}
           state: 2
-          q: ${__DES3Cipher(${question},,)}
-          msg_time: ${__time(/1000,msg_time)}
-          qianniu_version_num: 7.12.02N
-          service_status: 7
           usr_shut: 0
-          pin: cntaobao${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiop1234567890,buyer_id)}
           spin: cntaobao${shopName}
         headers:
           Content-Type: multipart/form-data
