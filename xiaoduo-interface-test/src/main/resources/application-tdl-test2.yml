@@ -10,8 +10,12 @@ data:
     platform: taodongli
     mock_host: http://mock-server.xiaoduoai.com
     p_path: pulsar://pulsar-test-1:6650
-    topic: persistent://public/default/rmd-trade-tb-test2
+    topic: persistent://public/default/rmd-trade-taodongli-test2
     test_tools: http://zhy-test2.xiaoduoai.com
     co_test: https://co-test2.xiaoduoai.com
     co_test_username: 淘动力
     co_test_password: 123456
+
+client:
+  headers:
+    Xiaoduo-Platform: taodongli
