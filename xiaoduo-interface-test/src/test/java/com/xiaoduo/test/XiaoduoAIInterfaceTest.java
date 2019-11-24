@@ -26,13 +26,9 @@ public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
         @Factory
         public static Object[] dataFactory() throws UnsupportedEncodingException {
             String platform = System.getProperty("platform");
-            String features = System.getProperty("features");
             String testDir = "testCase";
             if (StringUtils.isNotBlank(platform)) {
                 testDir = testDir + "/" + platform;
-                if (StringUtils.isNotBlank(features) && !StringUtils.equals(features, "ALL")) {
-                    testDir = testDir + "/" + features;
-                }
             }
             String testDirPath = Objects.requireNonNull(XiaoduoAIInterfaceTest.class.getClassLoader().getResource(testDir)).getFile();
             ITestSuite testSuite = YmlTestSuite.getInstance(URLDecoder.decode(testDirPath, "UTF-8"));

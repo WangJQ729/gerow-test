@@ -3,6 +3,7 @@ package com.jq.test.entity;
 import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestSuite;
 import com.jq.test.task.YmlTestClass;
+import com.jq.test.utils.TestUtils;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -97,6 +98,13 @@ public class YmlTestClassEntity {
         testClass.setFile(file);
         testClass.setName(this.name);
         testClass.setStory(this.story);
+        String feature = file.getParentFile().getName();
+        String features = System.getProperty("features");
+        if (!TestUtils.isRun(feature, features)) {
+            String newFeature = file.getParentFile().getParentFile().getName();
+            feature = StringUtils.equals(features, newFeature) ? newFeature : feature;
+        }
+        testClass.setFeature(feature);
         testClass.setTestMethods(testMethod.parallelStream().flatMap(entity -> entity.build(testClass).stream()).collect(Collectors.toList()));
         if (beforeClass != null) {
             testClass.setBeforeClass(beforeClass.build(testClass));

@@ -9,7 +9,10 @@ import lombok.Setter;
 public class YmlTestClass extends AbstractTestClass {
     @Override
     public boolean enable() {
-        YmlTestClass.this.getStory();
+        boolean features = TestUtils.isRun(this.getFeature(), System.getProperty("features"));
+        if (!features) {
+            return false;
+        }
         boolean story = TestUtils.isRun(this.getStory(), System.getProperty("story"));
         if (!story) {
             return false;

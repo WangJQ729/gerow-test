@@ -1,0 +1,6 @@
+name: 统一前置处理
+#所有测试执行前执行
+beforeSuite:
+  name: 登录mp后台
+  step:
+    - byName: 登录统一管理平台

@@ -75,7 +75,7 @@ public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTe
         List<ITestMethod> methods = new ArrayList<>();
         String executionCount = testMethod.replace(testMethod.getTestClass().getParams().get("executionCount"));
         if (StringUtils.isNoneBlank(executionCount)) {
-            int count = Integer.valueOf(executionCount);
+            int count = Integer.parseInt(executionCount);
             for (int i = 0; i < count; i++) {
                 methods.add(testMethod);
             }

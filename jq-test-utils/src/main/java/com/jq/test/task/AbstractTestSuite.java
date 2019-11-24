@@ -32,9 +32,10 @@ public abstract class AbstractTestSuite implements ITestSuite {
     @Override
     public synchronized void setUp() {
         this.params.putAll(ConfigManager.getProperties());
-        for (ITestMethod testMethod : beforeSuite) {
-            testMethod.doing();
-        }
+        //只运行features下的前置条件
+        beforeSuite.stream().filter(iTestMethod ->
+                TestUtils.isRun(iTestMethod.getTestClass().getFeature(), System.getProperty("features")))
+                .forEach(ITestMethod::doing);
     }
 
     @Override
