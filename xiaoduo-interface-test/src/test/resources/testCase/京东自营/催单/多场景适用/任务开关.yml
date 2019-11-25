@@ -1,23 +1,23 @@
 name: 任务开关
 story: ${reminder_type}
 dataProvider:
-  - node_state: locked
-    order_state: LOCKED
-    message: 订单锁定了哈
+  - node_state: created
+    order_state: NOT_PAY
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
     text_with_vars: ${message}
-    reminder_type: 订单锁定
-  - node_state: trade_canceled
-    order_state: TRADE_CANCELED
-    message: 订单取消了哈
+    reminder_type: 下单未付款
+  - node_state: canceled
+    order_state: CANCEL
+    message: 非常遗憾您的订单被取消，如果您对我们的商品和服务有任何疑问，请随时联系我们，帮助我们更好改善。
     text_with_vars: ${message}
     reminder_type: 订单取消
   - node_state: finished
-    order_state: FINISHED_L
-    message: 交易成功了
+    order_state: FINISH
+    message: 小店收到飞鸽传书，得知您的宝贝已经安全抵达。有任何疑问欢迎咨询我们。如果您对这次购物体验满意，期待得到您的评价鼓励，一路相知，伴随左右~
     text_with_vars: ${message}
     reminder_type: 交易成功
   - node_state: paid
-    order_state: WAIT_SELLER_STOCK_OUT
+    order_state: WAIT_DELIVERY
     message: 您好，我们已收到你的订单啦~~我们会尽快为您发货，请您耐心等待。
     text_with_vars: ${message}
     reminder_type: 等待出库

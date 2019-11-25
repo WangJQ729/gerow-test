@@ -34,11 +34,11 @@ testMethod:
         new_order_state_name: 已发货
       - new_order_state: LOCKED
         new_order_state_name: 订单锁定
-      - new_order_state: FINISHED_L
+      - new_order_state: FINISH
         new_order_state_name: 交易成功
-      - new_order_state: WAIT_SELLER_STOCK_OUT
+      - new_order_state: WAIT_DELIVERY
         new_order_state_name: 等待出库
-      - new_order_state: TRADE_CANCELED
+      - new_order_state: CANCEL
         new_order_state_name: 订单取消
     step:
       - byName: 开启催单任务
@@ -57,7 +57,7 @@ testMethod:
         name: 修改订单状态
         form:
           word: |
-            {"platform":"${platform}","order_id":"${order_id}","shop_id":"${shop_id}","buyer_id":"${buyer}","address":"AATRkxbhRDexFQqaaj1DmxwFYrnn87mGyjhngO9AagZ47mJcjBXnOpFgAZ7Qomf4RvACXmETqDOfY5cT5GCflciwGx1BSmOVRJ3lMUg8vu9F77ka+pr8z96FU5KkdCjGDtbijUTr187JHufPh09JKsvP","status":"${new_order_state}","created_at":1572263720,"updated_at":1572265460,"item_ids":["10348221568"],"jdext":{"state_desc":"未付款","items":[{"item_id":"10348221568","sku_id":"13306184664","sku_name":"佳通轮胎 155R12 6PR VAN600 适配哈飞 松花江 经济耐磨载货升级600V1花纹 155R12C","count":1}],"receiver":{"name":"AATRkxbhRDexFQqaaj1DmxwFaYWe8eL5vWMbkBc/MrjDRApjYGTU/JUrVrDvAyUfQig=","phone":"AATRkxbhRDexFQqaaj1DmxwFu3TZXcy+gaBNHatTq7FEZv6aYgn1PJGgNzkGtTIl2DM="}}}
+            {"platform":"${platform}","order_id":"${order_id}","shop_id":"${shop_id}","buyer_id":"${buyer}","payment":205,"address":"内环到三环里北京东城区","status":"${new_order_state}","created_at":1574671841,"updated_at":1574671841,"jdext":{"items":[{"sku_id":"100003840169","sku_name":"双庆（ShuangQing）脸盆置物架 浴室免打孔不锈钢收纳架卫生间盆架厕所盆子洗脸盆收纳架 SQ-5243","count":2},{"sku_id":"100003840165","sku_name":"双庆（ShuangQing）单杆毛巾架 太空铝卫生间浴巾架复古免打孔挂架洗手间置物架 SQ-5252","count":1},{"sku_id":"1293281","sku_name":"双庆家居 吸盘香皂架无痕贴沥水香皂盒浴室肥皂架 SQ-5003","count":2}],"receiver":{}}}
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
 afterMethod:

@@ -1,9 +1,9 @@
 name: 状态变更
 story: ${reminder_type}
 dataProvider:
-  - node_state: trade_canceled
-    order_state: TRADE_CANCELED
-    message: 订单取消了哈
+  - node_state: canceled
+    order_state: CANCEL
+    message: 非常遗憾您的订单被取消，如果您对我们的商品和服务有任何疑问，请随时联系我们，帮助我们更好改善。
     text_with_vars: ${message}
     reminder_type: 订单取消
 beforeClass:
@@ -34,9 +34,9 @@ testMethod:
         new_order_state_name: 已发货
       - new_order_state: LOCKED
         new_order_state_name: 订单锁定
-      - new_order_state: FINISHED_L
+      - new_order_state: FINISH
         new_order_state_name: 交易成功
-      - new_order_state: WAIT_SELLER_STOCK_OUT
+      - new_order_state: WAIT_DELIVERY
         new_order_state_name: 等待出库
     step:
       - byName: 设置10秒后发送催单消息

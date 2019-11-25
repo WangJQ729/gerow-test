@@ -2,8 +2,8 @@ name: 买家主动沟通
 story: ${reminder_type}
 dataProvider:
   - node_state: finished
-    order_state: FINISHED_L
-    message: 交易成功了
+    order_state: FINISH
+    message: 小店收到飞鸽传书，得知您的宝贝已经安全抵达。有任何疑问欢迎咨询我们。如果您对这次购物体验满意，期待得到您的评价鼓励，一路相知，伴随左右~
     text_with_vars: ${message}
     reminder_type: 交易成功
 beforeClass:
@@ -28,7 +28,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 设置10秒后发送催单消息
-        name: 开启
+        name: 开启催单任务-交易成功
         bodyEditor:
           json:
             $.id: ${task_id}

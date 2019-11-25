@@ -2,7 +2,7 @@ name: 状态变更
 story: ${reminder_type}
 dataProvider:
   - node_state: paid
-    order_state: WAIT_SELLER_STOCK_OUT
+    order_state: WAIT_DELIVERY
     message: 您好，我们已收到你的订单啦~~我们会尽快为您发货，请您耐心等待。
     text_with_vars: ${message}
     reminder_type: 等待出库
@@ -34,9 +34,9 @@ testMethod:
         new_order_state_name: 已发货
       - new_order_state: LOCKED
         new_order_state_name: 订单锁定
-      - new_order_state: TRADE_CANCELED
+      - new_order_state: CANCEL
         new_order_state_name: 订单取消
-      - new_order_state: FINISHED_L
+      - new_order_state: FINISH
         new_order_state_name: 交易成功
     step:
       - byName: 开启催单任务

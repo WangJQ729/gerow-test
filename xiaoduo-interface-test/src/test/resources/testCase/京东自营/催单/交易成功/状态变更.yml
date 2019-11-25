@@ -2,8 +2,8 @@ name: 状态变更
 story: ${reminder_type}
 dataProvider:
   - node_state: finished
-    order_state: FINISHED_L
-    message: 交易成功了
+    order_state: FINISH
+    message: 小店收到飞鸽传书，得知您的宝贝已经安全抵达。有任何疑问欢迎咨询我们。如果您对这次购物体验满意，期待得到您的评价鼓励，一路相知，伴随左右~
     text_with_vars: ${message}
     reminder_type: 交易成功
 beforeClass:
@@ -34,9 +34,9 @@ testMethod:
         new_order_state_name: 已发货
       - new_order_state: LOCKED
         new_order_state_name: 订单锁定
-      - new_order_state: TRADE_CANCELED
+      - new_order_state: CANCEL
         new_order_state_name: 订单取消
-      - new_order_state: WAIT_SELLER_STOCK_OUT
+      - new_order_state: WAIT_DELIVERY
         new_order_state_name: 等待出库
     step:
       - byName: 设置10秒后发送催单消息

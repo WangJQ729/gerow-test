@@ -1,15 +1,18 @@
 name: 催单消息
 story: ${reminder_type}
 dataProvider:
-  - node_state: trade_canceled
-    order_state: TRADE_CANCELED
+  - node_state: canceled
+    order_state: CANCEL
     reminder_type: 订单取消
   - node_state: finished
-    order_state: FINISHED_L
+    order_state: FINISH
     reminder_type: 交易成功
   - node_state: paid
-    order_state: WAIT_SELLER_STOCK_OUT
+    order_state: WAIT_DELIVERY
     reminder_type: 等待出库
+  - node_state: created
+    order_state: NOT_PAY
+    reminder_type: 下单未付款
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -87,7 +90,7 @@ testMethod:
           p_path: pulsar://pulsar-test-1:6650
           topic: persistent://zhongtai/reminder/rmd-trade-jd
           word: |
-            {"platform":"${platform}","order_id":"${__RandomString(13,1234567890,order_id)}","shop_id":"${shop_id}","buyer_id":"${buyer}","address":"AATRkxbhRDexFQqaaj1DmxwFYrnn87mGyjhngO9AagZ47mJcjBXnOpFgAZ7Qomf4RvACXmETqDOfY5cT5GCflciwGx1BSmOVRJ3lMUg8vu9F77ka+pr8z96FU5KkdCjGDtbijUTr187JHufPh09JKsvP","status":"${order_state}","created_at":1572263720,"updated_at":1572265460,"item_ids":["10348221568"],"jdext":{"state_desc":"未付款","items":[{"item_id":"10348221568","sku_id":"13306184664","sku_name":"佳通轮胎 155R12 6PR VAN600 适配哈飞 松花江 经济耐磨载货升级600V1花纹 155R12C","count":1}],"receiver":{"name":"AATRkxbhRDexFQqaaj1DmxwFaYWe8eL5vWMbkBc/MrjDRApjYGTU/JUrVrDvAyUfQig=","phone":"AATRkxbhRDexFQqaaj1DmxwFu3TZXcy+gaBNHatTq7FEZv6aYgn1PJGgNzkGtTIl2DM="}}}
+            {"platform":"${platform}","order_id":"${__RandomString(13,1234567890,order_id)}","shop_id":"${shop_id}","buyer_id":"${buyer}","payment":205,"address":"内环到三环里北京东城区","status":"${order_state}","created_at":1574671841,"updated_at":1574671841,"jdext":{"items":[{"sku_id":"100003840169","sku_name":"双庆（ShuangQing）脸盆置物架 浴室免打孔不锈钢收纳架卫生间盆架厕所盆子洗脸盆收纳架 SQ-5243","count":2},{"sku_id":"100003840165","sku_name":"双庆（ShuangQing）单杆毛巾架 太空铝卫生间浴巾架复古免打孔挂架洗手间置物架 SQ-5252","count":1},{"sku_id":"1293281","sku_name":"双庆家居 吸盘香皂架无痕贴沥水香皂盒浴室肥皂架 SQ-5003","count":2}],"receiver":{}}}
         headers:
           Content-Type: multipart/form-data
       - name: 获取催单消息
