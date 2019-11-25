@@ -1,0 +1,66 @@
+name: 消息发送延时设置
+story: ${reminder_type}
+dataProvider:
+  - node_state: trade_canceled
+    order_state: TRADE_CANCELED
+    message: 订单取消了哈
+    text_with_vars: ${message}
+    reminder_type: 订单取消
+  - node_state: finished
+    order_state: FINISHED_L
+    message: 交易成功了
+    text_with_vars: ${message}
+    reminder_type: 交易成功
+  - node_state: paid
+    order_state: WAIT_SELLER_STOCK_OUT
+    message: 您好，我们已收到你的订单啦~~我们会尽快为您发货，请您耐心等待。
+    text_with_vars: ${message}
+    reminder_type: 等待出库
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取老的task配置
+    - byName: 获取task模板
+testMethod:
+  - name: 设置20秒后发送催单消息
+    description: |
+      """</br>
+      用例描述：</br>
+      1、1小时内只触发一次。</br>
+      </br>
+      测试步骤</br>
+      1、设置20秒后发送催单消息</br>
+      2、创建订单</br>
+      3、获取催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改task内容
+        name: 设置指定时间发送催单消息
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='send_message')].args.state_delay: 20
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 通过pulsar推送订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        name: 查看trace详情-TaskSetTimer
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskSetTimer')].node_type: ["${node_state}"]
+      - byName: 获取催单消息
+        sleep: 15
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后还原task
+  step:
+    - byName: 还原催单任务

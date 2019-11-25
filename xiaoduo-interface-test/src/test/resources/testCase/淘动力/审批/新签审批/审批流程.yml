@@ -1,0 +1,194 @@
+name: 直接主管审批
+story: 审批流程
+dataProvider:
+  - audit_type: deal_new
+beforeClass:
+  name: 前置条件设置
+  step:
+    - name: 获取审批节点id-新签审批
+      url: /api/audit/me/create/list
+      method: GET
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            adudit_id: $.data.list[?(@.audit_type=='${audit_type}')].id
+    - name: 获取所有角色列表
+      url: /api/admin/company/role/list
+      method: GET
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            role_id: $.role_list[*].id
+    - name: 配置审批节点-直接主管审批
+      url: /api/audit/config/update
+      method: POST
+      body: |
+        {
+            "id":"${adudit_id}",
+            "role_ids":[
+                "${role_id}"
+            ],
+            "approver_first_dynamic":"direct_manager",
+            "approver_ids":[],
+            "cc_ids":[],
+            "end_cc_ids":[]
+        }
+      assertion: [json: {$.code: 0}]
+testMethod:
+  - name:
+    description: |
+      """</br>
+      参数校验
+      """
+    severity: NORMAL
+    step:
+      - name: 随机获取销售和销售主管
+        url: /api/admin/company/employee/list
+        variables:
+          skip: 0
+          limit: 500
+          keyword: ""
+        method: GET
+        assertion: [json: {$.code: 0}]
+        extractor:
+          - json:
+              sale_name: $.employees[*].username
+              sale_super_name: $.employees[*].username
+      - name: 随机获取一个部门
+        url: /api/admin/company/department/list
+        method: GET
+        assertion: [json: {$.code: 0}]
+        extractor:
+          - json:
+              department_id: $.department..id
+      - name: 创建主管账号
+        url: /api/admin/company/employee/add
+        method: POST
+        headers:
+          Content-Type: multipart/form-data
+        assertion: [json: {$.code: 0}]
+        form:
+          username: ${__RandomName(supervisor_name)}
+          department_id: ${department_id}
+          role_id: ${role_id}
+          password: 123456
+          entry_date: ${__time(yyyy-MM-dd,)}
+      - name: 创建员工账号
+        byName: 创建主管账号
+        form:
+          username: ${__RandomName(username)}
+          supervisor_name: ${supervisor_name}
+        assertion: [json: {$.code: 0}]
+      - name: 使用员工账号登录
+        byName: 登录统一管理平台
+        form:
+          username: 淘动力:${username}
+        assertion: [json: {$.code: 0}]
+      - name: 获取类目列表
+        url: /api/admin/company/customer/category/list
+        method: GET
+        assertion: [json: {$.code: 0}]
+        extractor:
+          - json:
+              categories: $.categories[*]
+          - json:
+              group_name: $.group_name
+              childrens: $.childrens[*]
+            data: ${categories}
+      - name: 创建合同
+        url: /api/audit/create
+        method: POST
+        body: |
+          {
+              "audit_type":"deal_new",
+              "info":{
+                  "owner_info":{
+                      "sale_name":"${sale_name}",
+                      "sale_super_name":"${sale_super_name}",
+                      "v2_sale_channel":"dx"
+                  },
+                  "company_info":{
+                      "v2_company_name":"${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,v2_company_name)}",
+                      "v2_kp_name":"${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,v2_kp_name)}",
+                      "qq":"${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,qq)}",
+                      "v2_kp_address":"${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,v2_kp_address)}",
+                      "v2_kp_phone":"${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,v2_kp_phone)}"
+                  },
+                  "contract_info":{
+                      "sign_date":1574524800000,
+                      "v2_payment_account":"2135468",
+                      "code":"54645",
+                      "start_date":1574438400000,
+                      "end_date":1575043200000,
+                      "basic_salary":100,
+                      "bonus_percent":100,
+                      "type":"offline"
+                  },
+                  "customers":[
+                      {
+                          "v2_main_shop":true,
+                          "nick":"${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,nick)}",
+                          "v2_category":"${group_name}/${childrens}",
+                          "channel":1,
+                          "v2_season":"1",
+                          "v2_daily_reception":1,
+                          "v2_sales_level":"100-500",
+                          "v2_total_employee":"1",
+                          "v2_epiboly_platform":"淘宝",
+                          "v2_epiboly_type":"共享客服",
+                          "v2_epiboly_schedule":"早班",
+                          "v2_service_scope":"售前",
+                          "v2_service_seat":1,
+                          "sub_nicks":[
+                              {
+                                  "sub_nick":"${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,sub_nick)}",
+                                  "password":"${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,sub_password)}",
+                                  "shift":"1",
+                                  "phone":"17721885455"
+                              }
+                          ],
+                          "v2_kpi_list":[
+
+                          ]
+                      }
+                  ],
+                  "v2_sale_note":"${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,v2_sale_note)}"
+              }
+          }
+        assertion: [json: {$.code: 0}]
+        extractor:
+          - json:
+              process_id: $.data.process_id
+      - name: 使用主管账号登录
+        byName: 使用员工账号登录
+        form:
+          username: 淘动力:${supervisor_name}
+        assertion: [json: {$.code: 0}]
+      - name: 获取消息通知
+        url: /api/notify/list
+        variables:
+          skip: 0
+          limit: 20
+          status: unread
+        method: GET
+        assertion:
+          - json:
+              $.code: 0
+              $.data.list[?(@.type =='audit')].kwargs.process_id: ["${process_id}"]
+      - name: 查看合同详情
+        url: /api/audit/detail
+        variables:
+          process_id: ${process_id}
+        method: GET
+        assertion:
+          - json:
+              $.data.audit_type: ${audit_type}
+              $.data.info.owner_info.v2_sale_channel: dx
+              $.data.info.owner_info.sale_name: ${sale_name}
+              $.data.info.owner_info.sale_super_name: ${sale_super_name}
+      - name: 审批合同-通过
+        url: /api/audit/flow
+        method: POST
+        body: |
+          {"process_id":"${process_id}","comment":"","act_type":"pass"}
+        assertion: [json: {$.code: 0}]

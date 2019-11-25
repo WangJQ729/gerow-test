@@ -1,0 +1,84 @@
+name: 状态变更
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取老的task配置
+    - byName: 获取task模板
+    - byName: 开启所有首轮催拍
+      bodyEditor:
+        json:
+          $.id: ${task_id}
+          $.enable: true
+          $.shop_id: ${shop_id}
+          $.rules[?(@.type=='state_delay')].args.delay: 10
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].enable: true
+testMethod:
+  - name: 状态变更为-${new_order_state_name}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务</br>
+      2、咨询商家</br>
+      3、校验trace最后操作为setTimer（任务已触发）</br>
+      4、创建${new_order_state_name}订单</br>
+      5、校验trace（timer 到期后无后续变化）</br>
+      """
+    dataProvider:
+      - new_order_state: NOT_PAY
+        new_order_state_name: 下单未付款
+      - new_order_state: PAUSE
+        new_order_state_name: 订单暂停
+      - new_order_state: WAIT_GOODS_RECEIVE_CONFIRM
+        new_order_state_name: 已发货
+      - new_order_state: LOCKED
+        new_order_state_name: 订单锁定
+      - new_order_state: FINISHED_L
+        new_order_state_name: 交易成功
+      - new_order_state: WAIT_SELLER_STOCK_OUT
+        new_order_state_name: 等待出库
+      - new_order_state: TRADE_CANCELED
+        new_order_state_name: 订单取消
+    severity: NORMAL
+    step:
+      - byName: 发送消息给商家
+        variables:
+          q: ${__DES3Cipher(在吗,,)}
+      - name: 根据聊天记录查询trace
+        url: /api/reminder/v2/trace/search
+        variables:
+          platform: ${platform}
+          shop_id: ${shop_id}
+          buyer_id: ${buyer_id}
+          event_type: Chat-Message
+          date: ${__time(yyyy-MM-dd,)}
+        method: GET
+        untilWait: 5
+        extractor:
+          - json:
+              trace_id: $.data.traces[?(@.chat_message=='在吗')].trace_id
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 通过pulsar推送订单消息
+        sleep: 5
+        form:
+          word: |
+            {"platform":"${platform}","order_id":"${__RandomString(13,1234567890,order_id)}","shop_id":"${shop_id}","buyer_id":"${buyer_id}","address":"AATRkxbhRDexFQqaaj1DmxwFYrnn87mGyjhngO9AagZ47mJcjBXnOpFgAZ7Qomf4RvACXmETqDOfY5cT5GCflciwGx1BSmOVRJ3lMUg8vu9F77ka+pr8z96FU5KkdCjGDtbijUTr187JHufPh09JKsvP","status":"${new_order_state}","created_at":1572263720,"updated_at":1572265460,"item_ids":["10348221568"],"jdext":{"state_desc":"未付款","items":[{"item_id":"10348221568","sku_id":"13306184664","sku_name":"佳通轮胎 155R12 6PR VAN600 适配哈飞 松花江 经济耐磨载货升级600V1花纹 155R12C","count":1}],"receiver":{"name":"AATRkxbhRDexFQqaaj1DmxwFaYWe8eL5vWMbkBc/MrjDRApjYGTU/JUrVrDvAyUfQig=","phone":"AATRkxbhRDexFQqaaj1DmxwFu3TZXcy+gaBNHatTq7FEZv6aYgn1PJGgNzkGtTIl2DM="}}}
+      - byName: 获取催单消息-消息为空
+      - byName: 查看trace详情-订单状态变更
+        sleep: 5
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据聊天记录查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后还原task
+  step:
+    - byName: 还原催单任务

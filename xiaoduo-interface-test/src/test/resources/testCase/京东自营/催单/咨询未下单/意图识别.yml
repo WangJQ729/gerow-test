@@ -1,0 +1,95 @@
+name: 意图识别
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取老的task配置
+    - byName: 获取task模板
+    - byName: 修改task内容
+      name: 开启所有首轮催拍
+      bodyEditor:
+        json:
+          $.id: ${task_id}
+          $.enable: true
+          $.shop_id: ${shop_id}
+          $.rules[?(@.type=='state_delay')].args.delay: 0
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要优惠')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要快点发货')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要快点发货')].replies:
+            - ageing_id: ""
+              message: 你好~喜欢就不要犹豫啦，下午6点前拍下并付款，快递当天就能来拿货，您的包裹将以最快的速度投奔到您的怀里
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='关注商品质量')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要包邮')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要赠品')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='关注快递类型')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='关注快递类型')].replies:
+            - ageing_id: ""
+              message: 您好～喜欢就不要犹豫啦，我们会给您安排尽快发货，让你早点收到宝贝哦～
+testMethod:
+  - name: 第一轮催拍消息-${question}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、发送消息给商家</br>
+      2、校验催单信息</br>
+      """
+    dataProvider:
+      - question: 在吗
+        text_with_vars: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
+      - question: 有优惠吗
+        text_with_vars: 你好，我们这个商品是自产自销，一分钱一分货，中间没有其他的成本，加个已经是最实惠的呢~` 不要错过我们店铺优惠券哦，我还可以帮你申请小礼品呢~
+      - question: 下单后能优先发货吗
+        text_with_vars: 你好~喜欢就不要犹豫啦，下午6点前拍下并付款，快递当天就能来拿货，您的包裹将以最快的速度投奔到您的怀里
+      - question: 质量好不好
+        text_with_vars: 你好~我们家宝贝质量都是有保障的哦，收到不满意支持7天无理由退换呢，您可以放心购买的~
+      - question: 可以包邮吗
+        text_with_vars: 您好，加个已经是品牌最优惠价格了哦，运费是快递公司收取的哦，我们是薄利润冲量，实在是不能包邮了哦，但是我们会有小礼品送你，喜欢就下单吧~
+      - question: 送东西吗
+        text_with_vars: 您好～真的很抱歉没礼品呢，我们是薄利多销，大多数顾客都是冲着我们商品本身的质量和款式来的呢，性价比已经很好的哦～另外您可以关注下我们店铺的优惠卷活动呢～
+      - question: 发的什么快递
+        text_with_vars: 您好～喜欢就不要犹豫啦，我们会给您安排尽快发货，让你早点收到宝贝哦～
+    severity: NORMAL
+    step:
+      - name: 发送消息给商家
+        url: /robot/answer
+        variables:
+          version_num: dist
+          pin: cnjd${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiop1234567890,buyer_id)}
+          msg_time: ${__time(/1000,msg_time)}
+          msgid: ${__RandomString(32,1234567890abcdef,)}
+          q: ${__DES3Cipher(${question},,)}
+          platform: jd
+          qianniu_version_num: 8.9.1.500
+          service_status: 7
+          usr_shut: 0
+          spin: cnjd${shopName}
+        headers:
+          Content-Type: multipart/form-data
+        method: GET
+        responseType: DEFAULT
+        extractor:
+          - json:
+              qstr: $.answer
+            need_decode: true
+      - byName: 获取催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
+                - ${text_with_vars}
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据聊天记录查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后还原task
+  step:
+    - byName: 还原催单任务

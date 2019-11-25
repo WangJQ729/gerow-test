@@ -24,17 +24,17 @@ public class CaseListListener implements ITestListener {
     public void onTestStart(ITestResult result) {
         ITestMethod testMethod = (ITestMethod) (result.getParameters()[0]);
         String platform = System.getProperty("platform");
-        String suite = testMethod.getTestClass().getTestSuite().getName();
-        String feature = testMethod.getTestClass().getStory();
+        String feature = System.getProperty("features");
+        String story = testMethod.getTestClass().getStory();
         String name = testMethod.getName();
         String severityLevel = testMethod.getSeverityLevel().value();
         String description = testMethod.getDescription();
         String creator = testMethod.getAuthor();
         CaseInfo caseInfo = new CaseInfo();
-        caseInfo.setCase_name(platform + suite + "-" + feature + "-" + name);
-        caseInfo.setFeature(platform + suite);
+        caseInfo.setCase_name(platform + feature + "-" + story + "-" + name);
+        caseInfo.setFeature(platform + feature);
         caseInfo.setPlatform(platform);
-        caseInfo.setStory(feature);
+        caseInfo.setStory(story);
         caseInfo.setDescription(description);
         caseInfo.setCreator(creator);
         caseInfo.setSeverity(severityLevel);

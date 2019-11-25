@@ -1,0 +1,16 @@
+data:
+  test:
+    host: jd-qa.xiaoduoai.com
+    mock_host: http://mock-server-jd.xiaoduoai.com
+    shopName: shuangqing2015
+    seller_name: 双庆家居京东自营旗舰店:shuangqing2015
+    shop: 测试ckm
+    sign: ca61da42f143ef040fc22afee498a622
+    shop_id: 5dd51e94237402000cb32576
+    buyer: tester_01
+    platform: jd
+    child_seller: 双庆家居京东自营旗舰店:shuangqing2019
+    test_tools: http://zhy-jd.xiaoduoai.com
+client:
+  headers:
+    Xiaoduo-Platform: jdzy
