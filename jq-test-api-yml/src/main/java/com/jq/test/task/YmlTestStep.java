@@ -300,10 +300,10 @@ public class YmlTestStep implements ITestStep {
         }
         if (step.getBodyEditor() != null) {
             //根据bodyBuilder构造请求体
-            body = step.getBodyEditor().builderBody(body);
+            body = step.getBodyEditor().builderBody(body,this);
         }
         //根据fieldCheck构造请求体
-        body = factory.builderBody(body);
+        body = factory.builderBody(body,this);
         //替换请求体里边的参数
         body = replace(body);
         if (MediaType.APPLICATION_FORM_URLENCODED.equals(httpHeaders.getContentType())) {

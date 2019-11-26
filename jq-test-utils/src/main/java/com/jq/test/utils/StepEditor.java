@@ -1,6 +1,7 @@
 package com.jq.test.utils;
 
 import com.jq.test.json.JsonPathUtils;
+import com.jq.test.task.ITestStep;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,12 +42,24 @@ public class StepEditor {
      * @param body 默认请求体
      * @return 替换参数后得请求体
      */
-    public String builderBody(String body) {
+    public String builderBody(String body, ITestStep testStep) {
         if (StringUtils.isNotBlank(key)) {
             body = JsonPathUtils.put(body, key, value);
         }
         for (String key : json.keySet()) {
-            body = JsonPathUtils.put(body, key, json.get(key));
+            Object value = json.get(key);
+            try {
+                if (value instanceof String) {
+                    if (((String) value).contains("__javaScript")) {
+                        body = JsonPathUtils.put(body, key, Long.parseLong(testStep.replace((String) value)));
+                        continue;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            body = JsonPathUtils.put(body, key, value);
+
         }
         return body;
     }
