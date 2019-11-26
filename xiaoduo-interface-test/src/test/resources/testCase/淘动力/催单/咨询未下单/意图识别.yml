@@ -105,7 +105,7 @@ testMethod:
         url: /robot/answer
         variables:
           employee_role: 20
-          pin: cntaobao${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiop1234567890,buyer_id)}
+          pin: cntaobao${__RandomName(buyer_id)}
           msg_time: ${__time(/1000,msg_time)}
           version_num: dist
           q: ${__DES3Cipher(${question},,)}

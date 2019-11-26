@@ -141,7 +141,7 @@ testMethod:
           qianniu_version_num: 7.12.02N
           service_status: 7
           usr_shut: 0
-          pin: cntaobao${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiop1234567890,buyer_id)}
+          pin: cntaobao${__RandomName(buyer_id)}
           spin: cntaobao${shopName}
         headers:
           Content-Type: multipart/form-data

@@ -62,7 +62,7 @@ testMethod:
         url: /robot/answer
         variables:
           version_num: dist
-          pin: cnjd${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiop1234567890,buyer_id)}
+          pin: cnjd${__RandomName(buyer_id)}
           msg_time: ${__time(/1000,msg_time)}
           msgid: ${__RandomString(32,1234567890abcdef,)}
           q: ${__DES3Cipher(${question},,)}
