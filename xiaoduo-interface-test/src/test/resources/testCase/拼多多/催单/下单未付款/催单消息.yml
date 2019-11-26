@@ -8,7 +8,7 @@ beforeClass:
       url: /api/admin/reminder/v2/manage/task/list
       variables:
         #url后跟的参数
-        template_keys: 0,1
+        template_keys: 0
         node_type: ${order_state}
       method: GET
       assertion: [json: {$.code: 0}]

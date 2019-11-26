@@ -38,7 +38,7 @@ beforeClass:
     - name: 获取所有的task_id
       url: /api/admin/reminder/v2/manage/task/list
       variables:
-        template_keys: 0,1
+        template_keys: 0
         node_type: ${node_state}
       method: GET
       assertion: [json: {$.code: 0}]
