@@ -37,6 +37,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启催单任务
+        name: 开启交易成功催单任务
         bodyEditor:
           json:
             $.id: ${task_id}
