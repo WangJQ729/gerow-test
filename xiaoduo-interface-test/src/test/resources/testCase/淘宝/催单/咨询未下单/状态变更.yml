@@ -1,0 +1,74 @@
+name: 状态变更
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 关闭其他催单任务
+    - byName: 使用模板新建一个task
+    - byName: 修改咨询未下单内容
+      name: 设置10秒后发送咨询未下单催单消息
+      bodyEditor:
+        json:
+          $.id: ${task_id}
+          $.enable: true
+          $.shop_id: ${shop_id}
+          $.rules[?(@.type=='state_delay')].args.delay: 10
+testMethod:
+  - name: 状态变更为-${new_order_state_name}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务</br>
+      2、咨询商家</br>
+      3、校验trace最后操作为setTimer（任务已触发）</br>
+      4、创建${new_order_state_name}订单</br>
+      5、校验trace（timer 到期后无后续变化）</br>
+      """
+    dataProvider:
+      - order_state: created
+        new_order_state_name: 下单未付款
+      - order_state: deposited
+        new_order_state_name: 已付定金未付尾款
+      - order_state: paid
+        new_order_state_name: 已付款
+      - order_state: signed
+        new_order_state_name: 已签收
+      - order_state: closed
+        new_order_state_name: 交易取消
+      - order_state: part_shipped
+        new_order_state_name: 拆单发货
+      - order_state: shipped
+        new_order_state_name: 不拆单发货
+      - order_state: succeeded
+        new_order_state_name: 交易成功
+    severity: NORMAL
+    step:
+      - byName: 发送消息给商家
+      - byName: 根据聊天记录查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 通过pulsar推送订单消息-指定用户
+      - byName: 获取催单消息-消息为空
+      - byName: 查看trace详情
+        name: 查看trace详情-订单状态变更
+        sleep: 5
+        assertion:
+          - json:
+              $.data.traces[-1].phase: ReceiveEvent
+              $.data.traces[-1].event_type: Timer-Expired
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据聊天记录查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
