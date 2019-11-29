@@ -51,3 +51,7 @@ beforeSuite:
         seller_id: ${shopName}
         platform: ${platform}
       method: GET
+    - byName: 发送消息给商家
+      name: 发送消息给商家表示不是静默用户
+      variables:
+        pin: cntaobao${buyer}
