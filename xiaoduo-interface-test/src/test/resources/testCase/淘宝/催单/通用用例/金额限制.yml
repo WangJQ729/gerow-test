@@ -78,11 +78,8 @@ testMethod:
       - byName: 获取催单消息
   - name: 金额限制-不满足-${payment}
     dataProvider:
-      #      - payment: 2
       - payment: 4.99
       - payment: 20.01
-    #      - payment: 30
-    #      - payment: 100
     description: |
       """</br>
       用例描述：</br>
