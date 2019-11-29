@@ -6,6 +6,11 @@ dataProvider:
     message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
     text_with_vars: ${message}
     reminder_type: 下单未付款
+  - node_state: closed
+    order_state: closed
+    message: 亲，您对宝贝有什么不满意的吗？
+    text_with_vars: ${message}
+    reminder_type: 交易取消
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -30,11 +35,12 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - name: 开启下单未付款多订单去重
+      - name: 开启多订单去重
         byName: 设置单个顾客单日最高催单数
         bodyEditor:
           json:
             $.duplicated_order_switches[?(@.check_state=='created')].enable: true
+            $.duplicated_order_switches[?(@.check_state=='closed')].enable: true
       - byName: 开启催单任务-10秒后触发
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
