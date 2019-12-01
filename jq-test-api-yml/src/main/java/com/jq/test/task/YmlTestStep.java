@@ -133,7 +133,7 @@ public class YmlTestStep implements ITestStep {
             } catch (Exception | Error e) {
                 //抛异常后重试
                 if (nowTime - startTime < step.getUntilWait() * 1000) {
-                    Thread.sleep(800);
+                    Thread.sleep(step.getIntervals());
                     doWithWait(startTime);
                 } else {
                     throw e;
@@ -228,6 +228,8 @@ public class YmlTestStep implements ITestStep {
 
         if (oldStep.getSleep() != 0) newStep.setSleep(oldStep.getSleep());
 
+        if (oldStep.getIntervals() != 1000) newStep.setIntervals(oldStep.getIntervals());
+
         if (oldStep.getBodyEditor() != null) newStep.setBodyEditor(oldStep.getBodyEditor());
 
         if (StringUtils.isNotBlank(oldStep.getName())) newStep.setName(oldStep.getName());
@@ -300,10 +302,10 @@ public class YmlTestStep implements ITestStep {
         }
         if (step.getBodyEditor() != null) {
             //根据bodyBuilder构造请求体
-            body = step.getBodyEditor().builderBody(body,this);
+            body = step.getBodyEditor().builderBody(body, this);
         }
         //根据fieldCheck构造请求体
-        body = factory.builderBody(body,this);
+        body = factory.builderBody(body, this);
         //替换请求体里边的参数
         body = replace(body);
         if (MediaType.APPLICATION_FORM_URLENCODED.equals(httpHeaders.getContentType())) {

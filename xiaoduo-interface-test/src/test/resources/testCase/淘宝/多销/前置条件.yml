@@ -1,0 +1,23 @@
+name: 统一前置处理
+#所有测试执行前执行
+beforeSuite:
+  name: 登录mp后台
+  step:
+    - byName: 获取MP后台地址
+    - byName: 进入主页
+    - byName: 拉一下催单消息
+    - name: 获取多销跳转链接
+      url: /api/fishpond/auth/get_sub_login_url
+      variables:
+        sub_nick: ${shopName}
+        platform: ${platform}
+      method: GET
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            seller_url: $.data.url
+    - name: 进入多销主页
+      host: ""
+      url: ${seller_url}
+      method: GET
+      responseType: DEFAULT

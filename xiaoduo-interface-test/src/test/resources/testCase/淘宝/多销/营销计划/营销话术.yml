@@ -1,0 +1,130 @@
+name: 营销话术
+dataProvider:
+  - group_name: 顾客分群_${__time(yyyyMMdd_HHmmss,)}
+beforeClass:
+  name: 创建客群并流入一个客人
+  step:
+    - name: 新建顾客分群
+      url: /api/zhike/customer_group/create
+      method: POST
+      body: |
+        {"customer_group":{"name":"${group_name}","cond":{"select_cond":{"op":"and","child_conds":[{"op":"and","child_conds":[{"cond":{"type":"last_order_state","rule":{"type":"last_order_state","state":"asked","max_time":1575251759,"min_time":1575165359,"goods":[]}}}]}]},"exclude_cond":null},"shop_id":"${shop_id}"}}
+      bodyEditor:
+        json:
+          $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.min_time: ${__javaScript(${__time(/1000)},)}
+          $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.max_time: ${__javaScript(${__time(/1000)}+600,)}
+      assertion: [json: {$.code: 0}]
+    - name: 查看分群列表-获取新分群ID
+      url: /api/zhike/customer_group/list
+      method: GET
+      variables:
+        is_deleted: false
+        shop_id: ${shop_id}
+        is_system: false
+      untilWait: 5
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            group_id: $.data.results[?(@.name=='${group_name}')].id
+    - byName: 查看分群列表-获取新分群ID
+      name: 校验初始客群人数为0
+      assertion:
+        - json:
+            $.data.results[?(@.id=='${group_id}')].customer_count: [0]
+    - byName: 发送消息给商家
+    - byName: 校验初始客群人数为0
+      name: 校验初始客群人数为1
+      assertion:
+        - json:
+            $.data.results[?(@.id=='${group_id}')].customer_count: [1]
+testMethod:
+  - name: 消息内容校验-${message}
+    dataProvider:
+      - message: 纯文字催单消息
+        text_with_vars: 纯文字催单消息
+      - message: "{{子账号名称}}"
+        text_with_vars: ${seller_name}
+      - message: "1{↓1秒后分行发送↓}2"
+        text_with_vars: "1{↓1秒后分行发送↓}2"
+    description: |
+      """</br>
+      用例描述：</br>
+      1、营销话术消息内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、创建客池精准营销</br>
+      2、获取消息、校验消息内容</br>
+      """
+    severity: NORMAL
+    step:
+      - name: 创建客池精准营销
+        host: ${seller_host}
+        url: /api/fishpond/task
+        method: POST
+        body: |
+          {
+              "name":"营销计划_${__time(yyyyMMdd_HHmmss,)}",
+              "last_seller_first":true,
+              "send_range":0,
+              "send_groups":[
+                  "${group_id}"
+              ],
+              "sellers":[
+                  "${seller_name}"
+              ],
+              "send_time":[
+                  {
+                      "from":${__javaScript(${__time(/1000)},)},
+                      "to":${__javaScript(${__time(/1000)}+61,)}
+                  }
+              ],
+              "message":{
+                  "text":"${message}",
+                  "images":[
+
+                  ]
+              }
+          }
+        assertion: [json: {$.code: 0}]
+      - byName: 获取催单消息
+        name: 获取多销消息
+        untilWait: 120
+        intervals: 5000
+        assertion:
+          - json:
+              $.data.messages[?(@.buyer_id=='${buyer_id}')].text_with_vars: ["${text_with_vars}"]
+  - name: 消息内容校验(子账号)-${message}
+    dataProvider:
+      - message: 纯文字催单消息
+        text_with_vars: 纯文字催单消息
+      - message: "{{子账号名称}}"
+        text_with_vars: ${child_seller_name}
+      - message: "1{↓1秒后分行发送↓}2"
+        text_with_vars: "1{↓1秒后分行发送↓}2"
+    description: |
+      """</br>
+      用例描述：</br>
+      1、营销话术消息内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、创建客池精准营销</br>
+      2、使用子账号获取消息、校验消息内容</br>
+      """
+      severity: NORMAL
+    step:
+      - byName: 创建客池精准营销
+        bodyEditor:
+          json:
+            $.sellers: ["${child_seller}"]
+      - byName: 获取多销消息
+        variables:
+          seller_id: ${child_seller}
+afterClass:
+  name: 删除智能分群
+  step:
+    - name: 删除智能分群
+      url: /api/zhike/customer_group/delete
+      variables:
+        id: ${group_id}
+      method: POST
+      assertion: [json: {$.code: 0}]

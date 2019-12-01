@@ -16,3 +16,5 @@ data:
     dataadmin_username: admin
     dataadmin_password: 123456
     child_seller: wangjq_1990:xiaoduo1
+    child_seller_name: xiaoduo1
+    seller_host: http://seller.xiaoduoai.com
