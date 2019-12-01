@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.*;
 
 public class DingTalkListener implements ISuiteListener {
@@ -129,14 +130,21 @@ public class DingTalkListener implements ISuiteListener {
     }
 
     private void doPost(String body, StringBuilder builder) {
-        RestTemplate restTemplate = new RestTemplate();
-        String format = String.format(body, builder.toString());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        HttpEntity entity = new HttpEntity<>(format, headers);
-        String test_url = "https://oapi.dingtalk.com/robot/send?access_token=aa9a76956e0bcf39e7d5ddccc5437fc9afd11e81fecb41569d4b5415dd95c8e9";
-        restTemplate.postForObject(test_url, entity, String.class);
-        String dev_url = "https://oapi.dingtalk.com/robot/send?access_token=5227f6880b79746e70bd5258a69f5839c4f5a29bf33f69f99143fad9775a569c";
-        restTemplate.postForObject(dev_url, entity, String.class);
+        if (isSendMessage()) {
+            RestTemplate restTemplate = new RestTemplate();
+            String format = String.format(body, builder.toString());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+            HttpEntity entity = new HttpEntity<>(format, headers);
+            String test_url = "https://oapi.dingtalk.com/robot/send?access_token=aa9a76956e0bcf39e7d5ddccc5437fc9afd11e81fecb41569d4b5415dd95c8e9";
+            restTemplate.postForObject(test_url, entity, String.class);
+            String dev_url = "https://oapi.dingtalk.com/robot/send?access_token=5227f6880b79746e70bd5258a69f5839c4f5a29bf33f69f99143fad9775a569c";
+            restTemplate.postForObject(dev_url, entity, String.class);
+        }
+    }
+
+    private boolean isSendMessage() {
+        int hour = LocalTime.now().getHour();
+        return hour > 9 && hour < 22;
     }
 }
