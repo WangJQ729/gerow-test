@@ -145,6 +145,6 @@ public class DingTalkListener implements ISuiteListener {
 
     private boolean isSendMessage() {
         int hour = LocalTime.now().getHour();
-        return hour > 9 && hour < 22;
+        return hour >= 9 && hour <= 22;
     }
 }
