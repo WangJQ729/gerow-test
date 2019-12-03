@@ -1,4 +1,4 @@
-name: 消息内容
+name: 催单消息
 story: ${reminder_type}
 dataProvider:
   - node_state: asked
