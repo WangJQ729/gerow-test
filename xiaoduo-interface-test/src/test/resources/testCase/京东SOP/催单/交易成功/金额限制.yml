@@ -1,26 +1,11 @@
 name: 金额限制
 story: ${reminder_type}
 dataProvider:
-  - node_state: shipped
-    order_state: WAIT_GOODS_RECEIVE_CONFIRM
-    message: 已发货
+  - node_state: finished
+    order_state: FINISHED_L
+    message: 交易成功了
     text_with_vars: ${message}
-    reminder_type: 已发货
-  - node_state: paused
-    order_state: PAUSE
-    message: 订单暂停了哈
-    text_with_vars: ${message}
-    reminder_type: 订单暂停
-  - node_state: locked
-    order_state: LOCKED
-    message: 订单锁定了哈
-    text_with_vars: ${message}
-    reminder_type: 订单锁定
-  - node_state: paid
-    order_state: WAIT_SELLER_STOCK_OUT
-    message: 您好，我们已收到你的订单啦~~我们会尽快为您发货，请您耐心等待。
-    text_with_vars: ${message}
-    reminder_type: 等待出库
+    reminder_type: 交易成功
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -48,7 +33,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 修改task内容
-        name: 设置金额限制为5-20元
+        name: 设置交易成功金额限制为5-20元
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -60,11 +45,8 @@ testMethod:
             $.rules[?(@.type=='pay_amount_limit')].args.enable: true
             $.rules[?(@.type=='pay_amount_limit')].args.min: 5
             $.rules[?(@.type=='pay_amount_limit')].args.max: 20
-      - byName: 通过pulsar推送订单消息
-        name: 推送指定金额订单消息
-        form:
-          word: |
-            {"platform":"jd","order_id":"${__RandomString(13,1234567890,order_id)}","shop_id":"${shop_id}","buyer_id":"${buyer}","payment":${payment},"address":"AATRkxbhRDexFQqaaj1DmxwFYrnn87mGyjhngO9AagZ47mJcjBXnOpFgAZ7Qomf4RvACXmETqDOfY5cT5GCflciwGx1BSmOVRJ3lMUg8vu9F77ka+pr8z96FU5KkdCjGDtbijUTr187JHufPh09JKsvP","status":"${order_state}","created_at":1572263720,"updated_at":1572265460,"item_ids":["10348221568"],"jdext":{"state_desc":"未付款","items":[{"item_id":"10348221568","sku_id":"13306184664","sku_name":"佳通轮胎 155R12 6PR VAN600 适配哈飞 松花江 经济耐磨载货升级600V1花纹 155R12C","count":1}],"receiver":{"name":"AATRkxbhRDexFQqaaj1DmxwFaYWe8eL5vWMbkBc/MrjDRApjYGTU/JUrVrDvAyUfQig=","phone":"AATRkxbhRDexFQqaaj1DmxwFu3TZXcy+gaBNHatTq7FEZv6aYgn1PJGgNzkGtTIl2DM="}}}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 推送指定金额订单消息
       - byName: 获取催单消息
   - name: 金额限制-不满足-${payment}
     dataProvider:
@@ -83,7 +65,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 设置金额限制为5-20元
+      - byName: 设置交易成功金额限制为5-20元
       - byName: 推送指定金额订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -113,7 +95,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 修改task内容
-        name: 关闭金额限制
+        name: 关闭交易成功金额限制
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -125,6 +107,7 @@ testMethod:
             $.rules[?(@.type=='pay_amount_limit')].args.enable: false
             $.rules[?(@.type=='pay_amount_limit')].args.min: 5
             $.rules[?(@.type=='pay_amount_limit')].args.max: 20
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 推送指定金额订单消息
       - byName: 获取催单消息
 afterMethod:

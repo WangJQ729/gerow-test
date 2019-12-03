@@ -13,9 +13,6 @@ dataProvider:
   - node_state: trade_canceled
     order_state: TRADE_CANCELED
     reminder_type: 订单取消
-  - node_state: finished
-    order_state: FINISHED_L
-    reminder_type: 交易成功
   - node_state: paid
     order_state: WAIT_SELLER_STOCK_OUT
     reminder_type: 等待出库

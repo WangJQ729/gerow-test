@@ -1,31 +1,11 @@
 name: 时效标签
 story: ${reminder_type}
 dataProvider:
-  - node_state: shipped
-    order_state: WAIT_GOODS_RECEIVE_CONFIRM
-    message: 已发货
+  - node_state: finished
+    order_state: FINISHED_L
+    message: 交易成功了
     text_with_vars: ${message}
-    reminder_type: 已发货
-  - node_state: paused
-    order_state: PAUSE
-    message: 订单暂停了哈
-    text_with_vars: ${message}
-    reminder_type: 订单暂停
-  - node_state: locked
-    order_state: LOCKED
-    message: 订单锁定了哈
-    text_with_vars: ${message}
-    reminder_type: 订单锁定
-  - node_state: trade_canceled
-    order_state: TRADE_CANCELED
-    message: 订单取消了哈
-    text_with_vars: ${message}
-    reminder_type: 订单取消
-  - node_state: paid
-    order_state: WAIT_SELLER_STOCK_OUT
-    message: 您好，我们已收到你的订单啦~~我们会尽快为您发货，请您耐心等待。
-    text_with_vars: ${message}
-    reminder_type: 等待出库
+    reminder_type: 交易成功
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -53,22 +33,9 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - name: 添加时效标签
-        url: /api/admin/config2/ageing/add
-        headers:
-          Content-Type: multipart/form-data
-        method: POST
-        form:
-          name: ${name}
-          ageing_type: ${ageing_type}
-          start_time: ${start_time}
-          end_time: ${end_time}
-        assertion: [json: {$.code: 0}]
-        extractor:
-          - json:
-              ageing_id: $.ageing.id
+      - byName: 添加时效标签
       - byName: 修改task内容
-        name: 设置时效标签
+        name: 设置交易成功时效标签
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -76,6 +43,7 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='send_message')].args.ageing_id: ${ageing_id}
       - byName: 通过pulsar推送订单消息
@@ -108,7 +76,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 添加时效标签
-      - byName: 设置时效标签
+      - byName: 设置交易成功时效标签
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -136,12 +104,8 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签
-        name: 添加时效标签(每日重复)
-        form:
-          everyday_start_time: ${everyday_start_time}
-          everyday_end_time: ${everyday_end_time}
-      - byName: 设置时效标签
+      - byName: 添加时效标签(每日重复)
+      - byName: 设置交易成功时效标签
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
   - name: 时效标签(每日重复-失效)-${ageing_name}
@@ -172,7 +136,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 添加时效标签(每日重复)
-      - byName: 设置时效标签
+      - byName: 设置交易成功时效标签
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -185,14 +149,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-    - name: 删除时效标签
-      url: /api/admin/config2/ageing/delete
-      headers:
-        Content-Type: multipart/form-data
-      method: POST
-      form:
-        id: ${ageing_id}
-      assertion: [json: {$.code: 0}]
+    - byName: 删除时效标签
 afterClass:
   name: 测试结束后还原task
   step:

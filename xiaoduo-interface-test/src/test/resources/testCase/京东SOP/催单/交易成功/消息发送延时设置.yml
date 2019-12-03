@@ -1,4 +1,4 @@
-name: 状态变更
+name: 消息发送延时设置
 story: ${reminder_type}
 dataProvider:
   - node_state: finished
@@ -13,49 +13,35 @@ beforeClass:
     - byName: 获取老的task配置
     - byName: 获取task模板
 testMethod:
-  - name: 状态变更为-${new_order_state_name}
+  - name: 设置20秒后发送催单消息
     description: |
       """</br>
       用例描述：</br>
-      1、开启任务会触发。</br>
+      1、1小时内只触发一次。</br>
       </br>
       测试步骤</br>
-      1、开启任务</br>
-      2、创建${reminder_type}订单</br>
-      3、校验trace最后操作为setTimer（任务已触发）</br>
-      4、订单状态变更为${new_order_state_name}</br>
-      5、校验trace（timer 到期后无后续变化）</br>
+      1、设置20秒后发送催单消息</br>
+      2、创建订单</br>
+      3、获取催单消息</br>
       """
     severity: NORMAL
-    dataProvider:
-      - new_order_state: PAUSE
-        new_order_state_name: 订单暂停
-      - new_order_state: WAIT_GOODS_RECEIVE_CONFIRM
-        new_order_state_name: 已发货
-      - new_order_state: LOCKED
-        new_order_state_name: 订单锁定
-      - new_order_state: TRADE_CANCELED
-        new_order_state_name: 订单取消
-      - new_order_state: WAIT_SELLER_STOCK_OUT
-        new_order_state_name: 等待出库
     step:
-      - byName: 设置10秒后发送催单消息
-        name: 设置10秒后发送交易成功催单消息
+      - byName: 修改task内容
+        name: 设置指定时间发送交易成功催单消息
         bodyEditor:
           json:
             $.id: ${task_id}
             $.enable: true
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_limit')].args.enable: false
-            $.rules[?(@.type=='send_message')].args.state_delay: 10
+            $.rules[?(@.type=='send_message')].args.state_delay: 20
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 修改订单状态
-      - byName: 获取催单消息-消息为空
-      - byName: 查看trace详情-订单状态变更
+      - byName: 获取催单消息
+        sleep: 15
 afterMethod:
   name: 测试结束后查看订单trace
   step:

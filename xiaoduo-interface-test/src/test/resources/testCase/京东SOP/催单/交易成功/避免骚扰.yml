@@ -1,4 +1,4 @@
-name: 消息发送时间段
+name: 避免骚扰
 story: ${reminder_type}
 dataProvider:
   - node_state: finished
@@ -13,20 +13,62 @@ beforeClass:
     - byName: 获取老的task配置
     - byName: 获取task模板
 testMethod:
-  - name: 消息发送时间断内交易完成
+  - name: 避免骚扰
     description: |
       """</br>
       用例描述：</br>
-      1、开启任务会触发。</br>
+      1、1小时内只触发一次。</br>
       </br>
       测试步骤</br>
-      1、开启任务</br>
-      2、消息发送时间断内完成交易</br>
-      3、获取催单消息</br>
+      1、开启避免骚扰</br>
+      2、创建第一个订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      5、创建第二个订单</br>
+      6、校验催单信息</br>
+      7、校验traces</br>
       """
     severity: NORMAL
     step:
-      - byName: 开启催单任务
+      - byName: 修改task内容
+        name: 开启交易成功避免骚扰
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_limit')].args.enable: true
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 指定随机用户通过pulsar推送订单消息
+      - byName: 获取催单消息
+      - byName: 指定用户通过pulsar推送订单消息
+      - byName: 根据订单查询trace
+      - byName: 获取催单消息-消息为空
+      - byName: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_limit]
+  - name: 避免骚扰-关闭
+    description: |
+      """</br>
+      用例描述：</br>
+      1、1小时内只触发一次。</br>
+      </br>
+      测试步骤</br>
+      1、开启避免骚扰</br>
+      2、创建第一个订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      5、创建第二个订单</br>
+      6、校验催单信息</br>
+      7、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改task内容
+        name: 关闭交易成功避免骚扰
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -36,38 +78,11 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
-      - byName: 通过pulsar推送订单消息
+      - byName: 指定随机用户通过pulsar推送订单消息
       - byName: 获取催单消息
-  - name: 消息发送时间断外交易完成
-    description: |
-      """</br>
-      用例描述：</br>
-      1、开启任务会触发。</br>
-      </br>
-      测试步骤</br>
-      1、开启任务</br>
-      2、消息发送时间断外完成交易</br>
-      3、获取催单消息</br>
-      """
-    severity: NORMAL
-    step:
-      - byName: 开启催单任务
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_limit')].args.enable: false
-            $.rules[?(@.type=='send_message')].args.state_delay: 0
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges[0].from: 0
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges[0].to: 60
-      - byName: 通过pulsar推送订单消息
+      - byName: 指定用户通过pulsar推送订单消息
       - byName: 根据订单查询trace
-      - byName: 查看trace详情
-        assertion:
-          - json:
-              $.data.traces[?(@.phase=='TaskPass')].task_pass_info: [out of time range]
+      - byName: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
