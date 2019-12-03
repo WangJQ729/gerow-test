@@ -41,7 +41,7 @@ testMethod:
     description: |
       """</br>
       用例描述：</br>
-      1、1小时内只触发一次。</br>
+      1、测试消息发送延时是否正确。</br>
       </br>
       测试步骤</br>
       1、设置${state_delay}秒后发送催单消息</br>
