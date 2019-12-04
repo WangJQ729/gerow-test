@@ -232,47 +232,57 @@ public class Assertion {
      * @param value  期望值
      */
     private void assertion(Object actual, Object value) {
-        Allure.step("判断结果:" + actual + " " + assertionType + " " + value, () -> {
-            //根据不同的判断类型进行判断
-            switch (assertionType) {
-                case GREATEROREQUALTO:
-                    Assertions.assertThat(new BigDecimal(actual.toString())).isGreaterThanOrEqualTo(new BigDecimal(value.toString()));
-                    break;
-                case LESSTHANOREQUALTO:
-                    Assertions.assertThat(new BigDecimal(actual.toString())).isLessThanOrEqualTo(new BigDecimal(value.toString()));
-                    break;
-                case CONTAINS:
-                    if (actual instanceof Collection) {
-                        Assertions.assertThat((Collection<Object>) actual).contains(value);
-                    } else {
-                        Assertions.assertThat(actual.toString()).contains(value.toString());
-                    }
-                    break;
-                case AllCONTAINS:
-                    ((Collection<Object>) actual).forEach(o -> Assertions.assertThat(o.toString()).contains(value.toString()));
-                    break;
-                case ALLIS:
-                    Assertions.assertThat((Collection<Object>) actual).containsOnly(value);
-                    break;
-                case ALLGREATEROREQUALTO:
-                    ((Collection<Object>) actual).forEach(o -> Assertions.assertThat(new BigDecimal(o.toString())).isGreaterThanOrEqualTo(new BigDecimal(value.toString())));
-                    break;
-                case ALLLESSTHANOREQUALTO:
-                    ((Collection<Object>) actual).forEach(o -> Assertions.assertThat(new BigDecimal(o.toString())).isLessThanOrEqualTo(new BigDecimal(value.toString())));
-                    break;
-                case TOTAL:
-                    this.step.addAssertionLength(key, Integer.parseInt(actual.toString()));
-                    Assertions.assertThat(this.step.getAssertionLength().get(key)).isEqualTo(value);
-                    break;
-                case EQ:
-                default:
-                    //null转换为空字符串进行判断
-                    Assertions.assertThat(actual == null ? "" : actual)
-                            .as(key + "应该为：" + value)
-                            .isEqualTo(value == null ? "" : value);
-                    break;
-            }
-        });
+        if (assertionType == AssertionType.TOTAL) {
+            this.step.addAssertionLength(key, Integer.parseInt(actual.toString()));
+            Allure.step("判断结果:" + this.step.getAssertionLength().get(key) + " " + assertionType + " " + value, () -> {
+                assertionExec(actual, value);
+            });
+        } else {
+            Allure.step("判断结果:" + actual + " " + assertionType + " " + value, () -> {
+                assertionExec(actual, value);
+            });
+        }
+    }
+
+    private void assertionExec(Object actual, Object value) {
+        //根据不同的判断类型进行判断
+        switch (assertionType) {
+            case GREATEROREQUALTO:
+                Assertions.assertThat(new BigDecimal(actual.toString())).isGreaterThanOrEqualTo(new BigDecimal(value.toString()));
+                break;
+            case LESSTHANOREQUALTO:
+                Assertions.assertThat(new BigDecimal(actual.toString())).isLessThanOrEqualTo(new BigDecimal(value.toString()));
+                break;
+            case CONTAINS:
+                if (actual instanceof Collection) {
+                    Assertions.assertThat((Collection<Object>) actual).contains(value);
+                } else {
+                    Assertions.assertThat(actual.toString()).contains(value.toString());
+                }
+                break;
+            case AllCONTAINS:
+                ((Collection<Object>) actual).forEach(o -> Assertions.assertThat(o.toString()).contains(value.toString()));
+                break;
+            case ALLIS:
+                Assertions.assertThat((Collection<Object>) actual).containsOnly(value);
+                break;
+            case ALLGREATEROREQUALTO:
+                ((Collection<Object>) actual).forEach(o -> Assertions.assertThat(new BigDecimal(o.toString())).isGreaterThanOrEqualTo(new BigDecimal(value.toString())));
+                break;
+            case ALLLESSTHANOREQUALTO:
+                ((Collection<Object>) actual).forEach(o -> Assertions.assertThat(new BigDecimal(o.toString())).isLessThanOrEqualTo(new BigDecimal(value.toString())));
+                break;
+            case TOTAL:
+                Assertions.assertThat(this.step.getAssertionLength().get(key)).isEqualTo(value);
+                break;
+            case EQ:
+            default:
+                //null转换为空字符串进行判断
+                Assertions.assertThat(actual == null ? "" : actual)
+                        .as(key + "应该为：" + value)
+                        .isEqualTo(value == null ? "" : value);
+                break;
+        }
     }
 
     @Override
