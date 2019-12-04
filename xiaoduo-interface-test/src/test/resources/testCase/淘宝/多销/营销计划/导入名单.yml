@@ -1,0 +1,80 @@
+name: 导入名单
+dataProvider:
+  - group_name: 顾客分群_${__time(yyyyMMdd_HHmmss,)}
+testMethod:
+  - name: 导入excel-校验结果
+    description: |
+      """</br>
+      用例描述：</br>
+      1、检验导入的excel解析正确。</br>
+      </br>
+      测试步骤</br>
+      1、上传excel</br>
+      2、校验返回的名单是否正确</br>
+      """
+    severity: NORMAL
+    step:
+      - name: 上传用户名单excel
+        host: ${seller_host}
+        url: /api/fishpond/import_nicks
+        method: POST
+        headers:
+          Content-Type: multipart/form-data
+        file:
+          nicks: "src/test/resources/顾客导入模板.xlsx"
+        assertion:
+          - json:
+              $.code: 0
+              $.data.nicks.length(): 8
+              $.data.nicks: ["wangjq_xd1","wangjq_xd2","wangjq_xd3","wangjq_xd4","wangjq_xd5","wangjq_xd6","wangjq_xd7","wangjq_xd8"]
+  - name: 使用导入名单创建精准营销
+    description: |
+      """</br>
+      用例描述：</br>
+      1、导入名单创建精准营销。</br>
+      </br>
+      测试步骤</br>
+      1、创建精准营销</br>
+      2、校验消息发送正确</br>
+      """
+    severity: NORMAL
+    dataProvider:
+      - message: 纯文字催单消息
+        text_with_vars: 纯文字催单消息
+        nicks: '"tester01","tester02","tester03","tester03","tester04","tester05","tester05","tester06","tester07","tester08"'
+    #      - message: "{{子账号名称}}"
+    #        text_with_vars: ${seller_name}
+    #        nicks: '"tester01","tester02"'
+    #      - message: "1{↓1秒后分行发送↓}2"
+    #        text_with_vars: "1{↓1秒后分行发送↓}2"
+    #        nicks: '"tester01","tester02"'
+    step:
+      - byName: 创建客池精准营销
+        name: 创建客池精准营销-导入名单
+        body: |
+          {
+              "name":"${__time(yyyyMMdd_HHmmss,taskName)}",
+              "last_seller_first":true,
+              "send_range":2,
+              "nicks":[
+                  ${nicks}
+              ],
+              "send_groups":[],
+              "sellers":["${seller_name}"],
+              "send_time":[
+                  {
+                      "from":${__javaScript(${__time(/1000)},)},
+                      "to":${__javaScript(${__time(/1000)}+120,)}
+                  }
+              ],
+              "message":{
+                  "text":"${message}",
+                  "images":[]}
+          }
+      - byName: 获取营销任务ID
+      - byName: 获取多销消息
+        name: 多销消息校验消息总数
+        assertion:
+          - json: {$.code: 0}
+          - total:
+              $.data.messages.length(@.task_id=="${task_id}): 8

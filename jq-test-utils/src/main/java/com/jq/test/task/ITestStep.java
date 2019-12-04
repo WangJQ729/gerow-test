@@ -2,6 +2,8 @@ package com.jq.test.task;
 
 import org.springframework.http.ResponseEntity;
 
+import java.util.Map;
+
 public interface ITestStep {
 
     /**
@@ -45,4 +47,8 @@ public interface ITestStep {
     String getByName();
 
     String replace(String content);
+
+    Map<String, Integer> getAssertionLength();
+
+    void addAssertionLength(String key, int value);
 }

@@ -51,4 +51,5 @@ beforeSuite:
         shop_id: ${shop_id}
         seller_id: ${shopName}
         platform: ${platform}
+        service_names: reminder
       method: GET

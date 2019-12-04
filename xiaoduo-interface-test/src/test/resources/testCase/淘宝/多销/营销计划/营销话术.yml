@@ -63,7 +63,7 @@ testMethod:
         method: POST
         body: |
           {
-              "name":"营销计划_${__time(yyyyMMdd_HHmmss,)}",
+              "name":"${__time(yyyyMMdd_HHmmss,taskName)}",
               "last_seller_first":true,
               "send_range":0,
               "send_groups":[
@@ -75,7 +75,7 @@ testMethod:
               "send_time":[
                   {
                       "from":${__javaScript(${__time(/1000)},)},
-                      "to":${__javaScript(${__time(/1000)}+61,)}
+                      "to":${__javaScript(${__time(/1000)}+120,)}
                   }
               ],
               "message":{
@@ -86,9 +86,20 @@ testMethod:
               }
           }
         assertion: [json: {$.code: 0}]
+      - name: 获取营销任务ID
+        url: /api/fishpond/task/overview
+        method: GET
+        variables:
+          skip: 0
+          pageSize: 30
+        extractor:
+          - json:
+              task_id: $.data.tasks[?(@.name=='${taskName}')].id
       - byName: 获取催单消息
         name: 获取多销消息
-        untilWait: 120
+        variables:
+          service_names: fishpond
+        untilWait: 300
         intervals: 5000
         assertion:
           - json:

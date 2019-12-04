@@ -3,6 +3,7 @@ package com.jq.test.utils;
 import com.alibaba.fastjson.JSONObject;
 import com.jayway.jsonpath.Option;
 import com.jq.test.json.JsonPathUtils;
+import com.jq.test.task.ITestStep;
 import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,9 +52,11 @@ public class Assertion {
      * json提取参数设置
      */
     private Option[] options = new Option[]{};
-
+    private ITestStep step;
     private LinkedHashMap<String, Object> json = new LinkedHashMap<>();
     private LinkedHashMap<String, Object> excel = new LinkedHashMap<>();
+    private LinkedHashMap<String, Object> total = new LinkedHashMap<>();
+    private int length = 0;
 
     /**
      * 判断响应是否正确
@@ -61,9 +64,11 @@ public class Assertion {
      * @param entity 响应
      * @param <T>    响应体类型
      */
-    public <T> void check(ResponseEntity<T> entity) {
-        check(json, DataType.JSON, entity);
-        check(excel, DataType.EXCEL, entity);
+    public <T> void check(ResponseEntity<T> entity, ITestStep step) {
+        this.step = step;
+        build(json, DataType.JSON, entity);
+        build(excel, DataType.EXCEL, entity);
+        build(total, entity);
         if (StringUtils.isNotBlank(key)) {
             Allure.step("校验结果:" + key, () -> {
                 Object actual = buildActual(entity);
@@ -73,7 +78,23 @@ public class Assertion {
         }
     }
 
-    private <T> void check(Map<String, Object> map, DataType dataType, ResponseEntity<T> entity) {
+    private <T> void build(Map<String, Object> map, ResponseEntity<T> entity) {
+        if (!map.isEmpty()) {
+            for (String key : map.keySet()) {
+                Assertion assertion = new Assertion();
+                assertion.setKey(key);
+                assertion.setValue(map.get(key));
+                assertion.setOptions(options);
+                assertion.setAssertionType(AssertionType.TOTAL);
+                assertion.setDataType(dataType);
+                assertion.setType(type);
+                assertion.setValueType(valueType);
+                assertion.check(entity, this.step);
+            }
+        }
+    }
+
+    private <T> void build(Map<String, Object> map, DataType dataType, ResponseEntity<T> entity) {
         if (!map.isEmpty()) {
             for (String key : map.keySet()) {
                 Assertion assertion = new Assertion();
@@ -84,7 +105,7 @@ public class Assertion {
                 assertion.setDataType(dataType);
                 assertion.setType(type);
                 assertion.setValueType(valueType);
-                assertion.check(entity);
+                assertion.check(entity, this.step);
             }
         }
     }
@@ -238,6 +259,10 @@ public class Assertion {
                     break;
                 case ALLLESSTHANOREQUALTO:
                     ((Collection<Object>) actual).forEach(o -> Assertions.assertThat(new BigDecimal(o.toString())).isLessThanOrEqualTo(new BigDecimal(value.toString())));
+                    break;
+                case TOTAL:
+                    this.step.addAssertionLength(key, Integer.parseInt(actual.toString()));
+                    Assertions.assertThat(this.step.getAssertionLength().get(key)).isEqualTo(value);
                     break;
                 case EQ:
                 default:

@@ -5,7 +5,10 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jq.test.task.ITestMethod;
 import com.jq.test.task.ITestStep;
 import com.jq.test.task.YmlTestStep;
-import com.jq.test.utils.*;
+import com.jq.test.utils.Assertion;
+import com.jq.test.utils.DataType;
+import com.jq.test.utils.Extractor;
+import com.jq.test.utils.StepEditor;
 import lombok.Data;
 
 import java.util.*;
@@ -31,7 +34,7 @@ public class YmlHttpStepEntity {
     /**
      * 如果是上传文件填写
      */
-    private FileInfo file;
+    private Map<String, String> file = new HashMap<>();
     /**
      * 等待时间
      */

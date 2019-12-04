@@ -5,7 +5,7 @@ import com.jq.test.client.HttpUtils;
 import com.jq.test.entity.YmlHttpStepEntity;
 import com.jq.test.utils.*;
 import io.qameta.allure.Allure;
-import lombok.Getter;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
@@ -15,18 +15,20 @@ import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Getter
+@Data
 public class YmlTestStep implements ITestStep {
     /**
      * 步骤内容
      */
     private YmlHttpStepEntity step;
 
+    private Map<String, Integer> assertionLength = new HashMap<>();
     /**
      * 测试方法
      */
@@ -48,6 +50,8 @@ public class YmlTestStep implements ITestStep {
     private Map<String, String> params;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private List<Assertion> assertions;
 
     /**
      * 构造方法
@@ -73,6 +77,15 @@ public class YmlTestStep implements ITestStep {
      */
     public String replace(String content) {
         return TestUtils.replace(content, getTestMethod(), params, 0);
+    }
+
+    @Override
+    public void addAssertionLength(String key, int value) {
+        if (this.getAssertionLength().containsKey(key)) {
+            this.getAssertionLength().put(key, this.getAssertionLength().get(key) + value);
+        } else {
+            this.getAssertionLength().put(key, value);
+        }
     }
 
     @Override
@@ -136,6 +149,7 @@ public class YmlTestStep implements ITestStep {
                     Thread.sleep(step.getIntervals());
                     doWithWait(startTime);
                 } else {
+
                     throw e;
                 }
             }
@@ -211,7 +225,7 @@ public class YmlTestStep implements ITestStep {
 
         if (!oldStep.getExtractor().isEmpty()) newStep.setExtractor(oldStep.getExtractor());
 
-        if (oldStep.getFile() != null) newStep.setFile(oldStep.getFile());
+        if (!oldStep.getFile().isEmpty()) newStep.setFile(oldStep.getFile());
 
         if (!oldStep.getForm().isEmpty())
             for (String s : oldStep.getForm().keySet()) newStep.getForm().put(s, oldStep.getForm().get(s));
@@ -274,12 +288,13 @@ public class YmlTestStep implements ITestStep {
         for (String key : header.keySet()) {
             httpHeaders.add(replace(key), replace(header.get(key)));
         }
-        if (step.getFile() != null) {
+        if (!step.getFile().isEmpty()) {
             MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
-            String fileKey = step.getFile().getKey();
-            fileKey = StringUtils.isBlank(fileKey) ? "file" : fileKey;
-            FileSystemResource fileSystemResource = new FileSystemResource(step.getFile().getPath());
-            form.add(fileKey, fileSystemResource);
+            step.getFile().forEach((k, v) -> {
+                k = StringUtils.isBlank(k) ? "file" : k;
+                FileSystemResource fileSystemResource = new FileSystemResource(new File(v));
+                form.add(k, fileSystemResource);
+            });
             Map<String, String> stepForm = step.getForm();
             for (String key : stepForm.keySet()) {
                 form.add(replace(key), replace(stepForm.get(key)));
@@ -352,11 +367,11 @@ public class YmlTestStep implements ITestStep {
         }
         List<Error> errors = new ArrayList<>();
         for (Assertion assertion : assertionList) {
+            //assertion的value类型不定，所以这里统一转换为json来处理变量
+            String content = replace(JSONObject.toJSONString(assertion));
+            Assertion newAssert = JSONObject.parseObject(content, Assertion.class);
             try {
-                //assertion的value类型不定，所以这里统一转换为json来处理变量
-                String content = replace(JSONObject.toJSONString(assertion));
-                Assertion newAssert = JSONObject.parseObject(content, Assertion.class);
-                newAssert.check(entity);
+                newAssert.check(entity, this);
             } catch (Error e) {
                 errors.add(e);
             }
