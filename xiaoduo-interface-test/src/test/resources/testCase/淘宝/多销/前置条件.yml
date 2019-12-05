@@ -21,3 +21,14 @@ beforeSuite:
       url: ${seller_url}
       method: GET
       responseType: DEFAULT
+    - name: 登录test-tools
+      host: ${test_tools}
+      url: /api/v1/login/
+      method: POST
+      body: |
+        {"username":"wangjianqiang","password":"wangjianqiang123456"}
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            token: $.data.token
+          site: TESTSUIT
