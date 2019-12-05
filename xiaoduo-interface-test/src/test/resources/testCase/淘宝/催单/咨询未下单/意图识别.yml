@@ -8,31 +8,24 @@ beforeClass:
   name: 获取taskID和模板
   step:
     - name: 随机获取一个类目
-      host: ${dataadmin}
-      url: /api/admin/guide/category_list
-      headers:
-        Content-Type: multipart/form-data
-      method: POST
-      form:
-        platform: ${platform}
-        nick: ${seller_name}
+      url: /api/admin/category/list
+      method: GET
       extractor:
         - json:
-            categorys: $.categorys[*]
+            categories: $.categories[*]
             #categorys: $.categorys[${invocationCount}]
         - json:
             category_id: $.id
             category_name: $.name
-          data: ${categorys}
+          data: ${categories}
     - name: 切换到类目-${category_name}
-      host: ${dataadmin}
-      url: /proxy/admin/guide/shop_category/setup
+      url: /api/admin/guide/shop_setup
       headers:
         Content-Type: multipart/form-data
       method: POST
       form:
-        platform: ${platform}
-        nick: ${seller_name}
+        express_name: express_name
+        other_express_name: other_express_name
         category_id: ${category_id}
       assertion: [json: {$.code: 0}]
     - name: 获取所有的task_id

@@ -12,9 +12,6 @@ data:
     p_path: pulsar://pulsar-test-1:6650
     topic: persistent://public/default/rmd-trade-tb-test2
     test_tools: http://zhy-test2.xiaoduoai.com
-    dataadmin: http://dataadmin-test2.xiaoduoai.com
-    dataadmin_username: admin
-    dataadmin_password: 123456
     child_seller: wangjq_1990:xiaoduo1
     child_seller_name: xiaoduo1
     seller_host: https://seller.xiaoduoai.com

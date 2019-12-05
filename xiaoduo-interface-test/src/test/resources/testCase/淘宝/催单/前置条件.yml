@@ -19,16 +19,6 @@ beforeSuite:
       url: ${auth_url}
       method: GET
       responseType: DEFAULT
-    - name: 登录知更后台
-      host: ${dataadmin}
-      url: /api/login
-      headers:
-        Content-Type: multipart/form-data
-      method: POST
-      form:
-        username: ${dataadmin_username}
-        password: ${dataadmin_password}
-      assertion: [json: {$.code: 0}]
     - name: 催单设置为自己和静默
       url: /api/admin/user/shop_subnick_client_config_edit_v3
       headers:
