@@ -44,7 +44,16 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启催单任务-10秒后触发
+      - byName: 开启催单任务
+        name: 开启催单任务-已签收10s后发送
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 10
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer

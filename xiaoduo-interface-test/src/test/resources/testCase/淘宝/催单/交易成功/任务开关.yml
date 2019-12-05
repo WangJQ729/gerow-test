@@ -43,7 +43,17 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 关闭催单任务
+      - byName: 开启交易成功催单任务
+        name: 关闭交易成功催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: false
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace

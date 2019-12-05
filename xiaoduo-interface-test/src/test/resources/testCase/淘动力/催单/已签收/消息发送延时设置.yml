@@ -1,31 +1,11 @@
 name: 消息发送延时设置
 story: ${reminder_type}
 dataProvider:
-  - node_state: created
-    order_state: created
-    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+  - node_state: signed
+    order_state: signed
+    message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
     text_with_vars: ${message}
-    reminder_type: 下单未付款
-  - node_state: checkaddr
-    order_state: created
-    message: 亲，您的订单已经收到，请核对以下信息是否正确，我们将尽快为您发出！
-    text_with_vars: ${message}
-    reminder_type: 核对地址
-  - node_state: deposited
-    order_state: deposited
-    message: defualt message!
-    text_with_vars: ${message}
-    reminder_type: 已付定金未付尾款
-  - node_state: paid
-    order_state: paid
-    message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
-    text_with_vars: ${message}
-    reminder_type: 已付款
-  - node_state: closed
-    order_state: closed
-    message: 亲，您对宝贝有什么不满意的吗？
-    text_with_vars: ${message}
-    reminder_type: 交易取消
+    reminder_type: 已签收
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -59,6 +39,7 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_message')].args.state_delay: ${__javaScript(${state_delay},)}
             $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情

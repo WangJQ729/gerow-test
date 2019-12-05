@@ -1,0 +1,69 @@
+name: 催单消息
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 关闭其他催单任务
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 消息内容-${message}
+    dataProvider:
+      - question: 在吗
+        message: 纯文字催单消息
+        text_with_vars: 纯文字催单消息
+      - question: 在吗
+        message: "/:^$^/:^$^"
+        text_with_vars: "/:^$^/:^$^"
+      - message: "{{子账号名称}}"
+        question: 在吗
+        text_with_vars: ${shopName}
+      - question: 在吗
+        message: "1{↓1秒后分行发送↓}2"
+        text_with_vars: "1{↓1秒后分行发送↓}2"
+      - question: https://item.taobao.com/item.htm?id=604423906694
+        message: "{推荐商品话术}"
+        text_with_vars: 这款商品卖得很火爆哦，快来点开看看吧！
+      - question: https://item.taobao.com/item.htm?id=604423906694
+        message: "{推荐商品链接}"
+        text_with_vars: https://item.taobao.com/item.htm?id=604423906694
+      - question: https://item.taobao.com/item.htm?id=604423906694
+        message: "{商品营销话术}"
+        text_with_vars: ${shopName}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、发送消息给商家</br>
+      2、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改咨询未下单内容
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].replies:
+              - ageing_id: ""
+                message: ${message}
+                images: []
+      - byName: 发送消息给商家
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据聊天记录查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

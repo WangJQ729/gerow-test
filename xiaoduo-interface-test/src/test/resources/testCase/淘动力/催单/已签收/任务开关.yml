@@ -1,11 +1,11 @@
 name: 任务开关
 story: ${reminder_type}
 dataProvider:
-  - node_state: succeeded
-    order_state: succeeded
-    message: 小店收到飞鸽传书，得知您的宝贝已经安全抵达。有任何疑问欢迎咨询我们。如果您对这次购物体验满意，期待得到您的评价鼓励，一路相知，伴随左右~
+  - node_state: signed
+    order_state: signed
+    message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
     text_with_vars: ${message}
-    reminder_type: 交易成功
+    reminder_type: 已签收
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -27,7 +27,17 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启交易成功催单任务
+      - byName: 开启催单任务
+        name: 开启已签收催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
   - name: 关闭任务
@@ -43,17 +53,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启交易成功催单任务
-        name: 关闭交易成功催单任务
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: false
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_message')].args.state_delay: 0
-            $.rules[?(@.type=='specify_send_seller')].args.status: 2
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 关闭催单任务
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace

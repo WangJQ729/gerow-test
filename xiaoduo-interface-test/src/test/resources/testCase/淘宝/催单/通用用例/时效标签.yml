@@ -21,11 +21,6 @@ dataProvider:
     message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
     text_with_vars: ${message}
     reminder_type: 已付款
-  - node_state: signed
-    order_state: signed
-    message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
-    text_with_vars: ${message}
-    reminder_type: 已签收
   - node_state: closed
     order_state: closed
     message: 亲，您对宝贝有什么不满意的吗？
