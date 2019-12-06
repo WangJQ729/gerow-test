@@ -1,5 +1,6 @@
 name: 相同场景内任务去重
 story: ${reminder_type}
+invocationCount: 1
 dataProvider:
   - node_state: created
     order_state: created
@@ -136,6 +137,13 @@ testMethod:
               ]
           }
         assertion: [json: {$.code: 0}]
+      - byName: 获取所有的task_id
+        untilWait: 5
+        name: 断言修改后的顺序是否正确
+        assertion:
+          - json:
+              $.data.tasks[0].id: ${task_id_1}
+              $.data.tasks[1].id: ${task_id_2}
       - byName: 通过pulsar推送订单消息
       - byName: 拉一下催单消息
         assertion:
@@ -173,6 +181,11 @@ testMethod:
                   "${task_id_1}"
               ]
           }
+      - byName: 断言修改后的顺序是否正确
+        assertion:
+          - json:
+              $.data.tasks[0].id: ${task_id_2}
+              $.data.tasks[1].id: ${task_id_1}
       - byName: 通过pulsar推送订单消息
       - byName: 拉一下催单消息
         assertion:
@@ -212,16 +225,9 @@ testMethod:
             $.rules[?(@.type=='pay_amount_limit')].args.min: 0
             $.rules[?(@.type=='pay_amount_limit')].args.max: 1
       - byName: 拉一下催单消息
-      - byName: 关闭相同场景内任务去重
+      - byName: 开启相同场景内任务去重
       - byName: 设置第一个任务在前
-        name: 设置第二个任务在前
-        body: |
-          {
-              "ids":[
-                  "${task_id_1}",
-                  "${task_id_2}"
-              ]
-          }
+      - byName: 断言修改后的顺序是否正确
       - byName: 通过pulsar推送订单消息
       - byName: 拉一下催单消息
         assertion:
