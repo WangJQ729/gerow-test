@@ -169,7 +169,7 @@ afterMethod:
       untilWait: 5
       extractor:
         - json:
-            trace_id: $.data.traces..trace_id
+            trace_id: $.data.traces[?(@.event_type=='Chat-Message')].trace_id
     - name: 查看trace详情
       #获取trace详情，会在测试报告中体现，用于定位任务为什么失败
       untilWait: 10

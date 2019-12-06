@@ -63,7 +63,7 @@ testMethod:
         untilWait: 5
         extractor:
           - json:
-              trace_id: $.data.traces[?(@.chat_message=='在吗')].trace_id
+              trace_id: $.data.traces[?(@.event_type=='Chat-Message')].trace_id
       - byName: 查看trace详情-TaskSetTimer
       - byName: 通过pulsar推送订单消息
         sleep: 5
