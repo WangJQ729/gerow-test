@@ -19,6 +19,14 @@ beforeSuite:
       url: ${auth_url}
       method: GET
       responseType: DEFAULT
+    - name: 获取shop_id
+      url: /api/admin/user/logined
+      method: GET
+      extractor:
+        - json:
+            shop_id: $.user.shop_id
+          site: TESTSUIT
+      assertion: [json: {$.code: 0}]
     - name: 催单设置为自己和静默
       url: /api/admin/user/shop_subnick_client_config_edit_v3
       headers:
@@ -43,3 +51,4 @@ beforeSuite:
         platform: ${platform}
         service_names: reminder
       method: GET
+      assertion: [json: {$.code: 0}]

@@ -5,7 +5,7 @@ beforeSuite:
   step:
     - byName: 获取MP后台地址
     - byName: 进入主页
-    - byName: 拉一下催单消息
+    - byName: 获取shop_id
     - name: 获取多销跳转链接
       url: /api/fishpond/auth/get_sub_login_url
       variables:

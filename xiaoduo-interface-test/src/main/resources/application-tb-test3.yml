@@ -6,7 +6,7 @@ data:
     shop: wangjq_1990
     sign: ca61da42f143ef040fc22afee498a622
     shop_id: 5d81f3c669da40000d6b97bb
-    buyer: wangjq_xd
+    buyer: tester001
     platform: tb
     mock_host: http://mock-server.xiaoduoai.com
     p_path: pulsar://pulsar-test-1:6650

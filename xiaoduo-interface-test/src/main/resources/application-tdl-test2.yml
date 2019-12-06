@@ -5,7 +5,6 @@ data:
     seller_name: wangjq_1990
     shop: wangjq_1990
     sign: ca61da42f143ef040fc22afee498a622
-    shop_id: 5d832c02237402000b960a71
     buyer: wangjq_xd
     platform: taodongli
     mock_host: http://mock-server.xiaoduoai.com

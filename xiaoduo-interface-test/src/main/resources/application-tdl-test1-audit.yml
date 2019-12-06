@@ -5,7 +5,6 @@ data:
     co_test: https://co-test1.xiaoduoai.com
     co_test_username: 淘动力
     co_test_password: 123456
-
 client:
   protocol: https
   headers:
