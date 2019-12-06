@@ -91,7 +91,10 @@ testMethod:
       - byName: 同步订单消息
       - byName: 拼多多推送订单状态变更消息
       - byName: 客户端获取订单状态变更列表
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
       - byName: 获取催单消息
+        untilWait: 15
 afterMethod:
   name: 测试结束后查看订单trace
   step:
