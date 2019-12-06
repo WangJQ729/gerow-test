@@ -11,3 +11,8 @@ data:
     platform: jd
     child_seller: 友发轮胎专营店:测试ckm
     test_tools: http://zhy-jd.xiaoduoai.com
+client:
+  protocol: http
+  timeOut: 30
+  headers:
+    Content-Type: "application/json;charset=UTF-8"

@@ -12,5 +12,8 @@ data:
     child_seller: 双庆家居京东自营旗舰店:shuangqing2019
     test_tools: http://zhy-jd.xiaoduoai.com
 client:
+  protocol: http
+  timeOut: 30
   headers:
     Xiaoduo-Platform: jdzy
+    Content-Type: "application/json;charset=UTF-8"
