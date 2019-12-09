@@ -145,16 +145,17 @@ testMethod:
               $.data.tasks[0].id: ${task_id_1}
               $.data.tasks[1].id: ${task_id_2}
       - byName: 通过pulsar推送订单消息
-      - byName: 拉一下催单消息
+      - byName: 获取催单消息
         assertion:
           - json:
-              $.data.messages.length(): 1
+              $.data.messages[?(@.task_id=='${task_id_1}')].text_with_vars:
+                - ${text_with_vars}
       - byName: 根据订单查询trace
       - byName: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.task_id=='${task_id_1}' && @.phase=='TaskSendMessage')].message.text: ["${message}"]
-              $.data.traces[?(@.task_id=='${task_id_2}' && @.phase=='TaskSendMessage')].message.text: ~
+              $.data.traces[?(@.task_id=='${task_id_2}' && @.phase=='TriggerTask')]: []
   - name: 开启相同场景内任务去重-全部任务都满足-调整顺序
     description: |
       """</br>
@@ -187,15 +188,16 @@ testMethod:
               $.data.tasks[0].id: ${task_id_2}
               $.data.tasks[1].id: ${task_id_1}
       - byName: 通过pulsar推送订单消息
-      - byName: 拉一下催单消息
+      - byName: 获取催单消息
         assertion:
           - json:
-              $.data.messages.length(): 1
+              $.data.messages[?(@.task_id=='${task_id_2}')].text_with_vars:
+                - ${text_with_vars2}
       - byName: 根据订单查询trace
       - byName: 查看trace详情
         assertion:
           - json:
-              $.data.traces[?(@.task_id=='${task_id_1}' && @.phase=='TaskSendMessage')].message.text: ~
+              $.data.traces[?(@.task_id=='${task_id_1}' && @.phase=='TriggerTask')]: []
               $.data.traces[?(@.task_id=='${task_id_2}' && @.phase=='TaskSendMessage')].message.text: ["${message2}"]
   - name: 开启相同场景内任务去重-不满足第一个应该催第二个
     description: |
@@ -229,15 +231,16 @@ testMethod:
       - byName: 设置第一个任务在前
       - byName: 断言修改后的顺序是否正确
       - byName: 通过pulsar推送订单消息
-      - byName: 拉一下催单消息
+      - byName: 获取催单消息
         assertion:
           - json:
-              $.data.messages.length(): 1
+              $.data.messages[?(@.task_id=='${task_id_2}')].text_with_vars:
+                - ${text_with_vars2}
       - byName: 根据订单查询trace
       - byName: 查看trace详情
         assertion:
           - json:
-              $.data.traces[?(@.task_id=='${task_id_1}' && @.phase=='TaskSendMessage')].message.text: ~
+              $.data.traces[?(@.task_id=='${task_id_1}' && @.phase=='TaskReject')].task_end_rule: [pay_amount_limit]
               $.data.traces[?(@.task_id=='${task_id_2}' && @.phase=='TaskSendMessage')].message.text: ["${message2}"]
 afterMethod:
   name: 测试结束后查看订单trace
