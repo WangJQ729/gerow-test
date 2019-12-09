@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Listeners({AllureListener.class,
-//        DingTalkListener.class,
+        DingTalkListener.class,
         ClearRedisListener.class,
         CaseListListener.class
 })
