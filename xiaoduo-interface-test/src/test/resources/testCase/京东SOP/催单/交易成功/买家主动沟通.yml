@@ -28,7 +28,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 设置10秒后发送催单消息
-        name: 开启
+        name: 设置10秒后发送交易成功催单消息
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -67,7 +67,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 设置10秒后发送催单消息
+      - byName: 设置10秒后发送交易成功催单消息
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
@@ -86,7 +86,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 设置10秒后发送催单消息
+      - byName: 设置10秒后发送交易成功催单消息
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
@@ -110,7 +110,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 设置10秒后发送催单消息
+      - byName: 设置10秒后发送交易成功催单消息
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
