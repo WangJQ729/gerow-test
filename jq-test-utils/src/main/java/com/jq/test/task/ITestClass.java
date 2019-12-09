@@ -80,4 +80,8 @@ public interface ITestClass extends ITest {
     String getFeature();
 
     void setFeature(String feature);
+
+    boolean isEnable();
+
+    void setEnable(boolean enable);
 }

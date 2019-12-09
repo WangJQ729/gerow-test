@@ -1,4 +1,5 @@
 name: 订单商品圈定
+enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: created

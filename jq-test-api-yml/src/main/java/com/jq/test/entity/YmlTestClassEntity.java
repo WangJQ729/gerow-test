@@ -55,6 +55,8 @@ public class YmlTestClassEntity {
      */
     private int invocationCount = 1;
 
+    private boolean enable = true;
+
     /**
      * @param testSuite testSuite
      * @param file      文件对象
@@ -98,6 +100,7 @@ public class YmlTestClassEntity {
         testClass.setFile(file);
         testClass.setName(this.name);
         testClass.setStory(this.story);
+        testClass.setEnable(enable);
         String feature = file.getParentFile().getName();
         String features = System.getProperty("features");
         if (!TestUtils.isRun(feature, features)) {

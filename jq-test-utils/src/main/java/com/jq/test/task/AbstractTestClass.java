@@ -19,6 +19,7 @@ public abstract class AbstractTestClass implements ITestClass {
     public Map<String, String> params = new LinkedHashMap<>();
     private ITestSuite testSuite;
     private File file;
+    private boolean enable;
     private List<ITestMethod> beforeClass = new ArrayList<>();
     private List<ITestMethod> afterClass = new ArrayList<>();
     private List<ITestMethod> before = new ArrayList<>();

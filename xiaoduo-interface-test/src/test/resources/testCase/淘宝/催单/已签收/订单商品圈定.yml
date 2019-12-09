@@ -1,5 +1,6 @@
 name: 订单商品圈定
 story: ${reminder_type}
+enable: false
 dataProvider:
   - node_state: signed
     order_state: signed
