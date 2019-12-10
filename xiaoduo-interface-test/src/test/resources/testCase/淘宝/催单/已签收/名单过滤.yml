@@ -11,7 +11,7 @@ beforeClass:
   step:
     - byName: 获取所有的task_id
     - byName: 获取task模板
-    - byName: 关闭其他催单任务
+    - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
 testMethod:
   - name: 已签收名单过滤-买家在过滤名单内
