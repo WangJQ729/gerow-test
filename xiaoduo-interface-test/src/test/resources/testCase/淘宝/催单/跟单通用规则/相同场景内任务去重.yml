@@ -139,6 +139,7 @@ testMethod:
         assertion: [json: {$.code: 0}]
       - byName: 获取所有的task_id
         untilWait: 5
+        sleep: 10
         name: 断言修改后的顺序是否正确
         assertion:
           - json:
