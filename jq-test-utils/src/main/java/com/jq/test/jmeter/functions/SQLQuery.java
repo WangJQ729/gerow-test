@@ -1,5 +1,6 @@
 package com.jq.test.jmeter.functions;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jq.test.utils.TestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jmeter.engine.util.CompoundVariable;
@@ -7,7 +8,6 @@ import org.apache.jmeter.functions.AbstractFunction;
 import org.apache.jmeter.functions.InvalidVariableException;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.samplers.Sampler;
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;

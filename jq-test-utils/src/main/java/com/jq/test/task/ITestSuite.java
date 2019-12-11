@@ -26,11 +26,6 @@ public interface ITestSuite extends ITest {
     String getDirPath();
 
     /**
-     * @return 所有参数
-     */
-    Map<String, String> getParams();
-
-    /**
      * 添加测试套件执行前的方法
      *
      * @param testMethod 测试方法

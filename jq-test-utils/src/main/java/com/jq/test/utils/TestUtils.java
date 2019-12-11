@@ -1,6 +1,7 @@
 package com.jq.test.utils;
 
 import com.jq.test.task.ITest;
+import com.jq.test.task.ITestClass;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -94,32 +95,31 @@ public class TestUtils {
 
 
     /**
-     * @param content 所要替换的对象
-     * @param test    测试对象
-     * @param params  参数
-     * @param times   第几次替换：达到5次后抛异常
+     * @param content    所要替换的对象
+     * @param parentTest 测试对象的上级
+     * @param iTest      测试对象
+     * @param times      第几次替换：达到5次后抛异常
      * @return 替换后的参数
      */
-    public static String replace(String content, ITest test, Map<String, String> params, int times) {
+    public static String replace(String content, ITest parentTest, ITest iTest, int times) {
         JMeterContextService.getContext().setVariables(new JMeterVariables());
-        CompoundVariable variable = new CompoundVariable(test.replace(TestUtils.replace(content, params)));
-        String result = variable.execute();
-        TestUtils.addParams(params);
+        String replace = parentTest.replace(TestUtils.replace(content, iTest));
         if (times < 5) {
             times++;
-            if (TestUtils.hasVariables(result)) return replace(result, test, params, times);
+            if (TestUtils.hasVariables(replace)) return replace(replace, parentTest, iTest, times);
         } else {
             Assertions.fail("参数未找到:" + content);
         }
-        return result;
+        return replace;
     }
 
     /**
      * @param content 所要替换的字符串
-     * @param map     参数
+     * @param iTest   测试对象
      * @return 替换后的字符串
      */
-    public static String replace(String content, Map<String, String> map) {
+    public static String replace(String content, ITest iTest) {
+        Map<String, String> map = iTest.getParams();
         if (StringUtils.isBlank(content)) {
             return content;
         }
@@ -127,6 +127,20 @@ public class TestUtils {
         for (Map.Entry<String, String> entry : sets) {
             String regex = "${" + entry.getKey() + "}";
             content = StringUtils.replace(content, regex, entry.getValue());
+        }
+        if (iTest instanceof ITestClass) {
+            int i = 0;
+            while (i < 10) {
+                Matcher matcher = Pattern.compile("\\$\\{__.*?}").matcher(content);
+                if (matcher.find()) {
+                    String group = matcher.group(0);
+                    content = StringUtils.replace(content, group, new CompoundVariable(group).execute().trim());
+                    TestUtils.addParams(iTest);
+                } else {
+                    break;
+                }
+                i++;
+            }
         }
         return content;
     }
@@ -136,6 +150,9 @@ public class TestUtils {
      * @return 是否还有未替换的参数
      */
     private static boolean hasVariables(String result) {
+        if (result == null) {
+            return false;
+        }
         Matcher matcher = Pattern.compile("\\$\\{.*?}").matcher(result);
         return matcher.find();
     }
@@ -182,9 +199,10 @@ public class TestUtils {
     /**
      * 将JMeterVariables里的参数添加到params中
      *
-     * @param params 参数
+     * @param iTest 测试组件
      */
-    public static void addParams(Map<String, String> params) {
+    public static void addParams(ITest iTest) {
+        Map<String, String> params = iTest.getParams();
         JMeterVariables variables = JMeterContextService.getContext().getVariables();
         if (variables != null) {
             Iterator<Map.Entry<String, Object>> iterator = variables.getIterator();

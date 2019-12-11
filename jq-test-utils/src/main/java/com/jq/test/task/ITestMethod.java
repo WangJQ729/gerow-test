@@ -18,11 +18,6 @@ public interface ITestMethod extends ITest {
     ITestClass getTestClass();
 
     /**
-     * @return 参数
-     */
-    Map<String, String> getParams();
-
-    /**
      * 设置ITestClass
      *
      * @param testClass 测试类

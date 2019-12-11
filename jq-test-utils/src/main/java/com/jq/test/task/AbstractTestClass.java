@@ -78,7 +78,7 @@ public abstract class AbstractTestClass implements ITestClass {
 
     @Override
     public String replace(String content) {
-        return TestUtils.replace(content, getTestSuite(), params, 0);
+        return TestUtils.replace(content, getTestSuite(), this, 0);
     }
 
     @Override

@@ -18,11 +18,6 @@ public interface ITestClass extends ITest {
     ITestSuite getTestSuite();
 
     /**
-     * @return 所有参数
-     */
-    Map<String, String> getParams();
-
-    /**
      * 执行beforeClass
      */
     void setUpBeforeClass();

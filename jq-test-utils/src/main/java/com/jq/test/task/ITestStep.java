@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
-public interface ITestStep {
+public interface ITestStep extends ITest {
 
     /**
      * 执行测试
@@ -32,12 +32,6 @@ public interface ITestStep {
      */
     void saveParam();
 
-    /**
-     * 获取步骤名称
-     *
-     * @return 步骤名称
-     */
-    String getName();
 
     /**
      * 获取byName
@@ -46,7 +40,6 @@ public interface ITestStep {
      */
     String getByName();
 
-    String replace(String content);
 
     Map<String, Integer> getAssertionLength();
 

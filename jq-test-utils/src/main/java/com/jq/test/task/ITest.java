@@ -1,5 +1,7 @@
 package com.jq.test.task;
 
+import java.util.Map;
+
 public interface ITest {
     /**
      * 获取名称
@@ -30,4 +32,6 @@ public interface ITest {
      * @return 是否执行
      */
     boolean enable();
+
+    Map<String, String> getParams();
 }

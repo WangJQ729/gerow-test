@@ -22,7 +22,7 @@ public abstract class AbstractTestMethod implements ITestMethod {
     public void doing() {
         for (String key : new ArrayList<>(getParams().keySet())) {
             getParams().put(key, replace(getParams().get(key)));
-            TestUtils.addParams(getParams());
+            TestUtils.addParams(this);
         }
         doStep();
     }
@@ -51,7 +51,7 @@ public abstract class AbstractTestMethod implements ITestMethod {
 
     @Override
     public String replace(String content) {
-        return TestUtils.replace(content, getTestClass(), params, 0);
+        return TestUtils.replace(content, getTestClass(), this, 0);
     }
 
     @Override

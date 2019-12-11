@@ -54,7 +54,7 @@ public abstract class AbstractTestSuite implements ITestSuite {
 
     @Override
     public String replace(String content) {
-        return TestUtils.replace(content, params);
+        return TestUtils.replace(content, this);
     }
 
     @Override

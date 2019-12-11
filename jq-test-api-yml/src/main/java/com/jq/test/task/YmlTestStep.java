@@ -69,6 +69,11 @@ public class YmlTestStep implements ITestStep {
         this.name = step.getName();
     }
 
+    @Override
+    public void save(String key, String value) {
+
+    }
+
     /**
      * 参数替换
      *
@@ -76,7 +81,12 @@ public class YmlTestStep implements ITestStep {
      * @return 替换后的内容
      */
     public String replace(String content) {
-        return TestUtils.replace(content, getTestMethod(), params, 0);
+        return TestUtils.replace(content, getTestMethod(), this, 0);
+    }
+
+    @Override
+    public boolean enable() {
+        return false;
     }
 
     @Override

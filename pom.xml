@@ -27,7 +27,8 @@
         <allure.version>2.12.1</allure.version>
         <fastjson.version>[1.2.31,)</fastjson.version>
         <spring-web.version>5.1.5.RELEASE</spring-web.version>
-        <jmeter.version>5.1.1</jmeter.version>
+        <jmeter.version>[5.2.1,)</jmeter.version>
+        <poi.version>[4.1.1,)</poi.version>
     </properties>
 
     <dependencies>
