@@ -131,7 +131,7 @@ public class TestUtils {
         if (iTest instanceof ITestClass) {
             int i = 0;
             while (i < 10) {
-                Matcher matcher = Pattern.compile("\\$\\{__.*?}").matcher(content);
+                Matcher matcher = Pattern.compile("\\$\\{__((?!\\$\\{.*?}|}).)*}").matcher(content);
                 if (matcher.find()) {
                     String group = matcher.group(0);
                     content = StringUtils.replace(content, group, new CompoundVariable(group).execute().trim());
