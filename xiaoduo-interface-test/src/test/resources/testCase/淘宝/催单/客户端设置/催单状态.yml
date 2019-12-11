@@ -5,6 +5,7 @@ dataProvider:
     message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
     text_with_vars: ${message}
     reminder_type: 下单未付款
+    question: 你好
 beforeClass:
   name: 获取taskID和模板
   step:

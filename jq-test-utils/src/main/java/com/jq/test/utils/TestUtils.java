@@ -103,14 +103,14 @@ public class TestUtils {
      */
     public static String replace(String content, ITest parentTest, ITest iTest, int times) {
         JMeterContextService.getContext().setVariables(new JMeterVariables());
-        String replace = parentTest.replace(TestUtils.replace(content, iTest));
+        content = parentTest.replace(TestUtils.replace(content, iTest));
         if (times < 5) {
             times++;
-            if (TestUtils.hasVariables(replace)) return replace(replace, parentTest, iTest, times);
+            if (TestUtils.hasVariables(content)) return replace(content, parentTest, iTest, times);
         } else {
             Assertions.fail("参数未找到:" + content);
         }
-        return replace;
+        return content;
     }
 
     /**
@@ -134,7 +134,8 @@ public class TestUtils {
                 Matcher matcher = Pattern.compile("\\$\\{__((?!\\$\\{.*?}).)*?}").matcher(content);
                 if (matcher.find()) {
                     String group = matcher.group(0);
-                    content = StringUtils.replace(content, group, new CompoundVariable(group).execute().trim());
+                    CompoundVariable variable = new CompoundVariable(group);
+                    content = StringUtils.replace(content, group, variable.execute().trim());
                     TestUtils.addParams(iTest);
                 } else {
                     break;
