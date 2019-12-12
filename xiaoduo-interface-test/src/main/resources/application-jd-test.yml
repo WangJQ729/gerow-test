@@ -10,6 +10,7 @@ data:
     platform: jd
     child_seller: 友发轮胎专营店:测试ckm
     test_tools: http://zhy-jd.xiaoduoai.com
+    topic: persistent://zhongtai/reminder/rmd-trade-jd
 client:
   protocol: http
   timeOut: 30

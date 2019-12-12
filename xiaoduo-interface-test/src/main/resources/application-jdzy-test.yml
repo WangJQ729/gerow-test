@@ -10,6 +10,7 @@ data:
     platform: jd
     child_seller: 双庆家居京东自营旗舰店:shuangqing2019
     test_tools: http://zhy-jd.xiaoduoai.com
+    topic: persistent://zhongtai/reminder/rmd-trade-jd
 client:
   protocol: http
   timeOut: 30
