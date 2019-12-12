@@ -87,6 +87,17 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 设置10秒后发送交易成功催单消息
+        name: 设置10秒后发送交易成功催单消息-关闭过滤
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='send_message')].args.state_delay: 10
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='send_message')].args.receive_message_filter: false
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
@@ -110,17 +121,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 设置10秒后发送交易成功催单消息
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_limit')].args.enable: false
-            $.rules[?(@.type=='send_message')].args.state_delay: 10
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='send_message')].args.receive_message_filter: false
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 设置10秒后发送交易成功催单消息-关闭过滤
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
