@@ -6,6 +6,21 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
+    - name: 随机获取一个类目
+      url: /api/admin/category/list
+      method: GET
+      extractor:
+        - json:
+            categories: $.categories[*]
+            #categorys: $.categorys[${invocationCount}]
+        - json:
+            category_id: $.id
+            category_name: $.name
+          data: ${categories}
+    - name: 切换类目-${category_name}
+      byName: 切换类目
+      form:
+        category_id: ${category_id}
     - byName: 获取task_id
     - byName: 获取老的task配置
     - byName: 获取task模板
@@ -92,4 +107,14 @@ afterMethod:
 afterClass:
   name: 测试结束后还原task
   step:
+    - name: 切换类目
+      url: /api/admin/guide/shop_setup
+      headers:
+        Content-Type: multipart/form-data
+      method: POST
+      form:
+        express_name: express_name
+        other_express_name: other_express_name
+        category_id: ${shop_category_id}
+      assertion: [json: {$.code: 0}]
     - byName: 还原催单任务

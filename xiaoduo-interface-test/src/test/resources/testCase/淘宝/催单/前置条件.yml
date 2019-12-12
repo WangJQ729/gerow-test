@@ -25,6 +25,7 @@ beforeSuite:
       extractor:
         - json:
             shop_id: $.user.shop_id
+            shop_category_id: $.default_shop.category_id
           site: TESTSUIT
       assertion: [json: {$.code: 0}]
     - name: 催单设置为自己和静默
@@ -44,7 +45,7 @@ beforeSuite:
       assertion: [json: {$.code: 0}]
     - name: 拉一下催单消息
       url: /api/client/reminder/v2/client/reminder/messages
-      untilWait: 10
+      untilWait: 15
       variables:
         shop_id: ${shop_id}
         seller_id: ${shopName}
