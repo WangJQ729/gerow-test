@@ -159,6 +159,7 @@ afterMethod:
       variables:
         trace_id: ${trace_id}
         platform: ${platform}
+        shop_id: ${shop_id}
       method: GET
 afterClass:
   name: 测试结束后还原task

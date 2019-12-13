@@ -167,6 +167,7 @@ afterMethod:
       url: /api/client/reminder/v2/trace/info
       variables:
         trace_id: ${trace_id}
+        shop_id: ${shop_id}
       method: GET
 afterClass:
   name: 测试结束后删除任务
