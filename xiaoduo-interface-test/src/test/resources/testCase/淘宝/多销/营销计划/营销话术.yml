@@ -32,6 +32,8 @@ beforeClass:
         - json:
             $.data.results[?(@.id=='${group_id}')].customer_count: [0]
     - byName: 发送消息给商家
+      variables:
+        q: ${__DES3Cipher(在吗,,)}
     - byName: 校验初始客群人数为0
       name: 校验初始客群人数为1
       assertion:
