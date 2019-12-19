@@ -133,8 +133,6 @@ testMethod:
           state: 2
           usr_shut: 0
           spin: cntaobao${shopName}
-        headers:
-          Content-Type: multipart/form-data
         method: GET
         responseType: DEFAULT
         extractor:

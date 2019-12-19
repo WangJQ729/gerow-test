@@ -58,8 +58,6 @@ testMethod:
           service_status: 7
           usr_shut: 0
           spin: cnpdd${shopName}
-        headers:
-          Content-Type: multipart/form-data
         method: GET
         responseType: DEFAULT
         extractor:
