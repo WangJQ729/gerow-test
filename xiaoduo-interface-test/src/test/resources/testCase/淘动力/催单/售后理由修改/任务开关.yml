@@ -1,0 +1,62 @@
+name: 任务开关
+story: ${reminder_type}
+dataProvider:
+  - node_state: refund
+    order_state: succeeded
+    message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
+    text_with_vars: ${message}
+    reminder_type: 售后理由修改
+    refund_state: taobao_refund_RefundCreated
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 开启任务
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务</br>
+      2、创建订单</br>
+      3、买家申请退款
+      4、校验催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务
+        name: 开启售后理由修改催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='logistics_filter')].args.status: 2
+            $.rules[?(@.type=='refund_reasons')].args.reasons: [多拍/错拍/不想要]
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 通过pulsar推送订单消息
+      - name: 推送退款消息
+        byName: 通过pulsar推送订单消息
+        bodyEditor:
+          json:
+            $.topic: persistent://reminder/tmc/refund_tb_test
+            $.word: >-
+              {"buyer_nick":"${buyer}","refund_id":44636195945933796,"refund_fee":"0.01","oid":${__RandomString(13,1234567890,sub_order_id)},"tid":${order_id},"refund_phase":"onsale","bill_type":"return_bill","seller_nick":"${shopName}","modified":"2019-12-06 17:33:10.21","channel":"${refund_state}"}
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
