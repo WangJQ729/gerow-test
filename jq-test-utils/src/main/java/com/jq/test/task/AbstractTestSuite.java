@@ -40,11 +40,10 @@ public abstract class AbstractTestSuite implements ITestSuite {
 
     @Override
     public synchronized void tearDown() {
-        if (isTearDownRun()) return;
-        for (ITestMethod testMethod : afterSuite) {
-            testMethod.doing();
-        }
-        setTearDownRun(true);
+        //只运行features下的前置条件
+        afterSuite.stream().filter(iTestMethod ->
+                TestUtils.isRun(iTestMethod.getTestClass().getFeature(), System.getProperty("features")))
+                .forEach(ITestMethod::doing);
     }
 
     @Override

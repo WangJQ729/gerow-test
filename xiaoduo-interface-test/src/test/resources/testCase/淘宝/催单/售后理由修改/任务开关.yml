@@ -2,7 +2,43 @@ name: 任务开关
 story: ${reminder_type}
 dataProvider:
   - node_state: refund
+    order_state: paid
+    order_state_name: 已付款
+    message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
+    text_with_vars: ${message}
+    reminder_type: 售后理由修改
+    refund_state: taobao_refund_RefundCreated
+  - node_state: refund
+    order_state: deposited
+    order_state_name: 已付定金未付尾款
+    message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
+    text_with_vars: ${message}
+    reminder_type: 售后理由修改
+    refund_state: taobao_refund_RefundCreated
+  - node_state: refund
+    order_state: signed
+    order_state_name: 已签收
+    message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
+    text_with_vars: ${message}
+    reminder_type: 售后理由修改
+    refund_state: taobao_refund_RefundCreated
+  - node_state: refund
+    order_state: part_shipped
+    order_state_name: 部分发货
+    message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
+    text_with_vars: ${message}
+    reminder_type: 售后理由修改
+    refund_state: taobao_refund_RefundCreated
+  - node_state: refund
+    order_state: shipped
+    order_state_name: 全部发货
+    message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
+    text_with_vars: ${message}
+    reminder_type: 售后理由修改
+    refund_state: taobao_refund_RefundCreated
+  - node_state: refund
     order_state: succeeded
+    order_state_name: 交易成功
     message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
     text_with_vars: ${message}
     reminder_type: 售后理由修改
@@ -15,7 +51,7 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
 testMethod:
-  - name: 开启任务
+  - name: 开启任务-订单状态为${order_state_name}时退款
     description: |
       """</br>
       用例描述：</br>
