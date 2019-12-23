@@ -11,9 +11,10 @@ beforeClass:
       headers:
         Authorization: auth ${token}
       method: POST
+      untilWait: 30
       body: |
         {
-            "zset_key":"fp:{tb:5d81f3c669da40000d6b97bb}",
+            "zset_key":"fp:{tb:${shop_id}}",
             "member":"${buyer_id}",
             "score": ${__time(/1000,msg_time)}
         }
