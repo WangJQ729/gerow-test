@@ -2,11 +2,20 @@ name: 任务开关
 story: ${reminder_type}
 dataProvider:
   - node_state: refund
-    order_state: succeeded
     message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
     text_with_vars: ${message}
     reminder_type: 售后理由修改
     refund_state: taobao_refund_RefundCreated
+  - node_state: refund_agree
+    message: 您好，您的退货申请已通过，麻烦您把货发给我们，我们也好尽快给您办理退换货呢！
+    text_with_vars: ${message}
+    reminder_type: 同意退货
+    refund_state: taobao_refund_RefundSellerAgreeAgreement
+  - node_state: refund_success
+    message: 您好，您的退款申请已通过，请注意查收哦！感谢您的耐心等待，欢迎下次再来光顾小店。
+    text_with_vars: ${message}
+    reminder_type: 退款成功
+    refund_state: taobao_refund_RefundSuccess
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -15,7 +24,20 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
 testMethod:
-  - name: 开启任务
+  - name: 开启任务-订单状态为${order_state_name}时退款
+    dataProvider:
+      - order_state: paid
+        order_state_name: 已付款
+      - order_state: deposited
+        order_state_name: 已付定金未付尾款
+      - order_state: signed
+        order_state_name: 已签收
+      - order_state: part_shipped
+        order_state_name: 部分发货
+      - order_state: shipped
+        order_state_name: 全部发货
+      - order_state: succeeded
+        order_state_name: 交易成功
     description: |
       """</br>
       用例描述：</br>
@@ -44,12 +66,13 @@ testMethod:
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 通过pulsar推送订单消息
       - name: 推送退款消息
+        sleep: 5
         byName: 通过pulsar推送订单消息
         bodyEditor:
           json:
             $.topic: persistent://reminder/tmc/refund_tb_test
             $.word: >-
-              {"buyer_nick":"${buyer}","refund_id":44636195945933796,"refund_fee":"0.01","oid":${__RandomString(13,1234567890,sub_order_id)},"tid":${order_id},"refund_phase":"onsale","bill_type":"return_bill","seller_nick":"${shopName}","modified":"2019-12-06 17:33:10.21","channel":"${refund_state}"}
+              {"buyer_nick":"${buyer}","refund_id":${refund_id},"refund_fee":"0.01","oid":${order_id},"tid":${order_id},"refund_phase":"onsale","bill_type":"return_bill","seller_nick":"${shopName}","modified":"2019-12-06 17:33:10.21","channel":"${refund_state}"}
       - byName: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace

@@ -15,6 +15,7 @@ data:
     co_test_username: 淘动力
     co_test_password: 123456
     child_seller: wangjq_1990:xiaoduo1
+    refund_id: 44636195945933796
 client:
   headers:
     Xiaoduo-Platform: taodongli

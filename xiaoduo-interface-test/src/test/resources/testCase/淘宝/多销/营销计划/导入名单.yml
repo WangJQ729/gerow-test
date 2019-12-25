@@ -77,4 +77,4 @@ testMethod:
         assertion:
           - json: {$.code: 0}
           - total:
-              $.data.messages.length(@.task_id=="${task_id}): 8
+              $.data.messages.length(@.task_id=="${task_id}"): 8
