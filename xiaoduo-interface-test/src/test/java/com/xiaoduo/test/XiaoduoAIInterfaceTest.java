@@ -2,6 +2,7 @@ package com.xiaoduo.test;
 
 import com.jq.test.JQAbstractApiTest;
 import com.jq.test.task.ITestClass;
+import com.jq.test.task.ITestMethod;
 import com.jq.test.task.ITestSuite;
 import com.jq.test.task.YmlTestSuite;
 import com.jq.test.utils.JavassistUtils;
@@ -15,6 +16,7 @@ import java.lang.reflect.Constructor;
 import java.net.URLDecoder;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
 
@@ -32,6 +34,16 @@ public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
             }
             String testDirPath = Objects.requireNonNull(XiaoduoAIInterfaceTest.class.getClassLoader().getResource(testDir)).getFile();
             ITestSuite testSuite = YmlTestSuite.getInstance(URLDecoder.decode(testDirPath, "UTF-8"));
+            System.out.println(testSuite.getTestClass().stream()
+                    .filter(iTestClass -> StringUtils.equals(iTestClass.getFeature(), System.getProperty("features")))
+                    .map(ITestClass::getStory)
+                    .distinct()
+                    .collect(Collectors.joining(",")));
+            System.out.println(testSuite.getTestClass().stream()
+                    .filter(iTestClass -> StringUtils.equals(iTestClass.getFeature(), System.getProperty("features")))
+                    .map(ITestClass::getName)
+                    .distinct()
+                    .collect(Collectors.joining(",")));
             return testSuite.getTestClass().parallelStream()
                     //根据sheetName过滤测试
                     .filter(ITestClass::enable)
