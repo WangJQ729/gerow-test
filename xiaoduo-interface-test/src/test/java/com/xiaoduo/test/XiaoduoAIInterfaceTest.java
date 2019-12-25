@@ -2,7 +2,6 @@ package com.xiaoduo.test;
 
 import com.jq.test.JQAbstractApiTest;
 import com.jq.test.task.ITestClass;
-import com.jq.test.task.ITestMethod;
 import com.jq.test.task.ITestSuite;
 import com.jq.test.task.YmlTestSuite;
 import com.jq.test.utils.JavassistUtils;
