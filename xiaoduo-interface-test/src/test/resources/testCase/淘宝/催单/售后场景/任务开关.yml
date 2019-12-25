@@ -66,18 +66,66 @@ testMethod:
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 通过pulsar推送订单消息
       - name: 推送退款消息
-        sleep: 5
         byName: 通过pulsar推送订单消息
         bodyEditor:
           json:
             $.topic: persistent://reminder/tmc/refund_tb_test
             $.word: >-
-              {"buyer_nick":"${buyer}","refund_id":${refund_id},"refund_fee":"0.01","oid":${order_id},"tid":${order_id},"refund_phase":"onsale","bill_type":"return_bill","seller_nick":"${shopName}","modified":"2019-12-06 17:33:10.21","channel":"${refund_state}"}
+              {"buyer_nick":"${buyer}","refund_id":${refund_id},"refund_fee":"0.01","oid":${__RandomOrderId(sub_order_id)},"tid":${order_id},"refund_phase":"onsale","bill_type":"return_bill","seller_nick":"${shopName}","modified":"2019-12-06 17:33:10.21","channel":"${refund_state}"}
       - byName: 获取催单消息
+  - name: 关闭任务-订单状态为${order_state_name}时退款
+    dataProvider:
+      - order_state: paid
+        order_state_name: 已付款
+      - order_state: deposited
+        order_state_name: 已付定金未付尾款
+      - order_state: signed
+        order_state_name: 已签收
+      - order_state: part_shipped
+        order_state_name: 部分发货
+      - order_state: shipped
+        order_state_name: 全部发货
+      - order_state: succeeded
+        order_state_name: 交易成功
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务</br>
+      2、创建订单</br>
+      3、买家申请退款
+      4、校验催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 关闭催单任务
+        name: 关闭售后理由修改催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: false
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='logistics_filter')].args.status: 2
+            $.rules[?(@.type=='refund_reasons')].args.reasons: [多拍/错拍/不想要]
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 通过pulsar推送订单消息
+      - byName: 推送退款消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询退款trace
+      - byName: 查看trace详情-任务关闭
 afterMethod:
   name: 测试结束后查看订单trace
   step:
     - byName: 根据订单查询trace
+      name: 根据订单查询退款trace
+      extractor:
+        - json:
+            trace_id: $.data.traces[?(@.event_type=='Refund-Created')].trace_id
     - byName: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
