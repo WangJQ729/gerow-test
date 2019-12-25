@@ -102,7 +102,12 @@ public class DingTalkListener implements ISuiteListener {
                 builder.append("> ###### Failed list:\n");
                 for (ITestResult allResult : failedResult) {
                     String failedName = ((ITestMethod) allResult.getParameters()[0]).getTestClass().getStory() + "-" + allResult.getName();
-                    builder.append("> ######    ").append(failedName).append("\n");
+                    Map<String, String> links = ((ITestMethod) allResult.getParameters()[0]).getLinks();
+                    if (links.containsKey("TAPD_BUG")) {
+                        builder.append(String.format("> ###### [%s](%s)", failedName, links.get("TAPD_BUG"))).append("\n");
+                    } else {
+                        builder.append("> ######    ").append(failedName).append("\n");
+                    }
                 }
             }
             if (skipped > 0) {
