@@ -1,0 +1,52 @@
+name: 商品问答
+story: 关联商品
+invocationCount: 100
+beforeClass:
+  name: 获取行业问题列表
+  step:
+    - name: 获取行业问题
+      method: GET
+      url: /api/admin/config2/question_b_list
+      variables:
+        limit: 100
+        skip: 300
+        reply_sequence_num: 0
+        new_is_check: false
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            question_id: $.question_bs[${invocationCount}].id
+    - name: 获取商品列表
+      method: GET
+      url: /api/admin/platform/shop_goods_list
+      variables:
+        skip: 0
+        limit: 100
+        question_id: ${question_id}
+        question_b_id: ${question_id}
+        question_type: question_b
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            plat_goods_ids: $.goodss..plat_goods_id
+          size: 100
+testMethod:
+  - name: 添加商品问答
+    description: |
+      """</br>
+      """
+    severity: NORMAL
+    step:
+      - name: 添加商品问答
+        method: POST
+        url: /api/admin/config2/question_b_goods_replies_new_multi
+        headers:
+          Content-Type: multipart/form-data
+        form:
+          plat_goods_ids: ${plat_goods_ids}
+          question_b_id: ${question_id}
+          replies: |
+            [{"auto_send_in_auto_mode":false,"auto_send_in_hybrid_mode":false,"answer":"${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}","sale_statuses":[1,2,3,4],"answer_pics":[]}]
+          shop_intent_id: undefined
+          category: '[object Object]'
+        assertion: [json: {$.code: 0}]

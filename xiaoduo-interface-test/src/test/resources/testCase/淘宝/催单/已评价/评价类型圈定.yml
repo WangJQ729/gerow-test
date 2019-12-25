@@ -1,0 +1,198 @@
+name: 评价类型圈定
+story: ${reminder_type}
+dataProvider:
+  - node_state: rated
+    message: 对不起，可能有一些原因给您的这次购物带来了一些不愉快，我是售后客服，希望真诚和您沟通一下，看我能不能帮到您，让您消消气。
+    text_with_vars: ${message}
+    reminder_type: 已评价
+    order_state: succeeded
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 圈定中差评-买家给${rate_name}
+    dataProvider:
+      - rate_result: bad
+        rate_code: -1
+        rate_name: 差评
+      - rate_result: neutral
+        rate_code: 0
+        rate_name: 中评
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、开启已评价催单任务</br>
+      2、创建订单</br>
+      3、买家给${rate_name}
+      4、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启已评价催单任务
+      - byName: 通过pulsar推送订单消息
+      - byName: 推送评价消息
+      - byName: 获取催单消息
+  - name: 圈定中差评-买家给${rate_name}
+    dataProvider:
+      - rate_result: good
+        rate_code: 1
+        rate_name: 好评
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、开启已评价催单任务</br>
+      2、创建订单</br>
+      3、买家给${rate_name}
+      4、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启已评价催单任务
+      - byName: 通过pulsar推送订单消息
+      - byName: 推送评价消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询评价trace
+      - byName: 查看trace详情
+        name: 查看trace详情-评价类型圈定过滤
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [rate_type_filter]
+  - name: 圈定中评-买家给${rate_name}
+    dataProvider:
+      - rate_result: neutral
+        rate_code: 0
+        rate_name: 中评
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、开启已评价催单任务</br>
+      2、创建订单</br>
+      3、买家给${rate_name}
+      4、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启已评价催单任务
+        name: 开启已评价催单任务-中评
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='rate_type_filter')].args.status: 1
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 通过pulsar推送订单消息
+      - byName: 推送评价消息
+      - byName: 获取催单消息
+  - name: 圈定中评-买家给${rate_name}
+    dataProvider:
+      - rate_result: bad
+        rate_code: -1
+        rate_name: 差评
+      - rate_result: good
+        rate_code: 1
+        rate_name: 好评
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、开启已评价催单任务</br>
+      2、创建订单</br>
+      3、买家给${rate_name}
+      4、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启已评价催单任务-中评
+      - byName: 通过pulsar推送订单消息
+      - byName: 推送评价消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询评价trace
+      - byName: 查看trace详情-评价类型圈定过滤
+  - name: 圈定差评-买家给${rate_name}
+    dataProvider:
+      - rate_result: bad
+        rate_code: -1
+        rate_name: 差评
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、开启已评价催单任务</br>
+      2、创建订单</br>
+      3、买家给${rate_name}
+      4、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启已评价催单任务
+        name: 开启已评价催单任务-差评
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='rate_type_filter')].args.status: 2
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 通过pulsar推送订单消息
+      - byName: 推送评价消息
+      - byName: 获取催单消息
+  - name: 圈定差评-买家给${rate_name}
+    dataProvider:
+      - rate_result: neutral
+        rate_code: 0
+        rate_name: 中评
+      - rate_result: good
+        rate_code: 1
+        rate_name: 好评
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、开启已评价催单任务</br>
+      2、创建订单</br>
+      3、买家给${rate_name}
+      4、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启已评价催单任务-差评
+      - byName: 通过pulsar推送订单消息
+      - byName: 推送评价消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询评价trace
+      - byName: 查看trace详情-评价类型圈定过滤
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询评价trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

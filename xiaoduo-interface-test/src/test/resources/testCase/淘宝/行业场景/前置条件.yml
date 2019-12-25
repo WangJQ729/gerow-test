@@ -1,0 +1,41 @@
+name: 统一前置处理
+#所有测试执行前执行
+beforeSuite:
+  name: 登录mp后台
+  step:
+    - name: 获取MP后台地址
+      url: /api/auth/mp_switcher
+      variables:
+        subnick: ${shopName}
+      method: GET
+      assertion:
+        - json:
+            $.message: 成功
+      extractor:
+        - json:
+            auth_url: $.url
+    - name: 进入主页
+      host: ""
+      url: ${auth_url}
+      method: GET
+      responseType: DEFAULT
+    - name: 获取shop_id
+      url: /api/admin/user/logined
+      method: GET
+      extractor:
+        - json:
+            shop_id: $.user.shop_id
+            shop_category_id: $.default_shop.category_id
+          site: TESTSUIT
+      assertion: [json: {$.code: 0}]
+    - name: 登录test-tools
+      host: ${test_tools}
+      url: /api/v1/login/
+      method: POST
+      body: |
+        {"username":"wangjianqiang","password":"wangjianqiang123456"}
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            token: $.data.token
+          site: TESTSUIT

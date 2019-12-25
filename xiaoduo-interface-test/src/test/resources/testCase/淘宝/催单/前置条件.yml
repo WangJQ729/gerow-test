@@ -53,6 +53,11 @@ beforeSuite:
         service_names: reminder
       method: GET
       assertion: [json: {$.code: 0}]
+    - byName: 发送消息给商家
+      name: 发送消息给商家表示不是静默用户
+      variables:
+        pin: cntaobao${buyer}
+        q: ${__DES3Cipher(在吗,,)}
     - name: 登录test-tools
       host: ${test_tools}
       url: /api/v1/login/
