@@ -17,6 +17,7 @@ data:
     child_seller: wangjq_1990:xiaoduo1
     refund_id: 44636195945933796
     orderRateQueue: persistent://marketing/taobao/orderrate-taodongli
+    logisticsQueue: persistent://reminder/tmc/logistics_tb_test
 client:
   headers:
     Xiaoduo-Platform: taodongli
