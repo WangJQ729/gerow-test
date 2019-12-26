@@ -1,17 +1,17 @@
 package com.jq.test.jmeter.functions;
 
 import com.jq.test.utils.TestUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.jmeter.engine.util.CompoundVariable;
 import org.apache.jmeter.functions.AbstractFunction;
 import org.apache.jmeter.functions.InvalidVariableException;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.samplers.Sampler;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 public class RandomOrderId extends AbstractFunction {
 
@@ -22,7 +22,7 @@ public class RandomOrderId extends AbstractFunction {
     @Override
     public String execute(SampleResult previousResult, Sampler currentSampler) {
 
-        String idNo = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + RandomStringUtils.random(7, "0123456789");
+        String idNo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + String.format("%04d", new Random().nextInt(10000));
         if (vars != null) {
             TestUtils.saveVariables(vars, idNo);
         }
