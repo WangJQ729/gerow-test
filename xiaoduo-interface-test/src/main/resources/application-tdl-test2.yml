@@ -16,6 +16,7 @@ data:
     co_test_password: 123456
     child_seller: wangjq_1990:xiaoduo1
     refund_id: 44636195945933796
+    orderRateQueue: persistent://marketing/taobao/orderrate-taodongli
 client:
   headers:
     Xiaoduo-Platform: taodongli
