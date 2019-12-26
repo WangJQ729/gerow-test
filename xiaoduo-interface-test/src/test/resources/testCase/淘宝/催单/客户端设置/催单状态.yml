@@ -6,6 +6,36 @@ dataProvider:
     text_with_vars: ${message}
     reminder_type: 下单未付款
     question: 你好
+  - node_state: created
+    order_state: created
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+    text_with_vars: ${message}
+    reminder_type: 下单未付款
+    question: 你好
+  - node_state: checkaddr
+    order_state: created
+    message: 亲，您的订单已经收到，请核对以下信息是否正确，我们将尽快为您发出！
+    text_with_vars: ${message}
+    reminder_type: 核对地址
+    question: 你好
+  - node_state: deposited
+    order_state: deposited
+    message: defualt message!
+    text_with_vars: ${message}
+    reminder_type: 已付定金未付尾款
+    question: 你好
+  - node_state: paid
+    order_state: paid
+    message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
+    text_with_vars: ${message}
+    reminder_type: 已付款
+    question: 你好
+  - node_state: closed
+    order_state: closed
+    message: 亲，您对宝贝有什么不满意的吗？
+    text_with_vars: ${message}
+    reminder_type: 交易取消
+    question: 你好
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -14,7 +44,7 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
 testMethod:
-  - name: 不催单-自己的客户
+  - name: ${reminder_type}-不催单-自己的客户
     description: |
       """</br>
       用例描述：</br>
@@ -48,7 +78,7 @@ testMethod:
           - json:
               $.data.traces[?(@.phase=='InQueueReject')].in_queue_reject_reason: ["reject, client disable sending message"]
       - byName: 获取催单消息-消息为空
-  - name: 不催单-静默用户
+  - name: ${reminder_type}-不催单-静默用户
     description: |
       """</br>
       用例描述：</br>
@@ -79,7 +109,7 @@ testMethod:
               $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired: ${__BeanShell(${__time(/1000,)}+840,)}
             assertionType: ALLGREATEROREQUALTO
       - byName: 获取催单消息-消息为空
-  - name: 不催单-别人的用户
+  - name: ${reminder_type}-不催单-别人的用户
     description: |
       """</br>
       用例描述：</br>
@@ -104,7 +134,7 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
-  - name: 仅自己-自己的客户
+  - name: ${reminder_type}-仅自己-自己的客户
     description: |
       """</br>
       用例描述：</br>
@@ -126,7 +156,7 @@ testMethod:
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息-指定用户
       - byName: 获取催单消息
-  - name: 仅自己-静默客户
+  - name: ${reminder_type}-仅自己-静默客户
     description: |
       """</br>
       用例描述：</br>
@@ -147,7 +177,7 @@ testMethod:
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
-  - name: 仅自己-别人的客户
+  - name: ${reminder_type}-仅自己-别人的客户
     description: |
       """</br>
       用例描述：</br>
@@ -169,7 +199,7 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
-  - name: 仅静默-自己的客户
+  - name: ${reminder_type}-仅静默-自己的客户
     description: |
       """</br>
       用例描述：</br>
@@ -194,7 +224,7 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
-  - name: 仅静默-静默用户
+  - name: ${reminder_type}-仅静默-静默用户
     description: |
       """</br>
       用例描述：</br>
@@ -213,7 +243,7 @@ testMethod:
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息-随机用户
       - byName: 获取催单消息
-  - name: 仅静默-别人的用户
+  - name: ${reminder_type}-仅静默-别人的用户
     description: |
       """</br>
       用例描述：</br>
@@ -234,7 +264,7 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
-  - name: 自己和静默-自己的客户
+  - name: ${reminder_type}-自己和静默-自己的客户
     description: |
       """</br>
       用例描述：</br>
@@ -253,7 +283,7 @@ testMethod:
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
-  - name: 自己和静默-静默用户
+  - name: ${reminder_type}-自己和静默-静默用户
     description: |
       """</br>
       用例描述：</br>
@@ -271,7 +301,7 @@ testMethod:
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息-随机用户
       - byName: 获取催单消息
-  - name: 自己和静默-别人的客户
+  - name: ${reminder_type}-自己和静默-别人的客户
     description: |
       """</br>
       用例描述：</br>
@@ -296,7 +326,7 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据聊天记录查询trace
+    - byName: 根据订单查询trace
     - byName: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
