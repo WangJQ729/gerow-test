@@ -106,7 +106,7 @@ testMethod:
         name: 查看trace详情-没有催单的子账号设置等待时间
         assertion:
           - json:
-              $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired: ${__BeanShell(${__time(/1000,)}+840,)}
+              $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired: ${__BeanShell(${__time(/1000,)}+50,)}
             assertionType: ALLGREATEROREQUALTO
       - byName: 获取催单消息-消息为空
   - name: ${reminder_type}-不催单-别人的用户
