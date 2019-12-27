@@ -55,6 +55,7 @@ public class Assertion {
     private ITestStep step;
     private LinkedHashMap<String, Object> json = new LinkedHashMap<>();
     private LinkedHashMap<String, Object> excel = new LinkedHashMap<>();
+    private LinkedHashMap<String, Object> constant = new LinkedHashMap<>();
     private LinkedHashMap<String, Object> total = new LinkedHashMap<>();
     private int length = 0;
 
@@ -68,6 +69,7 @@ public class Assertion {
         this.step = step;
         build(json, DataType.JSON, entity);
         build(excel, DataType.EXCEL, entity);
+        build(constant, DataType.CONSTANT, entity);
         build(total, entity);
         if (StringUtils.isNotBlank(key)) {
             Allure.step("校验结果:" + key, () -> {
@@ -104,7 +106,19 @@ public class Assertion {
                 assertion.setAssertionType(assertionType);
                 assertion.setDataType(dataType);
                 assertion.setType(type);
-                assertion.setValueType(valueType);
+                switch (dataType) {
+                    case CONSTANT:
+                        assertion.setType(DataSources.DEFAULT);
+                        assertion.setValueType(ValueType.BIGDECIMAL);
+                        break;
+                    case JSON:
+                    case EXCEL:
+                    case XML:
+                    case DEFAULT:
+                    default:
+                        assertion.setValueType(valueType);
+                        break;
+                }
                 assertion.check(entity, this.step);
             }
         }
@@ -182,8 +196,10 @@ public class Assertion {
                 break;
             case DATA:
                 actual = JsonPathUtils.read(data, key, options);
+                break;
             case DEFAULT:
             default:
+                actual = key;
                 break;
         }
         //根据值的类型转换类型

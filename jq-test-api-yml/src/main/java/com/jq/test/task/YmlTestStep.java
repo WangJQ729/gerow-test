@@ -178,8 +178,8 @@ public class YmlTestStep implements ITestStep {
             HttpMethod method = HttpMethod.valueOf(StringUtils.upperCase(step.getMethod()));
             Class<?> type = step.getResponseType().getType();
             ResponseEntity<?> response = HttpUtils.composer(url, method, entity, type);
-            check(response);
             saveParam(response);
+            check(response);
         } else {
             check(new ResponseEntity<>(HttpStatus.OK));
             saveParam();

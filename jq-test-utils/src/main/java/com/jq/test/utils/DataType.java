@@ -16,7 +16,9 @@ public enum DataType {
     /**
      * 默认JSON
      */
-    DEFAULT(String.class);
+    DEFAULT(String.class),
+
+    CONSTANT(String.class);
 
     @Getter
     private Class<?> type;
