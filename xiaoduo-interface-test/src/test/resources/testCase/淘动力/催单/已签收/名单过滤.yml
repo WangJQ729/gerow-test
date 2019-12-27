@@ -6,6 +6,7 @@ dataProvider:
     message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
     text_with_vars: ${message}
     reminder_type: 已签收
+    question: 你好
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -38,7 +39,9 @@ testMethod:
             $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1575189211}]
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
             $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 发送消息给商家-指定买家
       - byName: 通过pulsar推送订单消息
         name: 指定用户通过pulsar推送订单消息
         bodyEditor:
@@ -62,12 +65,8 @@ testMethod:
       """
     step:
       - byName: 开启已签收催单任务-开启过滤名单
-      - byName: 通过pulsar推送订单消息
-        name: 随机用户通过pulsar推送订单消息
-        bodyEditor:
-          json:
-            $.word: >-
-              {"platform":"${platform}","order_id":"${__RandomOrderId(order_id)}","shop_id":"${shop_id}","buyer_id":"${__RandomName(buyer_id)}","payment":20,"address":"四川省桂溪街道天府软件园A5-8","status":"${order_state}","created_at":1573094733,"updated_at":1573094733,"item_ids":["604423906694"],"tbext":{"buyer_nick":"${buyer}","items":[{"item_id":"604423906694","item_name":"二手铅笔","count":1}],"receiver":{"name":"王健强","zip":"000000"},"original_order":"{\"adjust_fee\":\"0.00\",\"buyer_cod_fee\":\"0.00\",\"buyer_nick\":\"${buyer}\",\"buyer_open_uid\":\"AAGdHqFhAAgoIdPNSTRGF2WJ\",\"buyer_rate\":false,\"coupon_fee\":0,\"created\":\"2019-11-07 10:45:33\",\"discount_fee\":\"0.00\",\"est_con_time\":\"付款后45天内\",\"is_gift\":false,\"is_sh_ship\":false,\"modified\":\"2019-11-07 10:45:33\",\"new_presell\":false,\"nr_shop_guide_id\":\"\",\"nr_shop_guide_name\":\"\",\"num\":1,\"num_iid\":604423906694,\"orders\":{\"order\":[{\"adjust_fee\":\"0.00\",\"buyer_rate\":false,\"cid\":50024657,\"discount_fee\":\"0.00\",\"estimate_con_time\":\"付款后45天内\",\"is_daixiao\":false,\"is_oversold\":false,\"num\":1,\"num_iid\":604423906694,\"oid\":\"${order_id}\",\"oid_str\":\"${order_id}\",\"order_from\":\"TAOBAO\",\"payment\":\"20.00\",\"pic_path\":\"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01PUtjEb1KBkX6UpzOm_!!1740721126.jpg\",\"price\":\"10.00\",\"refund_status\":\"NO_REFUND\",\"seller_rate\":false,\"seller_type\":\"C\",\"snapshot_url\":\"q:${order_id}_1\",\"status\":\"WAIT_BUYER_PAY\",\"title\":\"二手铅笔\",\"total_fee\":\"10.00\"}]},\"payment\":\"20.00\",\"pic_path\":\"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01PUtjEb1KBkX6UpzOm_!!1740721126.jpg\",\"platform_subsidy_fee\":\"0.00\",\"post_fee\":\"10.00\",\"price\":\"10.00\",\"received_payment\":\"0.00\",\"receiver_address\":\"桂溪街道天府软件园A5-8\",\"receiver_city\":\"成都市\",\"receiver_country\":\"\",\"receiver_district\":\"武侯区\",\"receiver_mobile\":\"17721883949\",\"receiver_name\":\"王健强\",\"receiver_state\":\"四川省\",\"receiver_town\":\"桂溪街道\",\"receiver_zip\":\"000000\",\"seller_flag\":0,\"seller_nick\":\"wangjq_1990\",\"seller_rate\":false,\"service_tags\":{\"logistics_tag\":[{\"logistic_service_tag_list\":{\"logistic_service_tag\":[{\"service_tag\":\"origAreaId=510107;consignDate=1080\",\"service_type\":\"TB_CONSIGN_DATE\"},{\"service_tag\":\"lgType=-4\",\"service_type\":\"FAST\"}]},\"order_id\":\"${order_id}\"},{\"logistic_service_tag_list\":{\"logistic_service_tag\":[{\"service_tag\":\"consignDate=1080\",\"service_type\":\"TB_CONSIGN_DATE\"}]},\"order_id\":\"${order_id}\"}]},\"service_type\":\"\",\"shipping_type\":\"express\",\"status\":\"WAIT_BUYER_PAY\",\"tid\":\"${order_id}\",\"tid_str\":\"${order_id}\",\"title\":\"测试店铺Gerow\",\"total_fee\":\"10.00\",\"trade_from\":\"TAOBAO\",\"type\":\"fixed\",\"you_xiang\":false}"}}
+      - byName: 发送消息给商家-随机买家
+      - byName: 指定用户通过pulsar推送订单消息
       - byName: 获取催单消息
   - name: 已签收名单过滤-买家在过滤名单内，但过滤条件未勾选
     author: 何相玄
@@ -93,7 +92,9 @@ testMethod:
             $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1575189211}]
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
             $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 发送消息给商家-指定买家
       - byName: 指定用户通过pulsar推送订单消息
       - byName: 获取催单消息
 afterMethod:
