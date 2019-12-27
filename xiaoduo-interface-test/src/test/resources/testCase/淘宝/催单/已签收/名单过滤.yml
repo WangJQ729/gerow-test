@@ -66,7 +66,7 @@ testMethod:
     step:
       - byName: 开启已签收催单任务-开启过滤名单
       - byName: 发送消息给商家-随机买家
-      - byName: 指定用户通过pulsar推送订单消
+      - byName: 指定用户通过pulsar推送订单消息
       - byName: 获取催单消息
   - name: 已签收名单过滤-买家在过滤名单内，但过滤条件未勾选
     author: 何相玄
