@@ -107,6 +107,7 @@ testMethod:
           - json: {$.code: 0}
           - constant:
               ${__BeanShell(${set_timer}-${trigger_task})}: 60
+            assertionType: GREATEROREQUALTO
       - byName: 获取催单消息-消息为空
   - name: ${reminder_type}-不催单-别人的用户
     description: |
