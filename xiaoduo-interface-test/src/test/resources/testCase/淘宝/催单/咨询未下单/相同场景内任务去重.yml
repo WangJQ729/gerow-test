@@ -1,76 +1,44 @@
 name: 相同场景内任务去重
 story: ${reminder_type}
-invocationCount: 1
 dataProvider:
-  - node_state: created
-    order_state: created
-    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+  - node_state: asked
+    reminder_type: 咨询未下单
+    question: 在吗
+    message: 第一个任务哦!
     text_with_vars: ${message}
     message2: 第二个任务哦!
     text_with_vars2: ${message2}
-    reminder_type: 下单未付款
-  - node_state: checkaddr
-    order_state: created
-    message: 亲，您的订单已经收到，请核对以下信息是否正确，我们将尽快为您发出！
-    text_with_vars: ${message}
-    message2: 第二个任务哦!
-    text_with_vars2: ${message2}
-    reminder_type: 核对地址
-  - node_state: deposited
-    order_state: deposited
-    message: defualt message!
-    text_with_vars: ${message}
-    message2: 第二个任务哦!
-    text_with_vars2: ${message2}
-    reminder_type: 已付定金未付尾款
-  - node_state: paid
-    order_state: paid
-    message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
-    text_with_vars: ${message}
-    message2: 第二个任务哦!
-    text_with_vars2: ${message2}
-    reminder_type: 已付款
-  - node_state: signed
-    order_state: signed
-    message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
-    text_with_vars: ${message}
-    message2: 第二个任务哦!
-    text_with_vars2: ${message2}
-    reminder_type: 已签收
-  - node_state: closed
-    order_state: closed
-    message: 亲，您对宝贝有什么不满意的吗？
-    text_with_vars: ${message}
-    message2: 第二个任务哦!
-    text_with_vars2: ${message2}
-    reminder_type: 交易取消
 beforeClass:
   name: 获取taskID和模板
   step:
     - byName: 获取所有的task_id
     - byName: 获取task模板
     - byName: 删除其他催单任务
-    - name: 使用模板新建第一个task
-      byName: 使用模板新建一个task
+    - byName: 使用模板新建一个task
       bodyEditor:
         json:
           $.name: 第一个任务
           $.enable: true
           $.shop_id: ${shop_id}
-          $.rules[?(@.type=='send_message')].args.state_delay: 0
-          $.rules[?(@.type=='send_message')].args.message: ${message}
+          $.rules[?(@.type=='state_delay')].args.delay: 0
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].replies:
+            - ageing_id: ""
+              message: ${message}
+              images: []
       extractor:
         - json:
             task_id_1: $.data.id
-    - name: 使用模板新建第二个task
-      byName: 使用模板新建一个task
+    - byName: 使用模板新建一个task
       bodyEditor:
         json:
           $.name: 第二个任务
           $.enable: true
           $.shop_id: ${shop_id}
-          $.rules[?(@.type=='send_message')].args.state_delay: 0
-          $.rules[?(@.type=='send_message')].args.message: ${message2}
+          $.rules[?(@.type=='state_delay')].args.delay: 0
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].replies:
+            - ageing_id: ""
+              message: ${message2}
+              images: []
       extractor:
         - json:
             task_id_2: $.data.id
@@ -84,24 +52,16 @@ testMethod:
       测试步骤</br>
       1、关闭相同场景内任务去重</br>
       2、创建2个催单任务</br>
-      3、创建1个订单</br>
+      3、买家发送消息</br>
       4、校验催单消息</br>
       """
     severity: NORMAL
     step:
       - byName: 拉一下催单消息
-      - name: 关闭相同场景内任务去重
-        byName: 设置单个顾客单日最高催单数
-        bodyEditor:
-          json:
-            $.task_remove_duplicates: false
-      - byName: 通过pulsar推送订单消息
-      - byName: 拉一下催单消息
-        name: 获取到2条催单消息
-        assertion:
-          - total:
-              $.data.messages.length(): 2
-      - byName: 根据订单查询trace
+      - byName: 关闭相同场景内任务去重
+      - byName: 发送消息给商家
+      - byName: 获取到2条催单消息
+      - byName: 根据聊天记录查询trace
       - byName: 查看trace详情
         assertion:
           - json:
@@ -116,44 +76,22 @@ testMethod:
       测试步骤</br>
       1、开启相同场景内任务去重</br>
       2、创建2个催单任务</br>
-      3、创建1个订单，同时满足1、2条件</br>
+      3、买家发送消息</br>
       4、校验催单消息</br>
       """
     severity: NORMAL
     step:
       - byName: 拉一下催单消息
-      - name: 开启相同场景内任务去重
-        byName: 设置单个顾客单日最高催单数
-        bodyEditor:
-          json:
-            $.task_remove_duplicates: true
-      - name: 设置第一个任务在前
-        sleep: 5
-        url: /api/admin/reminder/v2/manage/task/update_weight
-        method: POST
-        body: |
-          {
-              "ids":[
-                  "${task_id_1}",
-                  "${task_id_2}"
-              ]
-          }
-        assertion: [json: {$.code: 0}]
-      - byName: 获取所有的task_id
-        name: 断言修改后的顺序是否正确
-        untilWait: 5
-        sleep: 5
-        assertion:
-          - json:
-              $.data.tasks[0].id: ${task_id_1}
-              $.data.tasks[1].id: ${task_id_2}
-      - byName: 通过pulsar推送订单消息
+      - byName: 开启相同场景内任务去重
+      - byName: 设置第一个任务在前
+      - byName: 断言修改后的顺序是否正确
+      - byName: 发送消息给商家
       - byName: 获取催单消息
         assertion:
           - json:
               $.data.messages[?(@.task_id=='${task_id_1}')].text_with_vars:
                 - ${text_with_vars}
-      - byName: 根据订单查询trace
+      - byName: 根据聊天记录查询trace
       - byName: 查看trace详情
         assertion:
           - json:
@@ -175,27 +113,19 @@ testMethod:
     step:
       - byName: 拉一下催单消息
       - byName: 开启相同场景内任务去重
-      - byName: 设置第一个任务在前
-        name: 设置第二个任务在前
-        body: |
-          {
-              "ids":[
-                  "${task_id_2}",
-                  "${task_id_1}"
-              ]
-          }
+      - byName: 设置第二个任务在前
       - byName: 断言修改后的顺序是否正确
         assertion:
           - json:
               $.data.tasks[0].id: ${task_id_2}
               $.data.tasks[1].id: ${task_id_1}
-      - byName: 通过pulsar推送订单消息
+      - byName: 发送消息给商家
       - byName: 获取催单消息
         assertion:
           - json:
               $.data.messages[?(@.task_id=='${task_id_2}')].text_with_vars:
                 - ${text_with_vars2}
-      - byName: 根据订单查询trace
+      - byName: 根据聊天记录查询trace
       - byName: 查看trace详情
         assertion:
           - json:
@@ -216,39 +146,40 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启催单任务
-        name: 修改第一个催单任务为金额圈定0-0.01元
+        name: 修改第一个催单任务为暂不拍
         bodyEditor:
           json:
             $.id: ${task_id_1}
             $.name: 第一个任务
             $.enable: true
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_message')].args.state_delay: 0
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='pay_amount_limit')].args.enable: true
-            $.rules[?(@.type=='pay_amount_limit')].args.min: 0
-            $.rules[?(@.type=='pay_amount_limit')].args.max: 1
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].replies:
+              - ageing_id: ""
+                message: ${message}
+                images: []
+            $.rules[?(@.type=='user_intention_filter')].args.enable: true
+            $.rules[?(@.type=='user_intention_filter')].args.intentions: [normal]
       - byName: 拉一下催单消息
       - byName: 开启相同场景内任务去重
       - byName: 设置第一个任务在前
       - byName: 断言修改后的顺序是否正确
-      - byName: 通过pulsar推送订单消息
+      - byName: 发送消息给商家
       - byName: 获取催单消息
         assertion:
           - json:
               $.data.messages[?(@.task_id=='${task_id_2}')].text_with_vars:
                 - ${text_with_vars2}
-      - byName: 根据订单查询trace
+      - byName: 根据聊天记录查询trace
       - byName: 查看trace详情
         assertion:
           - json:
-              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [pay_amount_limit]
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [user_intention_filter]
               $.data.traces[?(@.phase=='SendToClient')].message.text: ["${message2}"]
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 获取所有的task_id
-    - byName: 根据订单查询trace
+    - byName: 根据聊天记录查询trace
     - byName: 查看trace详情
 afterClass:
   name: 测试结束后删除任务

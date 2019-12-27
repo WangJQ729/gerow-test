@@ -90,6 +90,8 @@ beforeClass:
       assertion: [json: {$.code: 0}]
 testMethod:
   - name: 第一轮催拍消息-${question}
+    links:
+      TAPD_BUG: https://www.tapd.cn/33335504/bugtrace/bugs/view?bug_id=1133335504001020537
     description: |
       """</br>
       用例描述：</br>

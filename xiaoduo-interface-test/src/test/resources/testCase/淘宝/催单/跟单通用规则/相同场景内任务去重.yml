@@ -98,16 +98,15 @@ testMethod:
       - byName: 通过pulsar推送订单消息
       - byName: 拉一下催单消息
         name: 获取到2条催单消息
-        sleep: 1
         assertion:
-          - json:
+          - total:
               $.data.messages.length(): 2
       - byName: 根据订单查询trace
       - byName: 查看trace详情
         assertion:
           - json:
-              $.data.traces[?(@.task_id=='${task_id_1}' && @.phase=='TaskSendMessage')].message.text: ["${message}"]
-              $.data.traces[?(@.task_id=='${task_id_2}' && @.phase=='TaskSendMessage')].message.text: ["${message2}"]
+              $.data.traces[?(@.phase=='SendToClient')].message[?(@.task_id=='${task_id_1}')].text: ["${message}"]
+              $.data.traces[?(@.phase=='SendToClient')].message[?(@.task_id=='${task_id_2}')].text: ["${message2}"]
   - name: 开启相同场景内任务去重-全部任务都满足-只催第一个
     description: |
       """</br>
@@ -129,6 +128,7 @@ testMethod:
           json:
             $.task_remove_duplicates: true
       - name: 设置第一个任务在前
+        sleep: 5
         url: /api/admin/reminder/v2/manage/task/update_weight
         method: POST
         body: |
@@ -140,9 +140,9 @@ testMethod:
           }
         assertion: [json: {$.code: 0}]
       - byName: 获取所有的task_id
-        untilWait: 5
-        sleep: 10
         name: 断言修改后的顺序是否正确
+        untilWait: 5
+        sleep: 5
         assertion:
           - json:
               $.data.tasks[0].id: ${task_id_1}
@@ -157,8 +157,7 @@ testMethod:
       - byName: 查看trace详情
         assertion:
           - json:
-              $.data.traces[?(@.task_id=='${task_id_1}' && @.phase=='TaskSendMessage')].message.text: ["${message}"]
-              $.data.traces[?(@.task_id=='${task_id_2}' && @.phase=='TriggerTask')]: []
+              $.data.traces[?(@.phase=='SendToClient')].message.text: ["${message}"]
   - name: 开启相同场景内任务去重-全部任务都满足-调整顺序
     description: |
       """</br>
@@ -200,8 +199,7 @@ testMethod:
       - byName: 查看trace详情
         assertion:
           - json:
-              $.data.traces[?(@.task_id=='${task_id_1}' && @.phase=='TriggerTask')]: []
-              $.data.traces[?(@.task_id=='${task_id_2}' && @.phase=='TaskSendMessage')].message.text: ["${message2}"]
+              $.data.traces[?(@.phase=='SendToClient')].message.text: ["${message2}"]
   - name: 开启相同场景内任务去重-不满足第一个应该催第二个
     description: |
       """</br>
@@ -244,8 +242,8 @@ testMethod:
       - byName: 查看trace详情
         assertion:
           - json:
-              $.data.traces[?(@.task_id=='${task_id_1}' && @.phase=='TaskReject')].task_end_rule: [pay_amount_limit]
-              $.data.traces[?(@.task_id=='${task_id_2}' && @.phase=='TaskSendMessage')].message.text: ["${message2}"]
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [pay_amount_limit]
+              $.data.traces[?(@.phase=='SendToClient')].message.text: ["${message2}"]
 afterMethod:
   name: 测试结束后查看订单trace
   step:
