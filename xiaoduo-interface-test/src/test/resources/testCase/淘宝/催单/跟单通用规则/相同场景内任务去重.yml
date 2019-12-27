@@ -54,6 +54,7 @@ beforeClass:
       byName: 使用模板新建一个task
       bodyEditor:
         json:
+          $.name: 第一个任务
           $.enable: true
           $.shop_id: ${shop_id}
           $.rules[?(@.type=='send_message')].args.state_delay: 0
@@ -65,6 +66,7 @@ beforeClass:
       byName: 使用模板新建一个task
       bodyEditor:
         json:
+          $.name: 第二个任务
           $.enable: true
           $.shop_id: ${shop_id}
           $.rules[?(@.type=='send_message')].args.state_delay: 0
@@ -220,6 +222,7 @@ testMethod:
         bodyEditor:
           json:
             $.id: ${task_id_1}
+            $.name: 第一个任务
             $.enable: true
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_message')].args.state_delay: 0
