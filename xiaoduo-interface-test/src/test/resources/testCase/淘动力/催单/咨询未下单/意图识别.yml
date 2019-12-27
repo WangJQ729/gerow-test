@@ -119,6 +119,8 @@ testMethod:
     step:
       - name: 发送消息给商家
         url: /robot/answer
+        links:
+          TAPD_BUG: https://www.tapd.cn/33335504/bugtrace/bugs/view?bug_id=1133335504001020537
         variables:
           employee_role: 20
           pin: cntaobao${__RandomName(buyer_id)}
