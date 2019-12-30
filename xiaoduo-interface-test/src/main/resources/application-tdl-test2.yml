@@ -12,6 +12,7 @@ data:
     topic: persistent://public/default/rmd-trade-taodongli-test2
     test_tools: http://zhy-test2.xiaoduoai.com
     co_test: https://co-test2.xiaoduoai.com
+    mc_test: https://mc-test2.xiaoduoai.com
     co_test_username: 淘动力
     co_test_password: 123456
     child_seller: wangjq_1990:xiaoduo1

@@ -11,3 +11,6 @@ data:
     p_path: pulsar://pulsar-test-1:6650
     topic: persistent://public/default/rmd-trade-tb-test3
     test_tools: http://zhy-test3.xiaoduoai.com
+    child_seller: 杜可风按:春节
+    child_seller_name: 春节
+    seller_host: https://seller.xiaoduoai.com
