@@ -21,7 +21,7 @@ public class YmlTestClassEntity {
     /**
      * 参数化
      */
-    private List<LinkedHashMap<String, String>> dataProvider = new ArrayList<>();
+    private List<LinkedHashMap<String, Object>> dataProvider = new ArrayList<>();
     /**
      * 测试方法
      */
@@ -69,10 +69,24 @@ public class YmlTestClassEntity {
         List<ITestClass> result = new ArrayList<>();
         for (int i = 0; i < invocationCount; i++) {
             int j = 0;
-            for (Map<String, String> data : dataProvider) {
-                YmlTestClass testClass = buildTestClass(testSuite, file, data, "" + i + j, i);
-                result.add(testClass);
-                j++;
+            for (Map<String, Object> data : dataProvider) {
+                if (data.containsKey("dataProvider")) {
+                    List<LinkedHashMap<String, String>> dataProviders = (List<LinkedHashMap<String, String>>) data.get("dataProvider");
+                    for (LinkedHashMap<String, String> provider : dataProviders) {
+                        Map<String, String> newData = new HashMap<>();
+                        data.forEach((k, v) -> newData.put(k, v.toString()));
+                        provider.putAll(newData);
+                        YmlTestClass testClass = buildTestClass(testSuite, file, provider, "" + i + j, i);
+                        result.add(testClass);
+                        j++;
+                    }
+                } else {
+                    Map<String, String> newData = new HashMap<>();
+                    data.forEach((k, v) -> newData.put(k, v.toString()));
+                    YmlTestClass testClass = buildTestClass(testSuite, file, newData, "" + i + j, i);
+                    result.add(testClass);
+                    j++;
+                }
             }
         }
         if (beforeSuite != null)

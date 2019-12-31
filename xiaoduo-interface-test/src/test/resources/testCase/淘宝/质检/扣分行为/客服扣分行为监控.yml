@@ -1,0 +1,73 @@
+name: 客服扣分行为监控
+dataProvider:
+  - abnormal_name: 生硬拒绝
+    abnormal_type: 4
+    dataProvider:
+      - category_name: 户外烧烤
+        question: 是正品吗
+        answer: 不是的哦
+  - abnormal_name: 欠缺安抚
+    abnormal_type: 5
+    dataProvider:
+      - category_name: 户外烧烤
+        question: 是正品吗
+        answer: 不是的哦
+beforeClass:
+  name: 获取扣分行为类型id
+  step:
+    - byName: 随机获取一个类目
+      extractor:
+        - json:
+            category_id: $.categories[?(@.name =~ /${category_name}.*?/i)].id
+            category_name: $.categories[?(@.name =~ /${category_name}.*?/i)].name
+    - name: 切换类目-${category_name}
+      byName: 切换类目
+      form:
+        category_id: ${category_id}
+    - name: 获取扣分行为列表
+      host: ${mc_test}
+      url: /api/v1/abnormal/setting/list
+      method: GET
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            setting_body: $.data.settings[?(@.type==${abnormal_type})]
+testMethod:
+  - name: ${category_name}-${abnormal_name}-开启-${question}-${answer}
+    dataProvider:
+      - abnormal_score: 1
+    severity: NORMAL
+    step:
+      - name: 开启开分行为监控开关
+        host: ${mc_test}
+        url: /api/v1/abnormal/setting/update
+        method: POST
+        body: ${setting_body}
+        bodyEditor:
+          json:
+            $.score: ${__javaScript(${abnormal_score})}
+            $.check: true
+        assertion: [json: {$.code: 0}]
+      - byName: 发送消息给商家-随机买家
+      - name: 发送消息给买家
+        sleep: 2
+        url: /robot/report_client
+        variables:
+          a: ${__DES3Cipher(${answer},,)}
+          pin: cntaobao${buyer_id}
+          msg_time: ${__time(/1000,msg_time)}
+          state: 1
+          service_status: 7
+          spin: cntaobao${shopName}
+          send_msg_from: 2
+        method: GET
+        assertion: [json: {$.code: 0}]
+      - byName: 查询质检会话列表
+      - byName: 查看对话详情
+        untilWait: 120
+        intervals: 5000
+        assertion:
+          - json:
+              $.code: 0
+              $.data.messages[?(@.content=='${answer}' && @.source==1)].abnormal_score..type: ['${abnormal_type}']
+              $.data.messages[?(@.content=='${answer}' && @.source==1)].abnormal_score..score: ['${abnormal_score}']

@@ -16,7 +16,7 @@ public class YmlTestMethodEntity {
     /**
      * 参数化
      */
-    private List<LinkedHashMap<String, String>> dataProvider = new ArrayList<>();
+    private List<LinkedHashMap<String, Object>> dataProvider = new ArrayList<>();
     /**
      * 测试名称
      */
@@ -51,10 +51,23 @@ public class YmlTestMethodEntity {
         }
         List<ITestMethod> result = new ArrayList<>();
         for (int i = 0; i < invocationCount; i++) {
-            for (Map<String, String> data : dataProvider) {
+            for (Map<String, Object> data : dataProvider) {
                 for (StepEditor factory : editor) {
-                    YmlTestMethod testMethod = buildTestMethod(testClass, data, i, factory);
-                    result.add(testMethod);
+                    if (data.containsKey("dataProvider")) {
+                        List<LinkedHashMap<String, String>> dataProviders = (List<LinkedHashMap<String, String>>) data.get("dataProvider");
+                        for (LinkedHashMap<String, String> provider : dataProviders) {
+                            Map<String, String> newData = new HashMap<>();
+                            data.forEach((k, v) -> newData.put(k, v.toString()));
+                            provider.putAll(newData);
+                            YmlTestMethod testMethod = buildTestMethod(testClass, newData, i, factory);
+                            result.add(testMethod);
+                        }
+                    } else {
+                        Map<String, String> newData = new HashMap<>();
+                        data.forEach((k, v) -> newData.put(k, v.toString()));
+                        YmlTestMethod testMethod = buildTestMethod(testClass, newData, i, factory);
+                        result.add(testMethod);
+                    }
                 }
             }
         }

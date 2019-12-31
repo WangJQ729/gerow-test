@@ -18,6 +18,8 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -131,7 +133,6 @@ public class Assertion {
      * @return 期望值
      */
     private Object buildExpect(Object actual) {
-        Object value;
         //根据值的类型转换类型
         switch (valueType) {
             case BIGDECIMAL:
@@ -150,8 +151,20 @@ public class Assertion {
                     value = new BigDecimal(this.value.toString()).doubleValue();
                 } else if (actual instanceof Integer) {
                     value = new BigDecimal(this.value.toString()).intValue();
-                } else {
-                    value = this.value;
+                } else if (actual instanceof Collection && this.value instanceof Collection) {
+
+                    Optional any = ((Collection) actual).stream().findAny();
+                    if (any.isPresent()) {
+                        if (any.get() instanceof Double) {
+                            value = ((Collection) this.value).stream()
+                                    .map(v -> new BigDecimal(v.toString()).doubleValue())
+                                    .collect(Collectors.toList());
+                        } else if (any.get() instanceof Integer) {
+                            value = ((Collection) this.value).stream()
+                                    .map(v -> new BigDecimal(v.toString()).intValue())
+                                    .collect(Collectors.toList());
+                        }
+                    }
                 }
                 break;
         }

@@ -1,0 +1,43 @@
+name: 顾客正面情绪监控
+dataProvider:
+  - category_name: 顾客正面情绪
+    emotion_name: 满意
+    emotion: c1
+    algo_emotion: 1
+    dataProvider:
+      - question: 你的态度我很满意
+  - category_name: 顾客正面情绪
+    emotion_name: 感激
+    emotion: c2
+    algo_emotion: 2
+    dataProvider:
+      - question: 非常感激你的解答
+  - category_name: 顾客正面情绪
+    emotion_name: 期待
+    emotion: c3
+    algo_emotion: 3
+    dataProvider:
+      - question: 我非常期待
+testMethod:
+  - name: ${category_name}-${emotion_name}-开启-${question}
+    dataProvider:
+      - emotion_score: 0
+    severity: NORMAL
+    step:
+      - byName: 开启情绪管理开关
+      - byName: 发送消息给商家-随机买家
+      - byName: 查询质检会话列表
+      - byName: 查看对话详情
+  - name: ${category_name}-${emotion_name}-${question}
+    dataProvider:
+      - emotion_score: 0
+    severity: NORMAL
+    step:
+      - byName: 开启情绪管理开关
+        name: 关闭情绪管理开关
+        bodyEditor:
+          json:
+            $.emotion.check: false
+      - byName: 发送消息给商家-随机买家
+      - byName: 查询质检会话列表
+      - byName: 查看对话详情-检查开关关闭

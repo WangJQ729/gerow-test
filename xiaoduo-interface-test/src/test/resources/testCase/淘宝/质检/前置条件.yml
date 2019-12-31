@@ -3,6 +3,13 @@ name: 统一前置处理
 beforeSuite:
   name: 登录mp后台
   step:
+    - name: 登录晓多明察
+      host: ${mc_test}
+      url: /api/v1/account/login
+      method: POST
+      body: |
+        {"username":"${shopName}","password":"123456"}
+      assertion: [json: {$.code: 0}]
     - byName: 获取MP后台地址
     - byName: 进入主页
     - byName: 获取shop_id
