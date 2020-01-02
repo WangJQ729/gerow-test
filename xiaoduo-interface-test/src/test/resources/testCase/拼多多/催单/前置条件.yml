@@ -6,7 +6,7 @@ beforeSuite:
     - name: 获取MP后台地址
       url: /api/auth/mp_switcher
       variables:
-        full_nick: ${shopName}
+        subnick: ${shopName}
       method: GET
       assertion:
         - json:
