@@ -121,6 +121,7 @@ testMethod:
     step:
       - name: 发送消息给商家
         url: /robot/answer
+        sleep: 2
         variables:
           version_num: 3.1.1.2T
           msgid: ${__RandomString(32,1234567890abcdef,)}
