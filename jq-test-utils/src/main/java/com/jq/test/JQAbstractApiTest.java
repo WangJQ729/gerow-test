@@ -1,13 +1,13 @@
 package com.jq.test;
 
+import com.jq.test.listener.AllureListener;
+import com.jq.test.listener.CaseListListener;
+import com.jq.test.listener.ClearRedisListener;
+import com.jq.test.listener.DingTalkListener;
 import com.jq.test.task.ITest;
 import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestMethod;
 import com.jq.test.task.JQTest;
-import com.jq.test.testng.AllureListener;
-import com.jq.test.testng.CaseListListener;
-import com.jq.test.testng.ClearRedisListener;
-import com.jq.test.testng.DingTalkListener;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.ITestResult;
