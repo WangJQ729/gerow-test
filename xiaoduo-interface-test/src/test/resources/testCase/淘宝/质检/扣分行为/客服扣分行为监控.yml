@@ -26,6 +26,18 @@ beforeClass:
             setting_body: $.data.settings[?(@.type==${abnormal_type})]
 testMethod:
   - name: ${category_name}-${abnormal_name}-开启-${question}-${answer}-扣${abnormal_score}分
+    description: |
+      """</br>
+      用例描述：</br>
+      1、${category_name}-${abnormal_name}-开启-${question}。</br>
+      </br>
+      测试步骤</br>
+      1、${category_name}</br>
+      2、开启${abnormal_name}检查</br>
+      3、发送(${question})给商家</br>
+      4、商家回复(${answer})</br>
+      5、查看对话详情-校验质检结果</br>
+      """
     dataProvider:
       - abnormal_score: 1
     severity: NORMAL

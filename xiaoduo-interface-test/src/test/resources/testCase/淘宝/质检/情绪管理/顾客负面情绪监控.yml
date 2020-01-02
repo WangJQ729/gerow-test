@@ -1,50 +1,56 @@
 name: 顾客负面情绪监控
 dataProvider:
   - category_name: 顾客负面情绪
-    emotion_name: 对客服态度不满
-    emotion: c4
-    algo_emotion: 4
     dataProvider:
-      - question: 态度怎么这么差
-      - question: 服务态度太差
-  - category_name: 顾客负面情绪
-    emotion_name: 对发货物流不满
-    emotion: c5
-    algo_emotion: 5
-    dataProvider:
-      - question: 发货怎么这么慢
-  - category_name: 顾客负面情绪
-    emotion_name: 对产品不满
-    emotion: c6
-    algo_emotion: 6
-    dataProvider:
-      - question: 什么垃圾东西
-      - question: 东西太垃圾了
-      - question: 产品质量太差了
-  - category_name: 顾客负面情绪
-    emotion_name: 其他不满意
-    emotion: c7
-    algo_emotion: 7
-    dataProvider:
-      - question: 一点都不满意
-  - category_name: 顾客负面情绪
-    emotion_name: 顾客骂人
-    emotion: c8
-    algo_emotion: 8
-    dataProvider:
-      - question: 去死
-      - question: 你他妈的
-      - question: 大傻逼
-  - category_name: 顾客负面情绪
-    emotion_name: 对收货少件不满
-    emotion: c9
-    algo_emotion: 9
-    dataProvider:
-      - question: 你发的货怎么少了几件
+      - emotion_name: 对客服态度不满
+        emotion: c4
+        algo_emotion: 4
+        question:
+          - 态度怎么这么差
+          - 服务态度太差
+      - emotion_name: 对发货物流不满
+        emotion: c5
+        algo_emotion: 5
+        question: 发货怎么这么慢
+      - emotion_name: 对产品不满
+        emotion: c6
+        algo_emotion: 6
+        question:
+          - 什么垃圾东西
+          - 东西太垃圾了
+          - 产品质量太差了
+      - emotion_name: 其他不满意
+        emotion: c7
+        algo_emotion: 7
+        question:
+          - 一点都不满意
+      - emotion_name: 顾客骂人
+        emotion: c8
+        algo_emotion: 8
+        question:
+          - 去死
+          - 你他妈的
+          - 大傻逼
+      - emotion_name: 对收货少件不满
+        emotion: c9
+        algo_emotion: 9
+        question: 你发的货怎么少了几件
 testMethod:
   - name: ${category_name}-${emotion_name}-扣${emotion_score}分-开启-${question}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、${category_name}-${emotion_name}-开启-${question}。</br>
+      </br>
+      测试步骤</br>
+      1、${category_name}</br>
+      2、开启${emotion_name}检查</br>
+      3、发送(${question})给商家</br>
+      4、查看对话详情-校验质检结果</br>
+      """
     dataProvider:
       - emotion_score: 1
+      - emotion_score: 4
     severity: NORMAL
     step:
       - name: 开启情绪管理开关
@@ -91,6 +97,17 @@ testMethod:
               $.data.messages[?(@.content=='${question}' && @.source==0)].algo_emotion: ["${algo_emotion}"]
               $.data.messages[?(@.content=='${question}' && @.source==0)].emotion_score: ["${emotion_score}"]
   - name: ${category_name}-${emotion_name}-扣${emotion_score}分-关闭-${question}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、${category_name}-${emotion_name}-关闭-${question}。</br>
+      </br>
+      测试步骤</br>
+      1、${category_name}</br>
+      2、开启${emotion_name}检查</br>
+      3、发送(${question})给商家</br>
+      4、查看对话详情-校验质检结果</br>
+      """
     dataProvider:
       - emotion_score: 1
     severity: NORMAL
