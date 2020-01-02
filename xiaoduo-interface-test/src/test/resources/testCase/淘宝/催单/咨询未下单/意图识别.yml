@@ -18,7 +18,7 @@ beforeClass:
             category_id: $.id
             category_name: $.name
           data: ${categories}
-    - name: 切换类目-${category_name}
+    - name: 切换类目-指定类目id
       byName: 切换类目
       form:
         category_id: ${category_id}

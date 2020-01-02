@@ -1,0 +1,41 @@
+name: 漏跟进
+dataProvider:
+  - abnormal_name: 漏跟进
+    abnormal_type: 2
+    category_name: 糖果专属
+beforeClass:
+  name: 获取扣分行为类型id
+  step:
+    - byName: 跟进类目名称获取类目
+    - byName: 切换类目-指定类目id
+    - byName: 获取扣分行为列表
+testMethod:
+  - name: ${category_name}-${abnormal_name}-开启-${question}-${answer}-扣${abnormal_score}分
+    dataProvider:
+      - abnormal_score:
+          - 1
+          - 4
+        dataProvider:
+          - question:
+              - 赠品是否随货发出
+              - 赠品值多少钱
+              - 修改一下运费
+              - 定金是否可退
+            answer:
+              - 您耐心等待的呢
+              - 您在等一下啊
+              - 亲稍等我看一下
+              - 您稍等哦
+    severity: NORMAL
+    step:
+      - byName: 开启开分行为监控开关
+        name: 开启漏跟进监控开关
+        bodyEditor:
+          json:
+            $.score: ${__javaScript(${abnormal_score})}
+            $.check: true
+            $.special_settings.forget_followup_timeout: "1"
+      - byName: 发送消息给商家-随机买家
+      - byName: 发送消息给买家
+      - byName: 查询质检会话列表
+      - byName: 查看对话详情-扣分行为

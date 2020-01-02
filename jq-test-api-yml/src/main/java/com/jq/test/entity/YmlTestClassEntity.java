@@ -69,20 +69,8 @@ public class YmlTestClassEntity {
         List<ITestClass> result = new ArrayList<>();
         for (int i = 0; i < invocationCount; i++) {
             int j = 0;
-            for (Map<String, Object> data : dataProvider) {
-                if (data.containsKey("dataProvider")) {
-                    List<LinkedHashMap<String, String>> dataProviders = (List<LinkedHashMap<String, String>>) data.get("dataProvider");
-                    for (LinkedHashMap<String, String> provider : dataProviders) {
-                        Map<String, String> newData = new HashMap<>();
-                        data.forEach((k, v) -> newData.put(k, v.toString()));
-                        provider.putAll(newData);
-                        YmlTestClass testClass = buildTestClass(testSuite, file, provider, "" + i + j, i);
-                        result.add(testClass);
-                        j++;
-                    }
-                } else {
-                    Map<String, String> newData = new HashMap<>();
-                    data.forEach((k, v) -> newData.put(k, v.toString()));
+            for (LinkedHashMap<String, Object> data : dataProvider) {
+                for (LinkedHashMap<String, String> newData : TestUtils.dataProvider(data)) {
                     YmlTestClass testClass = buildTestClass(testSuite, file, newData, "" + i + j, i);
                     result.add(testClass);
                     j++;

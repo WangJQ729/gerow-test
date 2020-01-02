@@ -38,7 +38,7 @@ public class YmlHttpStepEntity {
     /**
      * 等待时间
      */
-    private int sleep = 0;
+    private String sleep = "0";
     /**
      * 直到成功的最晚时间
      * 这个时间内回一直

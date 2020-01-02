@@ -14,3 +14,7 @@ beforeSuite:
     - byName: 进入主页
     - byName: 获取shop_id
     - byName: 登录test-tools
+afterSuite:
+  name: 测试结束后还原类目
+  step:
+    - byName: 切换类目

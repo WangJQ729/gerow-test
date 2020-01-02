@@ -103,9 +103,9 @@ public class YmlTestStep implements ITestStep {
         this.buildParams();
         this.step = buildStep(step);
         if (step.getIter().isEmpty()) {
-            if (step.getSleep() != 0) {
+            if (Integer.parseInt(replace(step.getSleep())) != 0) {
                 try {
-                    Thread.sleep(step.getSleep() * 1000);
+                    Thread.sleep(Integer.parseInt(replace(step.getSleep())) * 1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -250,7 +250,7 @@ public class YmlTestStep implements ITestStep {
 
         if (oldStep.getUntilWait() != 0) newStep.setUntilWait(oldStep.getUntilWait());
 
-        if (oldStep.getSleep() != 0) newStep.setSleep(oldStep.getSleep());
+        if (!StringUtils.equals(oldStep.getSleep(), "0")) newStep.setSleep(oldStep.getSleep());
 
         if (oldStep.getIntervals() != 1000) newStep.setIntervals(oldStep.getIntervals());
 
