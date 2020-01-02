@@ -1,8 +1,19 @@
-name: 漏跟进
+name: ${abnormal_name}
 dataProvider:
   - abnormal_name: 漏跟进
     abnormal_type: 2
-    category_name: 糖果专属
+    dataProvider:
+      - category_name: 糖果专属
+        question:
+          - 赠品是否随货发出
+          - 赠品值多少钱
+          - 修改一下运费
+          - 定金是否可退
+        answer:
+          - 您耐心等待的呢
+          - 您在等一下啊
+          - 亲稍等我看一下
+          - 您稍等哦
 beforeClass:
   name: 获取扣分行为类型id
   step:
@@ -15,17 +26,6 @@ testMethod:
       - abnormal_score:
           - 1
           - 4
-        dataProvider:
-          - question:
-              - 赠品是否随货发出
-              - 赠品值多少钱
-              - 修改一下运费
-              - 定金是否可退
-            answer:
-              - 您耐心等待的呢
-              - 您在等一下啊
-              - 亲稍等我看一下
-              - 您稍等哦
     severity: NORMAL
     step:
       - byName: 开启开分行为监控开关

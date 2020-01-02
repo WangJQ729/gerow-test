@@ -1,4 +1,4 @@
-name: 单句响应慢
+name: ${abnormal_name}
 dataProvider:
   - abnormal_name: 单句响应慢
     abnormal_type: 8

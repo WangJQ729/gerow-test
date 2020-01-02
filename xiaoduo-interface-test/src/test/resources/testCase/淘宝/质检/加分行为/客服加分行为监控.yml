@@ -1,0 +1,48 @@
+name: 客服加分行为监控
+#dataProvider:
+#  - excellent_name: 需求挖掘
+#    excellent_type: 1
+#    dataProvider:
+#      - category_name: 女装专属
+#        question: 这个有吗？
+#        answer: 亲 您家宝宝身高多少呢
+#beforeClass:
+#  name: 获取扣分行为类型id
+#  step:
+#    - byName: 跟进类目名称获取类目
+#    - byName: 切换类目-指定类目id
+#    - name: 获取加分行为列表
+#      host: ${mc_test}
+#      url: /api/v1/excellent/setting/list
+#      method: GET
+#      assertion: [json: {$.code: 0}]
+#      extractor:
+#        - json:
+#            setting_body: $.data.settings[?(@.type==${excellent_type})]
+#testMethod:
+#  - name: ${category_name}-${abnormal_name}-开启-${question}-${answer}
+#    dataProvider:
+#      - abnormal_score: 1
+#    severity: NORMAL
+#    step:
+#      - name: 开启加分行为监控开关
+#        host: ${mc_test}
+#        url: /api/v1/excellent/setting/update
+#        method: POST
+#        body: ${setting_body}
+#        bodyEditor:
+#          json:
+#            $.score: ${__javaScript(${abnormal_score})}
+#            $.check: true
+#        assertion: [json: {$.code: 0}]
+#      - byName: 发送消息给商家-随机买家
+#      - byName: 发送消息给买家
+#      - byName: 查询质检会话列表
+#      - byName: 查看对话详情
+#        untilWait: 120
+#        intervals: 5000
+#        assertion:
+#          - json:
+#              $.code: 0
+#              $.data.messages[?(@.content=='${answer}' && @.source==1)].abnormal_score..type: ['${abnormal_type}']
+#              $.data.messages[?(@.content=='${answer}' && @.source==1)].abnormal_score..score: ['${abnormal_score}']
