@@ -1,7 +1,7 @@
 package com.jq.test.testng;
 
 import com.jq.test.client.RestTemplateTool;
-import com.jq.test.utils.ConfigManager;
+import com.jq.test.utils.data.ConfigManager;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;

@@ -5,10 +5,10 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jq.test.task.ITestMethod;
 import com.jq.test.task.ITestStep;
 import com.jq.test.task.YmlTestStep;
-import com.jq.test.utils.Assertion;
-import com.jq.test.utils.DataType;
-import com.jq.test.utils.Extractor;
-import com.jq.test.utils.StepEditor;
+import com.jq.test.utils.assertion.Assertion;
+import com.jq.test.utils.data.DataType;
+import com.jq.test.utils.data.Extractor;
+import com.jq.test.utils.data.StepEditor;
 import lombok.Data;
 
 import java.util.*;

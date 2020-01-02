@@ -3,6 +3,7 @@ package com.jq.test.entity;
 import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestSuite;
 import com.jq.test.task.YmlTestClass;
+import com.jq.test.utils.data.DataProviderUtils;
 import com.jq.test.utils.TestUtils;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
@@ -70,7 +71,7 @@ public class YmlTestClassEntity {
         for (int i = 0; i < invocationCount; i++) {
             int j = 0;
             for (LinkedHashMap<String, Object> data : dataProvider) {
-                for (LinkedHashMap<String, String> newData : TestUtils.dataProvider(data)) {
+                for (LinkedHashMap<String, String> newData : DataProviderUtils.dataProvider(data)) {
                     YmlTestClass testClass = buildTestClass(testSuite, file, newData, "" + i + j, i);
                     result.add(testClass);
                     j++;

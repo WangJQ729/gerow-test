@@ -1,4 +1,4 @@
-package com.jq.test.utils;
+package com.jq.test.utils.data;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;

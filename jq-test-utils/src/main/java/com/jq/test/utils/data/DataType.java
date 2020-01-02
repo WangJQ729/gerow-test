@@ -1,4 +1,4 @@
-package com.jq.test.utils;
+package com.jq.test.utils.data;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;

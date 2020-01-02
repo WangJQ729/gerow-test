@@ -3,7 +3,8 @@ package com.jq.test.entity;
 import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestMethod;
 import com.jq.test.task.YmlTestMethod;
-import com.jq.test.utils.StepEditor;
+import com.jq.test.utils.data.DataProviderUtils;
+import com.jq.test.utils.data.StepEditor;
 import com.jq.test.utils.TestUtils;
 import io.qameta.allure.SeverityLevel;
 import lombok.Data;
@@ -53,7 +54,7 @@ public class YmlTestMethodEntity {
         for (int i = 0; i < invocationCount; i++) {
             for (LinkedHashMap<String, Object> data : dataProvider) {
                 for (StepEditor factory : editor) {
-                    for (LinkedHashMap<String, String> newData : TestUtils.dataProvider(data)) {
+                    for (LinkedHashMap<String, String> newData : DataProviderUtils.dataProvider(data)) {
                         YmlTestMethod testMethod = buildTestMethod(testClass, newData, i, factory);
                         result.add(testMethod);
                     }

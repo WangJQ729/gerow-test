@@ -1,4 +1,4 @@
-package com.jq.test.utils;
+package com.jq.test.utils.data;
 
 public enum DataSources {
     HEADER,

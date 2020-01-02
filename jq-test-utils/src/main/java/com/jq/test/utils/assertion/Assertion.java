@@ -1,9 +1,11 @@
-package com.jq.test.utils;
+package com.jq.test.utils.assertion;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jayway.jsonpath.Option;
 import com.jq.test.json.JsonPathUtils;
 import com.jq.test.task.ITestStep;
+import com.jq.test.utils.data.DataSources;
+import com.jq.test.utils.data.DataType;
 import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;

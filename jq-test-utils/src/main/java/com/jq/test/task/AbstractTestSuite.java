@@ -1,6 +1,6 @@
 package com.jq.test.task;
 
-import com.jq.test.utils.ConfigManager;
+import com.jq.test.utils.data.ConfigManager;
 import com.jq.test.utils.TestUtils;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;

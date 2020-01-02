@@ -1,7 +1,8 @@
-package com.jq.test.utils;
+package com.jq.test.utils.data;
 
 import com.jq.test.json.JsonPathUtils;
 import com.jq.test.task.ITestStep;
+import com.jq.test.utils.assertion.Assertion;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 

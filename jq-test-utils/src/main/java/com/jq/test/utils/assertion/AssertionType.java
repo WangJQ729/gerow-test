@@ -1,4 +1,4 @@
-package com.jq.test.utils;
+package com.jq.test.utils.assertion;
 
 public enum AssertionType {
     /**

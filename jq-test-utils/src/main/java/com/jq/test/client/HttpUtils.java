@@ -1,6 +1,6 @@
 package com.jq.test.client;
 
-import com.jq.test.utils.ConfigManager;
+import com.jq.test.utils.data.ConfigManager;
 import io.qameta.allure.Allure;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
