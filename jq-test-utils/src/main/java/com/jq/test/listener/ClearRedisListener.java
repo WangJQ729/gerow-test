@@ -1,4 +1,4 @@
-package com.jq.test.testng;
+package com.jq.test.listener;
 
 import com.jq.test.client.RestTemplateTool;
 import com.jq.test.utils.data.ConfigManager;

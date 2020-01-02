@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.jq.test.testng;
+package com.jq.test.listener;
 
 import com.jq.test.task.ITestMethod;
 import io.qameta.allure.*;

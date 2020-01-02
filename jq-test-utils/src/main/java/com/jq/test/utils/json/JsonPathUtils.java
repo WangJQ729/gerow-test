@@ -1,4 +1,4 @@
-package com.jq.test.json;
+package com.jq.test.utils.json;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
