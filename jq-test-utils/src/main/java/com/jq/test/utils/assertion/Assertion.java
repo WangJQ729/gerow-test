@@ -2,10 +2,10 @@ package com.jq.test.utils.assertion;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jayway.jsonpath.Option;
-import com.jq.test.utils.json.JsonPathUtils;
 import com.jq.test.task.ITestStep;
 import com.jq.test.utils.data.DataSources;
 import com.jq.test.utils.data.DataType;
+import com.jq.test.utils.json.JsonPathUtils;
 import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;
@@ -153,18 +153,25 @@ public class Assertion {
                     value = new BigDecimal(this.value.toString()).doubleValue();
                 } else if (actual instanceof Integer) {
                     value = new BigDecimal(this.value.toString()).intValue();
-                } else if (actual instanceof Collection && this.value instanceof Collection) {
-
+                } else if (actual instanceof Collection) {
                     Optional any = ((Collection) actual).stream().findAny();
                     if (any.isPresent()) {
                         if (any.get() instanceof Double) {
-                            value = ((Collection) this.value).stream()
-                                    .map(v -> new BigDecimal(v.toString()).doubleValue())
-                                    .collect(Collectors.toList());
+                            if (this.value instanceof Collection) {
+                                value = ((Collection) this.value).stream()
+                                        .map(v -> new BigDecimal(v.toString()).doubleValue())
+                                        .collect(Collectors.toList());
+                            } else {
+                                value = new BigDecimal(value.toString()).doubleValue();
+                            }
                         } else if (any.get() instanceof Integer) {
-                            value = ((Collection) this.value).stream()
-                                    .map(v -> new BigDecimal(v.toString()).intValue())
-                                    .collect(Collectors.toList());
+                            if (this.value instanceof Collection) {
+                                value = ((Collection) this.value).stream()
+                                        .map(v -> new BigDecimal(v.toString()).intValue())
+                                        .collect(Collectors.toList());
+                            } else {
+                                value = new BigDecimal(value.toString()).intValue();
+                            }
                         }
                     }
                 }

@@ -39,15 +39,15 @@ dataProvider:
   - abnormal_name: 对活动不熟悉
     abnormal_type: 10
     dataProvider:
-      - category_name: 冷暖风扇
-        question: 赠品是否和货一起发
-        answer: 详情有的呢
-      - category_name: 电商通用
-        question: 活动价是多少
-        answer: 您可以首页参考下亲亲
-      - category_name: 全屋家电
-        question: 赠品的颜色是否可以选择
-        answer: 页面上看下哦亲
+#      - category_name: 冷暖风扇
+#        question: 赠品是否和货一起发
+#        answer: 详情有的呢
+#      - category_name: 电商通用
+#        question: 活动价是多少
+#        answer: 您可以首页参考下亲亲
+#      - category_name: 全屋家电
+#        question: 赠品的颜色是否可以选择
+#        answer: 页面上看下哦亲
       - category_name: 办公文具
         question: 什么时候做活动
         answer: 页面看下详情
@@ -91,11 +91,11 @@ beforeClass:
         - json:
             setting_body: $.data.settings[?(@.type==${abnormal_type})]
 testMethod:
-  - name: ${category_name}-${abnormal_name}-开启-${question}-${answer}-扣${abnormal_score}分
+  - name: ${abnormal_name}-${category_name}-开启-${question}-${answer}-扣${abnormal_score}分
     description: |
       """</br>
       用例描述：</br>
-      1、${category_name}-${abnormal_name}-开启-${question}。</br>
+      1、${abnormal_name}-${category_name}--开启-${question}。</br>
       </br>
       测试步骤</br>
       1、${category_name}</br>
@@ -140,8 +140,8 @@ testMethod:
         assertion:
           - json:
               $.code: 0
-              $.data.messages[?(@.content=='${answer}' && @.source==1)].abnormal_score..type: ['${abnormal_type}']
-              $.data.messages[?(@.content=='${answer}' && @.source==1)].abnormal_score..score: ['${abnormal_score}']
+              $.data.messages[?(@.content=='${answer}' && @.source==1)].abnormal_score..type: ${abnormal_type}
+              $.data.messages[?(@.content=='${answer}' && @.source==1)].abnormal_score..score: ${abnormal_score}
             assertionType: CONTAINS
 afterClass:
   name: 测试结束后关闭质检

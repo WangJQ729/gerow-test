@@ -20,7 +20,7 @@ name: 客服加分行为监控
 #        - json:
 #            setting_body: $.data.settings[?(@.type==${excellent_type})]
 #testMethod:
-#  - name: ${category_name}-${abnormal_name}-开启-${question}-${answer}
+#  - name: ${abnormal_name}-${category_name}--开启-${question}-${answer}
 #    dataProvider:
 #      - abnormal_score: 1
 #    severity: NORMAL

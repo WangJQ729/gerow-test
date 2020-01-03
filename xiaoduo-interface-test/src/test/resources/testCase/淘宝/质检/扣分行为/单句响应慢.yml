@@ -16,11 +16,11 @@ beforeClass:
     - byName: 切换类目-指定类目id
     - byName: 获取扣分行为列表
 testMethod:
-  - name: ${category_name}-${abnormal_name}-开启-${sleep_time}秒后回复-扣${abnormal_score}分
+  - name: ${abnormal_name}-${category_name}-开启-${sleep_time}秒后回复-扣${abnormal_score}分
     description: |
       """</br>
       用例描述：</br>
-      1、${category_name}-${abnormal_name}-开启-${question}。</br>
+      1、${abnormal_name}-${category_name}--开启-${question}。</br>
       </br>
       测试步骤</br>
       1、${category_name}</br>
@@ -32,11 +32,11 @@ testMethod:
     dataProvider:
       - abnormal_score:
           - 1
-          - 4
+#          - 4
         sleep_time:
           - 60
-          - 61
-          - 62
+#          - 61
+#          - 62
     severity: NORMAL
     step:
       - byName: 开启扣分分行为监控开关
@@ -51,11 +51,11 @@ testMethod:
         sleep: ${sleep_time}
       - byName: 查询质检会话列表
       - byName: 查看对话详情-扣分行为
-  - name: ${category_name}-${abnormal_name}-开启-${sleep_time}秒后回复-扣分${abnormal_score}
+  - name: ${abnormal_name}-${category_name}--开启-${sleep_time}秒后回复-扣分${abnormal_score}
     description: |
       """</br>
       用例描述：</br>
-      1、${category_name}-${abnormal_name}-开启-${question}。</br>
+      1、${abnormal_name}-${category_name}--开启-${question}。</br>
       </br>
       测试步骤</br>
       1、${category_name}</br>
@@ -67,10 +67,10 @@ testMethod:
     dataProvider:
       - abnormal_score:
           - 1
-          - 4
+#          - 4
         sleep_time:
           - 1
-          - 30
+#          - 30
           - 59
     severity: NORMAL
     step:
@@ -85,3 +85,7 @@ testMethod:
           - json:
               $.code: 0
               $.data.messages[?(@.content=='${answer}' && @.source==1)].abnormal_score: [[]]
+afterClass:
+  name: 测试结束后关闭质检
+  step:
+    - byName: 关闭扣分分行为监控开关
