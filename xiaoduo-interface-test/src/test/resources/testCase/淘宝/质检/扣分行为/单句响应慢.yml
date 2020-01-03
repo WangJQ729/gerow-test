@@ -39,7 +39,7 @@ testMethod:
           - 62
     severity: NORMAL
     step:
-      - byName: 开启开分行为监控开关
+      - byName: 开启扣分分行为监控开关
         name: 开启单句响应慢监控开关
         bodyEditor:
           json:

@@ -14,6 +14,18 @@ dataProvider:
           - 您在等一下啊
           - 亲稍等我看一下
           - 您稍等哦
+      - category_name: 户外烧烤
+        question: 多久返红包
+        answer: 稍等，我问问哦
+      - category_name: 男装专属
+        question: 满减是怎么算的
+        answer: 抱歉 我问问
+      - category_name: 手机壳钢化膜
+        question: 是否送手机壳
+        answer: 嗯嗯 我看下哦亲亲
+      - category_name: 相册DIY
+        question: 货从哪发
+        answer: 这边帮您问下的哦
 beforeClass:
   name: 获取扣分行为类型id
   step:
@@ -40,7 +52,7 @@ testMethod:
           - 4
     severity: NORMAL
     step:
-      - byName: 开启开分行为监控开关
+      - byName: 开启扣分分行为监控开关
         name: 开启漏跟进监控开关
         bodyEditor:
           json:
