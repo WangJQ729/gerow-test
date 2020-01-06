@@ -39,7 +39,7 @@ testMethod:
       - new_order_state: WAIT_DELIVERY
         new_order_state_name: 等待出库
     step:
-      - byName: 设置10秒后发送催单消息
+      - byName: 开启催单任务-交易成功
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer

@@ -35,8 +35,7 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges[0].from: 32400
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges[0].to: 79200
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
   - name: 消息发送时间断外交易完成

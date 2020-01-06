@@ -53,6 +53,9 @@ testMethod:
               $.data.messages[?(@.task_id=='${task_id}')].customer_data.need_check_online: [true]
               $.data.messages[?(@.task_id=='${task_id}')].customer_data.service_name: [reminder]
               $.data.messages[?(@.task_id=='${task_id}')].customer_data.transfer_type: [reminder_transfer]
+        extractor:
+          - json:
+              customer_data: $.data.messages[?(@.task_id=='${task_id}')].customer_data
       - byName: 发送消息给买家
         variables:
           a: ${__DES3Cipher(${answer},,)}
@@ -63,6 +66,7 @@ testMethod:
         variables:
           pin: cntaobao${buyer}
           q: ${__DES3Cipher(在吗,,)}
+          customer_data: ${customer_data}
 afterMethod:
   name: 测试结束后查看订单trace
   step:
