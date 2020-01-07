@@ -3,6 +3,7 @@ package com.jq.test.utils.assertion;
 import com.alibaba.fastjson.JSONObject;
 import com.jayway.jsonpath.Option;
 import com.jq.test.task.ITestStep;
+import com.jq.test.utils.TestUtils;
 import com.jq.test.utils.data.DataSources;
 import com.jq.test.utils.data.DataType;
 import com.jq.test.utils.json.JsonPathUtils;
@@ -14,13 +15,17 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.assertj.core.api.Assertions;
 import org.springframework.http.ResponseEntity;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -62,6 +67,7 @@ public class Assertion {
     private LinkedHashMap<String, Object> constant = new LinkedHashMap<>();
     private LinkedHashMap<String, Object> total = new LinkedHashMap<>();
     private int length = 0;
+    private boolean need_decode = false;
 
     /**
      * 判断响应是否正确
@@ -93,6 +99,7 @@ public class Assertion {
                 assertion.setOptions(options);
                 assertion.setAssertionType(AssertionType.TOTAL);
                 assertion.setDataType(dataType);
+                assertion.setNeed_decode(need_decode);
                 assertion.setType(type);
                 assertion.setValueType(valueType);
                 assertion.check(entity, this.step);
@@ -110,6 +117,7 @@ public class Assertion {
                 assertion.setAssertionType(assertionType);
                 assertion.setDataType(dataType);
                 assertion.setType(type);
+                assertion.setNeed_decode(need_decode);
                 switch (dataType) {
                     case CONSTANT:
                         assertion.setType(DataSources.DEFAULT);
@@ -187,7 +195,7 @@ public class Assertion {
      * @param <T>    响应体类型
      * @return 实际值
      */
-    private <T> Object buildActual(ResponseEntity<T> entity) throws IOException {
+    private <T> Object buildActual(ResponseEntity<T> entity) throws IOException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
         Object actual = null;
         //根据数据来源提取响应的实际值
         switch (type) {
@@ -203,7 +211,14 @@ public class Assertion {
                     case JSON:
                     case DEFAULT:
                     default:
-                        actual = JsonPathUtils.read(body, key, options);
+                        if (need_decode) {
+                            String json = TestUtils.des3Cipher("828d1bc65eefc6c88ca1a5d4", "828d1bc6", 2,
+                                    Objects.requireNonNull(entity.getBody()).toString());
+                            Allure.addAttachment("解密结果：", json);
+                            actual = JsonPathUtils.read(json, key, options);
+                        } else {
+                            actual = JsonPathUtils.read(body, key, options);
+                        }
                         break;
                 }
                 break;

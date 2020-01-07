@@ -11,7 +11,12 @@ data:
     p_path: pulsar://pulsar-test-1:6650
     topic: persistent://public/default/rmd-trade-tb-test3
     test_tools: http://zhy-test3.xiaoduoai.com
+    api_host: https://api-test3.xiaoduoai.com
+    mc_test: https://mc-test3.xiaoduoai.com
     child_seller: wangjq_1990:xiaoduo1
+    child_seller2: wangjq_1990:lzp
     child_seller_name: xiaoduo1
     seller_host: https://seller.xiaoduoai.com
     refund_id: 44636195945933796
+    orderRateQueue: persistent://marketing/taobao/orderrate-test3
+    logisticsQueue: persistent://reminder/tmc/logistics_tb_test

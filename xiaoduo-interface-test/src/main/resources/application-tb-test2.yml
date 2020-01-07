@@ -11,8 +11,11 @@ data:
     p_path: pulsar://pulsar-test-1:6650
     topic: persistent://public/default/rmd-trade-tb-test2
     test_tools: http://zhy-test2.xiaoduoai.com
+    api_host: https://api-test2.xiaoduoai.com
     mc_test: https://mc-test2.xiaoduoai.com
     child_seller: wangjq_1990:xiaoduo1
+    child_seller2: wangjq_1990:lzp
+    child_seller3: wangjq_1990:老弗丁
     child_seller_name: xiaoduo1
     seller_host: https://seller.xiaoduoai.com
     refund_id: 44636195945933796
