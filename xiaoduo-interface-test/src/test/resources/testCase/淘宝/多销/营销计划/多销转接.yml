@@ -1,0 +1,79 @@
+name: 多销转接
+dataProvider:
+  - group_name: 顾客分群_${__time(yyyyMMdd_HHmmss,)}
+    message: 纯文字催单消息
+    text_with_vars: 纯文字催单消息
+beforeClass:
+  name: 创建客群并流入一个客人
+  step:
+    - byName: 新建顾客分群
+    - byName: 查看分群列表-获取新分群ID
+    - byName: 校验初始客群人数为0
+    - byName: 发送消息给商家
+      variables:
+        q: ${__DES3Cipher(在吗,,)}
+    - byName: 校验初始客群人数为1
+    - name: 获取转接分组
+      host: ${seller_host}
+      url: /api/fishpond/setting
+      method: GET
+      variables:
+        platform: ${platform}
+        shop_id: ${shop_id}
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            transfer_group_id: $.data.setting.transfer_group_id
+    - name: 更新多销转接分组
+      host: ${seller_host}
+      url: /api/fishpond/xd_sub_user/groups/selection/update
+      method: POST
+      body: |
+        {"id":"${transfer_group_id}","group_id_list":"","sub_user_name_list":"${child_seller}"}
+      assertion: [json: {$.code: 0}]
+    - name: 设置多销转接
+      host: ${seller_host}
+      url: /api/fishpond/setting
+      method: POST
+      body: |
+        {"open_transfer":true,"transfer_group_id":"${transfer_group_id}"}
+      assertion: [json: {$.code: 0}]
+testMethod:
+  - name: 开启转接
+    description: |
+      """</br>
+      用例描述：</br>
+      1、营销话术消息内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、创建客池精准营销</br>
+      2、获取消息、校验消息内容</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 创建客池精准营销
+      - byName: 获取营销任务ID
+      - byName: 获取多销消息
+        name: 获取催单消息-回复后转接
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars: ["${text_with_vars}"]
+              $.data.messages[?(@.task_id=='${task_id}')].customer_data.is_need_transfer: [true]
+              $.data.messages[?(@.task_id=='${task_id}')].customer_data.need_check_online: [true]
+              $.data.messages[?(@.task_id=='${task_id}')].customer_data.service_name: [fishpond]
+              $.data.messages[?(@.task_id=='${task_id}')].customer_data.transfer_type: [fishpond_transfer]
+        extractor:
+          - json:
+              customer_data: $.data.messages[?(@.task_id=='${task_id}')].customer_data
+      - byName: 子账号发送心跳检测
+      - byName: 发送消息给商家-POST
+        assertion:
+          - json:
+              $.custom_transfer.transfer_type: "fishpond_transfer"
+              $.custom_transfer.is_transfer: true
+              $.custom_transfer.transfer_subnick_list: ["${child_seller}"]
+            need_decode: true
+afterClass:
+  name: 删除智能分群
+  step:
+    - byName: 删除智能分群
