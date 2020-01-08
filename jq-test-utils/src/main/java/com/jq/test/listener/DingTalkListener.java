@@ -98,7 +98,7 @@ public class DingTalkListener implements ISuiteListener {
             int skipped = skippedResult.size();
             builder.append("> ###### total Skipped: ").append(skipped).append("\n");
             builder.append(buildUseTime(tc.getEndDate().toInstant().getEpochSecond() - tc.getStartDate().toInstant().getEpochSecond()));
-            if (failed > 0) {
+            if (failed > 0 && failed < 15) {
                 builder.append("> ###### Failed list:\n");
                 for (ITestResult allResult : failedResult) {
                     ITestMethod iTestMethod = (ITestMethod) allResult.getParameters()[0];
@@ -111,7 +111,7 @@ public class DingTalkListener implements ISuiteListener {
                     }
                 }
             }
-            if (skipped > 0) {
+            if (skipped > 0 && failed < 15) {
                 builder.append("> ###### Skipped list:\n");
                 for (ITestResult allResult : skippedResult) {
                     String skippedName = ((ITestMethod) allResult.getParameters()[0]).getTestClass().getStory() + "-" + allResult.getName();
