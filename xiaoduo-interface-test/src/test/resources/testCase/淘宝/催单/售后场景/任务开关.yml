@@ -69,7 +69,7 @@ testMethod:
         byName: 通过pulsar推送订单消息
         bodyEditor:
           json:
-            $.topic: persistent://reminder/tmc/refund_tb_test
+            $.topic: ${refundQueue}
             $.word: >-
               {"buyer_nick":"${buyer}","refund_id":${refund_id},"refund_fee":"0.01","oid":${__RandomOrderId(sub_order_id)},"tid":${order_id},"refund_phase":"onsale","bill_type":"return_bill","seller_nick":"${shopName}","modified":"2019-12-06 17:33:10.21","channel":"${refund_state}"}
       - byName: 获取催单消息
