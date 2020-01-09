@@ -28,20 +28,15 @@ public class HmacMD5 extends AbstractFunction {
     public String execute(SampleResult previousResult, Sampler currentSampler) {
         String src = vars.execute().trim();
         SecretKeySpec signingKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "HmacMD5");
-        Mac mac = null;
+        String result = "";
         try {
-            mac = Mac.getInstance("HmacMD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        try {
-            assert mac != null;
+            Mac mac = Mac.getInstance("HmacMD5");
             mac.init(signingKey);
-        } catch (InvalidKeyException e) {
+            byte[] rawHmac = mac.doFinal(src.getBytes(StandardCharsets.UTF_8));
+            result = Hex.encodeHexString(rawHmac);
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             e.printStackTrace();
         }
-        byte[] rawHmac = mac.doFinal(src.getBytes(StandardCharsets.UTF_8));
-        String result = Hex.encodeHexString(rawHmac);
         if (varName != null && StringUtils.isNotBlank(varName.execute())) {
             TestUtils.saveVariables(varName, result);
         }
