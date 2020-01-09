@@ -38,6 +38,7 @@ beforeMethod:
     - byName: 获取task模板
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
+    - byName: 拉一下催单消息
 testMethod:
   - name: ${reminder_type}-不催单-自己的客户
     description: |

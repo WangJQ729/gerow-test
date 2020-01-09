@@ -4,6 +4,10 @@ dataProvider:
   - node_state: asked
     reminder_type: 咨询未下单
     question: 你好
+beforeMethod:
+  name: 拉一下催单消息
+  step:
+    - byName: 拉一下催单消息
 beforeClass:
   name: 获取taskID和模板
   step:

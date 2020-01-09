@@ -12,6 +12,10 @@ beforeClass:
     - byName: 获取task模板
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
+beforeMethod:
+  name: 拉一下催单消息
+  step:
+    - byName: 拉一下催单消息
 testMethod:
   - name: 购买意向过滤-设置${intention_name}-买家${intention_name}-咨询前设置购买意向
     dataProvider:
