@@ -1,0 +1,26 @@
+data:
+  test:
+    platform: tb
+    host: wangcai-${env}.xiaoduoai.com
+    test_tools: http://zhy-${env}.xiaoduoai.com
+    api_host: https://api-${env}.xiaoduoai.com
+    mc_test: https://mc-${env}.xiaoduoai.com
+    seller_host: https://seller.xiaoduoai.com
+
+    p_path: pulsar://pulsar-test-1:6650
+    topic: persistent://public/default/rmd-trade-tb-${env}
+    orderRateQueue: persistent://marketing/taobao/orderrate-${env}
+    logisticsQueue: persistent://reminder/tmc/logistics_tb_test
+    refundQueue: persistent://reminder/tmc/refund_tb_test
+
+    sign: ca61da42f143ef040fc22afee498a622
+
+    shopName: 杜可风按
+    seller_name: 杜可风按
+    shop: 杜可风按
+    buyer: tester002
+    child_seller: 杜可风按:春节
+    child_seller_name: 春节
+    child_seller2: 杜可风按:ha
+    child_seller3: 杜可风按:尚书
+    refund_id: 44636195945933796
