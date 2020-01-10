@@ -1,7 +1,6 @@
 name: 多销转接
 dataProvider:
-  - group_name: 顾客分群_${__time(yyyyMMdd_HHmmss,)}
-    message: 纯文字催单消息
+  - message: 纯文字催单消息
     text_with_vars: 纯文字催单消息
 beforeClass:
   name: 创建客群并流入一个客人
