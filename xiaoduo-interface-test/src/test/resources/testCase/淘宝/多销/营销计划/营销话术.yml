@@ -17,6 +17,7 @@ beforeClass:
             group_id: $.data.results[?(@.name=='${group_name}')].id
     - byName: 查看分群列表-获取新分群ID
       name: 校验初始客群人数为0
+      sleep: 2
       untilWait: 30
       assertion:
         - json:

@@ -103,7 +103,9 @@ public class TestUtils {
      */
     public static String replace(String content, ITest parentTest, ITest iTest, int times) {
         JMeterContextService.getContext().setVariables(new JMeterVariables());
-        content = parentTest.replace(TestUtils.replace(content, iTest));
+        if (parentTest != null) {
+            content = parentTest.replace(TestUtils.replace(content, iTest));
+        }
         if (times < 5) {
             times++;
             if (TestUtils.hasVariables(content)) return replace(content, parentTest, iTest, times);

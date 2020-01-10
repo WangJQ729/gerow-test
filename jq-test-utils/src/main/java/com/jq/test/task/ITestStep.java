@@ -44,4 +44,5 @@ public interface ITestStep extends ITest {
     Map<String, Integer> getAssertionLength();
 
     void addAssertionLength(String key, int value);
+
 }

@@ -22,6 +22,10 @@ public class CaseListListener implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
+        addTestCase(result);
+    }
+
+    private void addTestCase(ITestResult result) {
         ITestMethod testMethod = (ITestMethod) (result.getParameters()[0]);
         String platform = System.getProperty("platform");
         String feature = System.getProperty("features");

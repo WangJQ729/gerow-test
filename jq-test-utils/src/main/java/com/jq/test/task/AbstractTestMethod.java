@@ -4,8 +4,10 @@ import com.jq.test.utils.TestUtils;
 import io.qameta.allure.Allure;
 import io.qameta.allure.SeverityLevel;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 public abstract class AbstractTestMethod implements ITestMethod {
@@ -83,6 +85,15 @@ public abstract class AbstractTestMethod implements ITestMethod {
     }
 
     public String getDescription() {
-        return replace(description);
+        if (StringUtils.isNoneBlank(description)) {
+            return replace(description);
+        }
+        return "\"\"\"</br>"+getTestSteps().stream().map(iTestStep -> {
+            if (StringUtils.isNoneBlank(iTestStep.getName())) {
+                return iTestStep.getName();
+            } else {
+                return iTestStep.getByName();
+            }
+        }).collect(Collectors.joining("</br>"))+"</br>\"\"\"</br>";
     }
 }
