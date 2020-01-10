@@ -70,7 +70,11 @@ public class DingTalkListener implements ISuiteListener {
             properties.load(new InputStreamReader(Objects.requireNonNull(resourceAsStream), StandardCharsets.UTF_8));
             builder.append(title).append("\n");
             builder.append(String.format("> #### 平台：%s\n", platform));
-            builder.append(String.format("> #### namespace：%s\n", env));
+            if (StringUtils.isNoneBlank(env)) {
+                builder.append(String.format("> #### namespace：%s\n", env));
+            } else {
+                builder.append(String.format("> #### 目标测试环境：%s\n", properties.getProperty("host")));
+            }
             builder.append(String.format("> #### 店铺：%s\n", properties.getProperty("shopName")));
             builder.append(String.format("> #### 功能：%s\n", features));
             if (!StringUtils.isEmpty(story)) {
