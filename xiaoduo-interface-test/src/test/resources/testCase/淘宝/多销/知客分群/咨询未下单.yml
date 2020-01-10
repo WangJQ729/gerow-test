@@ -5,6 +5,7 @@ testMethod:
   - name: 咨询未下单分群-买家咨询
     step:
       - name: 新建顾客分群
+        sleep: 5
         url: /api/zhike/customer_group/create
         method: POST
         body: |
