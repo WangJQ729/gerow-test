@@ -80,7 +80,7 @@ testMethod:
             "qianniu_version_num": "7.12.02N",
             "service_status": "7",
             "usr_shut": "0",
-            "pin": "cntaobao${buyer}",
+            "pin": "cntaobao${buyer_id}",
             "spin": "cntaobao${shopName}",
             "customer_data": ${customer_data}
           }

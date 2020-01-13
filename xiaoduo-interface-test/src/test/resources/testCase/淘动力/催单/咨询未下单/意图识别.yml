@@ -157,7 +157,7 @@ afterMethod:
       variables:
         platform: ${platform}
         shop_id: ${shop_id}
-        buyer_id: ${buyer}
+        buyer_id: ${buyer_id}
         event_type: Chat-Message
         date: ${__time(yyyy-MM-dd,)}
       method: GET
