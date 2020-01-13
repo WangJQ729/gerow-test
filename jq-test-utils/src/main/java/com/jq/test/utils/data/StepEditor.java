@@ -63,8 +63,10 @@ public class StepEditor {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            if (value instanceof String && ((String) value).contains("__RandomOrderId")) {
+                value = testStep.replace((String) value);
+            }
             body = JsonPathUtils.put(body, key, value);
-
         }
         return body;
     }
