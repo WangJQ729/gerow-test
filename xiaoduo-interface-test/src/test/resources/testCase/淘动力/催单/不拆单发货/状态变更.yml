@@ -53,6 +53,7 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.state_delay: 10
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.message: ${message}
+      - byName: 发送消息给商家-POST-固定问题
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer

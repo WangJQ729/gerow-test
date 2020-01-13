@@ -3,40 +3,14 @@ name: 统一前置处理
 beforeSuite:
   name: 登录mp后台
   step:
-    - name: 登录统一管理平台
-      host: ${co_test}
-      url: /api/admin/company/login
-      headers:
-        Content-Type: multipart/form-data
-      method: POST
-      form:
-        username: ${co_test_username}
-        password: ${co_test_password}
-      assertion: [json: {$.code: 0}]
-    - name: 获取shop_id
-      host: ${co_test}
-      url: /api/admin/company/customer/list
+    - name: 获取MP后台地址
+      url: /api/auth/mp_switcher
       variables:
-        skip: 0
-        limit: 20
-        type_group: 1
-        channel: 1
-        keyword: ${shopName}
-        shop_page: /admin/shop/config
+        subnick: ${shopName}
       method: GET
-      assertion: [json: {$.code: 0}]
-      extractor:
+      assertion:
         - json:
-            shop_id: $.customers[?(@.nick=='${shopName}')].shop_id
-            shop_category_id: $.customers[?(@.nick=='${shopName}')].shop.category.id
-          site: TESTSUIT
-    - name: 登录MP后台
-      host: ${co_test}
-      url: /api/admin/company/mp/login_url
-      method: GET
-      variables:
-        shop_id: ${shop_id}
-      assertion: [json: {$.code: 0}]
+            $.message: 成功
       extractor:
         - json:
             auth_url: $.url
@@ -45,6 +19,15 @@ beforeSuite:
       url: ${auth_url}
       method: GET
       responseType: DEFAULT
+    - name: 获取shop_id
+      url: /api/admin/user/logined
+      method: GET
+      extractor:
+        - json:
+            shop_id: $.user.shop_id
+            shop_category_id: $.default_shop.category_id
+          site: TESTSUIT
+      assertion: [json: {$.code: 0}]
     - name: 催单设置为自己和静默
       url: /api/admin/user/shop_subnick_client_config_edit_v3
       headers:
@@ -58,15 +41,16 @@ beforeSuite:
       url: /api/admin/reminder/v2/manage/shop/setting
       method: POST
       body: |
-        {"user_daily_limit":10000,"no_answer_filter":false,"task_remove_duplicates":true,"duplicated_order_switches":[{"check_state":"created","compare_state":"paid","enable":false},{"check_state":"closed","compare_state":"paid","enable":false}]}
+        {"user_daily_limit":10000,"no_answer_filter":false,"task_remove_duplicates":false,"duplicated_order_switches":[{"check_state":"created","compare_state":"paid","enable":false},{"check_state":"closed","compare_state":"paid","enable":false}]}
       assertion: [json: {$.code: 0}]
     - name: 拉一下催单消息
-      url: /api/admin/reminder/v2/client/reminder/messages
+      url: /api/client/reminder/v2/client/reminder/messages
       untilWait: 15
       variables:
         shop_id: ${shop_id}
         seller_id: ${shopName}
         platform: ${platform}
+        service_names: reminder
       method: GET
       assertion: [json: {$.code: 0}]
     - byName: 发送消息给商家
