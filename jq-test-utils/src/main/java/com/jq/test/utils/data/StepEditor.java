@@ -56,7 +56,7 @@ public class StepEditor {
             try {
                 if (value instanceof String) {
                     if (((String) value).contains("__BeanShell")) {
-                        body = JsonPathUtils.put(body, key, new BigDecimal(testStep.replace((String) value)).longValue());
+                        body = JsonPathUtils.put(body, key, new BigDecimal(testStep.replace((String) value)));
                         continue;
                     }
                 }
