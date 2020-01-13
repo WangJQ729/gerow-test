@@ -50,7 +50,7 @@ testMethod:
         bodyEditor:
           json:
             $.word.order_id: ${__RandomOrderId(order_id)}
-            $.word.buyer_id: ${__RandomName(buyer_id)}
+            $.word.buyer_id: ${buyer_id}
             $.word.status: paid
             $.word.tbext.buyer_nick: ${buyer_id}
             $.word.tbext.original_order: >-
