@@ -82,7 +82,7 @@ testMethod:
           }
         assertion:
           - json:
-              $.code: 0
+              $.qstr: 你好
             need_decode: true
       - name: 通过pulsar推送订单消息
         host: ${test_tools}
