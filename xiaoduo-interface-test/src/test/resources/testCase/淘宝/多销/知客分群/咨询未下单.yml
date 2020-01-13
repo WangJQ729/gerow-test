@@ -12,8 +12,8 @@ testMethod:
           {"customer_group":{"name":"${__time(yyyyMMdd_HHmmss,group_name)}","cond":{"select_cond":{"op":"and","child_conds":[{"op":"and","child_conds":[{"cond":{"type":"last_order_state","rule":{"type":"last_order_state","state":"asked","max_time":1575251759,"min_time":1575165359,"goods":[]}}}]}]},"exclude_cond":null},"shop_id":"${shop_id}"}}
         bodyEditor:
           json:
-            $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.min_time: ${__javaScript(${__time(/1000)},)}
-            $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.max_time: ${__javaScript(${__time(/1000)}+600,)}
+            $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.min_time: ${__BeanShell(${__time(/1000)},)}
+            $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.max_time: ${__BeanShell(${__time(/1000)}+600,)}
         assertion: [json: {$.code: 0}]
       - byName: 查看分群列表-获取新分群ID
       - byName: 校验初始客群人数为0

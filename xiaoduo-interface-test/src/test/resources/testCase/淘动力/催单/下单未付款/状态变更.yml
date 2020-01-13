@@ -13,6 +13,10 @@ beforeClass:
     - byName: 获取task模板
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
+beforeMethod:
+  name: 拉一下催单消息
+  step:
+    - byName: 拉一下催单消息
 testMethod:
   - name: 状态变更为-${new_type_name}
     dataProvider:
@@ -44,15 +48,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启催单任务
-        name: 开启催单任务-10秒后触发
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_message')].args.state_delay: 10
-            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 开启催单任务-10秒后触发
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer

@@ -121,7 +121,7 @@ testMethod:
         body: ${setting_body}
         bodyEditor:
           json:
-            $.score: ${__javaScript(${abnormal_score})}
+            $.score: ${__BeanShell(${abnormal_score})}
             $.check: true
         assertion: [json: {$.code: 0}]
       - byName: 发送消息给商家-随机买家

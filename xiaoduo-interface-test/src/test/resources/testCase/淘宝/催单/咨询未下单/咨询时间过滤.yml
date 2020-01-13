@@ -41,8 +41,8 @@ testMethod:
             #勾选“咨询时间圈定”组件，并设置时间
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='state_triggered_time_limit')].args.enable: true
-            $.rules[?(@.type=='state_triggered_time_limit')].args.from: ${__javaScript(${__time(/1000)}-1000,)}
-            $.rules[?(@.type=='state_triggered_time_limit')].args.to: ${__javaScript(${__time(/1000)}+1000,)}
+            $.rules[?(@.type=='state_triggered_time_limit')].args.from: ${__BeanShell(${__time(/1000)}-1000,)}
+            $.rules[?(@.type=='state_triggered_time_limit')].args.to: ${__BeanShell(${__time(/1000)}+1000,)}
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
 
@@ -72,8 +72,8 @@ testMethod:
             #勾选“咨询时间圈定”组件，并设置时间
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='state_triggered_time_limit')].args.enable: false
-            $.rules[?(@.type=='state_triggered_time_limit')].args.from: ${__javaScript(${__time(/1000)}-2000,)}
-            $.rules[?(@.type=='state_triggered_time_limit')].args.to: ${__javaScript(${__time(/1000)}-1000,)}
+            $.rules[?(@.type=='state_triggered_time_limit')].args.from: ${__BeanShell(${__time(/1000)}-2000,)}
+            $.rules[?(@.type=='state_triggered_time_limit')].args.to: ${__BeanShell(${__time(/1000)}-1000,)}
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
 
@@ -103,8 +103,8 @@ testMethod:
             #勾选“咨询时间圈定”组件，并设置时间
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='state_triggered_time_limit')].args.enable: true
-            $.rules[?(@.type=='state_triggered_time_limit')].args.from: ${__javaScript(${__time(/1000)}-2000,)}
-            $.rules[?(@.type=='state_triggered_time_limit')].args.to: ${__javaScript(${__time(/1000)}-1000,)}
+            $.rules[?(@.type=='state_triggered_time_limit')].args.from: ${__BeanShell(${__time(/1000)}-2000,)}
+            $.rules[?(@.type=='state_triggered_time_limit')].args.to: ${__BeanShell(${__time(/1000)}-1000,)}
       - byName: 发送消息给商家
       - byName: 根据聊天记录查询trace
       - byName: 查看trace详情
@@ -139,8 +139,8 @@ testMethod:
             #勾选“咨询时间圈定”组件，并设置时间
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='state_triggered_time_limit')].args.enable: true
-            $.rules[?(@.type=='state_triggered_time_limit')].args.from: ${__javaScript(${__time(/1000)}+1000,)}
-            $.rules[?(@.type=='state_triggered_time_limit')].args.to: ${__javaScript(${__time(/1000)}+2000,)}
+            $.rules[?(@.type=='state_triggered_time_limit')].args.from: ${__BeanShell(${__time(/1000)}+1000,)}
+            $.rules[?(@.type=='state_triggered_time_limit')].args.to: ${__BeanShell(${__time(/1000)}+2000,)}
       - byName: 发送消息给商家
       - byName: 根据聊天记录查询trace
       - byName: 查看trace详情-咨询时间圈定过滤

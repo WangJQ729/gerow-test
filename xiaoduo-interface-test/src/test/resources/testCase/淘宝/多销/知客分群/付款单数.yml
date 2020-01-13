@@ -40,7 +40,7 @@ testMethod:
         name: 校验客群增加一个客人
         assertion:
           - json:
-              $.data.results[?(@.id=='${group_id}')].customer_count: ["${__javaScript(${customer_count}+1,)}"]
+              $.data.results[?(@.id=='${group_id}')].customer_count: ["${__BeanShell(${customer_count}+1,)}"]
   - name: 付款单数分群-有3个订单不流出
     step:
       - byName: 通过pulsar推送订单消息-指定用户

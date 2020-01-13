@@ -74,7 +74,7 @@ testMethod:
         bodyEditor:
           json:
             $.value.signState.isSigned: true
-            $.value.signState.signAt: ${__BeanShell(${__time(/1000,signAt)}-${day_delay}*60*60*24,)}
+            $.value.signState.signAt: ${__javaScript(${__time(/1000,signAt)}-${day_delay}*60*60*24,)}
       - byName: 推送退款消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace

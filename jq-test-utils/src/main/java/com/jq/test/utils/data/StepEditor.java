@@ -1,12 +1,16 @@
 package com.jq.test.utils.data;
 
-import com.jq.test.utils.json.JsonPathUtils;
 import com.jq.test.task.ITestStep;
 import com.jq.test.utils.assertion.Assertion;
+import com.jq.test.utils.json.JsonPathUtils;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Objects;
 
 @Data
 public class StepEditor {
@@ -35,7 +39,7 @@ public class StepEditor {
     /**
      * 条件字段
      */
-    private Map<String, Object> json = new HashMap<>();
+    private LinkedHashMap<String, Object> json = new LinkedHashMap<>();
 
     /**
      * 构造请求体
@@ -51,8 +55,8 @@ public class StepEditor {
             Object value = json.get(key);
             try {
                 if (value instanceof String) {
-                    if (((String) value).contains("__javaScript")) {
-                        body = JsonPathUtils.put(body, key, Long.parseLong(testStep.replace((String) value)));
+                    if (((String) value).contains("__BeanShell")) {
+                        body = JsonPathUtils.put(body, key, new BigDecimal(testStep.replace((String) value)).longValue());
                         continue;
                     }
                 }

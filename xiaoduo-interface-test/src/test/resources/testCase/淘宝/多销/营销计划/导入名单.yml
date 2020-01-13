@@ -63,8 +63,8 @@ testMethod:
               "sellers":["${seller_name}"],
               "send_time":[
                   {
-                      "from":${__javaScript(${__time(/1000)},)},
-                      "to":${__javaScript(${__time(/1000)}+120,)}
+                      "from":${__BeanShell(${__time(/1000)},)},
+                      "to":${__BeanShell(${__time(/1000)}+120,)}
                   }
               ],
               "message":{

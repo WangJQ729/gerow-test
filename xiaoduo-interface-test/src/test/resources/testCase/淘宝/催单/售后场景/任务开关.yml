@@ -72,10 +72,10 @@ testMethod:
             $.topic: ${refundQueue}
             $.word:
               {"refund_fee":"0.01","refund_phase":"onsale","bill_type":"return_bill","seller_nick":"${shopName}","modified":"2019-12-06 17:33:10.21"}
-            $.word.buyer_nick: ${buyer}
-            $.word.tid: ${order_id}
-            $.word.oid: ${__RandomOrderId(sub_order_id)}
-            $.word.refund_id: ${refund_id}
+            $.word.buyer_nick: ${buyer_id}
+            $.word.tid: ${__BeanShell(${order_id}l,)}
+            $.word.oid: ${__BeanShell(${__RandomOrderId(sub_order_id)}l,)}
+            $.word.refund_id: ${__BeanShell(${refund_id}l,)}
             $.word.channel: ${refund_state}
       - byName: 获取催单消息
   - name: 关闭任务-订单状态为${order_state_name}时退款

@@ -70,8 +70,13 @@ testMethod:
         bodyEditor:
           json:
             $.topic: ${refundQueue}
-            $.word: >-
-              {"buyer_nick":"${buyer}","refund_id":${refund_id},"refund_fee":"0.01","oid":${__RandomOrderId(sub_order_id)},"tid":${order_id},"refund_phase":"onsale","bill_type":"return_bill","seller_nick":"${shopName}","modified":"2019-12-06 17:33:10.21","channel":"${refund_state}"}
+            $.word:
+              {"refund_fee":"0.01","refund_phase":"onsale","bill_type":"return_bill","seller_nick":"${shopName}","modified":"2019-12-06 17:33:10.21"}
+            $.word.buyer_nick: ${buyer}
+            $.word.tid: ${order_id}
+            $.word.oid: ${__RandomOrderId(sub_order_id)}
+            $.word.refund_id: ${refund_id}
+            $.word.channel: ${refund_state}
       - byName: 获取催单消息
   - name: 关闭任务-订单状态为${order_state_name}时退款
     dataProvider:

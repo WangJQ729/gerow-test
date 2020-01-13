@@ -37,7 +37,7 @@ testMethod:
             $.id: ${task_id}
             $.enable: true
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_message')].args.state_delay: ${__javaScript(${state_delay},)}
+            $.rules[?(@.type=='send_message')].args.state_delay: ${__BeanShell(${state_delay},)}
             $.rules[?(@.type=='specify_send_seller')].args.status: 2
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
@@ -57,7 +57,7 @@ testMethod:
         name: 校验TaskSetTimer正确
         assertion:
           - json:
-              $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired: ["${__javaScript(${task_created_at}+${state_delay},)}"]
+              $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired: ["${__BeanShell(${task_created_at}+${state_delay},)}"]
             valueType: BIGDECIMAL
       - byName: 获取催单消息
         untilWait: 120

@@ -47,8 +47,9 @@ testMethod:
         bodyEditor:
           json:
             $.topic: ${orderRateQueue}
-            $.word: >-
-              {"platform":"${platform}","shop_id":"${shop_id}","trade_id":"${order_id}","role":"buyer","rate":${rate_code},"result":"${rate_result}","nick":"${buyer}","rated_nick":"wangjq_1990","content":"有点差","valid_score":false,"created":"2019-12-24 19:25:31","item_price":"9.99","item_title":"N手烂笔芯","num_iid":609803021235,"oid":"${order_id}","tid":"${order_id}","is_valid":true}
+            $.word:
+              {"platform":"${platform}","shop_id":"${shop_id}","trade_id":"${order_id}","role":"buyer","result":"${rate_result}","nick":"${buyer}","rated_nick":"wangjq_1990","content":"有点差","valid_score":false,"created":"2019-12-24 19:25:31","item_price":"9.99","item_title":"N手烂笔芯","num_iid":609803021235,"oid":"${order_id}","tid":"${order_id}","is_valid":true}
+            $.word.rate: ${rate_code}
       - byName: 获取催单消息
   - name: 关闭任务
     description: |
