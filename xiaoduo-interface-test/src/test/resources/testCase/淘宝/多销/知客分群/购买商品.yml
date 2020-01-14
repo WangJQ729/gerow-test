@@ -1,0 +1,26 @@
+name: 购买商品
+dataProvider:
+  - order_state: paid
+    order_state_name: 已付款
+beforeClass:
+  name: 设置分群
+  step:
+    - byName: 新建顾客分群
+      name: 新建付款单数顾客分群-圈定商品
+      bodyEditor:
+        json:
+          $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.type: paid_order_goods
+          $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.type: paid_order_goods
+          $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.time: 2592000
+          $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.goods: ["604423906694"]
+    - byName: 查看分群列表-获取新分群ID
+    - byName: 获取初始化后的客群人数
+testMethod:
+  - name: 付款单数分群-只有一个订单不会流入
+    step:
+      - byName: 通过pulsar推送订单消息-随机用户
+      - byName: 校验客群增加一个客人
+afterClass:
+  name: 删除智能分群
+  step:
+    - byName: 删除智能分群

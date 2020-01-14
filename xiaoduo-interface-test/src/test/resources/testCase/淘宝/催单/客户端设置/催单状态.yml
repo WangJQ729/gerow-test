@@ -330,3 +330,7 @@ afterMethod:
     - byName: 删除催单任务
     - byName: 根据订单查询trace
     - byName: 查看trace详情
+afterClass:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 催单设置为自己和静默
