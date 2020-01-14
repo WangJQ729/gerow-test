@@ -35,7 +35,7 @@ testMethod:
               $.data.results[?(@.id=='${group_id}')].customer_count: ["${customer_count}"]
   - name: 付款单数分群-有2个订单流入
     step:
-      - byName: 通过pulsar推送订单消息-指定用户
+      - byName: 通过pulsar推送订单消息
       - byName: 校验初始客群人数为0
         name: 校验客群增加一个客人
         assertion:
@@ -43,11 +43,11 @@ testMethod:
               $.data.results[?(@.id=='${group_id}')].customer_count: ["${__BeanShell(${customer_count}+1,)}"]
   - name: 付款单数分群-有3个订单不流出
     step:
-      - byName: 通过pulsar推送订单消息-指定用户
+      - byName: 通过pulsar推送订单消息
       - byName: 校验客群增加一个客人
   - name: 付款单数分群-有4个订单流出
     step:
-      - byName: 通过pulsar推送订单消息-指定用户
+      - byName: 通过pulsar推送订单消息
       - byName: 校验客群人数未增加
 afterClass:
   name: 删除智能分群

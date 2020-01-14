@@ -41,7 +41,7 @@ testMethod:
       - byName: 校验初始客群人数为0
       - byName: 发送消息给商家
       - byName: 校验初始客群人数为1
-      - byName: 通过pulsar推送订单消息-指定用户
+      - byName: 通过pulsar推送订单消息
       - byName: 校验初始客群人数为0
 afterMethod:
   name: 删除智能分群

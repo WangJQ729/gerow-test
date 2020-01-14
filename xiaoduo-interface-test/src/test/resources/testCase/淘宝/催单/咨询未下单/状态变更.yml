@@ -59,7 +59,7 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 根据聊天记录查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 通过pulsar推送订单消息-指定用户
+      - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情
         name: 查看trace详情-订单状态变更
