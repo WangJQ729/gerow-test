@@ -9,9 +9,12 @@ testMethod:
         url: /api/zhike/customer_group/create
         method: POST
         body: |
-          {"customer_group":{"name":"${__time(yyyyMMdd_HHmmss,group_name)}","cond":{"select_cond":{"op":"and","child_conds":[{"op":"and","child_conds":[{"cond":{"type":"last_order_state","rule":{"type":"last_order_state","state":"asked","max_time":1575251759,"min_time":1575165359,"goods":[]}}}]}]},"exclude_cond":null},"shop_id":"${shop_id}"}}
+          {"customer_group":{"name":"${__time(yyyyMMdd_HHmmss,group_name)}","cond":{"select_cond":{"op":"and","child_conds":[{"op":"and","child_conds":[{"cond":{"type":"last_order_state","rule":{}}}]}]},"exclude_cond":null},"shop_id":"${shop_id}"}}
         bodyEditor:
           json:
+            $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.type: last_order_state
+            $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.type: last_order_state
+            $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.state: asked
             $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.min_time: ${__BeanShell(${__time(/1000)},)}
             $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.max_time: ${__BeanShell(${__time(/1000)}+600,)}
         assertion: [json: {$.code: 0}]
@@ -40,9 +43,9 @@ testMethod:
       - byName: 查看分群列表-获取新分群ID
       - byName: 获取初始化后的客群人数
       - byName: 发送消息给商家
-      - byName: 校验客群增加一个客人
+      - byName: 校验客群人数增加
       - byName: 通过pulsar推送订单消息
-      - byName: 校验客群减少一个客人
+      - byName: 校验客群人数减少
 afterMethod:
   name: 删除智能分群
   step:

@@ -25,7 +25,7 @@ testMethod:
       - byName: 查看分群列表-获取新分群ID
       - byName: 获取初始化后的客群人数
       - byName: 通过pulsar推送订单消息-随机用户
-      - byName: 校验客群增加一个客人
+      - byName: 校验客群人数增加
 afterMethod:
   name: 删除智能分群
   step:

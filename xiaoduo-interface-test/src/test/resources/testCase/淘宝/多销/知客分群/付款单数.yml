@@ -37,7 +37,7 @@ testMethod:
     step:
       - byName: 通过pulsar推送订单消息
       - byName: 获取初始化后的客群人数
-        name: 校验客群增加一个客人
+        name: 校验客群人数增加
         assertion:
           - json:
               $.data.results[?(@.id=='${group_id}')].customer_count: ["${__BeanShell(${customer_count}+1,)}"]
@@ -53,7 +53,7 @@ testMethod:
     step:
       - byName: 通过pulsar推送订单消息
       - byName: 获取初始化后的客群人数
-        name: 校验客群减少一个客人
+        name: 校验客群人数减少
         assertion:
           - json:
               $.data.results[?(@.id=='${group_id}')].customer_count: ["${__BeanShell(${customer_count}-1,)}"]

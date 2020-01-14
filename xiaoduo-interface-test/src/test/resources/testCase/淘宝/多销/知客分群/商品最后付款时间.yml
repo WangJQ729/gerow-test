@@ -1,77 +1,41 @@
-name: 多订单去重
-story: ${reminder_type}
+name: 商品最后付款时间
 dataProvider:
-  - node_state: created
-    order_state: created
-    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
-    text_with_vars: ${message}
-    reminder_type: 下单未付款
-  - node_state: closed
-    order_state: closed
-    message: 亲，您对宝贝有什么不满意的吗？
-    text_with_vars: ${message}
-    reminder_type: 交易取消
+  - order_state: paid
+    order_state_name: 已付款
 beforeClass:
-  name: 获取taskID和模板
+  name: 设置分群
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - byName: 新建顾客分群
+      name: 新建付款单数顾客分群-商品最后付款时间
+      bodyEditor:
+        json:
+          $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.type: last_paid_time
+          $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.type: last_paid_time
+          $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.rel_time: 86400
+          $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.goods: []
+    - byName: 查看分群列表-获取新分群ID
+    - byName: 获取初始化后的客群人数
 testMethod:
-  - name: 已有已支付订单-不催单
-    description: |
-      """</br>
-      用例描述：</br>
-      1、开启任务会触发。</br>
-      </br>
-      测试步骤</br>
-      1、开启任务</br>
-      2、创建下单未付款订单</br>
-      3、建议订单trace是否已经settimer</br>
-      4、创建一个已付款订单
-      5、不应该发送催单消息</br>
-      6、校验trace信息</br>
-      """
-    severity: NORMAL
+  - name: 付款单数分群-昨天付款的流入
     step:
-      - name: 开启多订单去重
-        byName: 设置单个顾客单日最高催单数
-        bodyEditor:
-          json:
-            $.duplicated_order_switches[?(@.check_state=='created')].enable: true
-            $.duplicated_order_switches[?(@.check_state=='closed')].enable: true
-      - byName: 开启催单任务
-      - byName: 发送消息给商家-POST-固定问题
       - byName: 通过pulsar推送订单消息
-        name: 推送已付款订单消息
+        name: 通过pulsar推送订单消息-随机用户-昨天付款
         bodyEditor:
           json:
             $.word.order_id: ${__RandomOrderId(order_id)}
-            $.word.buyer_id: ${buyer_id}
-            $.word.status: paid
+            $.word.buyer_id: ${__RandomName(buyer_id)}
+            $.word.status: ${order_state}
             $.word.tbext.buyer_nick: ${buyer_id}
+            $.created_at: ${__BeanShell(${__time(/1000)}-86300,)}
+            $.updated_at: ${__BeanShell(${__time(/1000)}-86300,)}
             $.word.tbext.original_order: >-
               {"adjust_fee":"0.00","buyer_cod_fee":"0.00","buyer_nick":"${buyer_id}","buyer_open_uid":"AAGdHqFhAAgoIdPNSTRGF2WJ","buyer_rate":false,"coupon_fee":0,"created":"${__timeShift(yyyy-MM-dd HH:mm:ss,,,zh_CN,everyday_start_time)}","discount_fee":"0.00","est_con_time":"付款后45天内","is_gift":false,"is_sh_ship":false,"modified":"${__timeShift(yyyy-MM-dd HH:mm:ss,,,zh_CN,everyday_start_time)}","new_presell":false,"nr_shop_guide_id":"","nr_shop_guide_name":"","num":1,"num_iid":604423906694,"orders":{"order":[{"adjust_fee":"0.00","buyer_rate":false,"cid":50024657,"discount_fee":"0.00","estimate_con_time":"付款后45天内","is_daixiao":false,"is_oversold":false,"num":1,"num_iid":604423906694,"oid":"${order_id}","oid_str":"${order_id}","order_from":"TAOBAO","payment":"20.00","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01PUtjEb1KBkX6UpzOm_!!1740721126.jpg","price":"10.00","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","snapshot_url":"q:${order_id}_1","status":"WAIT_BUYER_PAY","title":"二手铅笔","total_fee":"10.00"}]},"payment":"20.00","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01PUtjEb1KBkX6UpzOm_!!1740721126.jpg","platform_subsidy_fee":"0.00","post_fee":"10.00","price":"10.00","received_payment":"0.00","receiver_address":"桂溪街道天府软件园A5-8","receiver_city":"成都市","receiver_country":"","receiver_district":"武侯区","receiver_mobile":"17721883949","receiver_name":"王健强","receiver_state":"四川省","receiver_town":"桂溪街道","receiver_zip":"000000","seller_flag":0,"seller_nick":"wangjq_1990","seller_rate":false,"service_tags":{"logistics_tag":[{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"origAreaId=510107;consignDate=1080","service_type":"TB_CONSIGN_DATE"},{"service_tag":"lgType=-4","service_type":"FAST"}]},"order_id":"${order_id}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${order_id}"}]},"service_type":"","shipping_type":"express","status":"WAIT_BUYER_PAY","tid":"${order_id}","tid_str":"${order_id}","title":"测试店铺Gerow","total_fee":"10.00","trade_from":"TAOBAO","type":"fixed","you_xiang":false}
-      - byName: 根据订单查询trace
-        extractor:
-          - json:
-              #根据测试步骤中获取到的order_id获取trace_id
-              trace_id: $.data.traces[?(@.order_state=='paid')].trace_id
-      - byName: 通过pulsar推送订单消息
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-订单状态变更
-        name: 查看trace详情-多订单去重
-        assertion:
-          - json:
-              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [duplicated_order_limit]
-afterMethod:
-  name: 测试结束后查看订单trace
-  step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
-afterClass:
-  name: 测试结束后删除任务
-  step:
-    - byName: 删除催单任务
-    - byName: 设置单个顾客单日最高催单数
+      - byName: 校验客群人数增加
+  - name: 付款单数分群-今天付款的不流入
+    step:
+      - byName: 通过pulsar推送订单消息-随机用户
+      - byName: 校验客群人数未增加
+#afterClass:
+#  name: 删除智能分群
+#  step:
+#    - byName: 删除智能分群
