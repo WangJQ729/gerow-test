@@ -2,6 +2,7 @@ name: 付款总额
 dataProvider:
   - order_state: paid
     order_state_name: 已付款
+    buyer_id: ${__RandomName(buyer_id)}
 beforeClass:
   name: 设置分群
   step:
@@ -17,19 +18,33 @@ beforeClass:
     - byName: 查看分群列表-获取新分群ID
     - byName: 获取初始化后的客群人数
 testMethod:
-  - name: 付款单数分群-只有一个订单不会流入
+  - name: 付款总额分群-总额${payment}不流入
+    dataProvider:
+      - payment: 0.99
     step:
       - byName: 通过pulsar推送订单消息-指定金额
       - byName: 校验客群人数未增加
-  - name: 付款单数分群-有2个订单流入
+  - name: 付款总额分群-总额1元流入
+    dataProvider:
+      - payment: 0.01
     step:
       - byName: 通过pulsar推送订单消息-指定金额
       - byName: 校验客群增加一个客人
-  - name: 付款单数分群-有3个订单不流出
+  - name: 付款总额分群-总额19.99元人数不变
+    dataProvider:
+      - payment: 18.99
     step:
       - byName: 通过pulsar推送订单消息-指定金额
       - byName: 校验客群增加一个客人
-  - name: 付款单数分群-有4个订单流出
+  - name: 付款总额分群-总额20元人数不变
+    dataProvider:
+      - payment: 0.01
+    step:
+      - byName: 通过pulsar推送订单消息-指定金额
+      - byName: 校验客群增加一个客人
+  - name: 付款总额分群-总额20.01元流出
+    dataProvider:
+      - payment: 0.01
     step:
       - byName: 通过pulsar推送订单消息-指定金额
       - byName: 校验客群人数未增加
