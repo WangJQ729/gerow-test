@@ -27,6 +27,20 @@ beforeClass:
     - byName: 获取task_id
     - byName: 获取老的task配置
     - byName: 获取task模板
+    - name: 获取时效标签列表
+      url: /api/admin/config2/ageing/list
+      method: GET
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            ageing_ids: $.ageings[*].id
+          size: 100
+          options: [DEFAULT_PATH_LEAF_TO_NULL]
+    - byName: 删除时效标签
+      iter:
+        ageing_id: ${ageing_ids}
+      form:
+        id: ${ageing_id}
 testMethod:
   - name: 时效标签(固定时段-生效)-今天生效
     dataProvider:
