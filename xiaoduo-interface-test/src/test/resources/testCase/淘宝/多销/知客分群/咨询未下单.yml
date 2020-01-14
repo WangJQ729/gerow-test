@@ -38,11 +38,11 @@ testMethod:
     step:
       - byName: 新建顾客分群
       - byName: 查看分群列表-获取新分群ID
-      - byName: 校验初始客群人数为0
+      - byName: 获取初始化后的客群人数
       - byName: 发送消息给商家
-      - byName: 校验初始客群人数为1
+      - byName: 校验客群增加一个客人
       - byName: 通过pulsar推送订单消息
-      - byName: 校验初始客群人数为0
+      - byName: 校验客群减少一个客人
 afterMethod:
   name: 删除智能分群
   step:

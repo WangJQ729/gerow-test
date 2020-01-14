@@ -3,7 +3,7 @@ package com.jq.test.task;
 import com.alibaba.fastjson.JSONObject;
 import com.jq.test.client.HttpUtils;
 import com.jq.test.entity.YmlHttpStepEntity;
-import com.jq.test.utils.*;
+import com.jq.test.utils.TestUtils;
 import com.jq.test.utils.assertion.Assertion;
 import com.jq.test.utils.data.ConfigManager;
 import com.jq.test.utils.data.Extractor;
@@ -182,8 +182,15 @@ public class YmlTestStep implements ITestStep {
             HttpMethod method = HttpMethod.valueOf(StringUtils.upperCase(step.getMethod()));
             Class<?> type = step.getResponseType().getType();
             ResponseEntity<?> response = HttpUtils.composer(url, method, entity, type);
-            saveParam(response);
-            check(response);
+            if (step.getAssertion().stream().anyMatch(assertion -> !assertion.getConstant().isEmpty())) {
+                //如果断言中有需要计算的常数。先提取参数
+                saveParam(response);
+                check(response);
+            } else {
+                check(response);
+                saveParam(response);
+            }
+
         } else {
             check(new ResponseEntity<>(HttpStatus.OK));
             saveParam();

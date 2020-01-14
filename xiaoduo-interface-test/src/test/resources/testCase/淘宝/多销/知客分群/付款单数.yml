@@ -28,7 +28,7 @@ testMethod:
   - name: 付款单数分群-只有一个订单不会流入
     step:
       - byName: 通过pulsar推送订单消息-随机用户
-      - byName: 校验初始客群人数为0
+      - byName: 获取初始化后的客群人数
         name: 校验客群人数未增加
         assertion:
           - json:
@@ -36,7 +36,7 @@ testMethod:
   - name: 付款单数分群-有2个订单流入
     step:
       - byName: 通过pulsar推送订单消息
-      - byName: 校验初始客群人数为0
+      - byName: 获取初始化后的客群人数
         name: 校验客群增加一个客人
         assertion:
           - json:
@@ -44,15 +44,19 @@ testMethod:
   - name: 付款单数分群-有3个订单人数不变
     step:
       - byName: 通过pulsar推送订单消息
-      - byName: 校验客群增加一个客人
+      - byName: 校验客群人数未增加
   - name: 付款单数分群-有4个订单人数不变
     step:
       - byName: 通过pulsar推送订单消息
-      - byName: 校验客群增加一个客人
+      - byName: 校验客群人数未增加
   - name: 付款单数分群-有5个订单流出
     step:
       - byName: 通过pulsar推送订单消息
-      - byName: 校验客群人数未增加
+      - byName: 获取初始化后的客群人数
+        name: 校验客群减少一个客人
+        assertion:
+          - json:
+              $.data.results[?(@.id=='${group_id}')].customer_count: ["${__BeanShell(${customer_count}-1,)}"]
 afterClass:
   name: 删除智能分群
   step:
