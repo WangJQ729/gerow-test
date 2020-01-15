@@ -45,6 +45,21 @@ beforeSuite:
       url: ${auth_url}
       method: GET
       responseType: DEFAULT
+    - name: 获取子账号
+      url: /api/admin/platform/search_client_configs_v3
+      variables:
+        limit: 20
+        skip: 0
+        only_supplier: false
+      method: GET
+      extractor:
+        - json:
+            seller_name: $.subusers[0].seller_id
+            child_seller: $.subusers[1].seller_id
+            child_seller2: $.subusers[2].seller_id
+            child_seller3: $.subusers[3].seller_id
+          site: TESTSUIT
+      assertion: [json: {$.code: 0}]
     - name: 催单设置为自己和静默
       url: /api/admin/user/shop_subnick_client_config_edit_v3
       headers:
