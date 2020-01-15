@@ -2,9 +2,7 @@ name: 统一营销话术
 beforeClass:
   name: 流入一个客人并修改离开鱼池时间
   step:
-    - byName: 发送消息给商家
-      variables:
-        q: ${__DES3Cipher(在吗,,)}
+    - byName: 发送消息给商家-POST-固定问题
     - name: 修改离开鱼池时间
       host: ${test_tools}
       url: /api/v1/tools/redisZSet
@@ -16,7 +14,7 @@ beforeClass:
         {
             "zset_key":"fp:{tb:${shop_id}}",
             "member":"${buyer_id}",
-            "score": ${__time(/1000,msg_time)}
+            "score": ${__EndOfDay()}
         }
       assertion: [json: {$.code: 0}]
 testMethod:
