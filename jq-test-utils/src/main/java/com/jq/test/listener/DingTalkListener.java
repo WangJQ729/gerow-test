@@ -23,6 +23,7 @@ public class DingTalkListener implements ISuiteListener {
     private String component = System.getProperty("component");
     private String env = System.getProperty("env");
     private String profiles = System.getProperty("spring.profiles.active");
+    private String shopName = System.getProperty("shopName");
 
     @Override
     public void onStart(ISuite suite) {
@@ -75,7 +76,7 @@ public class DingTalkListener implements ISuiteListener {
             } else {
                 builder.append(String.format("> #### 目标测试环境：%s\n", properties.getProperty("host")));
             }
-            builder.append(String.format("> #### 店铺：%s\n", properties.getProperty("shopName")));
+            builder.append(String.format("> #### 店铺：%s\n", StringUtils.isNoneBlank(shopName) ? shopName : properties.getProperty("shopName")));
             builder.append(String.format("> #### 功能：%s\n", features));
             if (!StringUtils.isEmpty(story)) {
                 builder.append(String.format("> #### 催单类型：%s\n", story));
