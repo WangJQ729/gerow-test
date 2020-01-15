@@ -53,7 +53,7 @@ public class CaseListListener implements ITestListener {
     private void doPost(CaseInfo caseInfo) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        String host = "http://zhy-test3.xiaoduoai.com";
+        String host = "http://test-tools.xiaoduoai.com";
         if (StringUtils.isEmpty(token)) {
             HttpEntity entity = new HttpEntity<>("{\"username\":\"wangjianqiang\",\"password\":\"wangjianqiang123456\"}\n", headers);
             String login = "/api/v1/login/";
@@ -63,7 +63,7 @@ public class CaseListListener implements ITestListener {
         }
         headers.set(HttpHeaders.AUTHORIZATION, "auth " + token);
         HttpEntity entity = new HttpEntity<>(caseInfo, headers);
-        String caseCreate = "/api/v1/auto_test/caseCreate";
+        String caseCreate = "/api/api/v1/auto_test/caseCreate";
         restTemplate.postForObject(host + caseCreate, entity, JSONObject.class);
     }
 

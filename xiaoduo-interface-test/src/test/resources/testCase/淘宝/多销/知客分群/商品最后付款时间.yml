@@ -2,6 +2,7 @@ name: 商品最后付款时间
 dataProvider:
   - order_state: paid
     order_state_name: 已付款
+enable: false
 beforeClass:
   name: 设置分群
   step:
