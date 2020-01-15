@@ -82,7 +82,7 @@ testMethod:
             "service_status": "7",
             "usr_shut": "0",
             "pin": "cntaobao${buyer_id}",
-            "spin": "cntaobao${shopName}",
+            "spin": "cntaobao${seller_name}",
             "customer_data": ${customer_data}
           }
         method: POST

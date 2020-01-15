@@ -134,7 +134,7 @@ testMethod:
           msg_time: ${__time(/1000,msg_time)}
           state: 1
           service_status: 7
-          spin: cntaobao${shopName}
+          spin: cntaobao${seller_name}
           send_msg_from: 2
         method: GET
         assertion: [json: {$.code: 0}]

@@ -132,7 +132,7 @@ testMethod:
           service_status: 7
           usr_shut: 0
           pin: cntaobao${__RandomName(buyer_id)}
-          spin: cntaobao${shopName}
+          spin: cntaobao${seller_name}
         method: GET
         responseType: DEFAULT
         extractor:

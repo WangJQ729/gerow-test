@@ -101,7 +101,7 @@ testMethod:
       - message: 纯文字催单消息
         text_with_vars: 纯文字催单消息
       - message: "{{子账号名称}}"
-        text_with_vars: ${child_seller_name}
+        text_with_vars: ${__ChildSellerName(${child_seller})}
       - message: "1{↓1秒后分行发送↓}2"
         text_with_vars: "1{↓1秒后分行发送↓}2"
     description: |

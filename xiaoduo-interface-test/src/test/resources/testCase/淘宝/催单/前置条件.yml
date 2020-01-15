@@ -28,6 +28,21 @@ beforeSuite:
             shop_category_id: $.default_shop.category_id
           site: TESTSUIT
       assertion: [json: {$.code: 0}]
+    - name: 获取子账号
+      url: /api/admin/platform/search_client_configs_v3
+      variables:
+        limit: 20
+        skip: 0
+        only_supplier: false
+      method: GET
+      extractor:
+        - json:
+            seller_name: $.subusers[0].seller_id
+            child_seller: $.subusers[1].seller_id
+            child_seller2: $.subusers[2].seller_id
+            child_seller3: $.subusers[3].seller_id
+          site: TESTSUIT
+      assertion: [json: {$.code: 0}]
     - name: 催单设置为自己和静默
       url: /api/admin/user/shop_subnick_client_config_edit_v3
       headers:
@@ -48,16 +63,11 @@ beforeSuite:
       untilWait: 15
       variables:
         shop_id: ${shop_id}
-        seller_id: ${shopName}
+        seller_id: ${seller_name}
         platform: ${platform}
         service_names: reminder
       method: GET
       assertion: [json: {$.code: 0}]
-    - byName: 发送消息给商家
-      name: 发送消息给商家表示不是静默用户
-      variables:
-        pin: cntaobao${buyer}
-        q: ${__DES3Cipher(在吗,,)}
     - name: 登录test-tools
       host: ${test_tools}
       url: /api/v1/login/

@@ -135,7 +135,7 @@ testMethod:
           msgid: ${__RandomString(32,1234567890abcdef,)}
           state: 2
           usr_shut: 0
-          spin: cntaobao${shopName}
+          spin: cntaobao${seller_name}
         method: GET
         responseType: DEFAULT
         extractor:

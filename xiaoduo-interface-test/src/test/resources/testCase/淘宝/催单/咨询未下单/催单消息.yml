@@ -45,7 +45,7 @@ testMethod:
         text_with_vars: "/:^$^/:^$^"
       - message: "{{子账号名称}}"
         question: 在吗
-        text_with_vars: ${shopName}
+        text_with_vars: ${seller_name}
       - question: 在吗
         message: "1{↓1秒后分行发送↓}2"
         text_with_vars: "1{↓1秒后分行发送↓}2"
@@ -57,7 +57,7 @@ testMethod:
         text_with_vars: https://item.taobao.com/item.htm?id=${recommend_plat_goods_id}
       - question: https://item.taobao.com/item.htm?id=${plat_goods_id}
         message: "{商品营销话术}"
-        text_with_vars: ${shopName}
+        text_with_vars: ${seller_name}
     description: |
       """</br>
       用例描述：</br>

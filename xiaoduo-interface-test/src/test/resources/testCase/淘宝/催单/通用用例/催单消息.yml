@@ -41,7 +41,7 @@ testMethod:
       - message: "#E-s20#E-s20#E-s20#E-s20#E-s20"
         text_with_vars: "#E-s20#E-s20#E-s20#E-s20#E-s20"
       - message: "{{子账号名称}}"
-        text_with_vars: ${shopName}
+        text_with_vars: ${seller_name}
       - message: "1{↓1秒后分行发送↓}2"
         text_with_vars: "1{↓1秒后分行发送↓}2"
     description: |
@@ -78,7 +78,7 @@ testMethod:
             "service_status": "7",
             "usr_shut": "0",
             "pin": "cntaobao${__RandomName(buyer_id)}",
-            "spin": "cntaobao${shopName}"
+            "spin": "cntaobao${seller_name}"
           }
         assertion:
           - json:

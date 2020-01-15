@@ -15,12 +15,5 @@ data:
 
     sign: ca61da42f143ef040fc22afee498a622
 
-    shopName: wangjq_1990
-    seller_name: wangjq_1990
-    shop: wangjq_1990
-    buyer: tester002
-    child_seller: wangjq_1990:xiaoduo1
-    child_seller_name: xiaoduo1
-    child_seller2: wangjq_1990:lzp
-    child_seller3: wangjq_1990:老弗丁
+    shopName: ${shopName}
     refund_id: 44636195945933796
