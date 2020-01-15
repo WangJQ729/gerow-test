@@ -55,7 +55,7 @@ public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
             String feature = StringUtils.isNotBlank(testClass.getStory()) ? testClass.getStory() : testClass.getFile().getParentFile().getName();
             String className = feature + "_" + testClass.getName().replace(".", "");
             if (params.containsKey("classNum") && !StringUtils.equals(params.get("classNum"), "00")) {
-                className = className + "_" + params.get("classNum");
+                className = className + "_" + String.format("%03d", Integer.parseInt(params.get("classNum")));
             }
             ClassPool pool = ClassPool.getDefault();
             CtClass ct = pool.makeClass(className);//创建类
