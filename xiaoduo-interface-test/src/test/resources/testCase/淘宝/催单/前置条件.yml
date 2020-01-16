@@ -49,7 +49,7 @@ beforeSuite:
         Content-Type: multipart/form-data
       method: POST
       form:
-        sub_nick: ${shopName}
+        sub_nick: ${seller_name}
         reminder_type: mine,silence
       assertion: [json: {$.code: 0}]
     - name: 设置单个顾客单日最高催单数

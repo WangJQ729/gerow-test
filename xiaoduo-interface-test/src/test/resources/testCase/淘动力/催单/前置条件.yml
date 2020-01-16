@@ -60,14 +60,14 @@ beforeSuite:
             child_seller3: $.subusers[3].seller_id
           site: TESTSUIT
       assertion: [json: {$.code: 0}]
-    - name: 催单设置为自己和静默
+    - name: 催单设置为仅自己
       url: /api/admin/user/shop_subnick_client_config_edit_v3
       headers:
         Content-Type: multipart/form-data
       method: POST
       form:
         sub_nick: ${seller_name}
-        reminder_type: mine,silence
+        reminder_type: mine
       assertion: [json: {$.code: 0}]
     - name: 设置单个顾客单日最高催单数
       url: /api/admin/reminder/v2/manage/shop/setting
