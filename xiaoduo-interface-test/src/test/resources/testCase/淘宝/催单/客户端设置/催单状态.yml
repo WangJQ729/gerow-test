@@ -125,7 +125,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 发送消息给商家
-        name: 随机用户发送消息给子账号
+        name: 发送消息给子账号-随机用户
         variables:
           spin: cntaobao${child_seller}
       - byName: 催单设置-不催单
@@ -192,7 +192,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 随机用户发送消息给子账号
+      - byName: 发送消息给子账号-随机用户
       - byName: 催单设置-仅自己
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息
@@ -257,7 +257,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 随机用户发送消息给子账号
+      - byName: 发送消息给子账号-随机用户
       - byName: 催单设置-仅静默
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息
@@ -316,7 +316,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 随机用户发送消息给子账号
+      - byName: 发送消息给子账号-随机用户
       - byName: 催单设置为自己和静默
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息
