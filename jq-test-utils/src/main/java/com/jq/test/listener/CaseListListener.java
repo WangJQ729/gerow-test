@@ -56,7 +56,7 @@ public class CaseListListener implements ITestListener {
         String host = "http://test-tools.xiaoduoai.com";
         if (StringUtils.isEmpty(token)) {
             HttpEntity entity = new HttpEntity<>("{\"username\":\"wangjianqiang\",\"password\":\"wangjianqiang123456\"}\n", headers);
-            String login = "/api/v1/login/";
+            String login = "/api/api/v1/login/";
             JSONObject loginResult = restTemplate.postForObject(host + login, entity, JSONObject.class);
             assert loginResult != null;
             token = loginResult.getJSONObject("data").getString("token");
