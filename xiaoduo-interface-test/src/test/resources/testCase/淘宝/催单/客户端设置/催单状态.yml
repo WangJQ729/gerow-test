@@ -44,7 +44,7 @@ testMethod:
     description: |
       """</br>
       用例描述：</br>
-      1、不催单时,自己的用户不应该催单。</br>
+      1、不催单时,自己的顾客不应该催单。</br>
       </br>
       测试步骤</br>
       1、客户端设置为不催单
@@ -69,17 +69,17 @@ testMethod:
           - json:
               $.data.traces[?(@.phase=='InQueueReject')].in_queue_reject_reason: ["reject, client disable sending message"]
       - byName: 获取催单消息-消息为空
-  - name: ${reminder_type}-不催单-静默用户
+  - name: ${reminder_type}-不催单-静默顾客
     description: |
       """</br>
       用例描述：</br>
-      1、不催单时,静默用户让别人来催单。</br>
+      1、不催单时,静默顾客让别人来催单。</br>
       </br>
       测试步骤</br>
       1、客户端设置为不催单
       2、开启任务</br>
       3、创建订单</br>
-      4、校验trace(静默用户等别人来催)</br>
+      4、校验trace(静默顾客等别人来催)</br>
       5、校验催单消息</br>
       """
     severity: NORMAL
@@ -87,7 +87,7 @@ testMethod:
       - byName: 催单设置-不催单
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息
-        name: 通过pulsar推送订单消息-随机用户
+        name: 通过pulsar推送订单消息-随机顾客
         bodyEditor:
           json:
             $.word.order_id: ${__RandomOrderId(order_id)}
@@ -109,23 +109,23 @@ testMethod:
               ${__BeanShell(${set_timer}-${trigger_task})}: 60
             assertionType: GREATEROREQUALTO
       - byName: 获取催单消息-消息为空
-  - name: ${reminder_type}-不催单-别人的用户
+  - name: ${reminder_type}-不催单-别人的顾客
     description: |
       """</br>
       用例描述：</br>
-      1、不催单时，别人的用户等待别人来催。</br>
+      1、不催单时，别人的顾客等待别人来催。</br>
       </br>
       测试步骤</br>
       1、客户端设置为不催单
       2、开启任务</br>
       3、创建订单</br>
-      4、校验trace(别人的用户等别人来催)</br>
+      4、校验trace(别人的顾客等别人来催)</br>
       5、校验催单消息</br>
       """
     severity: NORMAL
     step:
       - byName: 发送消息给商家
-        name: 发送消息给子账号-随机用户
+        name: 发送消息给子账号-随机顾客
         variables:
           spin: cntaobao${child_seller}
       - byName: 催单设置-不催单
@@ -138,7 +138,7 @@ testMethod:
     description: |
       """</br>
       用例描述：</br>
-      1、仅自己时，可以催自己的用户。</br>
+      1、仅自己时，可以催自己的顾客。</br>
       </br>
       测试步骤</br>
       1、客户端设置为仅自己
@@ -160,20 +160,20 @@ testMethod:
     description: |
       """</br>
       用例描述：</br>
-      1、仅自己时，不会催静默用户。</br>
+      1、仅自己时，不会催静默顾客。</br>
       </br>
       测试步骤</br>
       1、客户端设置为仅自己
       2、开启任务</br>
       3、创建订单</br>
-      4、校验trace(静默用户等别人来催)</br>
+      4、校验trace(静默顾客等别人来催)</br>
       5、校验催单消息</br>
       """
     severity: NORMAL
     step:
       - byName: 催单设置-仅自己
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息-随机用户
+      - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
@@ -181,18 +181,18 @@ testMethod:
     description: |
       """</br>
       用例描述：</br>
-      1、设置为仅自己，不会催别人的用户。</br>
+      1、设置为仅自己，不会催别人的顾客。</br>
       </br>
       测试步骤</br>
       1、客户端设置为仅自己
       2、开启任务</br>
       3、创建订单</br>
-      4、校验trace(静默用户等别人来催)</br>
+      4、校验trace(静默顾客等别人来催)</br>
       5、校验催单消息</br>
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给子账号-随机用户
+      - byName: 发送消息给子账号-随机顾客
       - byName: 催单设置-仅自己
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息
@@ -224,7 +224,7 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-客户端不发送消息
       - byName: 获取催单消息-消息为空
-  - name: ${reminder_type}-仅静默-静默用户
+  - name: ${reminder_type}-仅静默-静默顾客
     description: |
       """</br>
       用例描述：</br>
@@ -241,13 +241,13 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 催单设置-仅静默
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息-随机用户
+      - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 获取催单消息
-  - name: ${reminder_type}-仅静默-别人的用户
+  - name: ${reminder_type}-仅静默-别人的顾客
     description: |
       """</br>
       用例描述：</br>
-      1、仅静默，不催别人的用户。</br>
+      1、仅静默，不催别人的顾客。</br>
       </br>
       测试步骤</br>
       1、客户端设置为仅静默
@@ -257,7 +257,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给子账号-随机用户
+      - byName: 发送消息给子账号-随机顾客
       - byName: 催单设置-仅静默
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息
@@ -283,11 +283,11 @@ testMethod:
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
-  - name: ${reminder_type}-自己和静默-静默用户
+  - name: ${reminder_type}-自己和静默-静默顾客
     description: |
       """</br>
       用例描述：</br>
-      1、自己和静默，静默用户可以催单。</br>
+      1、自己和静默，静默顾客可以催单。</br>
       </br>
       测试步骤</br>
       1、客户端设置为自己和静默
@@ -299,7 +299,7 @@ testMethod:
     step:
       - byName: 催单设置为自己和静默
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息-随机用户
+      - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 获取催单消息
   - name: ${reminder_type}-自己和静默-别人的客户
     description: |
@@ -311,12 +311,12 @@ testMethod:
       1、客户端设置为自己和静默
       2、开启任务</br>
       3、创建订单</br>
-      4、校验trace(静默用户等别人来催)</br>
+      4、校验trace(静默顾客等别人来催)</br>
       5、校验催单消息</br>
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给子账号-随机用户
+      - byName: 发送消息给子账号-随机顾客
       - byName: 催单设置为自己和静默
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息

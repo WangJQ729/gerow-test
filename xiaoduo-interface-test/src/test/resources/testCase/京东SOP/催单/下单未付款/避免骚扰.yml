@@ -39,9 +39,9 @@ testMethod:
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='send_limit')].args.enable: true
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 指定随机用户通过pulsar推送订单消息
+      - byName: 指定随机顾客通过pulsar推送订单消息
       - byName: 获取催单消息
-      - byName: 指定用户通过pulsar推送订单消息
+      - byName: 指定顾客通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情
@@ -74,9 +74,9 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 指定随机用户通过pulsar推送订单消息
+      - byName: 指定随机顾客通过pulsar推送订单消息
       - byName: 获取催单消息
-      - byName: 指定用户通过pulsar推送订单消息
+      - byName: 指定顾客通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 获取催单消息
 afterMethod:

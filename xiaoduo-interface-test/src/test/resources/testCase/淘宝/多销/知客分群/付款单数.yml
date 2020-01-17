@@ -6,7 +6,7 @@ beforeClass:
   name: 设置分群
   step:
     - byName: 新建顾客分群
-      name: 新建付款单数顾客分群-设置单数2-4个
+      name: 新建数顾客分群-设置单数2-4个
       bodyEditor:
         json:
           $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.type: paid_order_num
@@ -27,7 +27,7 @@ beforeClass:
 testMethod:
   - name: 付款单数分群-只有一个订单不会流入
     step:
-      - byName: 通过pulsar推送订单消息-随机用户
+      - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 获取初始化后的客群人数
         name: 校验客群人数未增加
         assertion:

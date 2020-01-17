@@ -6,7 +6,7 @@ beforeClass:
   name: 设置分群
   step:
     - byName: 新建顾客分群
-      name: 新建付款单数顾客分群-圈定商品
+      name: 新建数顾客分群-圈定商品
       bodyEditor:
         json:
           $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.type: paid_order_goods
@@ -16,16 +16,16 @@ beforeClass:
     - byName: 查看分群列表-获取新分群ID
     - byName: 获取初始化后的客群人数
 testMethod:
-  - name: 付款单数分群-符合的商品流入
+  - name: 符合的商品流入
     step:
-      - byName: 通过pulsar推送订单消息-随机用户
+      - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 校验客群人数增加
-  - name: 付款单数分群-不符合的商品不流入
+  - name: 不符合的商品不流入
     step:
       - byName: 通过pulsar推送订单消息
         dataProvider:
           - goods_id: 607123276832
-        name: 通过pulsar推送订单消息-随机用户-指定商品
+        name: 通过pulsar推送订单消息-随机顾客-指定商品
         bodyEditor:
           json:
             $.word.order_id: ${__RandomOrderId(order_id)}

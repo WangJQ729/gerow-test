@@ -24,7 +24,7 @@ testMethod:
             $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.max_time: ${__BeanShell(${__time(/1000)}+600,)}
       - byName: 查看分群列表-获取新分群ID
       - byName: 获取初始化后的客群人数
-      - byName: 通过pulsar推送订单消息-随机用户
+      - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 校验客群人数增加
 afterMethod:
   name: 删除智能分群

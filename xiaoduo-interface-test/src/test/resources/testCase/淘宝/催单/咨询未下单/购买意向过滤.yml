@@ -52,7 +52,7 @@ testMethod:
             $.rules[?(@.type=='state_delay')].args.delay: 10
             $.rules[?(@.type=='user_intention_filter')].args.enable: true
             $.rules[?(@.type=='user_intention_filter')].args.intentions: ["${intentions}"]
-      - name: 标记买家购买意向-随机用户
+      - name: 标记买家购买意向-随机顾客
         url: /api/client/reminder/v2/client/buyer/setting
         method: POST
         body: |
@@ -99,7 +99,7 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 根据聊天记录查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 标记买家购买意向-随机用户
+      - byName: 标记买家购买意向-随机顾客
         name: 标记买家购买意向-指定买家
         body: |
           {
@@ -166,7 +166,7 @@ testMethod:
             $.rules[?(@.type=='user_intention_filter')].args.intentions:
               - ${intention1}
               - ${intention2}
-      - byName: 标记买家购买意向-随机用户
+      - byName: 标记买家购买意向-随机顾客
       - byName: 发送消息给商家-指定买家
       - byName: 根据聊天记录查询trace
       - byName: 查看trace详情-购买意向过滤
@@ -242,7 +242,7 @@ testMethod:
             $.rules[?(@.type=='user_intention_filter')].args.intentions:
               - ${intention1}
               - ${intention2}
-      - byName: 标记买家购买意向-随机用户
+      - byName: 标记买家购买意向-随机顾客
       - byName: 发送消息给商家-指定买家
       - byName: 获取催单消息
 afterMethod:

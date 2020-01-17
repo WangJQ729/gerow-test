@@ -14,7 +14,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - name: 上传用户名单excel
+      - name: 上传顾客名单excel
         host: ${seller_host}
         url: /api/fishpond/import_nicks
         method: POST

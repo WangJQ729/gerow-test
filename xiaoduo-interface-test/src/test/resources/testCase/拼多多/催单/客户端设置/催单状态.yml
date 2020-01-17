@@ -14,7 +14,7 @@ testMethod:
     description: |
       """</br>
       用例描述：</br>
-      1、不催单时,自己的用户不应该催单。</br>
+      1、不催单时,自己的顾客不应该催单。</br>
       </br>
       测试步骤</br>
       1、客户端设置为不催单
@@ -39,24 +39,24 @@ testMethod:
           - json:
               $.data.traces[?(@.phase=='InQueueReject')].in_queue_reject_reason: ["reject, client disable sending message"]
       - byName: 获取催单消息-消息为空
-  - name: 不催单-静默用户
+  - name: 不催单-静默顾客
     description: |
       """</br>
       用例描述：</br>
-      1、不催单时,静默用户让别人来催单。</br>
+      1、不催单时,静默顾客让别人来催单。</br>
       </br>
       测试步骤</br>
       1、客户端设置为不催单
       2、开启任务</br>
       3、创建订单</br>
-      4、校验trace(静默用户等别人来催)</br>
+      4、校验trace(静默顾客等别人来催)</br>
       5、校验催单消息</br>
       """
     severity: NORMAL
     step:
       - byName: 催单设置-不催单
       - byName: 开启催单任务
-      - byName: 指定随机用户同步订单消息
+      - byName: 指定随机顾客同步订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情
         name: 查看trace详情-没有催单的子账号设置等待时间
@@ -65,23 +65,23 @@ testMethod:
               $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired: ${__BeanShell(${__time(/1000,)}+840,)}
             assertionType: ALLGREATEROREQUALTO
       - byName: 获取催单消息-消息为空
-  - name: 不催单-别人的用户
+  - name: 不催单-别人的顾客
     description: |
       """</br>
       用例描述：</br>
-      1、不催单时，别人的用户等待别人来催。</br>
+      1、不催单时，别人的顾客等待别人来催。</br>
       </br>
       测试步骤</br>
       1、客户端设置为不催单
       2、开启任务</br>
       3、创建订单</br>
-      4、校验trace(别人的用户等别人来催)</br>
+      4、校验trace(别人的顾客等别人来催)</br>
       5、校验催单消息</br>
       """
     severity: NORMAL
     step:
       - byName: 发送消息给商家
-        name: 随机用户发送消息给子账号
+        name: 随机顾客发送消息给子账号
         variables:
           version_num: 1.0.6P.6T
           pin: cnpdd${__Random(10000000000,99999999999,uid)}
@@ -96,7 +96,7 @@ testMethod:
       - byName: 催单设置-不催单
       - byName: 开启催单任务
       - byName: 同步订单消息
-        name: 同步订单消息指定之前的随机用户
+        name: 同步订单消息指定之前的随机顾客
         form:
           uid: ${uid}
       - byName: 根据订单查询trace
@@ -106,7 +106,7 @@ testMethod:
     description: |
       """</br>
       用例描述：</br>
-      1、仅自己时，可以催自己的用户。</br>
+      1、仅自己时，可以催自己的顾客。</br>
       </br>
       测试步骤</br>
       1、客户端设置为仅自己
@@ -128,20 +128,20 @@ testMethod:
     description: |
       """</br>
       用例描述：</br>
-      1、仅自己时，不会催静默用户。</br>
+      1、仅自己时，不会催静默顾客。</br>
       </br>
       测试步骤</br>
       1、客户端设置为仅自己
       2、开启任务</br>
       3、创建订单</br>
-      4、校验trace(静默用户等别人来催)</br>
+      4、校验trace(静默顾客等别人来催)</br>
       5、校验催单消息</br>
       """
     severity: NORMAL
     step:
       - byName: 催单设置-仅自己
       - byName: 开启催单任务
-      - byName: 指定随机用户同步订单消息
+      - byName: 指定随机顾客同步订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
@@ -149,21 +149,21 @@ testMethod:
     description: |
       """</br>
       用例描述：</br>
-      1、设置为仅自己，不会催别人的用户。</br>
+      1、设置为仅自己，不会催别人的顾客。</br>
       </br>
       测试步骤</br>
       1、客户端设置为仅自己
       2、开启任务</br>
       3、创建订单</br>
-      4、校验trace(静默用户等别人来催)</br>
+      4、校验trace(静默顾客等别人来催)</br>
       5、校验催单消息</br>
       """
     severity: NORMAL
     step:
-      - byName: 随机用户发送消息给子账号
+      - byName: 随机顾客发送消息给子账号
       - byName: 催单设置-仅自己
       - byName: 开启催单任务
-      - byName: 同步订单消息指定之前的随机用户
+      - byName: 同步订单消息指定之前的随机顾客
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
@@ -192,7 +192,7 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
-  - name: 仅静默-静默用户
+  - name: 仅静默-静默顾客
     description: |
       """</br>
       用例描述：</br>
@@ -209,13 +209,13 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 催单设置-仅静默
       - byName: 开启催单任务
-      - byName: 指定随机用户同步订单消息
+      - byName: 指定随机顾客同步订单消息
       - byName: 获取催单消息
-  - name: 仅静默-别人的用户
+  - name: 仅静默-别人的顾客
     description: |
       """</br>
       用例描述：</br>
-      1、仅静默，不催别人的用户。</br>
+      1、仅静默，不催别人的顾客。</br>
       </br>
       测试步骤</br>
       1、客户端设置为仅静默
@@ -225,10 +225,10 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 随机用户发送消息给子账号
+      - byName: 随机顾客发送消息给子账号
       - byName: 催单设置-仅静默
       - byName: 开启催单任务
-      - byName: 同步订单消息指定之前的随机用户
+      - byName: 同步订单消息指定之前的随机顾客
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
@@ -251,11 +251,11 @@ testMethod:
       - byName: 开启催单任务
       - byName: 同步订单消息
       - byName: 获取催单消息
-  - name: 自己和静默-静默用户
+  - name: 自己和静默-静默顾客
     description: |
       """</br>
       用例描述：</br>
-      1、自己和静默，静默用户可以催单。</br>
+      1、自己和静默，静默顾客可以催单。</br>
       </br>
       测试步骤</br>
       1、客户端设置为自己和静默
@@ -267,7 +267,7 @@ testMethod:
     step:
       - byName: 催单设置为自己和静默
       - byName: 开启催单任务
-      - byName: 指定随机用户同步订单消息
+      - byName: 指定随机顾客同步订单消息
       - byName: 获取催单消息
   - name: 自己和静默-别人的客户
     description: |
@@ -279,15 +279,15 @@ testMethod:
       1、客户端设置为自己和静默
       2、开启任务</br>
       3、创建订单</br>
-      4、校验trace(静默用户等别人来催)</br>
+      4、校验trace(静默顾客等别人来催)</br>
       5、校验催单消息</br>
       """
     severity: NORMAL
     step:
-      - byName: 随机用户发送消息给子账号
+      - byName: 随机顾客发送消息给子账号
       - byName: 催单设置为自己和静默
       - byName: 开启催单任务
-      - byName: 同步订单消息指定之前的随机用户
+      - byName: 同步订单消息指定之前的随机顾客
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
