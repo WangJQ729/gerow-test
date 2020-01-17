@@ -1,0 +1,45 @@
+name: 潜在投诉者
+invocationCount: 1
+dataProvider:
+  - group_name: 潜在投诉者
+    order_state: created
+    new_order_state: paid
+    results_level: results1
+    question: 我要投诉你
+beforeClass:
+  name: 设置分群
+  step:
+#    - byName: 随机获取一个类目
+#      extractor:
+#        - json:
+#            categories: $.categorys[${invocationCount}]
+#        - json:
+#            category_id: $.id
+#            category_name: $.name
+#          data: ${categories}
+#    - byName: 切换类目-指定类目id
+    - byName: 获取系统分群顾客人数
+testMethod:
+  - name: 顾客表达负面情绪后流入-${question}
+    dataProvider:
+      - question:
+          - 我要投诉你
+          - 不要再给我发消息了
+          - 滚你妈的
+          - 质量太差了
+          - 态度怎么这么差
+          - 服务态度太差
+          - 你这是欺骗
+          - 我要给你差评
+          - 一点都不满意
+    step:
+      - byName: 发送消息给商家-POST-固定问题
+        name: 发送消息给商家-POST-自定义问题
+        bodyEditor:
+          json:
+            $.q: ${__DES3Cipher(${question},,)}
+        assertion:
+          - json:
+              $.qstr: ${question}
+            need_decode: true
+      - byName: 校验系统分群人数增加

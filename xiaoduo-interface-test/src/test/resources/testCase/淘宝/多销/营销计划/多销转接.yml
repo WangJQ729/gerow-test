@@ -3,15 +3,15 @@ dataProvider:
   - message: 纯文字催单消息
     text_with_vars: 纯文字催单消息
 beforeClass:
-  name: 创建客群并流入一个客人
+  name: 创建分群并流入一个客人
   step:
     - byName: 新建顾客分群
     - byName: 查看分群列表-获取新分群ID
-    - byName: 校验初始客群人数为0
+    - byName: 校验初始分群人数为0
     - byName: 发送消息给商家
       variables:
         q: ${__DES3Cipher(在吗,,)}
-    - byName: 校验初始客群人数为1
+    - byName: 校验初始分群人数为1
     - name: 获取转接分组
       host: ${seller_host}
       url: /api/fishpond/setting

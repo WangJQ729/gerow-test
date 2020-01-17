@@ -19,9 +19,9 @@ testMethod:
             $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.max_time: ${__BeanShell(${__time(/1000)}+600,)}
         assertion: [json: {$.code: 0}]
       - byName: 查看分群列表-获取新分群ID
-      - byName: 校验初始客群人数为0
+      - byName: 校验初始分群人数为0
       - byName: 发送消息给商家
-      - byName: 校验初始客群人数为1
+      - byName: 校验初始分群人数为1
   - name: 咨询未下单分群-咨询后下单-${order_state_name}
     dataProvider:
       - order_state: created
@@ -41,11 +41,11 @@ testMethod:
     step:
       - byName: 新建顾客分群
       - byName: 查看分群列表-获取新分群ID
-      - byName: 获取初始化后的客群人数
+      - byName: 获取初始化后的分群人数
       - byName: 发送消息给商家
-      - byName: 校验客群人数增加
+      - byName: 校验分群人数增加
       - byName: 通过pulsar推送订单消息
-      - byName: 校验客群人数减少
+      - byName: 校验分群人数减少
 afterMethod:
   name: 删除智能分群
   step:

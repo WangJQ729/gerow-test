@@ -16,38 +16,38 @@ beforeClass:
           $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.min_payment: 1
           $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.max_payment: 20
     - byName: 查看分群列表-获取新分群ID
-    - byName: 获取初始化后的客群人数
+    - byName: 获取初始化后的分群人数
 testMethod:
   - name: 付款总额分群-总额${payment}不流入
     dataProvider:
       - payment: 0.99
     step:
       - byName: 通过pulsar推送订单消息-指定金额
-      - byName: 校验客群人数未增加
+      - byName: 校验分群人数未增加
   - name: 付款总额分群-总额1元流入
     dataProvider:
       - payment: 0.01
     step:
       - byName: 通过pulsar推送订单消息-指定金额
-      - byName: 校验客群人数增加
+      - byName: 校验分群人数增加
   - name: 付款总额分群-总额19.99元人数不变
     dataProvider:
       - payment: 18.99
     step:
       - byName: 通过pulsar推送订单消息-指定金额
-      - byName: 校验客群人数未增加
+      - byName: 校验分群人数未增加
   - name: 付款总额分群-总额20元人数不变
     dataProvider:
       - payment: 0.01
     step:
       - byName: 通过pulsar推送订单消息-指定金额
-      - byName: 校验客群人数未增加
+      - byName: 校验分群人数未增加
   - name: 付款总额分群-总额20.01元流出
     dataProvider:
       - payment: 0.01
     step:
       - byName: 通过pulsar推送订单消息-指定金额
-      - byName: 校验客群人数减少
+      - byName: 校验分群人数减少
 afterClass:
   name: 删除智能分群
   step:

@@ -1,6 +1,6 @@
 name: 营销话术
 beforeClass:
-  name: 创建客群并流入一个客人
+  name: 创建分群并流入一个客人
   step:
     - byName: 新建顾客分群
     - name: 查看分群列表-获取新分群ID
@@ -10,13 +10,13 @@ beforeClass:
         is_deleted: false
         shop_id: ${shop_id}
         is_system: false
-      untilWait: 5
+      untilWait: 10
       assertion: [json: {$.code: 0}]
       extractor:
         - json:
             group_id: $.data.results[?(@.name=='${group_name}')].id
     - byName: 查看分群列表-获取新分群ID
-      name: 校验初始客群人数为0
+      name: 校验初始分群人数为0
       sleep: 2
       untilWait: 30
       assertion:
@@ -25,8 +25,8 @@ beforeClass:
     - byName: 发送消息给商家
       variables:
         q: ${__DES3Cipher(在吗,,)}
-    - byName: 校验初始客群人数为0
-      name: 校验初始客群人数为1
+    - byName: 校验初始分群人数为0
+      name: 校验初始分群人数为1
       assertion:
         - json:
             $.data.results[?(@.id=='${group_id}')].customer_count: [1]

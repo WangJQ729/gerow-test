@@ -15,8 +15,8 @@ beforeClass:
           $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.order_min_num: 2
           $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.order_max_num: 4
     - byName: 查看分群列表-获取新分群ID
-    - byName: 校验初始客群人数为0
-      name: 获取初始化后的客群人数
+    - byName: 校验初始分群人数为0
+      name: 获取初始化后的分群人数
       untilWait: 30
       assertion:
         - json:
@@ -28,32 +28,32 @@ testMethod:
   - name: 付款单数分群-只有一个订单不会流入
     step:
       - byName: 通过pulsar推送订单消息-随机顾客
-      - byName: 获取初始化后的客群人数
-        name: 校验客群人数未增加
+      - byName: 获取初始化后的分群人数
+        name: 校验分群人数未增加
         assertion:
           - json:
               $.data.results[?(@.id=='${group_id}')].customer_count: ["${customer_count}"]
   - name: 付款单数分群-有2个订单流入
     step:
       - byName: 通过pulsar推送订单消息
-      - byName: 获取初始化后的客群人数
-        name: 校验客群人数增加
+      - byName: 获取初始化后的分群人数
+        name: 校验分群人数增加
         assertion:
           - json:
               $.data.results[?(@.id=='${group_id}')].customer_count: ["${__BeanShell(${customer_count}+1,)}"]
   - name: 付款单数分群-有3个订单人数不变
     step:
       - byName: 通过pulsar推送订单消息
-      - byName: 校验客群人数未增加
+      - byName: 校验分群人数未增加
   - name: 付款单数分群-有4个订单人数不变
     step:
       - byName: 通过pulsar推送订单消息
-      - byName: 校验客群人数未增加
+      - byName: 校验分群人数未增加
   - name: 付款单数分群-有5个订单流出
     step:
       - byName: 通过pulsar推送订单消息
-      - byName: 获取初始化后的客群人数
-        name: 校验客群人数减少
+      - byName: 获取初始化后的分群人数
+        name: 校验分群人数减少
         assertion:
           - json:
               $.data.results[?(@.id=='${group_id}')].customer_count: ["${__BeanShell(${customer_count}-1,)}"]

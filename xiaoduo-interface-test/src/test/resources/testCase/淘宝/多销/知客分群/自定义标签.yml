@@ -26,7 +26,7 @@ beforeClass:
           $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.type: zhike_tag
           $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.values: ["${tag_id}"]
     - byName: 查看分群列表-获取新分群ID
-    - byName: 获取初始化后的客群人数
+    - byName: 获取初始化后的分群人数
 testMethod:
   - name: 顾客没有标签不流入
     step:
@@ -46,7 +46,7 @@ testMethod:
         extractor:
           - json:
               customer_body: $.data.customers[?(@.attrs.nick=='${buyer_id}')]
-      - byName: 校验客群人数未增加
+      - byName: 校验分群人数未增加
   - name: 顾客被添加标签后-标签分群人数增加
     step:
       - name: 给买家添加标签
@@ -59,7 +59,7 @@ testMethod:
             $.customer.tags: [{"id":1,"name": "${tag_name}"}]
             $.customer.tags[0].id: ${__BeanShell(${tag_id}l)}
         assertion: [json: {$.code: 0}]
-      - byName: 校验客群人数增加
+      - byName: 校验分群人数增加
 afterClass:
   name: 删除智能分群
   step:
