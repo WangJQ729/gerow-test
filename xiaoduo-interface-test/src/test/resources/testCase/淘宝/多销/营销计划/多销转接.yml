@@ -53,7 +53,7 @@ testMethod:
       - byName: 创建客池精准营销
       - byName: 获取营销任务ID
       - byName: 获取多销消息
-        name: 获取催单消息-回复后转接
+        name: 获取多销消息-回复后转接
         assertion:
           - json:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars: ["${text_with_vars}"]
