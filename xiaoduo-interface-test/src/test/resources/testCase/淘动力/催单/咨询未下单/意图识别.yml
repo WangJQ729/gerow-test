@@ -122,21 +122,23 @@ testMethod:
       - name: 发送消息给商家
         url: /robot/answer
         sleep: 2
-        variables:
-          employee_role: 20
-          pin: cntaobao${__RandomName(buyer_id)}
-          msg_time: ${__time(/1000,msg_time)}
-          version_num: dist
-          q: ${__DES3Cipher(${question},,)}
-          platform: ${platform}
-          qianniu_version_num: 7.12.05N
-          service_status: 6
-          employee_name: kfa
-          msgid: ${__RandomString(32,1234567890abcdef,)}
-          state: 2
-          usr_shut: 0
-          spin: cntaobao${seller_name}
-        method: GET
+        body: |
+          {
+            "employee_role": "20",
+            "pin": "cntaobao${__RandomName(buyer_id)}",
+            "msg_time": "${__time(/1000,msg_time)}",
+            "version_num": "dist",
+            "q": "${__DES3Cipher(${question},,)}",
+            "platform": "${platform}",
+            "qianniu_version_num": "7.12.05N",
+            "service_status": "6",
+            "employee_name": "kfa",
+            "msgid": "${__RandomString(32,1234567890abcdef,)}",
+            "state": "2",
+            "usr_shut": "0",
+            "spin": "cntaobao${seller_name}"
+          }
+        method: POST
         responseType: DEFAULT
         extractor:
           - json:

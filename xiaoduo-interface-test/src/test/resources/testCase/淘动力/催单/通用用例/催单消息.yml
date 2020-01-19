@@ -65,31 +65,11 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - name: 发送消息给商家-POST-固定问题
-        url: /robot/answer
-        sleep: 2
-        body: |
-          {
-            "employee_role": "20",
-            "pin": "cntaobao${__RandomName(buyer_id)}",
-            "msg_time": "${__time(/1000,msg_time)}",
-            "version_num": "dist",
-            "q": "${__DES3Cipher(你好,,)}",
-            "platform": "${platform}",
-            "qianniu_version_num": "7.12.05N",
-            "service_status": "6",
-            "employee_name": "kfa",
-            "msgid": "${__RandomString(32,1234567890abcdef,)}",
-            "state": "2",
-            "usr_shut": "0",
-            "spin": "cntaobao${seller_name}"
-          }
-        method: POST
-        responseType: DEFAULT
-        assertion:
-          - json:
-              $.qstr: 你好
-            need_decode: true
+      - byName: 发送消息给商家
+        name: 发送消息给商家-固定问题
+        bodyEditor:
+          json:
+            $.q: ${__DES3Cipher(你好,,)}
       - name: 通过pulsar推送订单消息
         host: ${test_tools}
         url: /api/v1/tools/push_message_to_pulsar
@@ -135,7 +115,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.images:
               - id: 5dbbd61a9e3aad000d7de9fe
                 url: https://xdmp-new.oss-cn-hangzhou.aliyuncs.com/answer_pics/eb1ddc7854a747ba9cfb8424c151ae04.jpg
-      - byName: 发送消息给商家-POST-固定问题
+      - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
         assertion:

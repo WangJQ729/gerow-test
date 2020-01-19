@@ -2,7 +2,7 @@ name: 统一营销话术
 beforeClass:
   name: 流入一个客人并修改离开鱼池时间
   step:
-    - byName: 发送消息给商家-POST-固定问题
+    - byName: 发送消息给商家-固定问题
     - name: 修改离开鱼池时间
       host: ${test_tools}
       url: /api/v1/tools/redisZSet

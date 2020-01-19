@@ -59,7 +59,7 @@ testMethod:
             $.score: ${__BeanShell(${abnormal_score})}
             $.check: true
             $.special_settings.forget_followup_timeout: "1"
-      - byName: 发送消息给商家-随机买家
+      - byName: 发送消息给商家
       - byName: 发送消息给买家
       - byName: 查询质检会话列表
       - byName: 查看对话详情-扣分行为

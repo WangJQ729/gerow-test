@@ -94,7 +94,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='send_message')].args.ageing_id: ${ageing_id}
-      - byName: 发送消息给商家-POST-固定问题
+      - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
   - name: 时效标签(固定时段-失效)-${ageing_name}
@@ -126,7 +126,7 @@ testMethod:
     step:
       - byName: 添加时效标签
       - byName: 设置时效标签
-      - byName: 发送消息给商家-POST-固定问题
+      - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -160,7 +160,7 @@ testMethod:
           everyday_start_time: ${everyday_start_time}
           everyday_end_time: ${everyday_end_time}
       - byName: 设置时效标签
-      - byName: 发送消息给商家-POST-固定问题
+      - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
   - name: 时效标签(每日重复-失效)-${ageing_name}
@@ -192,7 +192,7 @@ testMethod:
     step:
       - byName: 添加时效标签(每日重复)
       - byName: 设置时效标签
-      - byName: 发送消息给商家-POST-固定问题
+      - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace

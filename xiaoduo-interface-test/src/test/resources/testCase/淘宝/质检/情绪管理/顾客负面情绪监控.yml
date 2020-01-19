@@ -60,7 +60,7 @@ testMethod:
         body: |
           {"emotion":{"name":"${emotion_name}","category_name":"${category_name}","type":"${emotion}","score":${emotion_score},"check":true}}
         assertion: [json: {$.code: 0}]
-      - byName: 发送消息给商家-随机买家
+      - byName: 发送消息给商家
       - name: 查询质检会话列表
         host: ${mc_test}
         url: /api/v1/dialog/list
@@ -117,7 +117,7 @@ testMethod:
         bodyEditor:
           json:
             $.emotion.check: false
-      - byName: 发送消息给商家-随机买家
+      - byName: 发送消息给商家
       - byName: 查询质检会话列表
       - byName: 查看对话详情
         name: 查看对话详情-检查开关关闭

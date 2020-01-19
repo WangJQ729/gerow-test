@@ -60,7 +60,7 @@ testMethod:
       """
     step:
       - byName: 开启交易成功催单任务-开启过滤名单
-      - byName: 发送消息给商家-随机买家
+      - byName: 发送消息给商家
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
   - name: 交易成功名单过滤-买家在过滤名单内，但过滤条件未勾选

@@ -65,7 +65,7 @@ testMethod:
           - json:
               customer_data: $.data.messages[?(@.task_id=='${task_id}')].customer_data
       - byName: 子账号发送心跳检测
-      - byName: 发送消息给商家-POST
+      - byName: 发送消息给商家-含转接内容
         assertion:
           - json:
               $.custom_transfer.transfer_type: "fishpond_transfer"
