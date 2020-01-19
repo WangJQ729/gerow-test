@@ -124,18 +124,18 @@ testMethod:
         sleep: 2
         body: |
           {
-            "employee_role": "20",
-            "msg_time": "${__time(/1000,msg_time)}",
             "version_num": "dist",
-            "q": "${__DES3Cipher(${question},,)}",
-            "platform": "${platform}",
-            "qianniu_version_num": "7.12.05N",
-            "service_status": "6",
-            "employee_name": "kfa",
             "msgid": "${__RandomString(32,1234567890abcdef,)}",
             "state": "2",
+            "q": "${__DES3Cipher(${question},,)}",
+            "msg_time": "${__time(/1000,msg_time)}",
+            "qianniu_version_num": "7.12.05N",
+            "service_status": "6",
             "usr_shut": "0",
-            "spin": "cntaobao${seller_name}"
+            "spin": "cntaobao${seller_name}",
+            "platform": "${platform}",
+            "employee_name": "kfa",
+            "employee_role": "20"
           }
         bodyEditor:
           json:
