@@ -12,6 +12,10 @@ public class YmlTestClass extends AbstractTestClass {
         if (!isEnable()) {
             return false;
         }
+        boolean platform = TestUtils.isRun(System.getProperty("platform"), this.getPlatform());
+        if (!platform) {
+            return false;
+        }
         boolean features = TestUtils.isRun(this.getFeature(), System.getProperty("features"));
         if (!features) {
             return false;
@@ -20,14 +24,20 @@ public class YmlTestClass extends AbstractTestClass {
         if (!story) {
             return false;
         }
+
         boolean storySkip = TestUtils.isSkip(this.getName(), System.getProperty("skipStory"));
         if (storySkip) {
             return false;
         }
+
         boolean component = TestUtils.isRun(this.getName(), System.getProperty("component"));
         if (!component) {
             return false;
         }
-        return !TestUtils.isSkip(this.getName(), System.getProperty("skipComponent"));
+        return !TestUtils.isSkip(this.
+
+                getName(), System.
+
+                getProperty("skipComponent"));
     }
 }

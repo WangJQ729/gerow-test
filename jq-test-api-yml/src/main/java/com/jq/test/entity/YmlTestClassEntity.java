@@ -19,6 +19,7 @@ public class YmlTestClassEntity {
      */
     private String name;
     private String story;
+    private String platform;
     /**
      * 参数化
      */
@@ -102,6 +103,7 @@ public class YmlTestClassEntity {
         }
         testClass.setFile(file);
         testClass.setName(this.name);
+        testClass.setPlatform(this.platform);
         testClass.setStory(this.story);
         testClass.setEnable(enable);
         String feature = file.getParentFile().getName();

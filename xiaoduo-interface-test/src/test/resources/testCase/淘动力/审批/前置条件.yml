@@ -3,4 +3,13 @@ name: 统一前置处理
 beforeSuite:
   name: 登录mp后台
   step:
-    - byName: 登录统一管理平台
+    - name: 登录统一管理平台
+      host: ${co_test}
+      url: /api/admin/company/login
+      headers:
+        Content-Type: multipart/form-data
+      method: POST
+      form:
+        username: ${co_test_username}
+        password: ${co_test_password}
+      assertion: [json: {$.code: 0}]

@@ -1,7 +1,7 @@
 package com.jq.test.task;
 
-import com.jq.test.utils.data.ConfigManager;
 import com.jq.test.utils.TestUtils;
+import com.jq.test.utils.data.ConfigManager;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,7 +34,8 @@ public abstract class AbstractTestSuite implements ITestSuite {
         this.params.putAll(ConfigManager.getProperties());
         //只运行features下的前置条件
         beforeSuite.stream().filter(iTestMethod ->
-                TestUtils.isRun(iTestMethod.getTestClass().getFeature(), System.getProperty("features")))
+                TestUtils.isRun(iTestMethod.getTestClass().getFeature(), System.getProperty("features")) &&
+                        TestUtils.isRun(System.getProperty("platform"), iTestMethod.getTestClass().getPlatform()))
                 .forEach(ITestMethod::doing);
     }
 

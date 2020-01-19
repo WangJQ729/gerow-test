@@ -14,6 +14,7 @@ import java.util.*;
 public abstract class AbstractTestClass implements ITestClass {
     private String name;
     private String story;
+    private String platform;
     private String feature;
     private List<ITestMethod> testMethods = new ArrayList<>();
     public Map<String, String> params = new LinkedHashMap<>();

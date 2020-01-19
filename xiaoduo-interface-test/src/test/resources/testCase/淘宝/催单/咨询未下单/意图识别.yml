@@ -132,7 +132,10 @@ testMethod:
             "qianniu_version_num": "7.12.02N",
             "service_status": "7",
             "usr_shut": "0",
-            "spin": "cntaobao${seller_name}"
+            "spin": "cntaobao${seller_name}",
+            "platform": "${platform}",
+            "employee_name": "kfa",
+            "employee_role": "20"
           }
         bodyEditor:
           json:

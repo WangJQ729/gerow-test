@@ -4,7 +4,6 @@ import org.apache.jmeter.threads.JMeterVariables;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 public interface ITestClass extends ITest {
     /**
@@ -21,6 +20,10 @@ public interface ITestClass extends ITest {
      * 执行beforeClass
      */
     void setUpBeforeClass();
+
+    String getPlatform();
+
+    void setPlatform(String platform);
 
     /**
      * 添加参数
