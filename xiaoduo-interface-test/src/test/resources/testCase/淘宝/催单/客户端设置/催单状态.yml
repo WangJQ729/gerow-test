@@ -131,8 +131,10 @@ testMethod:
     step:
       - byName: 发送消息给商家
         name: 发送消息给子账号
-        variables:
-          spin: cntaobao${child_seller}
+        bodyEditor:
+          json:
+            $.pin: cntaobao${__RandomName(buyer_id)}
+            $.spin: cntaobao${child_seller}
       - byName: 催单设置-不催单
       - byName: 开启催单任务
       - byName: 通过pulsar推送订单消息
