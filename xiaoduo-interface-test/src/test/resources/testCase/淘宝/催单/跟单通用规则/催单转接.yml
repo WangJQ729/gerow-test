@@ -72,6 +72,8 @@ testMethod:
           is_reminder_transfer: false
       - byName: 获取催单消息-转接关闭
   - name: 开启转接-子账号在线-回复前关闭转接
+    links:
+      TAPD_BUG: https://www.tapd.cn/52457521/bugtrace/bugs/view?bug_id=1152457521001030132
     severity: NORMAL
     step:
       - byName: 客户端设置-开启催单转接
@@ -81,16 +83,16 @@ testMethod:
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
       - byName: 子账号发送心跳检测
-      - byName: 设置催单转接列表
-        name: 设置催单转接列表-不在线的子账号
-        form:
-          settings_reminder_transfer_nick_list: ${child_seller2}
+      - byName: 客户端设置-关闭催单转接
       - byName: 发送消息给商家-转接列表为空
   - name: 开启转接-子账号不在线
     severity: NORMAL
     step:
       - byName: 客户端设置-开启催单转接
-      - byName: 设置催单转接列表-不在线的子账号
+      - byName: 设置催单转接列表
+        name: 设置催单转接列表-不在线的子账号
+        form:
+          settings_reminder_transfer_nick_list: ${child_seller2}
       - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 获取催单消息-回复后转接

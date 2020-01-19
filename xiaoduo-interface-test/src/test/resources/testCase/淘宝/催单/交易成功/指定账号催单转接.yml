@@ -224,6 +224,7 @@ testMethod:
       - byName: 获取催单消息-转接关闭
       - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
+        name: 发送消息给商家-转接关闭
         assertion:
           - json:
               $.custom_transfer.transfer_type: ""
