@@ -1,0 +1,160 @@
+name: 催单转接
+platform: 淘宝
+story: ${reminder_type}
+dataProvider:
+  - node_state: created
+    order_state: created
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+    text_with_vars: ${message}
+    reminder_type: 下单未付款
+  - node_state: checkaddr
+    order_state: created
+    message: 亲，您的订单已经收到，请核对以下信息是否正确，我们将尽快为您发出！
+    text_with_vars: ${message}
+    reminder_type: 核对地址
+  - node_state: deposited
+    order_state: deposited
+    message: defualt message!
+    text_with_vars: ${message}
+    reminder_type: 已付定金未付尾款
+  - node_state: paid
+    order_state: paid
+    message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
+    text_with_vars: ${message}
+    reminder_type: 已付款
+  - node_state: closed
+    order_state: closed
+    message: 亲，您对宝贝有什么不满意的吗？
+    text_with_vars: ${message}
+    reminder_type: 交易取消
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+    - byName: 开启催单任务
+testMethod:
+  - name: 开启转接-子账号在线
+    severity: NORMAL
+    step:
+      - byName: 催单设置为自己和静默
+        name: 客户端设置-开启催单转接
+        form:
+          sub_nick: ${seller_name}
+          reminder_type: ~
+          is_reminder_transfer: true
+      - name: 设置催单转接列表
+        url: /api/admin/xdservice/edit_my
+        headers:
+          Content-Type: multipart/form-data
+        method: POST
+        form:
+          settings_reminder_transfer_nick_list: ${child_seller}
+        assertion: [json: {$.code: 0}]
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 子账号发送心跳检测
+      - byName: 获取催单消息-回复后转接
+      - byName: 子账号发送心跳检测
+      - byName: 发送消息给商家-含转接内容
+  - name: 开启转接-子账号在线-催单前关闭转接
+    severity: NORMAL
+    step:
+      - byName: 客户端设置-开启催单转接
+      - byName: 设置催单转接列表
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 客户端设置-开启催单转接
+        name: 客户端设置-关闭催单转接
+        form:
+          is_reminder_transfer: false
+      - byName: 获取催单消息-转接关闭
+  - name: 开启转接-子账号在线-回复前关闭转接
+    severity: NORMAL
+    step:
+      - byName: 客户端设置-开启催单转接
+      - byName: 设置催单转接列表
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 子账号发送心跳检测
+      - byName: 获取催单消息-回复后转接
+      - byName: 子账号发送心跳检测
+      - byName: 设置催单转接列表
+        name: 设置催单转接列表-不在线的子账号
+        form:
+          settings_reminder_transfer_nick_list: ${child_seller2}
+      - byName: 发送消息给商家-转接列表为空
+  - name: 开启转接-子账号不在线
+    severity: NORMAL
+    step:
+      - byName: 客户端设置-开启催单转接
+      - byName: 设置催单转接列表-不在线的子账号
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 获取催单消息-回复后转接
+      - byName: 发送消息给商家-转接列表为空
+  - name: 开启转接-转接列表含自己
+    severity: NORMAL
+    step:
+      - byName: 客户端设置-开启催单转接
+      - byName: 设置催单转接列表
+        form:
+          settings_reminder_transfer_nick_list: ${child_seller},${seller_name}
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 子账号发送心跳检测
+      - byName: 获取催单消息-回复后转接
+      - byName: 子账号发送心跳检测
+      - byName: 发送消息给商家-含转接内容
+  - name: 开启转接-多个子账号转接-只有一个在线
+    step:
+      - byName: 客户端设置-开启催单转接
+      - byName: 设置催单转接列表
+        form:
+          settings_reminder_transfer_nick_list: ${child_seller},${child_seller2}
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 子账号发送心跳检测
+      - byName: 获取催单消息-回复后转接
+      - byName: 子账号发送心跳检测
+      - byName: 发送消息给商家-含转接内容
+  - name: 开启转接-多个子账号转接-都在线
+    severity: NORMAL
+    step:
+      - byName: 客户端设置-开启催单转接
+      - byName: 设置催单转接列表
+        form:
+          settings_reminder_transfer_nick_list: ${child_seller},${child_seller3}
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 子账号发送心跳检测
+      - byName: 子账号3发送心跳检测
+      - byName: 获取催单消息-回复后转接
+      - byName: 子账号发送心跳检测
+      - byName: 子账号3发送心跳检测
+      - byName: 发送消息给商家-转接给在线的子账号
+  - name: 开启转接-多个子账号转接-部分在线
+    step:
+      - byName: 客户端设置-开启催单转接
+      - byName: 设置催单转接列表
+        form:
+          settings_reminder_transfer_nick_list: ${child_seller},${child_seller2},${child_seller3}
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 子账号发送心跳检测
+      - byName: 子账号3发送心跳检测
+      - byName: 获取催单消息-回复后转接
+      - byName: 子账号发送心跳检测
+      - byName: 子账号3发送心跳检测
+      - byName: 发送消息给商家-转接给在线的子账号
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
