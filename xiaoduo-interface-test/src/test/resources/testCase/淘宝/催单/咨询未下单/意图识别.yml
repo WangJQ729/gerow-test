@@ -132,9 +132,11 @@ testMethod:
             "qianniu_version_num": "7.12.02N",
             "service_status": "7",
             "usr_shut": "0",
-            "pin": "cntaobao${__RandomName(buyer_id)}",
             "spin": "cntaobao${seller_name}"
           }
+        bodyEditor:
+          json:
+            $.pin: cntaobao${__RandomName(buyer_id)}
         method: POST
         responseType: DEFAULT
         extractor:

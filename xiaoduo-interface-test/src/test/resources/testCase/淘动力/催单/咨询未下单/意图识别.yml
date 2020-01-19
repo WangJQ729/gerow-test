@@ -125,7 +125,6 @@ testMethod:
         body: |
           {
             "employee_role": "20",
-            "pin": "cntaobao${__RandomName(buyer_id)}",
             "msg_time": "${__time(/1000,msg_time)}",
             "version_num": "dist",
             "q": "${__DES3Cipher(${question},,)}",
@@ -138,6 +137,9 @@ testMethod:
             "usr_shut": "0",
             "spin": "cntaobao${seller_name}"
           }
+        bodyEditor:
+          json:
+            $.pin: cntaobao${__RandomName(buyer_id)}
         method: POST
         responseType: DEFAULT
         extractor:

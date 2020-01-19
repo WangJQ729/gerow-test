@@ -69,6 +69,7 @@ testMethod:
         name: 发送消息给商家-固定问题
         bodyEditor:
           json:
+            $.pin: cntaobao${buyer_id}
             $.q: ${__DES3Cipher(你好,,)}
       - name: 通过pulsar推送订单消息
         host: ${test_tools}
