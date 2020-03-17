@@ -71,7 +71,7 @@ beforeSuite:
       assertion: [json: {$.code: 0}]
     - name: 登录test-tools
       host: ${test_tools}
-      url: /api/v1/login/
+      url: /api/api/v1/login/
       method: POST
       body: |
         {"username":"wangjianqiang","password":"wangjianqiang123456"}

@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 @Listeners({AllureListener.class,
 //        DingTalkListener.class,
-        ClearRedisListener.class,
+//        ClearRedisListener.class,
         CaseListListener.class
 })
 public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTest, org.testng.ITest {

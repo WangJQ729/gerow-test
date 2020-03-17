@@ -2,7 +2,7 @@ data:
   test:
     platform: tb
     host: wangcai-${env}.xiaoduoai.com
-    test_tools: http://zhy-${env}.xiaoduoai.com
+    test_tools: http://test-tools.xiaoduoai.com
     api_host: https://api-${env}.xiaoduoai.com
     mc_test: https://mc-${env}.xiaoduoai.com
     seller_host: https://seller.xiaoduoai.com
