@@ -3,15 +3,16 @@ data:
     platform: tb
     host: wangcai-${env}.xiaoduoai.com
     test_tools: http://test-tools.xiaoduoai.com
+    test_tools_new: http://test-tools-${env}.xiaoduoai.com
     api_host: https://api-${env}.xiaoduoai.com
     mc_test: https://mc-${env}.xiaoduoai.com
     seller_host: https://seller.xiaoduoai.com
 
-    p_path: pulsar://pulsar-test-1:6650
-    topic: persistent://public/default/rmd-trade-tb-${env}
-    orderRateQueue: persistent://marketing/taobao/orderrate-${env}
-    logisticsQueue: persistent://reminder/tmc/logistics_tb_test
-    refundQueue: persistent://reminder/tmc/refund_tb_test
+    p_path: pulsar://pulsar-cluster01-slb:6650
+    topic: persistent://reminder/trade/order_tb
+    orderRateQueue: persistent://marketing/taobao/orderrate
+    logisticsQueue: persistent://reminder/tmc/logistics_tb
+    refundQueue: persistent://reminder/tmc/refund_tb
 
     sign: ca61da42f143ef040fc22afee498a622
 

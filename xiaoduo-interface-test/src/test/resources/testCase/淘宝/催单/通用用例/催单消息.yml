@@ -72,7 +72,7 @@ testMethod:
             $.pin: cntaobao${__RandomName(buyer_id)}
             $.q: ${__DES3Cipher(你好,,)}
       - name: 通过pulsar推送订单消息
-        host: ${test_tools}
+        host: ${test_tools_new}
         url: /api/v1/tools/push_message_to_pulsar
         headers:
           Authorization: auth ${token}
