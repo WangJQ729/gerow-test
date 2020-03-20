@@ -1,4 +1,5 @@
 name: 物流状态圈定
+enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: refund
