@@ -16,6 +16,11 @@ dataProvider:
     message: defualt message!
     text_with_vars: ${message}
     reminder_type: 已付定金未付尾款
+  - node_state: shipped_delay
+    order_state: paid
+    message: 由于近期订单量过大，发货小妹没能及时给您发货，实在抱歉。麻烦您耐心等待，小妹会尽快安排给您优先发货呢！
+    text_with_vars: ${message}
+    reminder_type: 发货超时
   - node_state: paid
     order_state: paid
     message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
