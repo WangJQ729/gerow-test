@@ -1,11 +1,11 @@
 name: 任务开关
 story: ${reminder_type}
 dataProvider:
-  - node_state: refund
-    message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
-    text_with_vars: ${message}
-    reminder_type: 售后理由修改
-    refund_state: taobao_refund_RefundCreated
+#  - node_state: refund
+#    message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
+#    text_with_vars: ${message}
+#    reminder_type: 售后理由修改
+#    refund_state: taobao_refund_RefundCreated
   - node_state: refund_agree
     message: 您好，您的退货申请已通过，麻烦您把货发给我们，我们也好尽快给您办理退换货呢！
     text_with_vars: ${message}

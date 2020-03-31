@@ -1,10 +1,10 @@
 name: 催单消息
 story: ${reminder_type}
 dataProvider:
-  - node_state: refund
-    order_state: succeeded
-    reminder_type: 售后理由修改
-    refund_state: taobao_refund_RefundCreated
+#  - node_state: refund
+#    order_state: succeeded
+#    reminder_type: 售后理由修改
+#    refund_state: taobao_refund_RefundCreated
   - node_state: refund_agree
     order_state: succeeded
     reminder_type: 同意退货
