@@ -1,6 +1,6 @@
 data:
   test:
-    host: pdd-test.xiaoduoai.com
+    host: pdd-test-cm.xiaoduoai.com
     mock_host: http://mock-server-pdd.xiaoduoai.com
     shopName: JQ铅笔:pdd78335301079
     mall_id: 783353010
@@ -10,7 +10,6 @@ data:
     buyer: 5083583826
     platform: pdd
     child_seller: JQ铅笔:xiaoduo_auto_test
-    test_tools: http://zhy-pdd.xiaoduoai.com
 client:
   protocol: http
   timeOut: 30
