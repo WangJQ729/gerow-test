@@ -2,16 +2,16 @@ data:
   test:
     platform: taodongli
     sign: ca61da42f143ef040fc22afee498a622
-    host: wangcai-test2.xiaoduoai.com
-    test_tools: http://zhy-test2.xiaoduoai.com
-    co_test: https://co-test2.xiaoduoai.com
-    mc_test: https://mc-test2.xiaoduoai.com
+    host: wangcai-${env}.xiaoduoai.com
+    test_tools: http://zhy-${env}.xiaoduoai.com
+    co_test: https://co-${env}.xiaoduoai.com
+    mc_test: https://mc-${env}.xiaoduoai.com
 
-    p_path: pulsar://pulsar-test-1:6650
-    topic: persistent://public/default/rmd-trade-taodongli-test2
-    orderRateQueue: persistent://marketing/taobao/orderrate-taodongli
-    logisticsQueue: persistent://reminder/tmc/logistics_tb_test
-    refundQueue: persistent://reminder/tmc/refund_tb_test
+    p_path: pulsar://pulsar-cluster01-slb:6650
+    topic: persistent://reminder/trade/order_taodongli
+    orderRateQueue: persistent://marketing/taobao/orderrate
+    logisticsQueue: persistent://reminder/tmc/logistics_tb
+    refundQueue: persistent://reminder/tmc/refund_taodongli
 
     co_test_username: 淘动力
     co_test_password: 123456
