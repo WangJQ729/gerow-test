@@ -69,7 +69,8 @@ testMethod:
             $.pin: cntaobao${buyer_id}
       - byName: 根据聊天记录查询trace
       - byName: 查看trace详情
-        untilWait: 20
+        untilWait: 25
+        intervals: 5000
         name: 查看trace详情-购买意向过滤
         assertion:
           - json:
