@@ -3,7 +3,8 @@ data:
     platform: taodongli
     sign: ca61da42f143ef040fc22afee498a622
     host: wangcai-${env}.xiaoduoai.com
-    test_tools: http://zhy-${env}.xiaoduoai.com
+    test_tools: http://test-tools.xiaoduoai.com
+    test_tools_new: http://test-tools-${env}.xiaoduoai.com
     co_test: https://co-${env}.xiaoduoai.com
     mc_test: https://mc-${env}.xiaoduoai.com
 
@@ -14,7 +15,7 @@ data:
     refundQueue: persistent://reminder/tmc/refund_taodongli
 
     co_test_username: 淘动力
-    co_test_password: 123456
+    co_test_password: xinghuan123
 
     shopName: ${shopName}
     refund_id: 58379106742933796
