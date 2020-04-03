@@ -12,13 +12,13 @@ dataProvider:
         emotion: c5
         algo_emotion: 5
         question: 发货怎么这么慢
-      - emotion_name: 对产品不满
-        emotion: c6
-        algo_emotion: 6
-        question:
-          - 什么垃圾东西
-          - 东西太垃圾了
-          - 产品质量太差了
+#      - emotion_name: 对产品不满
+#        emotion: c6
+#        algo_emotion: 6
+#        question:
+#          - 什么垃圾东西
+#          - 东西太垃圾了
+#          - 产品质量太差了
       - emotion_name: 其他不满意
         emotion: c7
         algo_emotion: 7

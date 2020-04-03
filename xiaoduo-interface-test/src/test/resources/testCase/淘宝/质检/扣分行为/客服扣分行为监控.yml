@@ -24,9 +24,6 @@ dataProvider:
       - category_name: 数字电视
         question: 顺丰什么时间到货
         answer: 在的哦我
-      - category_name: 箱包专属
-        question: 箱包专属
-        answer: 在啊
       - category_name: 抽水器专属
         question: 发什么快递
         answer: 亲亲在的饿哦
@@ -48,21 +45,21 @@ dataProvider:
       - category_name: 家纺专属
         question: 是否有赠品，赠品是什么
         answer: 页面上看下哦亲
-      - category_name: 冷暖风扇
-        question: 赠品是否和货一起发
-        answer: 详情有的呢
-      - category_name: 电商通用
-        question: 活动价是多少
-        answer: 您可以首页参考下亲亲
+#      - category_name: 冷暖风扇
+#        question: 赠品是否和货一起发
+#        answer: 详情有的呢
+#      - category_name: 电商通用
+#        question: 活动价是多少
+#        answer: 您可以首页参考下亲亲
       - category_name: 全屋家电
         question: 赠品的颜色是否可以选择
         answer: 页面上看下哦亲
       - category_name: 办公文具
         question: 什么时候做活动
         answer: 页面看下详情
-      - category_name: 办公文具
-        question: 送不送转笔刀
-        answer: 页面说的很明白的哦
+#      - category_name: 办公文具
+#        question: 送不送转笔刀
+#        answer: 页面说的很明白的哦
   - abnormal_name: 对产品不熟悉
     abnormal_type: 9
     dataProvider:

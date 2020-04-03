@@ -18,3 +18,5 @@ data:
 
     shopName: ${shopName}
     refund_id: 58379106742933796
+
+    seller_name: ${shopName}
