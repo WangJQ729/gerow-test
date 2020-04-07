@@ -45,7 +45,7 @@ beforeSuite:
       url: /api/admin/reminder/v2/manage/shop/setting
       method: POST
       body: |
-        {"user_daily_limit":8000,"no_answer_filter":false,"task_remove_duplicates":true,"duplicated_order_switches":[]}
+        {"user_daily_limit":8000,"no_answer_filter":true,"task_remove_duplicates":true,"duplicated_order_switches":[]}
       assertion: [json: {$.code: 0}]
     - name: 拉一下催单消息
       url: /api/admin/reminder/v2/client/reminder/messages
@@ -58,7 +58,7 @@ beforeSuite:
       assertion: [json: {$.code: 0}]
     - name: 登录test-tools
       host: ${test_tools}
-      url: /api/v1/login/
+      url: /api/api/v1/login/
       method: POST
       body: |
         {"username":"wangjianqiang","password":"wangjianqiang123456"}

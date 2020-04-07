@@ -1,7 +1,6 @@
 data:
   test:
     host: jd-qa.xiaoduoai.com
-    mock_host: http://mock-server-jd.xiaoduoai.com
     shopName: 测试ckm
     seller_name: 友发轮胎专营店:测试ckm
     shop: 测试ckm

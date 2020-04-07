@@ -1,7 +1,6 @@
 data:
   test:
-    host: jd-qa.xiaoduoai.com
-    mock_host: http://mock-server-jd.xiaoduoai.com
+    host: jd-test-cm.xiaoduoai.com
     shopName: shuangqing2015
     seller_name: 双庆家居京东自营旗舰店:shuangqing2015
     shop: 测试ckm
@@ -9,7 +8,7 @@ data:
     buyer: tester002
     platform: jd
     child_seller: 双庆家居京东自营旗舰店:shuangqing2019
-    test_tools: http://zhy-jd.xiaoduoai.com
+    test_tools: http://test-tools.xiaoduoai.com
     topic: persistent://zhongtai/reminder/rmd-trade-jd
 client:
   protocol: http
