@@ -16,8 +16,6 @@ beforeClass:
 testMethod:
   - name: 状态变更为-${new_type_name}
     dataProvider:
-      - new_order_state: created
-        new_type_name: 下单未付款
       - new_order_state: paid
         new_type_name: 已付款
       - new_order_state: signed
