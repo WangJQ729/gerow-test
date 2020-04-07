@@ -2,6 +2,7 @@ package com.jq.test;
 
 import com.jq.test.listener.AllureListener;
 import com.jq.test.listener.CaseListListener;
+import com.jq.test.listener.FeishuListener;
 import com.jq.test.task.ITest;
 import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestMethod;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Listeners({AllureListener.class,
+        FeishuListener.class,
         CaseListListener.class
 })
 public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTest, org.testng.ITest {

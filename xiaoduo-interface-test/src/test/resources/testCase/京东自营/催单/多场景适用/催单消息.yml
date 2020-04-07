@@ -82,7 +82,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.message: ${message}
         assertion: [json: {$.code: 0}]
       - name: 通过pulsar推送订单消息
-        host: ${test_tools}
+        host: ${test_tools_new}
         url: /api/v1/tools/push_message_to_pulsar
         headers:
           Authorization: auth ${token}
