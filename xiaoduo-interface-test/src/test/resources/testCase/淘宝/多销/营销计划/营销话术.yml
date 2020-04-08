@@ -1,4 +1,6 @@
 name: 营销话术
+dataProvider:
+  - question: 在吗
 beforeClass:
   name: 创建分群并流入一个客人
   step:

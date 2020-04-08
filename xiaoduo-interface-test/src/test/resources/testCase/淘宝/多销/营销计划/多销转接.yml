@@ -2,6 +2,7 @@ name: 多销转接
 dataProvider:
   - message: 纯文字催单消息
     text_with_vars: 纯文字催单消息
+    question: 在吗
 beforeClass:
   name: 创建分群并流入一个客人
   step:
