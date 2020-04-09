@@ -1,6 +1,6 @@
 data:
   test:
-    host: jd-test-${env}.xiaoduoai.com
+    host: jd-${env}.xiaoduoai.com
     shopName: shuangqing2015
     seller_name: 双庆家居京东自营旗舰店:shuangqing2015
     shop: 测试ckm
