@@ -8,7 +8,8 @@ data:
     buyer: tester002
     platform: jd
     child_seller: 友发轮胎专营店:测试ckm
-    test_tools: http://zhy-jd.xiaoduoai.com
+    test_tools: http://test-tools.xiaoduoai.com
+    test_tools_new: http://test-tools-${env}.xiaoduoai.com
     topic: persistent://zhongtai/reminder/rmd-trade-jd
 client:
   protocol: http
