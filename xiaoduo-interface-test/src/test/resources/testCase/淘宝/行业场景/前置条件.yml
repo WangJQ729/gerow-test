@@ -6,4 +6,4 @@ beforeSuite:
     - byName: 获取MP后台地址
     - byName: 进入主页
     - byName: 获取shop_id
-    - byName: 登录test-tools
+#    - byName: 登录test-tools
