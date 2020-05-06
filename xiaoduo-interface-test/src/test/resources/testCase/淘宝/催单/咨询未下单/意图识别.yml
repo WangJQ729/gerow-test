@@ -128,7 +128,7 @@ testMethod:
             "msgid": "${__RandomString(32,1234567890abcdef,)}",
             "state": "2",
             "q": "${__DES3Cipher(${question},,)}",
-            "msg_time": "${__time(/1000,msg_time)}",
+            "msg_time": "${__BeanShell(${__time(/1000,)}-24*60*60*${answer_time},)}",
             "qianniu_version_num": "7.12.02N",
             "service_status": "7",
             "usr_shut": "0",
