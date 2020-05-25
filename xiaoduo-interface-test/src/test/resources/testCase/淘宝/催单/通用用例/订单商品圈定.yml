@@ -66,6 +66,7 @@ testMethod:
             $.id: ${task_id}
             $.enable: true
             $.shop_id: ${shop_id}
+            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='order_goods_limit')].args.enable: true

@@ -20,6 +20,7 @@ beforeClass:
           $.name: 第一个任务
           $.enable: true
           $.shop_id: ${shop_id}
+          $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
           $.rules[?(@.type=='state_delay')].args.delay: 0
           $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].replies:
             - ageing_id: ""
@@ -34,6 +35,7 @@ beforeClass:
           $.name: 第二个任务
           $.enable: true
           $.shop_id: ${shop_id}
+          $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
           $.rules[?(@.type=='state_delay')].args.delay: 0
           $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].replies:
             - ageing_id: ""
@@ -157,6 +159,7 @@ testMethod:
             $.name: 第一个任务
             $.enable: true
             $.shop_id: ${shop_id}
+            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].replies:
               - ageing_id: ""

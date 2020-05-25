@@ -50,6 +50,7 @@ beforeClass:
           $.name: 第一个任务
           $.enable: true
           $.shop_id: ${shop_id}
+          $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
           $.rules[?(@.type=='send_message')].args.state_delay: 0
           $.rules[?(@.type=='send_message')].args.message: ${message}
       extractor:
@@ -62,6 +63,7 @@ beforeClass:
           $.name: 第二个任务
           $.enable: true
           $.shop_id: ${shop_id}
+          $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
           $.rules[?(@.type=='send_message')].args.state_delay: 0
           $.rules[?(@.type=='send_message')].args.message: ${message2}
       extractor:
@@ -219,6 +221,7 @@ testMethod:
             $.name: 第一个任务
             $.enable: true
             $.shop_id: ${shop_id}
+            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='pay_amount_limit')].args.enable: true
