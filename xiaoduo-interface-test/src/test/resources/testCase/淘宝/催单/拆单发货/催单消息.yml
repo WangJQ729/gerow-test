@@ -37,7 +37,6 @@ testMethod:
             $.id: ${task_id}
             $.enable: true
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             $.rules[?(@.type=='send_shipped_message')].args.consign_part.state_delay: 0
             $.rules[?(@.type=='send_shipped_message')].args.consign_part.message: ${message1}
             $.rules[?(@.type=='send_shipped_message')].args.consign_part_all.state_delay: 0
@@ -158,7 +157,6 @@ testMethod:
             $.id: ${task_id}
             $.enable: true
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             $.rules[?(@.type=='send_shipped_message')].args.consign_part.state_delay: 10
             $.rules[?(@.type=='send_shipped_message')].args.consign_part.message: ${message1}
             $.rules[?(@.type=='send_shipped_message')].args.consign_part_all.state_delay: 0

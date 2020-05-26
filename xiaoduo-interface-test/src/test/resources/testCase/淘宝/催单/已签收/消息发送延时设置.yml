@@ -37,7 +37,6 @@ testMethod:
             $.id: ${task_id}
             $.enable: true
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: ${__BeanShell(${state_delay},)}
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]

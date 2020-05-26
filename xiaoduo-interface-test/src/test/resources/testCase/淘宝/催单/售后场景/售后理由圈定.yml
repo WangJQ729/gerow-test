@@ -55,7 +55,6 @@ testMethod:
             $.id: ${task_id}
             $.enable: true
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             $.rules[?(@.type=='logistics_filter')].args.status: 2
             $.rules[?(@.type=='refund_reasons')].args.reasons: [多拍/错拍/不想要,软件故障,功能缺少,错拍/多拍/不想要]
             $.rules[?(@.type=='specify_send_seller')].args.status: 2
@@ -97,7 +96,6 @@ testMethod:
             $.id: ${task_id}
             $.enable: true
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             $.rules[?(@.type=='logistics_filter')].args.status: 2
             $.rules[?(@.type=='refund_reasons')].args.reasons: ["${refund_reasons}"]
             $.rules[?(@.type=='specify_send_seller')].args.status: 2

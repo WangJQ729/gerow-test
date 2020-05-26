@@ -43,7 +43,6 @@ testMethod:
             $.id: ${task_id}
             $.enable: true
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.state_delay: 0
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.message: ${message}
       - byName: 发送消息给商家-固定问题
@@ -73,7 +72,6 @@ testMethod:
             $.id: ${task_id}
             $.enable: true
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.state_delay: 0
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.message: ${message}
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.images:

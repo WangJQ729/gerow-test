@@ -33,21 +33,21 @@ beforeSuite:
         - json:
             token: $.data.token
           site: TESTSUIT
-#    - name: 获取多销风险控制
-#      url: /api/fishpond/admin/risk/buyer/setting
-#      method: GET
-#      extractor:
-#        - json:
-#            risk_data: $.data
-#          site: TESTSUIT
-#    - name: 设置多销风险控制
-#      url: /api/fishpond/admin/risk/buyer/setting
-#      method: POST
-#      body: |
-#        {"day_sent": 300,"month_send": 300,"message_interval": 1}
-#      assertion: [json: {$.code: 0}]
-#afterSuite:
-#  name: 测试完成恢复风险控制配置
-#  step:
-#    - byName: 设置多销风险控制
-#      body: ${risk_data}
+    - name: 获取多销风险控制
+      url: /api/fishpond/admin/risk/buyer/setting
+      method: GET
+      extractor:
+        - json:
+            risk_data: $.data
+          site: TESTSUIT
+    - name: 设置多销风险控制
+      url: /api/fishpond/admin/risk/buyer/setting
+      method: POST
+      body: |
+        {"day_sent": 300,"month_send": 300,"message_interval": 1}
+      assertion: [json: {$.code: 0}]
+afterSuite:
+  name: 测试完成恢复风险控制配置
+  step:
+    - byName: 设置多销风险控制
+      body: ${risk_data}

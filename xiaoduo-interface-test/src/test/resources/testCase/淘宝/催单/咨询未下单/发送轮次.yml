@@ -38,7 +38,6 @@ testMethod:
             $.enable: true
             #设置shop_id(配置文件中设置的)
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: false
@@ -82,7 +81,6 @@ testMethod:
             $.enable: true
             #设置shop_id(配置文件中设置的)
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: true
@@ -126,7 +124,6 @@ testMethod:
             $.enable: true
             #设置shop_id(配置文件中设置的)
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: true
@@ -177,7 +174,6 @@ testMethod:
             $.enable: false
             #设置shop_id(配置文件中设置的)
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: true
@@ -215,7 +211,6 @@ testMethod:
             $.enable: true
             #设置shop_id(配置文件中设置的)
             $.shop_id: ${shop_id}
-            $.rules[?(@.type=='chat_after_triggered_filter')].args.enable: false
             #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: false
