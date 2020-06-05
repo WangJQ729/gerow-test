@@ -17,6 +17,8 @@ testMethod:
             $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.state: asked
             $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.min_time: ${__BeanShell(${__time(/1000)},)}
             $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.max_time: ${__BeanShell(${__time(/1000)}+600,)}
+            $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.period_option: till_now
+            $.customer_group.cond.select_cond.child_conds[0].child_conds[0].cond.rule.goods: []
         assertion: [json: {$.code: 0}]
       - byName: 查看分群列表-获取新分群ID
       - byName: 校验初始分群人数为0
