@@ -143,7 +143,7 @@ afterMethod:
   name: 测试结束后查看订单trace
   step:
     - name: 根据订单查询trace
-      url: /api/reminder/v2/trace/search/order
+      url: /api/admin/reminder/v2/trace/search/order
       variables:
         platform: ${platform}
         order_id: ${order_id}
@@ -156,7 +156,7 @@ afterMethod:
     #          options: [DEFAULT_PATH_LEAF_TO_NULL]
     - name: 查看trace详情
       untilWait: 10
-      url: /api/reminder/v2/trace/info
+      url: /api/admin/reminder/v2/trace/info
       variables:
         trace_id: ${trace_id}
         platform: ${platform}
