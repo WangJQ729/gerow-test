@@ -91,7 +91,7 @@ testMethod:
           Authorization: auth ${token}
         method: POST
         body: |
-          {"topic":"${topic}","word":""}
+          {"topic":"${topic}","word":"","p_path":"pulsar://pulsar-pro:6650"}
         sleep: 2 #等待oplog服务
         bodyEditor:
           json:

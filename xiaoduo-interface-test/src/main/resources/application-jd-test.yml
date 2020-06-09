@@ -1,6 +1,6 @@
 data:
   test:
-    host: jd-test-cm.xiaoduoai.com
+    host: ${env}.xiaoduoai.com
     shopName: 智晓多谋生鲜专营店
     seller_name: 智晓多谋生鲜专营店:晓多生鲜-ljx
     shop: 晓多生鲜-ljx
@@ -9,10 +9,10 @@ data:
     platform: jd
     child_seller: 智晓多谋生鲜专营店:晓多生鲜-ckm
     test_tools: http://test-tools.xiaoduoai.com
-    test_tools_new: http://jd-test-cm.xiaoduoai.com/tester/tools/
+    test_tools_new: http://${env}.xiaoduoai.com/tester/tools/
     topic: persistent://zhongtai/reminder/rmd-trade-jd
 client:
-  protocol: http
+  protocol: https
   timeOut: 30
 
 

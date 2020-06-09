@@ -52,7 +52,7 @@ testMethod:
         variables:
           q: ${__DES3Cipher(在吗,,)}
       - name: 根据聊天记录查询trace
-        url: /api/reminder/v2/trace/search
+        url: /api/admin/reminder/v2/trace/search
         variables:
           platform: ${platform}
           shop_id: ${shop_id}
