@@ -13,24 +13,16 @@ beforeClass:
       variables:
         q: ${__DES3Cipher(在吗,,)}
     - byName: 校验初始分群人数为1
-    - name: 获取转接分组
+    - name: 更新多销转接分组
       host: ${seller_host}
-      url: /api/fishpond/setting
-      method: GET
-      variables:
-        platform: ${platform}
-        shop_id: ${shop_id}
+      url: /api/fishpond/xd_sub_user/groups/selection/new
+      method: POST
+      body: |
+        {"group_id_list":"","sub_user_name_list":"${child_seller}"}
       assertion: [json: {$.code: 0}]
       extractor:
         - json:
-            transfer_group_id: $.data.setting.transfer_group_id
-    - name: 更新多销转接分组
-      host: ${seller_host}
-      url: /api/fishpond/xd_sub_user/groups/selection/update
-      method: POST
-      body: |
-        {"id":"${transfer_group_id}","group_id_list":"","sub_user_name_list":"${child_seller}"}
-      assertion: [json: {$.code: 0}]
+            transfer_group_id: $.id
     - name: 设置多销转接
       host: ${seller_host}
       url: /api/fishpond/setting
