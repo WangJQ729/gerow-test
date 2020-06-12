@@ -328,6 +328,9 @@ public class Assertion {
             case TOTAL:
                 Assertions.assertThat(this.step.getAssertionLength().get(key)).isEqualTo(value);
                 break;
+            case ONEOF:
+                Assertions.assertThat((Collection<Object>) value).containsAnyElementsOf((Collection<Object>) actual);
+                break;
             case EQ:
             default:
                 //null转换为空字符串进行判断

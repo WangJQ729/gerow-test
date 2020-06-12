@@ -15,5 +15,6 @@ public enum AssertionType {
     LESSTHANOREQUALTO,
     ALLGREATEROREQUALTO,
     ALLLESSTHANOREQUALTO,
-    TOTAL
+    TOTAL,
+    ONEOF
 }
