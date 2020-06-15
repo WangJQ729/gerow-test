@@ -27,6 +27,7 @@ beforeSuite:
         - json:
             shop_id: $.user.shop_id
             shop_category_id: $.default_shop.category_id
+            reminder_transfer_sub_users_info_id: $.user_service.settings.reminder_transfer_sub_users_info_id
           site: TESTSUIT
       assertion: [json: {$.code: 0}]
     - name: 获取子账号

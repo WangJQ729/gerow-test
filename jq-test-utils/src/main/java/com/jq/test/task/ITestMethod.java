@@ -39,6 +39,4 @@ public interface ITestMethod extends ITest {
     String getDescription();
 
     String getAuthor();
-
-
 }

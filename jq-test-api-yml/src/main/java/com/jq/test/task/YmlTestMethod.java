@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 public class YmlTestMethod extends AbstractTestMethod {
     @Override
     public boolean enable() {
-        return TestUtils.isRun(this.getName(), System.getProperty("test.name"));
+        return TestUtils.isRun(this.getName(), System.getProperty("test.name")) && isEnable();
     }
 
     @Override

@@ -3,9 +3,9 @@ package com.jq.test.entity;
 import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestMethod;
 import com.jq.test.task.YmlTestMethod;
+import com.jq.test.utils.TestUtils;
 import com.jq.test.utils.data.DataProviderUtils;
 import com.jq.test.utils.data.StepEditor;
-import com.jq.test.utils.TestUtils;
 import io.qameta.allure.SeverityLevel;
 import lombok.Data;
 
@@ -18,6 +18,9 @@ public class YmlTestMethodEntity {
      * 参数化
      */
     private List<LinkedHashMap<String, Object>> dataProvider = new ArrayList<>();
+
+    private boolean enable = true;
+
     /**
      * 测试名称
      */
@@ -75,6 +78,7 @@ public class YmlTestMethodEntity {
         Map<String, String> map = new LinkedHashMap<>(data);
         map.put("methodNum", i.toString());
         YmlTestMethod testMethod = new YmlTestMethod();
+        testMethod.setEnable(enable);
         testMethod.setTestClass(testClass);
         testMethod.setParams(map);
         testMethod.setDescription(description);

@@ -19,6 +19,7 @@ public abstract class AbstractTestMethod implements ITestMethod {
     private Map<String, String> params = new HashMap<>();
     private List<ITestStep> testSteps;
     private Map<String, String> links = new HashMap<>();
+    private boolean enable;
 
     @Override
     public void doing() {
