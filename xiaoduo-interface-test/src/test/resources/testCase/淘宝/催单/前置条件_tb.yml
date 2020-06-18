@@ -87,7 +87,7 @@ beforeSuite:
       url: /api/api/v1/login/
       method: POST
       body: |
-        {"username":"wangjianqiang","password":"wangjianqiang123456"}
+        {"username":"auto_data","password":"auto_data123456"}
       assertion: [json: {$.code: 0}]
       extractor:
         - json:
