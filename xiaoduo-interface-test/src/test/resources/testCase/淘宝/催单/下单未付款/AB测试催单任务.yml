@@ -1,4 +1,5 @@
 name: AB测试催单任务
+enable: false
 story: ${reminder_type}
 platform: 淘宝
 dataProvider:
