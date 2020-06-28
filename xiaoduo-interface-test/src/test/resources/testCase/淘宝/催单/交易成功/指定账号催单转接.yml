@@ -336,7 +336,12 @@ testMethod:
           - json:
               $.custom_transfer.transfer_type: "reminder_transfer"
               $.custom_transfer.is_transfer: true
-              $.custom_transfer.transfer_subnick_list: ["${child_seller}","${child_seller3}"]
+            need_decode: true
+          - json:
+              $.custom_transfer.transfer_subnick_list:
+                - ${child_seller}
+                - ${child_seller3}
+            assertionType: AllCONTAINS
             need_decode: true
   - name: 开启转接-多个子账号转接-部分在线
     description: |

@@ -55,11 +55,24 @@ testMethod:
           sub_nick: ${seller_name}
           reminder_type: ~
           is_reminder_transfer: true
-      - name: 设置催单转接列表
-        url: /api/admin/xd_sub_user/groups/selection/update
+        assertion: [json: {$.code: 0}]
+      - name: 新建催单转接分组
+        url: /api/admin/xd_sub_user/groups/selection/new
         method: POST
         body: |
-          {"id":"${reminder_transfer_sub_users_info_id}","group_id_list":"","sub_user_name_list":"${child_seller}"}
+          {"group_id_list":"","sub_user_name_list":"${child_seller}"}
+        assertion: [json: {$.code: 0}]
+        extractor:
+          - json:
+              reminder_transfer_sub_users_info_id: $.id
+      - name: 更新转接列表
+        url: /api/admin/xdservice/edit_my
+        method: POST
+        form:
+          settings_reminder_transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
+          settings_is_begin_words_filter: true
+        headers:
+          Content-Type: multipart/form-data
         assertion: [json: {$.code: 0}]
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 子账号发送心跳检测
@@ -70,7 +83,8 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 客户端设置-开启催单转接
-      - byName: 设置催单转接列表
+      - byName: 新建催单转接分组
+      - byName: 更新转接列表
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 客户端设置-开启催单转接
         name: 客户端设置-关闭催单转接
@@ -83,7 +97,8 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 客户端设置-开启催单转接
-      - byName: 设置催单转接列表
+      - byName: 新建催单转接分组
+      - byName: 更新转接列表
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
@@ -97,15 +112,14 @@ testMethod:
               $.custom_transfer.transfer_subnick_list: null
             need_decode: true
   - name: 开启转接-子账号不在线
-    enable: false
     severity: NORMAL
     step:
       - byName: 客户端设置-开启催单转接
-      - byName: 设置催单转接列表
-        name: 设置催单转接列表-不在线的子账号
+      - byName: 新建催单转接分组
         bodyEditor:
           json:
             $.sub_user_name_list: ${child_seller2}
+      - byName: 更新转接列表
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 获取催单消息-回复后转接
       - byName: 发送消息给商家-转接列表为空
@@ -113,10 +127,11 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 客户端设置-开启催单转接
-      - byName: 设置催单转接列表
+      - byName: 新建催单转接分组
         bodyEditor:
           json:
             $.sub_user_name_list: ${child_seller},${seller_name}
+      - byName: 更新转接列表
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
@@ -125,24 +140,25 @@ testMethod:
   - name: 开启转接-多个子账号转接-只有一个在线
     step:
       - byName: 客户端设置-开启催单转接
-      - byName: 设置催单转接列表
+      - byName: 新建催单转接分组
         bodyEditor:
           json:
             $.sub_user_name_list: ${child_seller},${child_seller2}
+      - byName: 更新转接列表
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
       - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
   - name: 开启转接-多个子账号转接-都在线
-    enable: false
     severity: NORMAL
     step:
       - byName: 客户端设置-开启催单转接
-      - byName: 设置催单转接列表
+      - byName: 新建催单转接分组
         bodyEditor:
           json:
             $.sub_user_name_list: ${child_seller},${child_seller3}
+      - byName: 更新转接列表
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
@@ -151,13 +167,13 @@ testMethod:
       - byName: 子账号3发送心跳检测
       - byName: 发送消息给商家-转接给在线的子账号
   - name: 开启转接-多个子账号转接-部分在线
-    enable: false
     step:
       - byName: 客户端设置-开启催单转接
-      - byName: 设置催单转接列表
+      - byName: 新建催单转接分组
         bodyEditor:
           json:
             $.sub_user_name_list: ${child_seller},${child_seller2},${child_seller3}
+      - byName: 更新转接列表
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测

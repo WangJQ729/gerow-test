@@ -1,5 +1,6 @@
 package com.jq.test.utils.assertion;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jayway.jsonpath.Option;
 import com.jq.test.task.ITestStep;
@@ -314,7 +315,7 @@ public class Assertion {
                 }
                 break;
             case AllCONTAINS:
-                ((Collection<Object>) actual).forEach(o -> Assertions.assertThat(o.toString()).contains(value.toString()));
+                Assertions.assertThat(((net.minidev.json.JSONArray) actual).toArray()).containsAll((com.alibaba.fastjson.JSONArray) value);
                 break;
             case ALLIS:
                 Assertions.assertThat((Collection<Object>) actual).containsOnly(value);
