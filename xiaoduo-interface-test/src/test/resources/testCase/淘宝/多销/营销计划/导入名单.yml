@@ -27,7 +27,7 @@ testMethod:
               $.code: 0
               $.data.nicks.length(): 8
               $.data.nicks: ["wangjq_xd1","wangjq_xd2","wangjq_xd3","wangjq_xd4","wangjq_xd5","wangjq_xd6","wangjq_xd7","wangjq_xd8"]
-  - name: 使用导入名单创建精准营销
+  - name: 使用导入名单创建精准营销(不包含差评大户和潜在投诉者)
     description: |
       """</br>
       用例描述：</br>
@@ -74,6 +74,50 @@ testMethod:
       - byName: 获取营销任务ID
       - byName: 获取多销消息
         name: 多销消息校验消息总数
+        assertion:
+          - json: {$.code: 0}
+          - total:
+              $.data.messages.length(@.task_id=="${task_id}"): 8
+
+  - name: 导入名单包含潜在投诉者
+    description: |
+      """</br>
+      用例描述：</br>
+      1、导入名单创建精准营销。</br>
+      </br>
+      测试步骤</br>
+      1、创建精准营销</br>
+      2、校验消息发送正确(过滤差评大户和潜在投诉者)</br>
+      """
+    severity: NORMAL
+    dataProvider:
+      - message: 纯文字催单消息
+        text_with_vars: 纯文字催单消息
+        question: 我要投诉你
+        buyer1: wangjq_xd9
+        buyer2: wangjq_xd10
+        nicks: '"wangjq_xd1","wangjq_xd2","wangjq_xd3","wangjq_xd4","wangjq_xd5","wangjq_xd6","wangjq_xd7","wangjq_xd8","wangjq_xd9","wangjq_xd10"'
+    step:
+      - byName: 发送消息给商家
+        bodyEditor:
+          json:
+            $.pin: cntaobao${buyer1}
+            $.q: ${__DES3Cipher(${question},,)}
+      - byName: 发送消息给商家
+        bodyEditor:
+          json:
+            $.pin: cntaobao${buyer2}
+            $.q: ${__DES3Cipher(${question},,)}
+      - byName: 上传顾客名单excel
+        file:
+          nicks: "src/test/resources/顾客导入模板2.xlsx"
+        assertion:
+          - json:
+              $.code: 0
+              $.data.nicks.length(): 10
+      - byName: 创建客池精准营销-导入名单
+      - byName: 获取营销任务ID
+      - byName: 获取多销消息
         assertion:
           - json: {$.code: 0}
           - total:
