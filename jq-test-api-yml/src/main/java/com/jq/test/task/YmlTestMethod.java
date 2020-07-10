@@ -9,7 +9,8 @@ public class YmlTestMethod extends AbstractTestMethod {
     public boolean enable() {
         boolean severity = true;
         if (StringUtils.isNotBlank(System.getProperty("test.severity"))) {
-            severity = StringUtils.equalsIgnoreCase(this.getSeverityLevel().name(), System.getProperty("test.severity"));
+
+            severity = StringUtils.containsIgnoreCase(System.getProperty("test.severity"),this.getSeverityLevel().name());
         }
         return TestUtils.isRun(this.getName(), System.getProperty("test.name")) && isEnable() && severity;
     }
