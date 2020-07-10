@@ -7,7 +7,11 @@ import org.apache.commons.lang3.StringUtils;
 public class YmlTestMethod extends AbstractTestMethod {
     @Override
     public boolean enable() {
-        return TestUtils.isRun(this.getName(), System.getProperty("test.name")) && isEnable();
+        boolean severity = true;
+        if (StringUtils.isNotBlank(System.getProperty("test.severity"))) {
+            severity = StringUtils.equalsIgnoreCase(this.getSeverityLevel().name(), System.getProperty("test.severity"));
+        }
+        return TestUtils.isRun(this.getName(), System.getProperty("test.name")) && isEnable() && severity;
     }
 
     @Override
