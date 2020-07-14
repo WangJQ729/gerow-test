@@ -11,7 +11,7 @@ beforeSuite:
       method: GET
       assertion:
         - json:
-            $.message: 成功
+            $.code: 0
       extractor:
         - json:
             auth_url: $.url
