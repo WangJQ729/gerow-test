@@ -191,7 +191,7 @@ testMethod:
           - json:
               $.custom_transfer.transfer_type: "reminder_transfer"
               $.custom_transfer.is_transfer: true
-              $.custom_transfer.transfer_subnick_list: []
+              $.custom_transfer.transfer_subnick_list: null
             need_decode: true
   - name: 开启转接-子账号在线-关闭转接
     description: |
