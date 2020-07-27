@@ -6,6 +6,7 @@ dataProvider:
     goods_id: https://item.taobao.com/item.html?id=607123276832
 beforeClass:
   name: 设置分群
+  severity: CRITICAL
   step:
     - byName: 新建顾客分群
       bodyEditor:
@@ -21,6 +22,7 @@ beforeClass:
     - byName: 获取初始化后的分群人数
 testMethod:
   - name: 咨询了指定商品，但该商品在指定时间段已下单
+    severity: CRITICAL
     step:
       - byName: 发送消息给商家
         bodyEditor:

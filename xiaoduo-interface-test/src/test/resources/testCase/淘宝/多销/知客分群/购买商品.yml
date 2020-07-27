@@ -4,6 +4,7 @@ dataProvider:
     order_state_name: 已付款
 beforeClass:
   name: 设置分群
+  severity: CRITICAL
   step:
     - byName: 新建顾客分群
       name: 新建数顾客分群-圈定商品
@@ -17,10 +18,12 @@ beforeClass:
     - byName: 获取初始化后的分群人数
 testMethod:
   - name: 符合的商品流入
+    severity: CRITICAL
     step:
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 校验分群人数增加
   - name: 不符合的商品不流入
+    severity: CRITICAL
     step:
       - byName: 通过pulsar推送订单消息
         dataProvider:
@@ -40,5 +43,6 @@ testMethod:
       - byName: 校验分群人数未增加
 afterClass:
   name: 删除智能分群
+  severity: CRITICAL
   step:
     - byName: 删除智能分群

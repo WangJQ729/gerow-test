@@ -4,6 +4,7 @@ dataProvider:
     buyer_id: ${__RandomName(buyer_name)}
 beforeClass:
   name: zhike_ordertrace表中插入测试数据（昨日有下单的用户）
+  severity: CRITICAL
   step:
     - name: zhike_ordertrace表中插入测试数据
       host: ${test_tools_new}
@@ -81,7 +82,7 @@ testMethod:
       1、创建客池复购营销</br>
       2、获取消息、校验消息内容</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - name: 上传一张图片
         host: ${seller_host}

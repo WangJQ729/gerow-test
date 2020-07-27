@@ -5,6 +5,7 @@ dataProvider:
     question: 在吗
 beforeClass:
   name: 创建分群并流入一个客人
+  severity: CRITICAL
   step:
     - byName: 新建顾客分群
     - byName: 查看分群列表-获取新分群ID
@@ -41,7 +42,7 @@ testMethod:
       1、创建客池精准营销</br>
       2、获取消息、校验消息内容</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 创建客池精准营销
       - byName: 获取营销任务ID
@@ -67,5 +68,6 @@ testMethod:
             need_decode: true
 afterClass:
   name: 删除智能分群
+  severity: CRITICAL
   step:
     - byName: 删除智能分群

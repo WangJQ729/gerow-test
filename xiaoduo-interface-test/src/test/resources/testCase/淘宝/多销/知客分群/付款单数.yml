@@ -4,6 +4,7 @@ dataProvider:
     order_state_name: 已付款
 beforeClass:
   name: 设置分群
+  severity: CRITICAL
   step:
     - byName: 新建顾客分群
       name: 新建数顾客分群-设置单数2-4个
@@ -26,6 +27,7 @@ beforeClass:
             customer_count: $.data.results[?(@.id=='${group_id}')].customer_count
 testMethod:
   - name: 付款单数分群-只有一个订单不会流入
+    severity: CRITICAL
     step:
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 获取初始化后的分群人数
@@ -34,6 +36,7 @@ testMethod:
           - json:
               $.data.results[?(@.id=='${group_id}')].customer_count: ["${customer_count}"]
   - name: 付款单数分群-有2个订单流入
+    severity: CRITICAL
     step:
       - byName: 通过pulsar推送订单消息
       - byName: 获取初始化后的分群人数
@@ -42,14 +45,17 @@ testMethod:
           - json:
               $.data.results[?(@.id=='${group_id}')].customer_count: ["${__BeanShell(${customer_count}+1,)}"]
   - name: 付款单数分群-有3个订单人数不变
+    severity: CRITICAL
     step:
       - byName: 通过pulsar推送订单消息
       - byName: 校验分群人数未增加
   - name: 付款单数分群-有4个订单人数不变
+    severity: CRITICAL
     step:
       - byName: 通过pulsar推送订单消息
       - byName: 校验分群人数未增加
   - name: 付款单数分群-有5个订单流出
+    severity: CRITICAL
     step:
       - byName: 通过pulsar推送订单消息
       - byName: 获取初始化后的分群人数
@@ -59,5 +65,6 @@ testMethod:
               $.data.results[?(@.id=='${group_id}')].customer_count: ["${__BeanShell(${customer_count}-1,)}"]
 afterClass:
   name: 删除智能分群
+  severity: CRITICAL
   step:
     - byName: 删除智能分群

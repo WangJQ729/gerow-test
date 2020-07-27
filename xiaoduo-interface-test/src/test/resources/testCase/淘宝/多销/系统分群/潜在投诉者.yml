@@ -6,10 +6,12 @@ dataProvider:
     question: 我要投诉你
 beforeClass:
   name: 设置分群
+  severity: CRITICAL
   step:
     - byName: 获取系统分群顾客人数
 testMethod:
   - name: 顾客表达负面情绪后流入-${question}
+    severity: CRITICAL
     links:
       TAPD_BUG: https://www.tapd.cn/33335504/bugtrace/bugs/view?bug_id=1133335504001031394
     dataProvider:

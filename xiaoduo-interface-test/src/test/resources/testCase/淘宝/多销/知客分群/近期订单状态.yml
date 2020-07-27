@@ -12,6 +12,7 @@ dataProvider:
       order_state_name: 订单取消
 testMethod:
   - name: 已下单分群-${order_state_name}
+    severity: CRITICAL
     step:
       - byName: 新建顾客分群
         name: 新建已下单顾客分群-近期订单状态
@@ -28,5 +29,6 @@ testMethod:
       - byName: 校验分群人数增加
 afterMethod:
   name: 删除智能分群
+    severity: CRITICAL
   step:
     - byName: 删除智能分群

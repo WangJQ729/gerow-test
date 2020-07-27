@@ -3,6 +3,7 @@ dataProvider:
   - question: 在吗？
 testMethod:
   - name: 咨询未下单分群-买家咨询
+    severity: CRITICAL
     step:
       - name: 新建顾客分群
         sleep: 5
@@ -25,6 +26,7 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 校验初始分群人数为1
   - name: 咨询未下单分群-咨询后下单-${order_state_name}
+    severity: CRITICAL
     dataProvider:
       - order_state: created
         order_state_name: 下单未付款
@@ -50,5 +52,6 @@ testMethod:
       - byName: 校验分群人数减少
 afterMethod:
   name: 删除智能分群
+  severity: CRITICAL
   step:
     - byName: 删除智能分群

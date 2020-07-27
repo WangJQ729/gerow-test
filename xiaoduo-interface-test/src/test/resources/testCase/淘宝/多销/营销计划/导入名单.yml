@@ -12,7 +12,7 @@ testMethod:
       1、上传excel</br>
       2、校验返回的名单是否正确</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - name: 上传顾客名单excel
         host: ${seller_host}
@@ -37,7 +37,7 @@ testMethod:
       1、创建精准营销</br>
       2、校验消息发送正确</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     dataProvider:
       - message: 纯文字催单消息
         text_with_vars: 纯文字催单消息
@@ -89,7 +89,7 @@ testMethod:
       1、创建精准营销</br>
       2、校验消息发送正确(过滤差评大户和潜在投诉者)</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     dataProvider:
       - message: 纯文字催单消息
         text_with_vars: 纯文字催单消息
