@@ -6,7 +6,6 @@ dataProvider:
     results_level: results
 beforeClass:
   name: 设置分群
-  severity: CRITICAL
   step:
     - byName: 查看分群列表-获取新分群ID
       name: 获取系统分群顾客人数

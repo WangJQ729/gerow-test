@@ -5,7 +5,6 @@ dataProvider:
 enable: false
 beforeClass:
   name: 设置分群
-  severity: CRITICAL
   step:
     - byName: 新建顾客分群
       name: 新建数顾客分群-商品最后付款时间

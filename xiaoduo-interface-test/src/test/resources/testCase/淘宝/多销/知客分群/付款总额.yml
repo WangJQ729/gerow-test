@@ -5,7 +5,6 @@ dataProvider:
     buyer_id: ${__RandomName(buyer_id)}
 beforeClass:
   name: 设置分群
-  severity: CRITICAL
   step:
     - byName: 新建顾客分群
       name: 新建付款总额顾客分群-设置付款总额为1-20元
@@ -56,6 +55,5 @@ testMethod:
       - byName: 校验分群人数减少
 afterClass:
   name: 删除智能分群
-  severity: CRITICAL
   step:
     - byName: 删除智能分群

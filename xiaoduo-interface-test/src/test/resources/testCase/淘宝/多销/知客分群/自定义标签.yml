@@ -4,7 +4,6 @@ dataProvider:
     order_state_name: 已付款
 beforeClass:
   name: 设置分群
-  severity: CRITICAL
   step:
     - name: 新建顾客标签
       url: /api/zhike/tag/create
@@ -65,7 +64,6 @@ testMethod:
       - byName: 校验分群人数增加
 afterClass:
   name: 删除智能分群
-  severity: CRITICAL
   step:
     - byName: 删除智能分群
     - name: 顾客标签

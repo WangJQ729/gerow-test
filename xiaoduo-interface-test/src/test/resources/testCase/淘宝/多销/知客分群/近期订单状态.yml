@@ -29,6 +29,5 @@ testMethod:
       - byName: 校验分群人数增加
 afterMethod:
   name: 删除智能分群
-    severity: CRITICAL
   step:
     - byName: 删除智能分群

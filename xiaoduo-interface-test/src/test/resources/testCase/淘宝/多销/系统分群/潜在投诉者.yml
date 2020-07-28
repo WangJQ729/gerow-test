@@ -6,7 +6,6 @@ dataProvider:
     question: 我要投诉你
 beforeClass:
   name: 设置分群
-  severity: CRITICAL
   step:
     - byName: 获取系统分群顾客人数
 testMethod:

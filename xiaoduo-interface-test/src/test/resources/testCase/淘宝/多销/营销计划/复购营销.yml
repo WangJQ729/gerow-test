@@ -4,7 +4,6 @@ dataProvider:
     buyer_id: ${__RandomName(buyer_name)}
 beforeClass:
   name: zhike_ordertrace表中插入测试数据（昨日有下单的用户）
-  severity: CRITICAL
   step:
     - name: zhike_ordertrace表中插入测试数据
       host: ${test_tools_new}

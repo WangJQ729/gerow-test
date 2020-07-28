@@ -6,7 +6,6 @@ dataProvider:
     goods_id: https://item.taobao.com/item.html?id=607123276832
 beforeClass:
   name: 设置分群
-  severity: CRITICAL
   step:
     - byName: 新建顾客分群
       bodyEditor:

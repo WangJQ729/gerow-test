@@ -2,7 +2,6 @@ name: 统一前置处理
 #所有测试执行前执行
 beforeSuite:
   name: 登录mp后台
-  severity: CRITICAL
   step:
     - byName: 获取MP后台地址
     - byName: 进入主页

@@ -3,7 +3,6 @@ dataProvider:
   - question: 在吗
 beforeClass:
   name: 创建分群并流入一个客人
-  severity: CRITICAL
   step:
     - byName: 新建顾客分群
     - name: 查看分群列表-获取新分群ID
@@ -128,7 +127,6 @@ testMethod:
           seller_id: ${child_seller}
 afterClass:
   name: 删除智能分群
-  severity: CRITICAL
   step:
     - name: 删除智能分群
       url: /api/zhike/customer_group/delete
