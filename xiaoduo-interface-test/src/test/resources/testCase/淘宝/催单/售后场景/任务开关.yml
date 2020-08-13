@@ -104,7 +104,7 @@ testMethod:
       3、买家申请退款
       4、校验催单消息</br>
       """
-    severity: CRITICAL
+    severity: NORMAL
     step:
       - byName: 关闭催单任务
         name: 关闭售后理由修改催单任务
