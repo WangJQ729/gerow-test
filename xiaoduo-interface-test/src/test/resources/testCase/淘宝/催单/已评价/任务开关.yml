@@ -28,7 +28,7 @@ testMethod:
       3、买家评价
       4、校验催单消息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 开启催单任务
         name: 开启已评价催单任务
@@ -64,7 +64,7 @@ testMethod:
       3、买家评价
       4、校验催单消息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 关闭催单任务
         name: 关闭已评价催单任务

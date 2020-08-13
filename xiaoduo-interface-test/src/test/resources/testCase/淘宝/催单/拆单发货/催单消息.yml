@@ -28,7 +28,7 @@ testMethod:
       3、推送全部发货消息</br>
       4、获取催单消息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 开启催单任务
         name: 开启拆单发货催单任务
@@ -89,7 +89,7 @@ testMethod:
       5、推送全部发货消息</br>
       6、获取催单消息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 开启拆单发货催单任务
       - byName: 发送消息给商家-固定问题
@@ -147,7 +147,7 @@ testMethod:
       5、推送全部发货消息</br>
       6、获取催单消息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     links:
       TAPD_BUG: https://www.tapd.cn/52457521/bugtrace/bugs/view?bug_id=1152457521001025566
     step:

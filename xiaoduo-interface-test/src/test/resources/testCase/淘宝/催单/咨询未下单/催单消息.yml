@@ -67,7 +67,7 @@ testMethod:
       1、发送消息给商家</br>
       2、校验催单信息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 修改咨询未下单内容
         bodyEditor:

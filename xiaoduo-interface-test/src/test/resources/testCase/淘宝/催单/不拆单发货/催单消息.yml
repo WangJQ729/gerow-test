@@ -25,7 +25,7 @@ testMethod:
       2、创建订单</br>
       3、获取催单消息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     dataProvider:
       - message: 纯文字催单消息
         text_with_vars: 纯文字催单消息
@@ -64,7 +64,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单信息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 开启已发货催单任务
         bodyEditor:

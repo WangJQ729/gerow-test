@@ -42,7 +42,7 @@ testMethod:
       3、申请退款 or 同意退款 or 退款成功
       4、校验催单信息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 开启售后理由修改催单任务
       - byName: 发送消息给商家-固定问题

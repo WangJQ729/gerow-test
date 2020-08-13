@@ -25,7 +25,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单消息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 开启催单任务
         name: 开启交易成功催单任务
@@ -52,7 +52,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单消息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 开启交易成功催单任务
         name: 关闭交易成功催单任务
