@@ -34,7 +34,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单信息</br>
       """
-    severity: CRITICAL
+    severity: NORMAL
     step:
       - byName: 开启交易成功催单任务
       - byName: 发送消息给商家-固定问题
@@ -54,7 +54,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单信息</br>
       """
-    severity: CRITICAL
+    severity: NORMAL
     step:
       - byName: 开启催单任务
         bodyEditor:

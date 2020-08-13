@@ -64,7 +64,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单信息</br>
       """
-    severity: CRITICAL
+    severity: NORMAL
     step:
       - name: 开启催单任务
         byName: 修改咨询未下单内容
@@ -113,7 +113,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单信息</br>
       """
-    severity: CRITICAL
+    severity: NORMAL
     step:
       - byName: 开启催单任务
         bodyEditor:
