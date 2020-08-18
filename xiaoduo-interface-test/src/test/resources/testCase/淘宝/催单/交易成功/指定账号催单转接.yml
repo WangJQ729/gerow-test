@@ -118,7 +118,6 @@ testMethod:
       - byName: 发送消息给商家-转接列表为空
         assertion:
           - json:
-              $.custom_transfer.transfer_type: "reminder_transfer"
               $.custom_transfer.is_transfer: false
               $.custom_transfer.transfer_subnick_list: null
             need_decode: true
@@ -233,7 +232,6 @@ testMethod:
         name: 发送消息给商家-转接关闭
         assertion:
           - json:
-              $.custom_transfer.transfer_type: "reminder_transfer"
               $.custom_transfer.is_transfer: false
               $.custom_transfer.transfer_subnick_list: ~
             need_decode: true
