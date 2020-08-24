@@ -39,10 +39,7 @@ public class CaseListListener implements ITestListener {
         String creator = testMethod.getAuthor();
         CaseInfo caseInfo = new CaseInfo();
         try {
-            caseInfo.setHost(InetAddress.getLocalHost().getHostAddress());
-            logger.info("-----------------------------------------------------------");
-            logger.info("IP--" + InetAddress.getLocalHost().getHostAddress());
-            logger.info("-----------------------------------------------------------");
+            caseInfo.setHost(InetAddress.getLocalHost().getCanonicalHostName());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
