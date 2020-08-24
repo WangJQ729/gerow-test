@@ -12,6 +12,7 @@ public class CaseInfo {
     private String severity;
     private String creator;
     private String platform;
+    private String host;
 
     @Override
     public String toString() {

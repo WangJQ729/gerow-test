@@ -13,6 +13,9 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 public class CaseListListener implements ITestListener {
 
 
@@ -35,6 +38,11 @@ public class CaseListListener implements ITestListener {
         String description = testMethod.getDescription();
         String creator = testMethod.getAuthor();
         CaseInfo caseInfo = new CaseInfo();
+        try {
+            caseInfo.setHost(InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         caseInfo.setCase_name(platform + feature + "-" + story + "-" + name);
         caseInfo.setFeature(platform + feature);
         caseInfo.setPlatform(platform);
