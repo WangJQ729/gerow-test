@@ -40,6 +40,9 @@ public class CaseListListener implements ITestListener {
         CaseInfo caseInfo = new CaseInfo();
         try {
             caseInfo.setHost(InetAddress.getLocalHost().getHostAddress());
+            logger.info("-----------------------------------------------------------");
+            logger.info("IP--InetAddress.getLocalHost().getHostAddress()");
+            logger.info("-----------------------------------------------------------");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
