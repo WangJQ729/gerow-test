@@ -91,7 +91,7 @@ testMethod:
               $.custom_transfer.is_transfer: true
               $.custom_transfer.transfer_subnick_list: ["${child_seller}"]
             need_decode: true
-  - name: 开启转接-子账号在线-回复前关闭转接
+  - name: 子账号在线-回复前关闭转接
     description: |
       """</br>
       用例描述：</br>
@@ -121,7 +121,7 @@ testMethod:
               $.custom_transfer.is_transfer: false
               $.custom_transfer.transfer_subnick_list: null
             need_decode: true
-  - name: 开启转接-子账号在线-催单前关闭转接
+  - name: 子账号在线-催单前关闭转接
     description: |
       """</br>
       用例描述：</br>
@@ -192,7 +192,7 @@ testMethod:
               $.custom_transfer.is_transfer: true
               $.custom_transfer.transfer_subnick_list: null
             need_decode: true
-  - name: 开启转接-子账号在线-关闭转接
+  - name: 子账号在线-关闭转接
     description: |
       """</br>
       用例描述：</br>
