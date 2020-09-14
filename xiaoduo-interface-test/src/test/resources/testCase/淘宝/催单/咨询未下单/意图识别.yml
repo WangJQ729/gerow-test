@@ -95,7 +95,6 @@ testMethod:
     description: |
       """</br>
       用例描述：</br>
-      类目: ${category_name}</br>
       1、催单消息的内容正确。</br>
       </br>
       测试步骤</br>
