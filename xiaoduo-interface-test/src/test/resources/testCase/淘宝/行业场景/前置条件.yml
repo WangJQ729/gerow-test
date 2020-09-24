@@ -1,9 +1,0 @@
-name: 统一前置处理
-#所有测试执行前执行
-beforeSuite:
-  name: 登录mp后台
-  step:
-    - byName: 获取MP后台地址
-    - byName: 进入主页
-    - byName: 获取shop_id
-#    - byName: 登录test-tools
