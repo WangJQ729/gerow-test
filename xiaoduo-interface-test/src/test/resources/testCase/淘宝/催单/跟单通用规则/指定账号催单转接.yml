@@ -2,12 +2,46 @@ name: 指定账号催单转接
 platform: 淘宝
 story: ${reminder_type}
 dataProvider:
+  - node_state: created
+    order_state: created
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+    text_with_vars: ${message}
+    reminder_type: 下单未付款
+  - node_state: checkaddr
+    order_state: created
+    message: 亲，您的订单已经收到，请核对以下信息是否正确，我们将尽快为您发出！
+    text_with_vars: ${message}
+    reminder_type: 核对地址
+  - node_state: deposited
+    order_state: deposited
+    message: defualt message!
+    text_with_vars: ${message}
+    reminder_type: 已付定金未付尾款
+  - node_state: paid
+    order_state: paid
+    message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
+    text_with_vars: ${message}
+    reminder_type: 已付款
+  - node_state: shipped_delay
+    order_state: paid
+    message: 由于近期订单量过大，发货小妹没能及时给您发货，实在抱歉。麻烦您耐心等待，小妹会尽快安排给您优先发货呢！
+    text_with_vars: ${message}
+    reminder_type: 发货超时
+  - node_state: send_scan
+    order_state: send_scan
+    message: 您的快递已经派件了！收货时，请检查快递的外包装是否完整，当场验货确认无误后，再签收哦！
+    text_with_vars: ${message}
+    reminder_type: 验收提醒
   - node_state: succeeded
     order_state: succeeded
     message: 小店收到飞鸽传书，得知您的宝贝已经安全抵达。有任何疑问欢迎咨询我们。如果您对这次购物体验满意，期待得到您的评价鼓励，一路相知，伴随左右~
     text_with_vars: ${message}
-    answer: ${message}
     reminder_type: 交易成功
+  - node_state: closed
+    order_state: closed
+    message: 亲，您对宝贝有什么不满意的吗？
+    text_with_vars: ${message}
+    reminder_type: 交易取消
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -32,6 +66,14 @@ testMethod:
       """
     severity: NORMAL
     step:
+      - byName: 新建催单转接分组
+      - byName: 新建催单转接分组
+        name: 新建催单转接分组-只有主账号
+        body: |
+          {"group_id_list":"","sub_user_name_list":"${seller_name}"}
+        extractor:
+          - json:
+              sub_silence_users_info_id: $.id
       - byName: 开启交易成功催单任务
         name: 开启交易成功催单任务-开启催单转接
         bodyEditor:
@@ -41,55 +83,76 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='specify_send_seller')].args.status: 1
-            $.rules[?(@.type=='specify_send_seller')].args.seller_ids: ["${seller_name}"]
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_after_asked: true
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_seller_ids: ["${child_seller}"]
+            $.rules[?(@.type=='specify_send_seller')].args.recently_seller_priority: true
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_asked_seller: true
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_silence_seller: true
+            $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息-随机顾客
-      - name: 子账号发送心跳检测
-        host: ${api_host}
-        url: /log/hb
-        variables:
-          spin: cntaobao${child_seller}
-          sign: ${__HmacMD5(spin=cntaobao${child_seller})}
-        method: GET
-        assertion: [json: {$.code: 0}]
       - byName: 获取催单消息
-        name: 获取催单消息-回复后转接
-        assertion:
-          - json:
-              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars: ["${text_with_vars}"]
-              $.data.messages[?(@.task_id=='${task_id}')].customer_data.is_need_transfer: [true]
-              $.data.messages[?(@.task_id=='${task_id}')].customer_data.need_check_online: [true]
-              $.data.messages[?(@.task_id=='${task_id}')].customer_data.service_name: [reminder]
-              $.data.messages[?(@.task_id=='${task_id}')].customer_data.transfer_type: [reminder_transfer]
+        name: 获取催单消息-提取转接信息
         extractor:
           - json:
               customer_data: $.data.messages[?(@.task_id=='${task_id}')].customer_data
       - byName: 子账号发送心跳检测
-      - byName: 发送消息给商家
-        name: 发送消息给商家-含转接内容
-        body: |
-          {
-            "version_num": "3.1.1.2T",
-            "msgid": "${__RandomString(32,1234567890abcdef,)}",
-            "state": "2",
-            "q": "${__DES3Cipher(你好,,)}",
-            "msg_time": "${__time(/1000,msg_time)}",
-            "qianniu_version_num": "7.12.02N",
-            "service_status": "7",
-            "usr_shut": "0",
-            "pin": "cntaobao${buyer_id}",
-            "spin": "cntaobao${seller_name}",
-            "customer_data": ${customer_data}
-          }
+      - byName: 发送消息给商家-含转接内容
         assertion:
           - json:
               $.custom_transfer.transfer_type: "reminder_transfer"
               $.custom_transfer.is_transfer: true
               $.custom_transfer.transfer_subnick_list: ["${child_seller}"]
+            need_decode: true
+  - name: 子账号在线-关闭转接
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务,并设置回复后转接给${child_seller},但关闭转接开关</br>
+      2、发送消息表示只账号在线</br>
+      2、创建订单</br>
+      3、校验催单消息</br>
+      4、买家发送消息</br>
+      5、校验响应结果无转接</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 新建催单转接分组
+      - byName: 新建催单转接分组-只有主账号
+      - byName: 开启交易成功催单任务
+        name: 开启交易成功催单任务-关闭催单转接
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='specify_send_seller')].args.status: 1
+            $.rules[?(@.type=='specify_send_seller')].args.recently_seller_priority: true
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_asked_seller: false
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_silence_seller: false
+            $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 发送消息给商家-固定问题
+      - byName: 子账号发送心跳检测
+      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 子账号发送心跳检测
+      - byName: 获取催单消息-提取转接信息
+      - byName: 子账号发送心跳检测
+      - byName: 发送消息给商家-含转接内容
+        name: 发送消息给商家-转接关闭
+        assertion:
+          - json:
+              $.custom_transfer.is_transfer: false
+              $.custom_transfer.transfer_subnick_list: ~
             need_decode: true
   - name: 子账号在线-回复前关闭转接
     description: |
@@ -108,11 +171,13 @@ testMethod:
       """
     severity: NORMAL
     step:
+      - byName: 新建催单转接分组
+      - byName: 新建催单转接分组-只有主账号
       - byName: 开启交易成功催单任务-开启催单转接
       - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 子账号发送心跳检测
-      - byName: 获取催单消息-回复后转接
+      - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
       - byName: 开启交易成功催单任务-关闭催单转接
       - byName: 发送消息给商家-转接列表为空
@@ -138,12 +203,14 @@ testMethod:
       """
     severity: NORMAL
     step:
+      - byName: 新建催单转接分组
+      - byName: 新建催单转接分组-只有主账号
       - byName: 开启交易成功催单任务-开启催单转接
       - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 开启交易成功催单任务-关闭催单转接
-      - byName: 获取催单消息-回复后转接
+      - byName: 获取催单消息-提取转接信息
         name: 获取催单消息-转接关闭
         assertion:
           - json:
@@ -168,22 +235,14 @@ testMethod:
       """
     severity: NORMAL
     step:
+      - byName: 新建催单转接分组
+        body: |
+          {"group_id_list":"","sub_user_name_list":"${child_seller2}"}
+      - byName: 新建催单转接分组-只有主账号
       - byName: 开启交易成功催单任务-开启催单转接
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_message')].args.state_delay: 0
-            $.rules[?(@.type=='specify_send_seller')].args.status: 1
-            $.rules[?(@.type=='specify_send_seller')].args.seller_ids: ["${seller_name}"]
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_after_asked: true
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_seller_ids: ["${child_seller2}"]
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息-随机顾客
-      - byName: 获取催单消息-回复后转接
+      - byName: 获取催单消息-提取转接信息
       - byName: 发送消息给商家-含转接内容
         name: 发送消息给商家-转接列表为空
         assertion:
@@ -191,49 +250,6 @@ testMethod:
               $.custom_transfer.transfer_type: "reminder_transfer"
               $.custom_transfer.is_transfer: true
               $.custom_transfer.transfer_subnick_list: null
-            need_decode: true
-  - name: 子账号在线-关闭转接
-    description: |
-      """</br>
-      用例描述：</br>
-      1、开启任务会触发。</br>
-      </br>
-      测试步骤</br>
-      1、开启任务,并设置回复后转接给${child_seller},但关闭转接开关</br>
-      2、发送消息表示只账号在线</br>
-      2、创建订单</br>
-      3、校验催单消息</br>
-      4、买家发送消息</br>
-      5、校验响应结果无转接</br>
-      """
-    severity: NORMAL
-    step:
-      - byName: 开启交易成功催单任务
-        name: 开启交易成功催单任务-关闭催单转接
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_message')].args.state_delay: 0
-            $.rules[?(@.type=='specify_send_seller')].args.status: 1
-            $.rules[?(@.type=='specify_send_seller')].args.seller_ids: ["${seller_name}"]
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_after_asked: false
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_seller_ids: ["${child_seller}"]
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
-      - byName: 发送消息给商家-固定问题
-      - byName: 子账号发送心跳检测
-      - byName: 通过pulsar推送订单消息-随机顾客
-      - byName: 子账号发送心跳检测
-      - byName: 获取催单消息-转接关闭
-      - byName: 子账号发送心跳检测
-      - byName: 发送消息给商家-含转接内容
-        name: 发送消息给商家-转接关闭
-        assertion:
-          - json:
-              $.custom_transfer.is_transfer: false
-              $.custom_transfer.transfer_subnick_list: ~
             need_decode: true
   - name: 开启转接-多个子账号转接-只有一个在线
     description: |
@@ -248,47 +264,29 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启交易成功催单任务
-        name: 开启交易成功催单任务-开启催单转接-多个子账号
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_message')].args.state_delay: 0
-            $.rules[?(@.type=='specify_send_seller')].args.status: 1
-            $.rules[?(@.type=='specify_send_seller')].args.seller_ids: ["${seller_name}"]
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_after_asked: true
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_seller_ids: ["${child_seller}","${child_seller2}"]
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 新建催单转接分组
+        body: |
+          {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller2}"}
+      - byName: 新建催单转接分组-只有主账号
+      - byName: 开启交易成功催单任务-开启催单转接
       - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 子账号发送心跳检测
-      - byName: 获取催单消息-回复后转接
+      - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
   - name: 开启转接-转接列表含自己
     severity: NORMAL
     step:
-      - byName: 开启交易成功催单任务
-        name: 开启交易成功催单任务-开启催单转接-转接列表含自己
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_message')].args.state_delay: 0
-            $.rules[?(@.type=='specify_send_seller')].args.status: 1
-            $.rules[?(@.type=='specify_send_seller')].args.seller_ids: ["${seller_name}"]
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_after_asked: true
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_seller_ids: ["${child_seller}","${seller_name}"]
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 新建催单转接分组
+        body: |
+          {"group_id_list":"","sub_user_name_list":"${child_seller},${seller_name}"}
+      - byName: 新建催单转接分组-只有主账号
+      - byName: 开启交易成功催单任务-开启催单转接
       - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息
       - byName: 子账号发送心跳检测
-      - byName: 获取催单消息-回复后转接
+      - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
   - name: 开启转接-多个子账号转接-都在线
@@ -304,19 +302,11 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启交易成功催单任务
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_message')].args.state_delay: 0
-            $.rules[?(@.type=='specify_send_seller')].args.status: 1
-            $.rules[?(@.type=='specify_send_seller')].args.seller_ids: ["${seller_name}"]
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_after_asked: true
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_seller_ids: ["${child_seller}","${child_seller3}"]
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 新建催单转接分组
+        body: |
+          {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller3}"}
+      - byName: 新建催单转接分组-只有主账号
+      - byName: 开启交易成功催单任务-开启催单转接
       - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 子账号发送心跳检测
@@ -325,7 +315,7 @@ testMethod:
         variables:
           spin: cntaobao${child_seller3}
           sign: ${__HmacMD5(spin=cntaobao${child_seller3})}
-      - byName: 获取催单消息-回复后转接
+      - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
       - byName: 发送消息给商家-含转接内容
@@ -354,24 +344,16 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启交易成功催单任务
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_message')].args.state_delay: 0
-            $.rules[?(@.type=='specify_send_seller')].args.status: 1
-            $.rules[?(@.type=='specify_send_seller')].args.seller_ids: ["${seller_name}"]
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_after_asked: true
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_seller_ids: ["${child_seller}","${child_seller2}","${child_seller3}"]
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 新建催单转接分组
+        body: |
+          {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller2},${child_seller3}"}
+      - byName: 新建催单转接分组-只有主账号
+      - byName: 开启交易成功催单任务-开启催单转接
       - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
-      - byName: 获取催单消息-回复后转接
+      - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
       - byName: 发送消息给商家-转接给在线的子账号
