@@ -74,10 +74,6 @@
                             <name>allure.results.directory</name>
                             <value>./target/allure-results</value>
                         </property>
-                        <property>
-                            <name>spring.profiles.active</name>
-                            <value>uat</value>
-                        </property>
                     </systemProperties>
                     <forkCount>1</forkCount>
                     <reuseForks>false</reuseForks>
