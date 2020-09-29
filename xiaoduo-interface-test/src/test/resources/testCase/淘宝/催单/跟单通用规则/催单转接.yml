@@ -50,6 +50,14 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
     - byName: 开启催单任务
+      bodyEditor:
+        json:
+          $.id: ${task_id}
+          $.enable: true
+          $.shop_id: ${shop_id}
+          $.rules[?(@.type=='send_message')].args.state_delay: 0
+          $.rules[?(@.type=='send_message')].args.message: ${message}
+          $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
 testMethod:
   - name: 开启转接-子账号在线
     severity: NORMAL
