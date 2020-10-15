@@ -19,10 +19,12 @@ public class RandomOrderId extends AbstractFunction {
 
     private static final String KEY = "__RandomOrderId";
 
+    private static final Random random = new Random();
+
     @Override
     public String execute(SampleResult previousResult, Sampler currentSampler) {
 
-        String idNo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + String.format("%04d", new Random().nextInt(10000));
+        String idNo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")) + random.nextInt(10);
         if (vars != null) {
             TestUtils.saveVariables(vars, idNo);
         }
