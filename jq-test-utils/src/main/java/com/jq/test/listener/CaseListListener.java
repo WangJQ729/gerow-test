@@ -2,7 +2,6 @@ package com.jq.test.listener;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jq.test.task.ITestMethod;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpEntity;
@@ -64,17 +63,17 @@ public class CaseListListener implements ITestListener {
     private void doPost(CaseInfo caseInfo) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        String host = "http://test-tools.xiaoduoai.com";
-        if (StringUtils.isEmpty(token)) {
+        String host = "https://tester.xiaoduoai.com/";
+        /*if (StringUtils.isEmpty(token)) {
             HttpEntity entity = new HttpEntity<>("{\"username\":\"wangjianqiang\",\"password\":\"wangjianqiang123456\"}\n", headers);
             String login = "/api/api/v1/login/";
             JSONObject loginResult = restTemplate.postForObject(host + login, entity, JSONObject.class);
             assert loginResult != null;
             token = loginResult.getJSONObject("data").getString("token");
         }
-        headers.set(HttpHeaders.AUTHORIZATION, "auth " + token);
+        headers.set(HttpHeaders.AUTHORIZATION, "auth " + token);*/
         HttpEntity entity = new HttpEntity<>(caseInfo, headers);
-        String caseCreate = "/api/api/v1/auto_test/caseCreate";
+        String caseCreate = "/api/v1/auto_test/caseCreate";
         restTemplate.postForObject(host + caseCreate, entity, JSONObject.class);
     }
 

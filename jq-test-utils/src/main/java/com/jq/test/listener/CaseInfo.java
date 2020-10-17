@@ -13,6 +13,8 @@ public class CaseInfo {
     private String creator;
     private String platform;
     private String host;
+    private String modifier;
+    private String modified_time;
 
     @Override
     public String toString() {
