@@ -8,9 +8,6 @@ beforeSuite:
       variables:
         subnick: ${shopName}
       method: GET
-      assertion:
-        - json:
-            $.message: 成功
       extractor:
         - json:
             auth_url: $.url
@@ -45,7 +42,7 @@ beforeSuite:
       url: /api/admin/reminder/v2/manage/shop/setting
       method: POST
       body: |
-        {"user_daily_limit":8000,"no_answer_filter":true,"task_remove_duplicates":true,"duplicated_order_switches":[]}
+        {"user_daily_limit":8000,"no_answer_filter":true,"task_remove_duplicates":true,"no_reception_silence_day":8,"user_list_trigger_enable":false,"basic_advanced":false}
       assertion: [json: {$.code: 0}]
     - name: 拉一下催单消息
       url: /api/admin/reminder/v2/client/reminder/messages
