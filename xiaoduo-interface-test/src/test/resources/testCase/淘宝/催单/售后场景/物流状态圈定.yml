@@ -58,8 +58,6 @@ testMethod:
         url: /api/v1/tools/reminder/msgpack
         variables:
           keys: ${platform}:rmdsrv:state:orderstate:${platform}:${order_id}
-        headers:
-          Authorization: auth ${token}
         method: GET
         assertion: [json: {$.code: 0}]
         extractor:
@@ -68,8 +66,6 @@ testMethod:
       - name: 修改orderstate-已签收
         host: ${test_tools_new}
         url: /api/v1/tools/reminder/msgpack
-        headers:
-          Authorization: auth ${token}
         method: POST
         body: |
           {"keys":"${platform}:rmdsrv:state:orderstate:${platform}:${order_id}","value":${orderstate}}

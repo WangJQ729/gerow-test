@@ -84,8 +84,6 @@ testMethod:
       - name: 通过pulsar推送订单消息
         host: ${test_tools_new}
         url: /api/v1/tools/push_message_to_pulsar
-        headers:
-          Authorization: auth ${token}
         method: POST
         body: |
           {"topic":"${topic}","word":{"platform":"${platform}","shop_id":"${shop_id}","payment":20,"created_at":${__time(/1000,)},"updated_at":${__time(/1000,)},"address":"四川省桂溪街道天府软件园A5-8","item_ids":["604423906694"],"tbext":{"items":[{"item_id":"604423906694","item_name":"二手铅笔","count":1}],"receiver":{"name":"王健强","zip":"000000"}}}}
