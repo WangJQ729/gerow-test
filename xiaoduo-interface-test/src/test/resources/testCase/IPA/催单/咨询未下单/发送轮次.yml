@@ -1,0 +1,241 @@
+name: 发送轮次
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+    question: 你好
+    text_with_vars1: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
+    text_with_vars2: 您好，还没有收到您的订单，有什么顾虑吗，可以给我说下的呢，非常乐意帮您解决的哈～
+    text_with_vars3: 感谢您的咨询，可以点击收藏下店铺或者喜欢的宝贝哦，后期有活动会第一时间通知您，期待您的光临，祝您生活愉快
+beforeClass:
+  name: 获取taskID和模版
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 咨询未下单发送轮次-只打开第一、三轮开关
+    author: 何相玄
+    description: |
+      """</br>
+      用例描述：</br>
+      1、咨询未下单消息只发送1、3轮 </br>
+      </br>
+      测试步骤：</br>
+      1、后台配置只打开咨询未下单消息的第1、3轮 </br>
+      2、发送消息给商家 </br>
+      3、拉取催单消息并校验 </br>
+      """
+    step:
+      - byName: 修改咨询未下单内容
+        name: 打开咨询未下单第一、三轮开关
+        bodyEditor:
+          json:
+            #id为beforeClass中提取到的task_id
+            $.id: ${task_id}
+            #开启任务
+            $.enable: true
+            #设置shop_id(配置文件中设置的)
+            $.shop_id: ${shop_id}
+            #设置消息发送时间为0,马上触发
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='stage_2_send_message')].args.enable: false
+            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
+            $.rules[?(@.type=='chat_end_send_message')].args.enable: true
+            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
+      - byName: 发送消息给商家
+      - byName: 获取催单消息
+        name: 获取第一轮催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
+                - ${text_with_vars1}
+      - byName: 获取催单消息
+        sleep: 58
+        name: 获取第三轮催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
+                - ${text_with_vars3}
+  - name: 咨询未下单发送轮次-只打开第一、二轮开关
+    author: 何相玄
+    description: |
+      """</br>
+      用例描述：</br>
+      1、咨询未下单消息只发送1、2轮 </br>
+      </br>
+      测试步骤：</br>
+      1、后台配置只打开咨询未下单消息的第1、2轮 </br>
+      2、发送消息给商家 </br>
+      3、拉取催单消息并校验 </br>
+      """
+    step:
+      - byName: 修改咨询未下单内容
+        name: 打开咨询未下单第一、二轮开关
+        bodyEditor:
+          json:
+            #id为beforeClass中提取到的task_id
+            $.id: ${task_id}
+            #开启任务
+            $.enable: true
+            #设置shop_id(配置文件中设置的)
+            $.shop_id: ${shop_id}
+            #设置消息发送时间为0,马上触发
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='stage_2_send_message')].args.enable: true
+            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
+            $.rules[?(@.type=='chat_end_send_message')].args.enable: false
+            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
+      - byName: 发送消息给商家
+      - byName: 获取催单消息
+        name: 获取第一轮催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
+                - ${text_with_vars1}
+      - byName: 获取催单消息
+        sleep: 58
+        name: 获取第二轮催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
+                - ${text_with_vars2}
+  - name: 咨询未下单发送轮次-三轮全部打开
+    author: 何相玄
+    description: |
+      """</br>
+      用例描述：</br>
+      1、咨询未下单消息只发送1、2、3轮 </br>
+      </br>
+      测试步骤：</br>
+      1、后台配置只打开咨询未下单消息的第1、2、3轮 </br>
+      2、发送消息给商家 </br>
+      3、拉取催单消息并校验 </br>
+      """
+    step:
+      - byName: 修改咨询未下单内容
+        name: 打开咨询未下单所有三轮开关
+        bodyEditor:
+          json:
+            #id为beforeClass中提取到的task_id
+            $.id: ${task_id}
+            #开启任务
+            $.enable: true
+            #设置shop_id(配置文件中设置的)
+            $.shop_id: ${shop_id}
+            #设置消息发送时间为0,马上触发
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='stage_2_send_message')].args.enable: true
+            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
+            $.rules[?(@.type=='chat_end_send_message')].args.enable: true
+            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
+      - byName: 发送消息给商家
+      - byName: 获取催单消息
+        name: 获取第一轮催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
+                - ${text_with_vars1}
+      - byName: 获取催单消息
+        sleep: 58
+        name: 获取第二轮催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
+                - ${text_with_vars2}
+      - byName: 获取催单消息
+        sleep: 58
+        name: 获取第三轮催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
+                - ${text_with_vars3}
+  - name: 咨询未下单发送轮次-第一轮不打开，二、三轮打开
+    author: 何相玄
+    description: |
+      """</br>
+      用例描述：</br>
+      1、咨询未下单消息只发送2、3轮 </br>
+      </br>
+      测试步骤：</br>
+      1、后台配置只打开咨询未下单消息的第2、3轮 </br>
+      2、发送消息给商家 </br>
+      3、拉取催单消息并校验 </br>
+      """
+    step:
+      - byName: 修改咨询未下单内容
+        name: 打开咨询未下单第二、三轮开关
+        bodyEditor:
+          json:
+            #id为beforeClass中提取到的task_id
+            $.id: ${task_id}
+            #开启任务
+            $.enable: false
+            #设置shop_id(配置文件中设置的)
+            $.shop_id: ${shop_id}
+            #设置消息发送时间为0,马上触发
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='stage_2_send_message')].args.enable: true
+            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
+            $.rules[?(@.type=='chat_end_send_message')].args.enable: true
+            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
+      - byName: 发送消息给商家
+      - byName: 获取催单消息-消息为空
+        name: 获取咨询未下单催单消息-消息为空
+        assertion:
+          - json:
+              $.data.messages[*].text_with_vars: []
+      - byName: 根据聊天记录查询trace
+      - byName: 查看trace详情-任务关闭
+  - name: 咨询未下单发送轮次-只打开第一轮
+    author: 何相玄
+    description: |
+      """</br>
+      用例描述：</br>
+      1、咨询未下单消息只发送1轮 </br>
+      </br>
+      测试步骤：</br>
+      1、后台配置只打开咨询未下单消息的第1轮 </br>
+      2、发送消息给商家 </br>
+      3、拉取催单消息并校验 </br>
+      """
+    step:
+      - byName: 修改咨询未下单内容
+        name: 打开咨询未下单第一轮开关
+        bodyEditor:
+          json:
+            #id为beforeClass中提取到的task_id
+            $.id: ${task_id}
+            #开启任务
+            $.enable: true
+            #设置shop_id(配置文件中设置的)
+            $.shop_id: ${shop_id}
+            #设置消息发送时间为0,马上触发
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='stage_2_send_message')].args.enable: false
+            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
+            $.rules[?(@.type=='chat_end_send_message')].args.enable: false
+            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
+      - byName: 发送消息给商家
+      - byName: 获取催单消息
+        name: 获取第一轮催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
+                - ${text_with_vars1}
+      - byName: 根据聊天记录查询trace
+      - byName: 查看trace详情-任务关闭
+        name: 查看trace详情-任务结束二三阶段未开
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskPass')].task_pass_info: [not in stage 0;not enable;not enable]
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据聊天记录查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

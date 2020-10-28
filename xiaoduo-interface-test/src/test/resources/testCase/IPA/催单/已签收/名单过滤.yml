@@ -1,0 +1,103 @@
+name: 名单过滤
+story: ${reminder_type}
+dataProvider:
+  - node_state: signed
+    order_state: signed
+    message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
+    text_with_vars: ${message}
+    reminder_type: 已签收
+    question: 你好
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 已签收名单过滤-买家在过滤名单内
+    author: 何相玄
+    description: |
+      """</br>
+      用例描述：</br>
+      1、已签收名单过滤，买家在过滤名单内 </br>
+      </br>
+      测试步骤：</br>
+      1、后台配置已签收名单，并勾选过滤条件 </br>
+      2、名单内的买家触发交易成功催单 </br>
+      3、拉取催单消息并校验 </br>
+      """
+    step:
+      - byName: 开启交易成功催单任务
+        name: 开启已签收催单任务-开启过滤名单
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='exclude_buyers')].args.enable: true
+            $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1575189211}]
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 发送消息给商家-指定买家
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-导入名单过滤
+  - name: 已签收名单过滤-买家不在过滤名单内
+    author: 何相玄
+    description: |
+      """</br>
+      用例描述：</br>
+      1、已签收名单过滤，买家在过滤名单内 </br>
+      </br>
+      测试步骤：</br>
+      1、后台配置已签收名单，并勾选过滤条件 </br>
+      2、名单内的买家触发已签收催单 </br>
+      3、拉取催单消息并校验 </br>
+      """
+    step:
+      - byName: 开启已签收催单任务-开启过滤名单
+      - byName: 发送消息给商家
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息
+  - name: 已签收名单过滤-买家在过滤名单内，但过滤条件未勾选
+    author: 何相玄
+    description: |
+      """</br>
+      用例描述：</br>
+      1、已签收名单过滤，买家在过滤名单内，但过滤条件未勾选 </br>
+      </br>
+      测试步骤：</br>
+      1、后台配置已签收名单，不勾选过滤条件 </br>
+      2、名单内的买家触发已签收催单 </br>
+      3、拉取催单消息并校验 </br>
+      """
+    step:
+      - byName: 开启交易成功催单任务
+        name: 开启已签收催单任务-不开启过滤名单
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='exclude_buyers')].args.enable: false
+            $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1575189211}]
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 发送消息给商家-指定买家
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

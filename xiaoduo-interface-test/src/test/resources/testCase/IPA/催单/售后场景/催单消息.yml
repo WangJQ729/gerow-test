@@ -1,0 +1,60 @@
+name: 催单消息
+story: ${reminder_type}
+dataProvider:
+#  - node_state: refund
+#    order_state: succeeded
+#    reminder_type: 售后理由修改
+#    refund_state: taobao_refund_RefundCreated
+  - node_state: refund_agree
+    order_state: succeeded
+    reminder_type: 同意退货
+    refund_state: taobao_refund_RefundSellerAgreeAgreement
+  - node_state: refund_success
+    order_state: succeeded
+    reminder_type: 退款成功
+    refund_state: taobao_refund_RefundSuccess
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 催单消息校验-${message}
+    dataProvider:
+      - message: 纯文字催单消息
+        text_with_vars: 纯文字催单消息
+      - message: "#E-s20#E-s20#E-s20#E-s20#E-s20"
+        text_with_vars: "#E-s20#E-s20#E-s20#E-s20#E-s20"
+      - message: "{{子账号名称}}"
+        text_with_vars: ${seller_name}
+      - message: "1{↓1秒后分行发送↓}2"
+        text_with_vars: "1{↓1秒后分行发送↓}2"
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、修改reminder</br>
+      2、创建订单</br>
+      3、申请退款 or 同意退款 or 退款成功
+      4、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启售后理由修改催单任务
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 推送退款消息
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询退款trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
