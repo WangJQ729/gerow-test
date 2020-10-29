@@ -143,8 +143,7 @@ testMethod:
         responseType: DEFAULT
         extractor:
           - json:
-              qstr: $.answer
-            need_decode: true
+              qstr: $.answer.answer
       - name: 获取催单消息
         #copy test步骤名称为“拉一下催单消息”的所有内容,此步骤重写的字段会自动替换
         byName: 拉一下催单消息
