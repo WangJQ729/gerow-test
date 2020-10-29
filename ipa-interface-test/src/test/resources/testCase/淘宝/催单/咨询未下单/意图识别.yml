@@ -140,7 +140,6 @@ testMethod:
           json:
             $.pin: cntaobao${__RandomName(buyer_id)}
         method: POST
-        responseType: DEFAULT
         extractor:
           - json:
               qstr: $.answer.answer
