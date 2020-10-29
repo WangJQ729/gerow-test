@@ -64,11 +64,12 @@ testMethod:
       - byName: 拉一下催单消息
       - byName: 关闭相同场景内任务去重
         name: 关闭咨询未下单相同场景内任务去重
-        json:
-          $.no_answer_filter: false
-          $.task_remove_duplicates: false
-          $.repeat_aging_day: 5
-          $.node_type: asked
+        bodyEditor:
+          json:
+            $.no_answer_filter: false
+            $.task_remove_duplicates: false
+            $.repeat_aging_day: 5
+            $.node_type: asked
       - byName: 发送消息给商家
       - byName: 获取到2条催单消息
       - byName: 根据聊天记录查询trace
@@ -94,11 +95,12 @@ testMethod:
       - byName: 拉一下催单消息
       - byName: 关闭相同场景内任务去重
         name: 开启咨询未下单相同场景内任务去重
-        json:
-          $.no_answer_filter: false
-          $.task_remove_duplicates: true
-          $.repeat_aging_day: 5
-          $.node_type: asked
+        bodyEditor:
+          json:
+            $.no_answer_filter: false
+            $.task_remove_duplicates: true
+            $.repeat_aging_day: 5
+            $.node_type: asked
       - byName: 设置第一个任务在前
       - byName: 断言修改后的顺序是否正确
       - byName: 发送消息给商家
