@@ -1,0 +1,22 @@
+data:
+  test:
+    platform: tb
+    host: wangcai-${env}.xiaoduoai.com
+    test_tools: http://test-tools.xiaoduoai.com
+    test_tools_new: http://test-tools-${env}.xiaoduoai.com
+    api_host: https://api-${env}.xiaoduoai.com
+    mc_test: https://mc-${env}.xiaoduoai.com
+    seller_host: https://seller-${env}.xiaoduoai.com
+
+    p_path: pulsar://pulsar-cluster01-slb:6650
+    topic: persistent://reminder/trade/order_tb
+    orderRateQueue: persistent://marketing/taobao/orderrate
+    logisticsQueue: persistent://reminder/tmc/logistics_tb
+    refundQueue: persistent://reminder/tmc/refund_tb
+
+    sign: ca61da42f143ef040fc22afee498a622
+
+    shopName: ${shopName}
+    refund_id: 58379106742933796
+
+    seller_name: ${shopName}

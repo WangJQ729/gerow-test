@@ -14,3 +14,7 @@ xiaoduo-interface-test/src/test/resources/testCase/淘宝/行业场景/
 xiaoduo-interface-test/allure-results/
 xiaoduo-interface-test/src/test/java/com/xiaoduo/test/MyTest.java
 xiaoduo-interface-test/target/
+ipa-interface-test/src/test/resources/testCase/淘宝/行业场景/
+ipa-interface-test/allure-results/
+ipa-interface-test/src/test/java/com/xiaoduo/test/MyTest.java
+ipa-interface-test/target/
