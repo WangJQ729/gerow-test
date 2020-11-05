@@ -1,0 +1,55 @@
+name: 状态变更
+story: ${reminder_type}
+dataProvider:
+  - node_state: got_delay
+    order_state: shipped
+    message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！\n您也可以随时在「已买到的宝贝」中查看订单状态
+    text_with_vars: ${message}
+    reminder_type: 揽件超时
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+beforeMethod:
+  name: 拉一下催单消息
+  step:
+    - byName: 拉一下催单消息
+testMethod:
+  - name: 状态变更为-${new_type_name}
+    dataProvider:
+      - new_order_state: succeeded
+        new_type_name: 交易成功
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务</br>
+      2、创建订单</br>
+      3、建议订单trace是否已经settimer</br>
+      4、将订单状态变更为${new_type_name}</br>
+      5、校验催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务-10秒后触发
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 通过pulsar推送订单消息-状态变更
+      - byName: 获取催单消息-消息为空
+      - byName: 查看trace详情-订单状态变更
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

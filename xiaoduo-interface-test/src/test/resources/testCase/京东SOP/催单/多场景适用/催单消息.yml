@@ -87,8 +87,6 @@ testMethod:
       - name: 通过pulsar推送订单消息
         host: ${test_tools_new}
         url: /api/v1/tools/push_message_to_pulsar
-        headers:
-          Authorization: auth ${token}
         method: POST
         body: |
           {"topic":"${topic}","word":"","p_path":"pulsar://pulsar-pro:6650"}

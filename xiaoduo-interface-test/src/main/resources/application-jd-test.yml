@@ -1,15 +1,14 @@
 data:
   test:
     host: ${env}.xiaoduoai.com
-    shopName: 智晓多谋生鲜专营店
-    seller_name: 智晓多谋生鲜专营店:晓多生鲜-ljx
-    shop: 晓多生鲜-ljx
+    shopName: 晓多生鲜-fkl
+    seller_name: 智晓多谋生鲜专营店:晓多生鲜-fkl
+    shop: 智晓多谋生鲜专营店
     sign: ca61da42f143ef040fc22afee498a622
     buyer: tester002
     platform: jd
-    child_seller: 智晓多谋生鲜专营店:晓多生鲜-ckm
-    test_tools: http://test-tools.xiaoduoai.com
-    test_tools_new: http://${env}.xiaoduoai.com/tester/tools/
+    child_seller: 智晓多谋生鲜专营店:晓多生鲜-hxx
+    test_tools_new: http://test-tools-test-znkf-jd.xiaoduoai.com/tester/tools/
     topic: persistent://zhongtai/reminder/rmd-trade-jd
 client:
   protocol: https
