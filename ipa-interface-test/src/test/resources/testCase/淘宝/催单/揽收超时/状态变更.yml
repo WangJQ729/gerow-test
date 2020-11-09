@@ -20,6 +20,10 @@ beforeMethod:
 testMethod:
   - name: 状态变更为-${new_type_name}
     dataProvider:
+      - new_order_state: transfer_delay
+        new_type_name: 中转超时
+      - new_order_state: send_scan_delay
+        new_type_name: 派遣超时
       - new_order_state: succeeded
         new_type_name: 交易成功
     description: |
