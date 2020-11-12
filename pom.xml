@@ -10,7 +10,6 @@
     <modules>
         <module>jq-test-utils</module>
         <module>jq-test-api-yml</module>
-        <module>jq-test-serve</module>
         <module>xiaoduo-interface-test</module>
         <module>ipa-interface-test</module>
     </modules>

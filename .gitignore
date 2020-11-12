@@ -5,10 +5,7 @@
 # IntelliJ project files
 .idea
 *.iml
-jq-test-api-yml-testcase/allure-results/
-jq-test-api-yml-testcase/target/
 jq-test-api-yml/target/
-jq-test-serve/target/
 jq-test-utils/target/
 xiaoduo-interface-test/src/test/resources/testCase/淘宝/行业场景/
 xiaoduo-interface-test/allure-results/

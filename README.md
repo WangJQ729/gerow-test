@@ -1,10 +1,9 @@
 # 一、项目结构
 
 ##### 1、jq-test-utils相关工具类
-##### 2、jq-test-serve被测试的serve
-##### 3、jq-test-api-yml测试框架实现代码
-##### 5、jq-test-api-yml-testcase测试用例
-##### 6、ipa-interface-test小程序测试用例
+##### 2、jq-test-api-yml测试框架实现代码
+##### 3、jq-test-api-yml-testcase测试用例
+##### 4、ipa-interface-test小程序测试用例
 
 
 # 二、环境配置
