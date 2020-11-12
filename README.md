@@ -178,4 +178,4 @@ public class RandomDate extends AbstractFunction {
 
 # 七、测试用例编写
 
-    详见jq-test-api-yml-testcase下的readme
+    详见xiaoduo-interface-test下的
