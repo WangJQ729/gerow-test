@@ -146,4 +146,4 @@
 
     JSONPath: https://www.cnblogs.com/aoyihuashao/p/8665873.html
     
-    Ymal：https://www.jianshu.com/p/97222440cd08
+    Ymal：https://www.cnblogs.com/sddai/p/9626392.html
