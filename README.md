@@ -24,7 +24,7 @@
 
     1、在根目录下运行命令：mvn clean install -DskipTests将代码编译到本地的maven仓库
     
-    2、进入jq-test-api-yml-testcase直接运行mvn test，或直接运行run.bat。
+    2、进入ipa-interface-test直接运行mvn test。
     
 ## 可选参数
     
@@ -46,7 +46,7 @@
     
     mvn clean test -Dspring.profiles.active=uat -Dtest.file.name=GET请求
             
-    执行完成后会在jq-test-api-excel-testcase\target\allure-results生成allure测试结果
+    执行完成后会在ipa-interface-test\target\allure-results生成allure测试结果
     
     注：powershell会将“.”拆分，用cmd执行，在powershell先执行命令cmd即可。
 
@@ -68,28 +68,36 @@
     
     data:
       test:
-        password: "xxxxxx" -------------------全局变量通过${password}调用
-        baseURI: "test.api.xxxxxxx.com"-------全局变量，yml测试用例中默认的host
-        fileHost: "test.file.xxxxxxx.com"-----全局变量${fileHost}调用
-        account: "xxxxxx"---------------------全局变量通过${account}调用
+        shopName: "xxxxxx" -------------------全局变量通过${shopName}调用
     
 #####    调用格式
 
 ######      example1：
-    - name: 执行登录
-      url: /login
+    - name: 获取MP后台地址
+      url: /api/auth/mp_switcher
       variables:
-        username: ${username}
-        password: ${password}
+        subnick: ${shopName}
       method: GET
       assertion:
-        - key: $.msg
-          value: 登录成功！
-      save:
-        - site: TESTSUIT
-          value: $.token
-          name: token
-        
+        - json:
+            $.code: 0
+      extractor:
+        - json:
+            auth_url: $.url
+    - name: 进入主页
+      host: ""
+      url: ${auth_url}
+      method: GET
+      responseType: DEFAULT
+    - name: 获取shop_id
+      url: /api/admin/user/logined
+      method: GET
+      extractor:
+        - json:
+            shop_id: $.user.shop_id
+            shop_category_id: $.default_shop.category_id
+          site: TESTSUIT
+      assertion: [json: {$.code: 0}]
 # 六、JMeter Functions支持
 
 ### 1、function调用

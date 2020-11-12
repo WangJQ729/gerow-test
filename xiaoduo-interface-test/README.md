@@ -1,10 +1,6 @@
-##      一、知客脚本适配
-        修改配置文件
-        "refresh_count_ttl": 1,        知客分群刷新时间
-        "etl_bind_zhike_event":true    是否同步到click house     
-##      二、催单脚本适配
+##      催单脚本适配
         https://doc.xiaoduoai.com/pages/viewpage.action?pageId=271096997
-####   1、修改reminder-stat（淘宝和淘动力都要修改）
+####   1、修改reminder-stat（淘宝和淘动力都要修改）添加以下mongo配置
         "reminder_trace": {
           "Addrs": ["mongo-newreminder-pri:27017","mongo-newreminder-sec:27017"],
           "Username": "xdmp",
@@ -20,7 +16,7 @@
         kubectl delete configmap conf-reminder-stat-tb -n test-csjb
         kubectl create configmap conf-reminder-stat-tb --from-file=./reminder-stat.conf -n test-csjb
         kubectl -n test-csjb rollout restart deploy reminder-stat-tb-deploy
-####   2、修改reminder（淘宝和淘动力都要修改）
+####   2、修改reminder（淘宝和淘动力都要修改），添加reminder_trace的目录
         cd /root/envctl-conf/k8s/test-csjb/configmap/conf-reminder-tb
 #####   reminder.conf
         "reminder_trace": {
