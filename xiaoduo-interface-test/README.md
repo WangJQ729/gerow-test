@@ -60,25 +60,21 @@
 |file|所要上传的文件|key:(默认file)form表单的key path:文件路径
 |body|请求体|String
 |assertion|判断|Assertion
-|save|保存参数|SaveParam
+|extractor|保存参数|Extractor
 
 ###### example
 
-      - name: 查询客户Id
-        url: /api/v1/customer/oldNewV2
-        variables:
-          param:
-          current: 1
-          size: 50
-        headers:
-          Authorization: ${token}
-        method: GET
-        assertion:
-          - key: $.code
-            value: 10001
-        save:
-          - value: $.data..customerId
-            name: customerId
+    - name: 获取MP后台地址
+      url: /api/auth/mp_switcher
+      variables:
+        subnick: ${shopName}
+      method: GET
+      assertion:
+        - json:
+            $.code: 0
+      extractor:
+        - json:
+            auth_url: $.url
 
 ####    Assertion
 
@@ -98,22 +94,21 @@
       - key: $.msg
         value: 操作成功
 
-####    SaveParam
+####    Extractor
 
 |字段名称|描述|数据类型
 |---|---|---|
-|saveType|保存数据在哪里，默认class(可选step、method、class、suite)|SaveType
+|site|保存数据在哪里，默认class(可选step、method、class、suite)|SaveType
 |type|数据源类型，默认json|DataType
-|data|数据源，默认响应体|String
+|sources|数据源，默认响应体|String
 |name|保存值的key|String
 |value|获取值的方法，比如jsonPath（$.data.id）|String
 
 ###### example
 
-    save:
-        #如果为数组，则随机取一个
-      - value: $.data..customerId
-        name: customerId
+      extractor:
+        - json:
+            auth_url: $.url
 
 ####    beforeSuite
 
@@ -141,6 +136,16 @@
     在class下定义，会实例化多个class
     在testMethod下定义，会实例化多个testMethod
     在testStep下定义，会实例化多个testStep
+    
+    dataProvider:
+      - message: 纯文字催单消息
+        text_with_vars: 纯文字催单消息
+      - message: "#E-s20#E-s20#E-s20#E-s20#E-s20"
+        text_with_vars: "#E-s20#E-s20#E-s20#E-s20#E-s20"
+      - message: "{{子账号名称}}"
+        text_with_vars: ${seller_name}
+      - message: "1{↓1秒后分行发送↓}2"
+        text_with_vars: "1{↓1秒后分行发送↓}2"
     
 #### 相关参考资料
 
