@@ -27,6 +27,16 @@ dataProvider:
     message: 您的快递已经派件了！收货时，请检查快递的外包装是否完整，当场验货确认无误后，再签收哦！
     text_with_vars: ${message}
     reminder_type: 验收提醒
+  - node_state: got_delay
+    order_state: shipped
+    message: 由于近期订单量过大，快递小哥没能及时揽件，实在抱歉。请您耐心等待，小妹会尽快联系快递小哥安排给您优先处理呢！
+    text_with_vars: ${message}
+    reminder_type: 揽件超时
+  - node_state: send_scan_delay
+    order_state: send_scan
+    message: 您好，您的快递已经派送，麻烦尽快签收呢！
+    text_with_vars: ${message}
+    reminder_type: 派件超时
   - node_state: paid
     order_state: paid
     message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
