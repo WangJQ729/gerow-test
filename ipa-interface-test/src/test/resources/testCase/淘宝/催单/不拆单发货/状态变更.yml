@@ -23,8 +23,6 @@ testMethod:
       - new_order_state: reject
         new_type_name: 物流拒签
       - new_order_state: signed
-        new_type_name: 物流签收
-      - new_order_state: signed
         new_type_name: 已签收
       - new_order_state: closed
         new_type_name: 交易取消
