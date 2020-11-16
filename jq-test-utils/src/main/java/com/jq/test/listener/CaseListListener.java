@@ -18,7 +18,6 @@ import java.net.UnknownHostException;
 public class CaseListListener implements ITestListener {
 
 
-    private static String token;
     private final static Log logger = LogFactory.getLog(CaseListListener.class);
     private RestTemplate restTemplate = new RestTemplate();
 
@@ -39,9 +38,6 @@ public class CaseListListener implements ITestListener {
         CaseInfo caseInfo = new CaseInfo();
         try {
             caseInfo.setHost(InetAddress.getLocalHost().getHostAddress());
-            logger.info("-----------------------------------------------------------");
-            logger.info("HOST IP:" + InetAddress.getLocalHost().getHostAddress());
-            logger.info("-----------------------------------------------------------");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -64,14 +60,6 @@ public class CaseListListener implements ITestListener {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         String host = "https://tester.xiaoduoai.com/";
-        /*if (StringUtils.isEmpty(token)) {
-            HttpEntity entity = new HttpEntity<>("{\"username\":\"wangjianqiang\",\"password\":\"wangjianqiang123456\"}\n", headers);
-            String login = "/api/api/v1/login/";
-            JSONObject loginResult = restTemplate.postForObject(host + login, entity, JSONObject.class);
-            assert loginResult != null;
-            token = loginResult.getJSONObject("data").getString("token");
-        }
-        headers.set(HttpHeaders.AUTHORIZATION, "auth " + token);*/
         HttpEntity entity = new HttpEntity<>(caseInfo, headers);
         String caseCreate = "/api/v1/auto_test/caseCreate";
         restTemplate.postForObject(host + caseCreate, entity, JSONObject.class);
