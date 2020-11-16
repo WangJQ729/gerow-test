@@ -45,6 +45,8 @@ beforeClass:
     - byName: 使用模板新建一个task
     - name: 获取时效标签列表
       url: /api/admin/config2/ageing/list
+      variables:
+        status: 1
       method: GET
       assertion: [json: {$.code: 0}]
       extractor:
