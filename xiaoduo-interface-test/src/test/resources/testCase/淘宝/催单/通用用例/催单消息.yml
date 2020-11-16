@@ -54,8 +54,6 @@ testMethod:
         text_with_vars: ${seller_name}
       - message: "1{↓1秒后分行发送↓}2"
         text_with_vars: "1{↓1秒后分行发送↓}2"
-    #      - message: 查看订单 {订单链接}
-    #        text_with_vars: "1{订单链接}2"
     description: |
       """</br>
       用例描述：</br>

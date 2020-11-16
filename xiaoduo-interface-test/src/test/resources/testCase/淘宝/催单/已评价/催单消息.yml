@@ -24,8 +24,6 @@ testMethod:
         text_with_vars: ${seller_name}
       - message: "1{↓1秒后分行发送↓}2"
         text_with_vars: "1{↓1秒后分行发送↓}2"
-#      - message: "{{修改中差评链接}}"
-#        text_with_vars: https://rate.taobao.com/RateDetailBuyer.htm?parent_trade_id=xxxxxxx
     description: |
       """</br>
       用例描述：</br>
@@ -69,6 +67,45 @@ testMethod:
           - json:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - https://rate.taobao.com/RateDetailBuyer.htm?parent_trade_id=${order_id}
+  - name: 催单消息校验-包含图片
+    dataProvider:
+      - message: 含图片的消息
+        text_with_vars: 含图片的消息
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、修改reminder</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启已评价催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='send_message')].args.images:
+              - id: 5dbbd61a9e3aad000d7de9fe
+                url: https://xdmp-new.oss-cn-hangzhou.aliyuncs.com/answer_pics/eb1ddc7854a747ba9cfb8424c151ae04.jpg
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 推送评价消息
+      - byName: 获取催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
+                - ${text_with_vars}
+              $.data.messages[?(@.order_id=='${order_id}')].images..id: [5dbbd61a9e3aad000d7de9fe]
+              $.data.messages[?(@.order_id=='${order_id}')].images..url: [https://xdmp-new.oss-cn-hangzhou.aliyuncs.com/answer_pics/eb1ddc7854a747ba9cfb8424c151ae04.jpg]
 afterMethod:
   name: 测试结束后查看订单trace
   step:
