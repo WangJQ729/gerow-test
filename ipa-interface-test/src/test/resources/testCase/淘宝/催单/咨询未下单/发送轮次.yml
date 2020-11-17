@@ -88,12 +88,7 @@ testMethod:
             $.rules[?(@.type=='chat_end_send_message')].args.enable: false
             $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
       - byName: 发送消息给商家
-      - byName: 获取催单消息
-        name: 获取第一轮催单消息
-        assertion:
-          - json:
-              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
-                - ${text_with_vars1}
+      - byName: 获取第一轮催单消息
       - byName: 获取催单消息
         sleep: 58
         name: 获取第二轮催单消息
@@ -131,12 +126,7 @@ testMethod:
             $.rules[?(@.type=='chat_end_send_message')].args.enable: true
             $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
       - byName: 发送消息给商家
-      - byName: 获取催单消息
-        name: 获取第一轮催单消息
-        assertion:
-          - json:
-              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
-                - ${text_with_vars1}
+      - byName: 获取第一轮催单消息
       - byName: 获取催单消息
         sleep: 58
         name: 获取第二轮催单消息
@@ -218,12 +208,7 @@ testMethod:
             $.rules[?(@.type=='chat_end_send_message')].args.enable: false
             $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
       - byName: 发送消息给商家
-      - byName: 获取催单消息
-        name: 获取第一轮催单消息
-        assertion:
-          - json:
-              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
-                - ${text_with_vars1}
+      - byName: 获取第一轮催单消息
       - byName: 根据聊天记录查询trace
       - byName: 查看trace详情-任务关闭
         name: 查看trace详情-任务结束二三阶段未开
