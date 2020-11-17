@@ -114,6 +114,10 @@ testMethod:
       - byName: 修改咨询未下单内容-设置两个时效标签
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
+      - byName: 发送消息给商家
+      - byName: 获取第一轮催单消息
+      - byName: 发送消息给商家
+      - byName: 获取第一轮催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
