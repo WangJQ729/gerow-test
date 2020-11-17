@@ -144,8 +144,10 @@ testMethod:
         form:
           repeat_start_date: ${repeat_start_date}
           repeat_end_date: ${repeat_end_date}
-          start_time:
-          end_time:
+          everyday_start_time: ${everyday_start_time}
+          everyday_end_time: ${everyday_end_time}
+          start_time: ~
+          end_time: ~
       - byName: 修改咨询未下单内容-设置时效标签
       - byName: 发送消息给商家
       - byName: 获取催单消息-消息为空
