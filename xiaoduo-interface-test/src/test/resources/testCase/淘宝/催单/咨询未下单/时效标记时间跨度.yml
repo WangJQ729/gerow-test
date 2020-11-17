@@ -1,0 +1,71 @@
+name: 时效标记时间跨度
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+    question: 你好
+beforeClass:
+  name: 获取taskID和模版
+  step:
+    - byName: 设置固定时段>自定义重复时段>每日重复
+      name: 允许同类型时效标签存在包含重叠关系
+      form:
+        settings_ageing_priority_mode: 0
+        settings_minimum_ageing_span_highest_priority: true
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+    - byName: 获取时效标签列表
+    - byName: 删除时效标签
+      iter:
+        ageing_id: ${ageing_ids}
+      form:
+        id: ${ageing_id}
+testMethod:
+  - name: 时效标签-固定时段-时间跨度小的优先触发
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,0,)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,0,)}
+        text_with_vars1: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(固定时段小)
+        name1: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        start_time1: ${__PlusDay(yyyy-MM-dd 00:00:00,-1,)}
+        end_time1: ${__PlusDay(yyyy-MM-dd 23:59:59,1,)}
+        text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(固定时段大)
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签
+      - byName: 添加时效标签
+        name: 添加时效标签-大跨度
+        form:
+          name: ${name1}
+          ageing_type: ${ageing_type}
+          start_time: ${start_time1}
+          end_time: ${end_time1}
+        extractor:
+          - json:
+              ageing_id1: $.ageing.id
+      - byName: 修改咨询未下单内容-设置两个时效标签
+      - byName: 发送消息给商家
+      - byName: 获取第一轮催单消息
+      - byName: 发送消息给商家
+      - byName: 获取第一轮催单消息
+      - byName: 发送消息给商家
+      - byName: 获取第一轮催单消息
+      - byName: 发送消息给商家
+      - byName: 获取第一轮催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 删除时效标签
+    - byName: 删除时效标签
+      form:
+        id: ${ageing_id1}
+    - byName: 根据聊天记录查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
