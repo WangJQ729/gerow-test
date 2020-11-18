@@ -60,12 +60,12 @@ testMethod:
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 2
-        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,everyday_start_time)}
-        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,everyday_end_time)}
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,everyday_start_time)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
         text_with_vars1: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(固定时段小)
         name1: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-        everyday_start_time1: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,everyday_start_time)}
-        everyday_end_time1: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,everyday_end_time)}
+        everyday_start_time1: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
+        everyday_end_time1: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(固定时段大)
     severity: NORMAL
     step:
@@ -95,14 +95,14 @@ testMethod:
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
-        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,everyday_start_time)}
-        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,everyday_end_time)}
-        repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,start_time)}
-        repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,start_time)}
-        text_with_vars1: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(固定时段小).
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
+        repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
+        repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
+        text_with_vars1: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(固定时段大)
         name1: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-        everyday_start_time1: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,)}
-        everyday_end_time1: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
+        everyday_start_time1: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
+        everyday_end_time1: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
         repeat_start_date1: ${__PlusDay(yyyy-MM-dd,-30,)}
         repeat_end_date1: ${__PlusDay(yyyy-MM-dd,30,)}
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(固定时段小)
