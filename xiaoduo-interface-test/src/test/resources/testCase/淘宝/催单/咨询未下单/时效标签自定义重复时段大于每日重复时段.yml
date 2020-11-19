@@ -49,20 +49,37 @@ testMethod:
       - byName: 获取第一轮催单消息
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
-  - name: 时效标签-自定义重复时段>每日重复时段(自定义重复时段不满足)
+  - name: 时效标签-自定义重复时段>每日重复时段(自定义重复时段不满足)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
-        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
-        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
-        repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
-        repeat_end_date: ${__PlusDay(yyyy-MM-dd,-10,)}
         text_with_vars1: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(自定义重复时段)
         name1: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         everyday_start_time1: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
         everyday_end_time1: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
         ageing_type1: 2
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(每日重复时段)
+        dataProvider:
+          - everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
+            everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
+            repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
+            repeat_end_date: ${__PlusDay(yyyy-MM-dd,-10,)}
+            ageing_name: 30天前到10天前
+          - everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
+            everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
+            repeat_start_date: ${__PlusDay(yyyy-MM-dd,10,)}
+            repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
+            ageing_name: 10天后到30天后
+          - everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
+            everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
+            repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
+            repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
+            ageing_name: 1小时后到2小时后
+          - everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
+            everyday_end_time: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,)}
+            repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
+            repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
+            ageing_name: 2小时前到1小时前
     severity: NORMAL
     step:
       - byName: 添加时效标签(自定义重复时段)
@@ -86,7 +103,7 @@ testMethod:
           - json:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${text_with_vars2}
-  - name: 时效标签-自定义重复时段>每日重复时段(每日重复时段)
+  - name: 时效标签-自定义重复时段>每日重复时段(每日重复时段不满足)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
@@ -101,11 +118,13 @@ testMethod:
             everyday_start_time1: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
             everyday_end_time1: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,)}
             text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(每日重复时段)
+            ageing_name: 2小时前到1小时前
           - name1: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
             ageing_type1: 2
             everyday_start_time1: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
             everyday_end_time1: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
             text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(每日重复时段)
+            ageing_name: 1小时后到2小时后
     severity: NORMAL
     step:
       - byName: 添加时效标签(自定义重复时段)
