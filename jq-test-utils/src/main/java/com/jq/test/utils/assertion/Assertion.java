@@ -315,7 +315,11 @@ public class Assertion {
                 }
                 break;
             case AllCONTAINS:
-                Assertions.assertThat(((net.minidev.json.JSONArray) actual).toArray()).containsAll((com.alibaba.fastjson.JSONArray) value);
+                if (actual instanceof JSONArray) {
+                    Assertions.assertThat(((JSONArray) actual).toArray()).containsAll((com.alibaba.fastjson.JSONArray) value);
+                } else {
+                    Assertions.assertThat(((net.minidev.json.JSONArray) actual).toArray()).containsAll((com.alibaba.fastjson.JSONArray) value);
+                }
                 break;
             case ALLIS:
                 Assertions.assertThat((Collection<Object>) actual).containsOnly(value);
