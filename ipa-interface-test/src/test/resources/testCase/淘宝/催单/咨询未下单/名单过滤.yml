@@ -40,7 +40,7 @@ testMethod:
             #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='exclude_buyers')].args.enable: true
-            $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1575189211}]
+            $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1605772288}]
       - byName: 发送消息给商家-指定买家
       - byName: 根据聊天记录查询trace
       - byName: 查看trace详情
@@ -74,7 +74,7 @@ testMethod:
             #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='exclude_buyers')].args.enable: true
-            $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "cntaobao${__RandomName()}", "updated_at": 1575189211}]
+            $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName()}", "updated_at": 1605772288}]
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
   - name: 咨询未下单名单过滤-咨询人在过滤名单内,但过滤条件未勾选
@@ -103,7 +103,7 @@ testMethod:
             #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='exclude_buyers')].args.enable: false
-            $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "cntaobao${__RandomName(buyer_id)}", "updated_at": 1575189211}]
+            $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1605772288}]
       - byName: 发送消息给商家-指定买家
       - byName: 获取第一轮催单消息
 
@@ -112,7 +112,7 @@ afterMethod:
   step:
     - byName: 根据聊天记录查询trace
     - byName: 查看trace详情
-afterClass:
-  name: 测试结束后删除任务
-  step:
-    - byName: 删除催单任务
+#afterClass:
+#  name: 测试结束后删除任务
+#  step:
+#    - byName: 删除催单任务
