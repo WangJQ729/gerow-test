@@ -54,11 +54,10 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
     - byName: 获取子账号
-      name: 获取一个
+      name: 获取一个不可使用晓多的账号
       extractor:
         - json:
-            disable_seller_name: $.subusers[?(@.auth_status==1)].seller_id
-          site: TESTSUIT
+            disable_seller_name: $.subusers[?(@.auth_status==3)].seller_id
       assertion: [json: {$.code: 0}]
     - byName: 催单设置为自己和静默
       name: 子账号设置为自己和静默
@@ -69,21 +68,24 @@ testMethod:
   - name: 使用不可使用晓多账号拉取催单消息
     severity: NORMAL
     step:
-      - byName: 开启催单任务
-      - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
       - byName: 拉一下催单消息
-        name: 获取消息为空
+        name: 获取消息-不能使用晓多账号拉取
+        untilWait: 0
         variables:
           shop_id: ${shop_id}
           seller_id: ${disable_seller_name}
           platform: ${platform}
           service_names: reminder
+        assertion:
+          - json:
+              $.code: 0
+              $.data.messages.length(): 0
+      - byName: 开启催单任务
+      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 获取消息-不能使用晓多账号拉取
+        invocationCount: 5
         sleep: 2
-        assertion: [json: {$.code: 0}]
-      - byName: 获取消息为空
-      - byName: 获取消息为空
-      - byName: 获取消息为空
+      - byName: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:

@@ -1,5 +1,6 @@
 package com.jq.test.utils.json;
 
+import com.alibaba.fastjson.JSONPath;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
@@ -11,24 +12,10 @@ public class JsonPathUtils {
      * @param json     json对象
      * @param jsonPath jsonPath
      * @param options  参数
-     * @param <T>      提取参数的类型
      * @return 提取到的参数
      */
-    public static <T> T read(Object json, String jsonPath, Option... options) {
-        Configuration configuration = Configuration.defaultConfiguration().addOptions(options);
-        return JsonPath.using(configuration).parse(json).read(jsonPath);
-    }
-
-    /**
-     * @param json     json对象
-     * @param jsonPath jsonPath
-     * @param options  参数
-     * @param <T>      提取参数的类型
-     * @return 提取到的参数
-     */
-    public static <T> T read(String json, String jsonPath, Option... options) {
-        Configuration configuration = Configuration.defaultConfiguration().addOptions(options);
-        return JsonPath.using(configuration).parse(json).read(jsonPath);
+    public static Object read(Object json, String jsonPath, Option... options) {
+        return JSONPath.eval(json, jsonPath);
     }
 
     /**

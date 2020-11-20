@@ -38,10 +38,10 @@ beforeSuite:
       method: GET
       extractor:
         - json:
-            seller_name: $.subusers[0].seller_id
-            child_seller: $.subusers[1].seller_id
-            child_seller2: $.subusers[2].seller_id
-            child_seller3: $.subusers[3].seller_id
+            seller_name: $.subusers[?(@.auth_status==1)].seller_id[0]
+            child_seller: $.subusers[?(@.auth_status==1)].seller_id[1]
+            child_seller2: $.subusers[?(@.auth_status==1)].seller_id[2]
+            child_seller3: $.subusers[?(@.auth_status==1)].seller_id[3]
           site: TESTSUIT
       assertion: [json: {$.code: 0}]
     - name: 催单设置为自己和静默
