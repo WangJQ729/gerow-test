@@ -242,6 +242,7 @@ testMethod:
       - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
   - name: 开启转接-多个子账号转接-都在线
+    enable: false
     severity: NORMAL
     step:
       - byName: 客户端设置-开启催单转接
@@ -258,6 +259,7 @@ testMethod:
       - byName: 子账号3发送心跳检测
       - byName: 发送消息给商家-转接给在线的子账号
   - name: 开启转接-多个子账号转接-部分在线
+    enable: false
     step:
       - byName: 客户端设置-开启催单转接
       - byName: 新建催单转接分组
