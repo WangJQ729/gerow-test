@@ -6,6 +6,7 @@ dataProvider:
     message: 您好，您的快递已经派送，麻烦尽快签收呢！
     text_with_vars: ${message}
     reminder_type: 派件超时
+    action: SENT_SCAN
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -18,38 +19,36 @@ beforeMethod:
   step:
     - byName: 拉一下催单消息
 testMethod:
-  - name: 状态变更为-${new_type_name}
+  - name: 状态变更为-${new_action_name}-${new_action}
     dataProvider:
-      - new_order_state: got
-        new_type_name: 物流揽件
-      - new_order_state: arrival
-        new_type_name: 物流进入中转站
-      - new_order_state: departure
-        new_type_name: 物流离开中转站
-      - new_order_state: reject
-        new_type_name: 物流拒签
-      - new_order_state: signed
-        new_type_name: 物流签收
-    description: |
-      """</br>
-      用例描述：</br>
-      1、开启任务会触发。</br>
-      </br>
-      测试步骤</br>
-      1、开启任务</br>
-      2、创建订单</br>
-      3、建议订单trace是否已经settimer</br>
-      4、将订单状态变更为${new_type_name}</br>
-      5、校验催单消息</br>
-      """
+      - new_action_name: 物流拒签
+        dataProvider:
+          - new_action: FAILED
+          - new_action: TMS_FAILED
+          - new_action: STA_BUYER_REJECT
+      - new_action_name: 物流签收
+        dataProvider:
+          - new_action: SIGNED
+          - new_action: SH_SIGNED
+          - new_action: STA_SIGNED
+          - new_action: TMS_SIGN
+          - new_action: STA_SEND_SIGN
+          - new_action: CONFIRM_SIGN
+          - new_action: STA_VILLAGER_SIGN
+          - new_action: STA_SIGN
     severity: NORMAL
     step:
       - byName: 开启催单任务-10秒后触发
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 指定随机顾客推送已发货订单消息
+      - byName: 发送物流消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 通过pulsar推送订单消息-状态变更
+      - name: 发送物流消息-状态变更
+        byName: 发送物流消息
+        bodyEditor:
+          json:
+            $.action: ${new_action}
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
 afterMethod:
