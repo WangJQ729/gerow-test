@@ -26,7 +26,7 @@ testMethod:
           - action: TMS_DELIVERING
           - action: STA_AGENCY_DELIVERY
           - action: STA_DELIVERY
-#          - action: SENT_CITY
+      #          - action: SENT_CITY
       - new_action_name: 物流签收
         dataProvider:
           - action: SIGNED
@@ -53,7 +53,7 @@ testMethod:
           - action: STA_TOWN_IN
           - action: TMS_SITE_IN
           - action: LH_ARRIVE
-#          - action: STA_VILLAGE_IN
+      #          - action: STA_VILLAGE_IN
       - new_action_name: 物流离开中转站
         dataProvider:
           - action: DEPARTURE
@@ -74,8 +74,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启催单任务-10秒后触发
-      - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 随机顾客推送已发货订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 发送物流消息
@@ -92,13 +91,25 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启催单任务-10秒后触发
-      - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 随机顾客推送已发货订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 通过pulsar推送订单消息-状态变更
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
+  - name: 状态变更为-${new_action_name}-${action}
+    dataProvider:
+      - new_action_name: 未知状态
+        dataProvider:
+          - action: ERROR
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务-10秒后触发
+      - byName: 随机顾客推送已发货订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 发送物流消息
+      - byName: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:

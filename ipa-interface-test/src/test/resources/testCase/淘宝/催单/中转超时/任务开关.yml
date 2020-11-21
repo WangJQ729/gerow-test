@@ -1,4 +1,5 @@
 name: 任务开关
+enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: transfer_delay
