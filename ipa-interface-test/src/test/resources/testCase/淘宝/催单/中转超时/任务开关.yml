@@ -6,11 +6,6 @@ dataProvider:
     message: 很抱歉，由于快递公司的原因，您的物流进行缓慢，我们会尽力催促快递公司，让您今早收到宝贝
     text_with_vars: ${message}
     reminder_type: 中转超时
-  - node_state: transfer_delay
-    order_state: got
-    message: 很抱歉，由于快递公司的原因，您的物流进行缓慢，我们会尽力催促快递公司，让您今早收到宝贝
-    text_with_vars: ${message}
-    reminder_type: 中转切换
 beforeClass:
   name: 获取taskID和模板
   step:
