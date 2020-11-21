@@ -133,8 +133,8 @@ testMethod:
         action: GOT
     severity: CRITICAL
     step:
-      - byName: 开启中转超时催单任务
-        name: 开启中转超时催单任务-关闭中转停滞和中转超时催单消息
+      - name: 开启中转超时催单任务-关闭中转停滞和中转超时催单消息
+        byName: 开启中转超时催单任务
         bodyEditor:
           json:
             $.id: ${task_id}

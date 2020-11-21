@@ -1,5 +1,4 @@
 name: 状态变更
-enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: send_scan_delay

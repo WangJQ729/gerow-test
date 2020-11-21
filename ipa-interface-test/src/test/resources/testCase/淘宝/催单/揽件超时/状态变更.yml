@@ -26,7 +26,7 @@ testMethod:
           - action: TMS_DELIVERING
           - action: STA_AGENCY_DELIVERY
           - action: STA_DELIVERY
-          - action: SENT_CITY
+#          - action: SENT_CITY
       - new_action_name: 物流签收
         dataProvider:
           - action: SIGNED
@@ -53,7 +53,7 @@ testMethod:
           - action: STA_TOWN_IN
           - action: TMS_SITE_IN
           - action: LH_ARRIVE
-          - action: STA_VILLAGE_IN
+#          - action: STA_VILLAGE_IN
       - new_action_name: 物流离开中转站
         dataProvider:
           - action: DEPARTURE
