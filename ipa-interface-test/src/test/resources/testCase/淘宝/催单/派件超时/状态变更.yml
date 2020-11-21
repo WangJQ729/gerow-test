@@ -49,6 +49,7 @@ testMethod:
         bodyEditor:
           json:
             $.action: ${new_action}
+            $.out_sid: ${out_sid}
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
 afterMethod:
