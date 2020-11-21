@@ -45,13 +45,11 @@ beforeClass:
     - byName: 使用模板新建一个task
     - name: 获取时效标签列表
       url: /api/admin/config2/ageing/list
-      #      variables:
-      #        status: 1
       method: GET
       assertion: [json: {$.code: 0}]
       extractor:
         - json:
-            ageing_ids: $.ageings[*].id
+            ageing_ids: $.ageings[?(@.activity_name == '')].id
           size: 100
           options: [DEFAULT_PATH_LEAF_TO_NULL]
     - byName: 删除时效标签

@@ -33,7 +33,7 @@ beforeClass:
       assertion: [json: {$.code: 0}]
       extractor:
         - json:
-            ageing_ids: $.ageings[*].id
+            ageing_ids: $.ageings[?(@.activity_name == '')].id
           size: 100
           options: [DEFAULT_PATH_LEAF_TO_NULL]
     - byName: 删除时效标签
