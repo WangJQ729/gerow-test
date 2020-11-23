@@ -1,0 +1,94 @@
+name: 拆单发货
+story: ${reminder_type}
+dataProvider:
+  - node_state: shipped
+    order_state: shipped
+    reminder_type: 已发货
+    message: 亲，您订购的宝贝已经启程了，请注意物流查收哦，记得好评哦！
+    text_with_vars: ${message}
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 已发货-拆单发货全部发货
+    severity: NORMAL
+    step:
+      - byName: 开启已发货催单任务
+      - byName: 发送消息给商家-固定问题
+      - name: 模拟部分发货消息-全部发货
+        url: /api/client/reminder/v2/test/send?is_test=false&queue_type=0
+        method: POST
+        body: >-
+          {"platform":"${platform}","shop_id":"${shop_id}","payment":20,"created_at":${__time(/1000,)},"updated_at":${__time(/1000,)},"address":"四川省桂溪街道天府软件园A5-8","item_ids":["604423906694"],"tbext":{"items":[{"item_id":"604423906694","item_name":"二手铅笔","count":1}],"receiver":{"name":"王健强","zip":"000000"}}}
+        bodyEditor:
+          json:
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.buyer_id: ${buyer_id}
+            $.status: ${order_state}
+            $.tbext.buyer_nick: ${buyer_id}
+            $.tbext.original_order: >-
+              {"orders":{"order":[{"invoice_no":"${__RandomOrderId(out_sid_1)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_1)}","num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_1)}"},{"invoice_no":"${__RandomOrderId(out_sid_2)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_2)}","num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_2)}"},{"invoice_no":"${__RandomOrderId(out_sid_3)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_3)}","num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_3)}"}]}}
+      - byName: 获取催单消息
+  - name: 已发货-拆单发货-分三次发货
+    severity: NORMAL
+    step:
+      - byName: 开启已发货催单任务
+      - byName: 发送消息给商家-固定问题
+      - byName: 模拟部分发货消息-全部发货
+        name: 模拟部分发货消息-第一件发货
+        bodyEditor:
+          json:
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.buyer_id: ${buyer_id}
+            $.status: ${order_state}
+            $.tbext.buyer_nick: ${buyer_id}
+            $.tbext.original_order: >-
+              {"orders":{"order":[{"invoice_no":"${__RandomOrderId(out_sid_1)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_1)}","num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_1)}"},{"num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_2)}"},{"num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_3)}"}]}}
+      - byName: 获取催单消息
+      - byName: 模拟部分发货消息-全部发货
+        name: 模拟部分发货消息-第二件发货
+        bodyEditor:
+          json:
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.buyer_id: ${buyer_id}
+            $.status: ${order_state}
+            $.tbext.buyer_nick: ${buyer_id}
+            $.tbext.original_order: >-
+              {"orders":{"order":[{"invoice_no":"${out_sid_1}","consign_time":"${consign_time_1}","num_iid":607123276832,"oid":"${child_order_id_1}"},{"invoice_no":"${__RandomOrderId(out_sid_2)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_2)}","num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_2)}"},{"consign_time":"${__PlusDay(yyyy-MM-dd,0,)}","num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_3)}"}]}}
+      - byName: 获取催单消息
+      - byName: 模拟部分发货消息-全部发货
+        name: 模拟部分发货消息-第三件发货
+        bodyEditor:
+          json:
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.buyer_id: ${buyer_id}
+            $.status: ${order_state}
+            $.tbext.buyer_nick: ${buyer_id}
+            $.tbext.original_order: >-
+              {"orders":{"order":[{"invoice_no":"${out_sid_1}","consign_time":"${consign_time_1}","num_iid":607123276832,"oid":"${child_order_id_1}"},{"invoice_no":"${out_sid_2}","consign_time":"${consign_time_2}","num_iid":607123276832,"oid":"${child_order_id_2}"},{"invoice_no":"${__RandomOrderId(out_sid_3)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_3)}","num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_3)}"}]}}
+      - byName: 获取催单消息
+      - byName: 模拟部分发货消息-全部发货
+        name: 模拟全部发货消息
+        bodyEditor:
+          json:
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.buyer_id: ${buyer_id}
+            $.status: ${order_state}
+            $.tbext.buyer_nick: ${buyer_id}
+            $.tbext.original_order: >-
+              {"orders":{"order":[{"invoice_no":"${out_sid_1}","consign_time":"${consign_time_1}","num_iid":607123276832,"oid":"${child_order_id_1}"},{"invoice_no":"${out_sid_2}","consign_time":"${consign_time_2}","num_iid":607123276832,"oid":"${child_order_id_2}"},{"invoice_no":"${out_sid_3}","consign_time":"${consign_time_3}","num_iid":607123276832,"oid":"${child_order_id_3}"}]}}
+      - byName: 获取催单消息-消息为空
+        invocationCount: 3
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

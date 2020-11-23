@@ -23,7 +23,7 @@ testMethod:
       - new_order_state: part_shipped
         new_type_name: 拆单发货
       - new_order_state: shipped
-        new_type_name: 不拆单发货
+        new_type_name: 已发货
       - new_order_state: succeeded
         new_type_name: 交易成功
     description: |
