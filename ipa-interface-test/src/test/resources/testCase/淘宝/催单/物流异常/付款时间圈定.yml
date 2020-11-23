@@ -6,6 +6,12 @@ dataProvider:
     message: 由于近期订单量过大，快递小哥没能及时揽件，实在抱歉。请您耐心等待，小妹会尽快联系快递小哥安排给您优先处理呢!
     text_with_vars: ${message}
     reminder_type: 揽件超时
+  - node_state: logistics_update_delay
+    order_state: got
+    message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
+    text_with_vars: ${message}
+    reminder_type: 物流更新超时
+    action: GOT
 beforeClass:
   name: 获取taskID和模板
   step:
