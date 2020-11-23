@@ -1,0 +1,84 @@
+name: 状态变更
+story: ${reminder_type}
+dataProvider:
+  - node_state: logistics_stagnate_delay
+    order_state: arrival
+    message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
+    text_with_vars: ${message}
+    reminder_type: 物流停滞超时
+    action: ARRIVAL
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+beforeMethod:
+  name: 拉一下催单消息
+  step:
+    - byName: 拉一下催单消息
+testMethod:
+  - name: 状态变更为-${new_action_name}-${new_action}
+    dataProvider:
+      - new_action_name: 物流拒签
+        dataProvider:
+          - new_action: FAILED
+          - new_action: TMS_FAILED
+          - new_action: STA_BUYER_REJECT
+      - new_action_name: 物流签收
+        dataProvider:
+          - new_action: SIGNED
+          - new_action: SH_SIGNED
+          - new_action: STA_SIGNED
+          - new_action: TMS_SIGN
+          - new_action: STA_SEND_SIGN
+          - new_action: CONFIRM_SIGN
+          - new_action: STA_VILLAGER_SIGN
+          - new_action: STA_SIGN
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务
+        name: 开启物流停滞超时催单任务-10秒后触发
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 10
+            $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
+      - byName: 随机顾客推送已发货订单消息
+      - byName: 发送物流消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - name: 发送物流消息-状态变更
+        byName: 发送物流消息
+        bodyEditor:
+          json:
+            $.action: ${new_action}
+            $.out_sid: ${out_sid}
+      - byName: 获取催单消息-消息为空
+      - byName: 查看trace详情-订单状态变更
+  - name: 状态变更为-${new_action_name}-${new_action}
+    dataProvider:
+      - new_action_name: 未知状态
+        dataProvider:
+          - new_action: ERROR
+    severity: NORMAL
+    step:
+      - byName: 开启物流停滞超时催单任务-10秒后触发
+      - byName: 随机顾客推送已发货订单消息
+      - byName: 发送物流消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 发送物流消息-状态变更
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

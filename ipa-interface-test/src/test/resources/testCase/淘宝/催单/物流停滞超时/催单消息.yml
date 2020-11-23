@@ -1,0 +1,42 @@
+name: 催单消息
+story: ${reminder_type}
+dataProvider:
+  - node_state: logistics_stagnate_delay
+    order_state: arrival
+    message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
+    text_with_vars: ${message}
+    reminder_type: 物流停滞超时
+    action: ARRIVAL
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 催单消息校验-${message}
+    dataProvider:
+      - message: 纯文字催单消息
+        text_with_vars: 纯文字催单消息
+      - message: "#E-s20#E-s20#E-s20#E-s20#E-s20"
+        text_with_vars: "#E-s20#E-s20#E-s20#E-s20#E-s20"
+      - message: "{{子账号名称}}"
+        text_with_vars: ${seller_name}
+      - message: "1{↓1秒后分行发送↓}2"
+        text_with_vars: "1{↓1秒后分行发送↓}2"
+    severity: CRITICAL
+    step:
+      - byName: 开启物流停滞超时催单任务
+      - byName: 随机顾客推送已发货订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
