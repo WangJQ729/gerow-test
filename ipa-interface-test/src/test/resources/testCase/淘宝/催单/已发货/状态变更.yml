@@ -16,30 +16,10 @@ beforeClass:
 testMethod:
   - name: 状态变更为-${new_type_name}
     dataProvider:
-      - new_order_state: arrival
-        new_type_name: 物流进入中转站
-      - new_order_state: departure
-        new_type_name: 物流离开中转站
-      - new_order_state: reject
-        new_type_name: 物流拒签
-      - new_order_state: signed
-        new_type_name: 已签收
       - new_order_state: closed
         new_type_name: 交易取消
       - new_order_state: succeeded
         new_type_name: 交易成功
-    description: |
-      """</br>
-      用例描述：</br>
-      1、开启任务会触发。</br>
-      </br>
-      测试步骤</br>
-      1、开启任务</br>
-      2、创建订单</br>
-      3、建议订单trace是否已经settimer</br>
-      4、将订单状态变更为${new_type_name}</br>
-      5、校验催单消息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启已发货催单任务
@@ -58,22 +38,57 @@ testMethod:
       - byName: 通过pulsar推送订单消息-状态变更
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
-  - name: 状态变更为-${new_type_name}
+  - name: 状态变更为-${new_action_name}
     dataProvider:
-      - new_order_state: got
-        new_type_name: 物流揽件
-    description: |
-      """</br>
-      用例描述：</br>
-      1、开启任务会触发。</br>
-      </br>
-      测试步骤</br>
-      1、开启任务</br>
-      2、创建订单</br>
-      3、建议订单trace是否已经settimer</br>
-      4、将订单状态变更为${new_type_name}</br>
-      5、校验催单消息</br>
-      """
+      - new_action_name: 物流验收扫描
+        dataProvider:
+          - action: SENT_SCAN
+          - action: TMS_DELIVERING
+          - action: STA_AGENCY_DELIVERY
+          - action: STA_DELIVERY
+      - new_action_name: 物流签收
+        dataProvider:
+          - action: SIGNED
+          - action: SH_SIGNED
+          - action: STA_SIGNED
+          - action: TMS_SIGN
+          - action: STA_SEND_SIGN
+          - action: CONFIRM_SIGN
+          - action: STA_VILLAGER_SIGN
+          - action: STA_SIGN
+      - new_action_name: 物流揽件
+        dataProvider:
+          - action: GOT
+          - action: TRUNK_ACCEPT
+          - action: AC_ACCEPT
+          - action: WMS_PICK
+          - action: TMS_ACCEPT
+      - new_action_name: 物流进入中转站
+        dataProvider:
+          - action: ARRIVAL
+          - action: TMS_STATION_IN
+          - action: TMS_AC_IN
+          - action: INVERSE_TMS_SITE_IN
+          - action: STA_TOWN_IN
+          - action: TMS_SITE_IN
+          - action: LH_ARRIVE
+      - new_action_name: 物流离开中转站
+        dataProvider:
+          - action: DEPARTURE
+          - action: TMS_STATION_OUT
+          - action: TMS_AC_OUT
+          - action: AC_OUT
+          - action: STA_TOWN_OUT
+          - action: TMS_SITE_OUT
+          - action: INVERSE_TMS_AC_OUT
+          - action: LDP_TRACK_LEAVE
+          - action: TRANSFER_OUT_SITE
+          - action: INVERSE_TMS_SITE_OUT
+      - new_action_name: 物流拒签
+        dataProvider:
+          - action: FAILED
+          - action: TMS_FAILED
+          - action: STA_BUYER_REJECT
     severity: NORMAL
     step:
       - byName: 开启已发货催单任务-10秒后发送
@@ -81,7 +96,7 @@ testMethod:
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 通过pulsar推送订单消息-状态变更
+      - byName: 发送物流消息
       - byName: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace
