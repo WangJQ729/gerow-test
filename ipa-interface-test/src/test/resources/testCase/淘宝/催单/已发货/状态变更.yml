@@ -38,14 +38,8 @@ testMethod:
       - byName: 通过pulsar推送订单消息-状态变更
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
-  - name: 状态变更为-${new_action_name}
+  - name: 状态变更为-${new_action_name}-${action}
     dataProvider:
-      - new_action_name: 物流验收扫描
-        dataProvider:
-          - action: SENT_SCAN
-          - action: TMS_DELIVERING
-          - action: STA_AGENCY_DELIVERY
-          - action: STA_DELIVERY
       - new_action_name: 物流签收
         dataProvider:
           - action: SIGNED
@@ -56,6 +50,12 @@ testMethod:
           - action: CONFIRM_SIGN
           - action: STA_VILLAGER_SIGN
           - action: STA_SIGN
+      - new_action_name: 物流验收扫描
+        dataProvider:
+          - action: SENT_SCAN
+          - action: TMS_DELIVERING
+          - action: STA_AGENCY_DELIVERY
+          - action: STA_DELIVERY
       - new_action_name: 物流揽件
         dataProvider:
           - action: GOT
@@ -97,7 +97,61 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 发送物流消息
+      - byName: 获取催单消息-消息为空
+      - byName: 查看trace详情-订单状态变更
+  - name: 状态变更为-${new_action_name}-${action}
+    dataProvider:
+      - new_action_name: 物流揽件
+        dataProvider:
+          - action: GOT
+          - action: TRUNK_ACCEPT
+          - action: AC_ACCEPT
+          - action: WMS_PICK
+          - action: TMS_ACCEPT
+    severity: NORMAL
+    step:
+      - byName: 开启已发货催单任务-10秒后发送
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 发送物流消息
+      - byName: 根据订单查询trace
+        extractor:
+          - json:
+              trace_id: $.data.traces[?(@.order_state=='got')].trace_id
+      - byName: 查看trace详情
+        name: 查看trace详情-got不触发已发货
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_reject_reason: [got state should not trigger shipped node]
       - byName: 获取催单消息
+  - name: 发送消息后-状态变更为-${new_action_name}-${action}
+    dataProvider:
+      - new_action_name: 物流揽件
+        dataProvider:
+          - action: GOT
+          - action: TRUNK_ACCEPT
+          - action: AC_ACCEPT
+          - action: WMS_PICK
+          - action: TMS_ACCEPT
+    severity: NORMAL
+    step:
+      - byName: 开启已发货催单任务
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息
+      - byName: 发送物流消息
+      - byName: 根据订单查询trace
+        extractor:
+          - json:
+              trace_id: $.data.traces[?(@.order_state=='got')].trace_id
+      - byName: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces.length(): 1
+      - byName: 获取催单消息-消息为空
 afterMethod:
   name: 测试结束后查看订单trace
   step:
