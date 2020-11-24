@@ -20,6 +20,10 @@ beforeMethod:
     - byName: 拉一下催单消息
 testMethod:
   - name: 满足圈定时间
+    dataProvider:
+      - start_time: ${__BeanShell(${__time(/1000)}-7200,)}
+        end_time: ${__BeanShell(${__time(/1000)}+7200,)}
+        time_name: 未来的时间
     severity: NORMAL
     step:
       - byName: 开启催单任务
@@ -32,8 +36,8 @@ testMethod:
             $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 0
             $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
             $.rules[?(@.type=='pay_time_limit')].args.enable: true
-            $.rules[?(@.type=='pay_time_limit')].args.from: ${__BeanShell(${__time(/1000)}-3600,)}
-            $.rules[?(@.type=='pay_time_limit')].args.to: ${__BeanShell(${__time(/1000)}+3600,)}
+            $.rules[?(@.type=='pay_time_limit')].args.from: ${__BeanShell(${start_time})}
+            $.rules[?(@.type=='pay_time_limit')].args.to: ${__BeanShell(${end_time})}
       - byName: 随机顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
@@ -68,7 +72,7 @@ testMethod:
         end_time: ${__BeanShell(${__time(/1000)}+3600,)}
         time_name: 满足的时间
     step:
-      - byName: 开启催单任务-设置付款时间圈定
+      - byName: 开启物流停滞超时催单任务-设置付款时间圈定
       - byName: 随机顾客推送已发货订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
@@ -81,7 +85,7 @@ testMethod:
         end_time: ${__BeanShell(${__time(/1000)}+3600,)}
         time_name: 满足的时间
     step:
-      - byName: 开启催单任务-设置付款时间圈定
+      - byName: 开启物流停滞超时催单任务-设置付款时间圈定
       - byName: 随机顾客推送下单未付款订单消息
       - byName: 指定顾客指定订单推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
@@ -92,7 +96,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-#afterClass:
-#  name: 测试结束后删除任务
-#  step:
-#    - byName: 删除催单任务
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
