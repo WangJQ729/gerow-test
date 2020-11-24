@@ -1,5 +1,4 @@
 name: 催单转接
-platform: 淘宝
 story: ${reminder_type}
 dataProvider:
   - node_state: created

@@ -73,6 +73,25 @@ testMethod:
       - byName: 查看trace详情-TaskSetTimer
       - byName: 发送物流消息-状态变更
       - byName: 获取催单消息
+  - name: 状态变更为-${new_action_name}-${new_action}
+    dataProvider:
+      - new_action_name: 再次变更为到达中转站
+        dataProvider:
+          - new_action: ARRIVAL
+    severity: NORMAL
+    step:
+      - byName: 开启物流停滞超时催单任务-10秒后触发
+      - byName: 随机顾客推送已发货订单消息
+      - byName: 发送物流消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 发送物流消息-状态变更
+      - byName: 获取催单消息
+      - byName: 查看trace详情
+        name: 查看trace详情-StateChange
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_state_delay_message]
 afterMethod:
   name: 测试结束后查看订单trace
   step:

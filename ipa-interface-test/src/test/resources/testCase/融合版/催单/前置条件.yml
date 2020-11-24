@@ -1,6 +1,5 @@
 name: 统一前置处理
 #所有测试执行前执行
-platform: 淘宝
 beforeSuite:
   name: 登录mp后台
   step:

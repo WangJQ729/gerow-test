@@ -43,12 +43,7 @@ testMethod:
       - byName: 发送物流消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - name: 发送物流消息-状态变更
-        byName: 发送物流消息
-        bodyEditor:
-          json:
-            $.action: ${new_action}
-            $.out_sid: ${out_sid}
+      - byName: 发送物流消息-状态变更
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
   - name: 状态变更为-${new_action_name}-${new_action}
