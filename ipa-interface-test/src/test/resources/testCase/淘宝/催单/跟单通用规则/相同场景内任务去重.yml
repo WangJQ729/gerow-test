@@ -34,6 +34,7 @@ dataProvider:
     order_state: shipped
     message: 由于近期订单量过大，快递小哥没能及时揽件，实在抱歉。请您耐心等待，小妹会尽快联系快递小哥安排给您优先处理呢!
     text_with_vars: ${message}
+    message2: 第二个任务哦!
     reminder_type: 揽件超时
   - node_state: closed
     order_state: closed
