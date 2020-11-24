@@ -1,12 +1,12 @@
 name: 付款时间圈定
 story: ${reminder_type}
 dataProvider:
-  - node_state: logistics_stagnate_delay
-    order_state: arrival
+  - node_state: logistics_update_delay
+    order_state: got
     message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
     text_with_vars: ${message}
-    reminder_type: 物流停滞超时
-    action: ARRIVAL
+    reminder_type: 物流更新超时
+    action: GOT
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -21,19 +21,11 @@ beforeMethod:
 testMethod:
   - name: 满足圈定时间
     severity: NORMAL
+    dataProvider:
+      - start_time: ${__BeanShell(${__time(/1000)}-3600,)}
+        end_time: ${__BeanShell(${__time(/1000)}+3600,)}
     step:
-      - byName: 开启催单任务
-        name: 开启物流停滞超时催单任务-设置付款时间圈定
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 0
-            $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
-            $.rules[?(@.type=='pay_time_limit')].args.enable: true
-            $.rules[?(@.type=='pay_time_limit')].args.from: ${__BeanShell(${__time(/1000)}-3600,)}
-            $.rules[?(@.type=='pay_time_limit')].args.to: ${__BeanShell(${__time(/1000)}+3600,)}
+      - byName: 开启催单任务-设置付款时间圈定
       - byName: 随机顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
@@ -48,7 +40,7 @@ testMethod:
         end_time: ${__BeanShell(${__time(/1000)}-3600,)}
         time_name: 过去的时间
     step:
-      - byName: 开启物流停滞超时催单任务-设置付款时间圈定
+      - byName: 开启催单任务-设置付款时间圈定
       - byName: 随机顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
@@ -92,7 +84,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-#afterClass:
-#  name: 测试结束后删除任务
-#  step:
-#    - byName: 删除催单任务
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
