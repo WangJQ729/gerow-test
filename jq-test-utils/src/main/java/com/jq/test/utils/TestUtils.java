@@ -260,7 +260,7 @@ public class TestUtils {
         } else if (mode == 2) {
             byte[] bytes = HexUtils.fromHexString(data);
             String result = new String(cipher.doFinal(bytes), StandardCharsets.UTF_8);
-            logger.info("decode:\n" + result);
+            logger.debug("decode:\n" + result);
             return result;
         } else {
             return "";
