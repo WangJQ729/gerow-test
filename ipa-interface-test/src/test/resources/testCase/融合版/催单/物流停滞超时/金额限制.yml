@@ -63,7 +63,18 @@ testMethod:
       - payment: 20.01
     severity: NORMAL
     step:
-      - byName: 物流停滞超时催单任务-设置金额限制为5-20元
+      - byName: 开启催单任务
+        name: 物流停滞超时催单任务-设置金额限制为5-20元-开关关闭
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
+            $.rules[?(@.type=='pay_amount_limit')].args.enable: false
+            $.rules[?(@.type=='pay_amount_limit')].args.min: 5
+            $.rules[?(@.type=='pay_amount_limit')].args.max: 20
       - byName: 随机顾客推送已发货订单消息-指定金额
       - byName: 发送物流消息
       - byName: 获取催单消息
