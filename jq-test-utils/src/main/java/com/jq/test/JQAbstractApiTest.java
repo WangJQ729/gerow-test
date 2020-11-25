@@ -48,8 +48,8 @@ public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTe
                 this.testName = testMethod.getName();
             }
         }
-        logger.info("-----------------------------------------------------------");
-        logger.info("开始执行：" + testName);
+        logger.debug("-----------------------------------------------------------");
+        logger.debug("开始执行：" + testName);
         testClass.setUp();
     }
 
@@ -107,7 +107,7 @@ public abstract class JQAbstractApiTest extends AbstractTestBase implements JQTe
 
         logger.info("测试结束：" + testName);
         logger.info("测试结果：" + (result.getStatus() == 1 ? "Pass" : "Fail"));
-        logger.info("-----------------------------------------------------------");
+        logger.debug("-----------------------------------------------------------");
     }
 
     @Override

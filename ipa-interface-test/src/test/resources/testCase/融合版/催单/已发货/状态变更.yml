@@ -16,8 +16,12 @@ beforeClass:
 testMethod:
   - name: 状态变更为-${new_type_name}
     dataProvider:
+      - new_order_state: signed
+        new_type_name: 已签收
       - new_order_state: closed
         new_type_name: 交易取消
+      - new_order_state: succeeded
+        new_type_name: 交易成功
       - new_order_state: succeeded
         new_type_name: 交易成功
     severity: NORMAL
@@ -35,44 +39,17 @@ testMethod:
       - new_action_name: 物流签收
         dataProvider:
           - action: SIGNED
-          - action: SH_SIGNED
-          - action: STA_SIGNED
-          - action: TMS_SIGN
-          - action: STA_SEND_SIGN
-          - action: CONFIRM_SIGN
-          - action: STA_VILLAGER_SIGN
-          - action: STA_SIGN
       - new_action_name: 物流验收扫描
         dataProvider:
           - action: SENT_SCAN
-          - action: TMS_DELIVERING
-          - action: STA_AGENCY_DELIVERY
-          - action: STA_DELIVERY
       - new_action_name: 物流进入中转站
         dataProvider:
           - action: ARRIVAL
-          - action: TMS_STATION_IN
-          - action: TMS_AC_IN
-          - action: INVERSE_TMS_SITE_IN
-          - action: STA_TOWN_IN
-          - action: TMS_SITE_IN
-          - action: LH_ARRIVE
       - new_action_name: 物流离开中转站
         dataProvider:
           - action: DEPARTURE
-          - action: TMS_STATION_OUT
-          - action: TMS_AC_OUT
-          - action: AC_OUT
-          - action: STA_TOWN_OUT
-          - action: TMS_SITE_OUT
-          - action: INVERSE_TMS_AC_OUT
-          - action: LDP_TRACK_LEAVE
-          - action: TRANSFER_OUT_SITE
-          - action: INVERSE_TMS_SITE_OUT
       - new_action_name: 物流拒签
         dataProvider:
-          - action: FAILED
-          - action: TMS_FAILED
           - action: STA_BUYER_REJECT
     severity: NORMAL
     step:
@@ -84,15 +61,30 @@ testMethod:
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
+  - name: 状态变更为-${new_type_name}
+    dataProvider:
+      - new_order_state: unknown
+        new_type_name: 未知订单状态
+      - new_order_state: created
+        new_type_name: 下单未付款
+      - new_order_state: deposited
+        new_type_name: 已付定金未付尾款
+      - new_order_state: paid
+        new_type_name: 已付款
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务-10秒后触发
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 通过pulsar推送订单消息-状态变更
+      - byName: 获取催单消息
   - name: 状态变更为-${new_action_name}-${action}
     dataProvider:
       - new_action_name: 物流揽件
         dataProvider:
           - action: GOT
-          - action: TRUNK_ACCEPT
-          - action: AC_ACCEPT
-          - action: WMS_PICK
-          - action: TMS_ACCEPT
     severity: NORMAL
     step:
       - byName: 开启催单任务-10秒后触发
