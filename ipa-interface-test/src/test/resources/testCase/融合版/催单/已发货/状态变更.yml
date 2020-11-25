@@ -48,13 +48,6 @@ testMethod:
           - action: TMS_DELIVERING
           - action: STA_AGENCY_DELIVERY
           - action: STA_DELIVERY
-      - new_action_name: 物流揽件
-        dataProvider:
-          - action: GOT
-          - action: TRUNK_ACCEPT
-          - action: AC_ACCEPT
-          - action: WMS_PICK
-          - action: TMS_ACCEPT
       - new_action_name: 物流进入中转站
         dataProvider:
           - action: ARRIVAL
