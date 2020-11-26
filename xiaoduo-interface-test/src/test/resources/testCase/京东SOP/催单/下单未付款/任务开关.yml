@@ -14,16 +14,6 @@ beforeClass:
     - byName: 获取task模板
 testMethod:
   - name: 开启任务
-    description: |
-      """</br>
-      用例描述：</br>
-      1、开启任务会触发。</br>
-      </br>
-      测试步骤</br>
-      1、开启任务</br>
-      2、创建订单</br>
-      3、校验催单消息</br>
-      """
     severity: NORMAL
     step:
       - byName: 修改task内容
@@ -38,16 +28,6 @@ testMethod:
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
   - name: 关闭任务
-    description: |
-      """</br>
-      用例描述：</br>
-      1、关闭后不会触发。</br>
-      </br>
-      测试步骤</br>
-      1、关闭任务</br>
-      2、创建订单</br>
-      3、校验催单消息</br>
-      """
     severity: NORMAL
     step:
       - byName: 关闭催单任务

@@ -19,10 +19,6 @@ beforeSuite:
       url: ${auth_url}
       method: GET
       responseType: DEFAULT
-#      extractor:
-#        - headers:
-#            cookie: Set-Cookie
-#          site: TESTSUIT
     - name: 获取shop_id
       url: /api/admin/user/logined
       method: GET
