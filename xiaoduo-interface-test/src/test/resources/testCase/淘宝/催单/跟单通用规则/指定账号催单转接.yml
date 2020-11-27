@@ -104,6 +104,7 @@ testMethod:
               $.custom_transfer.transfer_type: "reminder_transfer"
               $.custom_transfer.is_transfer: true
               $.custom_transfer.transfer_subnick_list: ["${child_seller}"]
+            need_decode: true
   - name: 子账号在线-关闭转接
     description: |
       """</br>
@@ -151,6 +152,7 @@ testMethod:
           - json:
               $.custom_transfer.is_transfer: false
               $.custom_transfer.transfer_subnick_list: ~
+            need_decode: true
   - name: 子账号在线-回复前关闭转接
     description: |
       """</br>
@@ -246,6 +248,7 @@ testMethod:
               $.custom_transfer.transfer_type: "reminder_transfer"
               $.custom_transfer.is_transfer: true
               $.custom_transfer.transfer_subnick_list: null
+            need_decode: true
   - name: 开启转接-多个子账号转接-只有一个在线
     description: |
       """</br>
@@ -319,11 +322,13 @@ testMethod:
           - json:
               $.custom_transfer.transfer_type: "reminder_transfer"
               $.custom_transfer.is_transfer: true
+            need_decode: true
           - json:
               $.custom_transfer.transfer_subnick_list:
                 - ${child_seller}
                 - ${child_seller3}
             assertionType: AllCONTAINS
+            need_decode: true
   - name: 开启转接-多个子账号转接-部分在线
     description: |
       """</br>

@@ -74,7 +74,15 @@ testMethod:
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 发送物流消息
+      - name: 发送物流消息
+        url: /api/client/reminder/v2/test/send?is_test=false&queue_type=1
+        method: POST
+        body: |
+          {"tid":${order_id},
+           "action":"${action}",
+           "out_sid":"${__RandomOrderId(out_sid)}",
+           "shop_id":"${shop_id}",
+           "buyer_id":"${buyer_id}"}
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
   - name: 状态变更为-${new_action_name}-${action}
