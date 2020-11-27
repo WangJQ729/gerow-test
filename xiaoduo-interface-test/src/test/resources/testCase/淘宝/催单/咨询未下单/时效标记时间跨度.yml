@@ -1,4 +1,5 @@
 name: 时效标记时间跨度
+enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: asked
