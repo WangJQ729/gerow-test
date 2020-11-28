@@ -238,7 +238,11 @@ testMethod:
           - json:
               $.answer.custom_transfer.transfer_type: "reminder_transfer"
               $.answer.custom_transfer.is_transfer: true
-              $.answer.custom_transfer.transfer_subnick_list: ["${child_seller}","${seller_name}"]
+          - json:
+              $.answer.custom_transfer.transfer_subnick_list:
+                - ${child_seller}
+                - ${seller_name}
+            assertionType: AllCONTAINS
   - name: 开启转接-多个子账号转接-只有一个在线
     step:
       - byName: 客户端设置-开启催单转接

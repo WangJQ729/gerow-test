@@ -135,13 +135,24 @@ testMethod:
         body: |
           {"group_id_list":"","sub_user_name_list":"${child_seller},${seller_name}"}
       - byName: 新建催单转接分组-只有主账号
-      - byName: 开启物流停滞超时催单任务-开启催单转接
-      - byName: 随机顾客推送已发货订单消息
-      - byName: 发送物流消息
+      - byName: 开启交易成功催单任务-开启催单转接
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 主账号发送心跳检测
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
+      - byName: 主账号发送心跳检测
       - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
+        assertion:
+          - json:
+              $.answer.custom_transfer.transfer_type: "reminder_transfer"
+              $.answer.custom_transfer.is_transfer: true
+          - json:
+              $.answer.custom_transfer.transfer_subnick_list:
+                - ${child_seller}
+                - ${seller_name}
+            assertionType: AllCONTAINS
   - name: 开启转接-多个子账号转接-都在线
     severity: NORMAL
     step:

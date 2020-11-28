@@ -114,6 +114,7 @@ testMethod:
               $.answer.custom_transfer.is_transfer: true
               $.answer.custom_transfer.transfer_subnick_list: null
   - name: 开启转接-转接列表含自己
+    enable: false
     severity: NORMAL
     step:
       - byName: 客户端设置-开启催单转接
@@ -125,9 +126,20 @@ testMethod:
       - byName: 随机顾客推送已发货订单消息
       - byName: 发送物流消息
       - byName: 子账号发送心跳检测
+      - byName: 主账号发送心跳检测
       - byName: 获取催单消息-回复后转接
       - byName: 子账号发送心跳检测
+      - byName: 主账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
+        assertion:
+          - json:
+              $.answer.custom_transfer.transfer_type: "reminder_transfer"
+              $.answer.custom_transfer.is_transfer: true
+          - json:
+              $.answer.custom_transfer.transfer_subnick_list:
+                - ${child_seller}
+                - ${seller_name}
+            assertionType: AllCONTAINS
   - name: 开启转接-多个子账号转接-只有一个在线
     step:
       - byName: 客户端设置-开启催单转接
