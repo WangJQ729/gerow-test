@@ -57,10 +57,6 @@ beforeClass:
           $.rules[?(@.type=='send_message')].args.state_delay: 0
           $.rules[?(@.type=='send_message')].args.message: ${message}
           $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
-beforeMethod:
-  name: 主账号心跳检查表示在线
-  step:
-    - byName: 主账号发送心跳检测
 testMethod:
   - name: 开启转接-子账号在线
     severity: NORMAL
