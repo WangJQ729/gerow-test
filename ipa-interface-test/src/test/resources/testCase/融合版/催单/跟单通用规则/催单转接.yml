@@ -57,6 +57,10 @@ beforeClass:
           $.rules[?(@.type=='send_message')].args.state_delay: 0
           $.rules[?(@.type=='send_message')].args.message: ${message}
           $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+beforeMethod:
+  name: 主账号心跳检查表示在线
+  step:
+    - byName: 主账号发送心跳检测
 testMethod:
   - name: 开启转接-子账号在线
     severity: NORMAL
@@ -210,6 +214,7 @@ testMethod:
               $.answer.custom_transfer.is_transfer: true
               $.answer.custom_transfer.transfer_subnick_list: null
   - name: 开启转接-转接列表含自己
+    enable: false
     severity: NORMAL
     step:
       - byName: 客户端设置-开启催单转接
@@ -226,6 +231,7 @@ testMethod:
           sign: ${__HmacMD5(spin=cntaobao${seller_name})}
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
+      - byName: 主账号发送心跳检测
       - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
         assertion:
