@@ -31,11 +31,6 @@ dataProvider:
     message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
     text_with_vars: ${message}
     reminder_type: 已付款
-  - node_state: shipped
-    order_state: shipped
-    reminder_type: 已发货
-    message: 亲，您订购的宝贝已经启程了，请注意物流查收哦，记得好评哦！
-    text_with_vars: ${message}
   - node_state: closed
     order_state: closed
     message: 亲，您对宝贝有什么不满意的吗？
