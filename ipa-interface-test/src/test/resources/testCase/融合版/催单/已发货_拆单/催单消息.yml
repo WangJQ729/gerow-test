@@ -5,8 +5,8 @@ dataProvider:
     order_state: part_shipped
     consign_part_message: 亲，由于每款商品发货时间不同，仓库小姐姐担心您等太久，已经帮您拆分发货了哦！部分宝贝已经优先启程了，请注意物流查收哦，记得好评哦！
     consign_part_text_with_vars: ${consign_part_message}
-    message2: 亲，最后宝贝也已经启程了，请注意物流查收哦，记得好评哦！
-    text_with_vars2: ${message2}
+    consign_all_message: 亲，最后宝贝也已经启程了，请注意物流查收哦，记得好评哦！
+    text_with_vars2: ${consign_all_message}
     reminder_type: 拆单发货
 beforeClass:
   name: 获取taskID和模板
@@ -29,7 +29,7 @@ testMethod:
             $.rules[?(@.type=='send_shipped_message')].args.consign_part.state_delay: 0
             $.rules[?(@.type=='send_shipped_message')].args.consign_part.message: ${consign_part_message}
             $.rules[?(@.type=='send_shipped_message')].args.consign_part_all.state_delay: 0
-            $.rules[?(@.type=='send_shipped_message')].args.consign_part_all.message: ${message2}
+            $.rules[?(@.type=='send_shipped_message')].args.consign_part_all.message: ${consign_all_message}
       - byName: 发送消息给商家-固定问题
       - name: 推送部分发货消息-第一件
         url: /api/client/reminder/v2/test/send?is_test=false&queue_type=0
