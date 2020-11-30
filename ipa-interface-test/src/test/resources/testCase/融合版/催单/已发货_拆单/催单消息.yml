@@ -16,7 +16,7 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
 testMethod:
-  - name: 拆单发货-催单消息
+  - name: 催单消息
     severity: NORMAL
     step:
       - byName: 开启催单任务
@@ -31,121 +31,92 @@ testMethod:
             $.rules[?(@.type=='send_shipped_message')].args.consign_part_all.state_delay: 0
             $.rules[?(@.type=='send_shipped_message')].args.consign_part_all.message: ${message2}
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
-        name: 通过pulsar推送部分发货消息
+      - name: 推送部分发货消息-第一件
+        url: /api/client/reminder/v2/test/send?is_test=false&queue_type=0
+        method: POST
+        body: >-
+          {"platform":"${platform}","shop_id":"${shop_id}","payment":20,"created_at":${__time(/1000,)},"updated_at":${__time(/1000,)},"address":"四川省桂溪街道天府软件园A5-8","item_ids":["604423906694"],"tbext":{"items":[{"item_id":"604423906694","item_name":"二手铅笔","count":1}],"receiver":{"name":"王健强","zip":"000000"}}}
         bodyEditor:
           json:
-            $.word.order_id: ${__RandomOrderId(order_id)}
-            $.word.buyer_id: ${buyer_id}
-            $.word.status: ${order_state}
-            $.word.tbext.buyer_nick: ${buyer_id}
-            $.word.tbext.original_order: >-
-              {"adjust_fee":"0.00","buyer_cod_fee":"0.00","buyer_nick":"${buyer_id}","buyer_open_uid":"AAGdHqFhAAgoIdPNSTRGF2WJ","buyer_rate":false,"consign_time":"2019-11-21 15:00:45","coupon_fee":0,"created":"2019-11-21 14:58:40","discount_fee":"0.00","is_gift":false,"is_sh_ship":false,"modified":"2019-11-21 15:00:45","new_presell":false,"nr_shop_guide_id":"","nr_shop_guide_name":"","orders":{"order":[{"adjust_fee":"-9.99","buyer_rate":false,"cid":50000436,"consign_time":"2019-11-21 15:00:45","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"265458326457","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":607123276832,"oid":"${__RandomString(13,1234567890,child_order_id_1)}","oid_str":"${child_order_id_1}","order_from":"TAOBAO","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01gv8KSf1KBkWy8uNse_!!1740721126.jpg","price":"10.00","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","sku_id":"4265234557342","sku_properties_name":"颜色:黄色;尺码:165/80A","snapshot_url":"q:${child_order_id_1}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"二手","total_fee":"0.01"},{"adjust_fee":"-9.99","buyer_rate":false,"cid":50024657,"discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","is_daixiao":false,"is_oversold":false,"num":1,"num_iid":604423906694,"oid":"${__RandomString(13,1234567890,child_order_id_2)}","oid_str":"${child_order_id_2}","order_from":"TAOBAO","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01PUtjEb1KBkX6UpzOm_!!1740721126.jpg","price":"10.00","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","snapshot_url":"q:${child_order_id_2}_1","status":"WAIT_SELLER_SEND_GOODS","title":"二手铅笔","total_fee":"0.01"}]},"pay_time":"2019-11-21 14:59:46","payment":"0.02","platform_subsidy_fee":"0.00","post_fee":"0.00","received_payment":"0.00","receiver_address":"   桂溪街道 天府软件园A5-8","receiver_city":"成都市","receiver_country":"","receiver_district":"武侯区","receiver_mobile":"17721883949","receiver_name":"王健强","receiver_state":"四川省","receiver_town":"","receiver_zip":"000000","seller_flag":0,"seller_nick":"wangjq_1990","seller_rate":false,"service_tags":{"logistics_tag":[{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"origAreaId=510107;consignDate=1080","service_type":"TB_CONSIGN_DATE"},{"service_tag":"lgType=-4","service_type":"FAST"}]},"order_id":"${order_id}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${child_order_id_1}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${child_order_id_2}"}]},"service_type":"","shipping_type":"express","status":"SELLER_CONSIGNED_PART","tid":"${order_id}","tid_str":"${order_id}","title":"测试店铺Gerow","total_fee":"20.00","trade_from":"TAOBAO","type":"fixed","you_xiang":false}
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.buyer_id: ${buyer_id}
+            $.status: ${order_state}
+            $.tbext.buyer_nick: ${buyer_id}
+            $.tbext.original_order: >-
+              {"orders":{"order":[{"invoice_no":"${__RandomOrderId(out_sid_1)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_1)}","num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_1)}"},{"num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_2)}"},{"num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_3)}"}]}}
       - byName: 获取催单消息
-        name: 部分发货催单消息
+        name: 获取催单消息-部分发货
         assertion:
           - json:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${consign_part_text_with_vars}
-      - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
-        name: 通过pulsar推送全部发货消息
+      - byName: 推送部分发货消息-第一件
+        name: 推送部分发货消息-第二三件
         bodyEditor:
           json:
-            $.word.order_id: ${order_id}
-            $.word.buyer_id: ${buyer_id}
-            $.word.status: ${order_state}
-            $.word.tbext.buyer_nick: ${buyer_id}
-            $.word.tbext.original_order: >-
-              {"adjust_fee":"0.00","buyer_cod_fee":"0.00","buyer_nick":"${buyer_id}","buyer_open_uid":"AAGdHqFhAAgoIdPNSTRGF2WJ","buyer_rate":false,"consign_time":"2019-11-21 15:02:26","coupon_fee":0,"created":"2019-11-21 14:58:40","discount_fee":"0.00","is_gift":false,"is_sh_ship":false,"modified":"2019-11-21 15:02:25","new_presell":false,"nr_shop_guide_id":"","nr_shop_guide_name":"","orders":{"order":[{"adjust_fee":"-9.99","buyer_rate":false,"cid":50000436,"consign_time":"2019-11-21 15:00:45","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"265458326457","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":607123276832,"oid":"${child_order_id_1}","oid_str":"${child_order_id_1}","order_from":"TAOBAO","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01gv8KSf1KBkWy8uNse_!!1740721126.jpg","price":"10.00","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","sku_id":"4265234557342","sku_properties_name":"颜色:黄色;尺码:165/80A","snapshot_url":"q:${child_order_id_1}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"二手","total_fee":"0.01"},{"adjust_fee":"-9.99","buyer_rate":false,"cid":50024657,"consign_time":"2019-11-21 15:02:26","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"365489565264","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":604423906694,"oid":"${child_order_id_2}","oid_str":"${child_order_id_2}","order_from":"TAOBAO","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01PUtjEb1KBkX6UpzOm_!!1740721126.jpg","price":"10.00","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","snapshot_url":"q:${child_order_id_2}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"二手铅笔","total_fee":"0.01"}]},"pay_time":"2019-11-21 14:59:46","payment":"0.02","platform_subsidy_fee":"0.00","post_fee":"0.00","received_payment":"0.00","receiver_address":"   桂溪街道 天府软件园A5-8","receiver_city":"成都市","receiver_country":"","receiver_district":"武侯区","receiver_mobile":"17721883949","receiver_name":"王健强","receiver_state":"四川省","receiver_town":"","receiver_zip":"000000","seller_flag":0,"seller_nick":"wangjq_1990","seller_rate":false,"service_tags":{"logistics_tag":[{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"origAreaId=510107;consignDate=1080","service_type":"TB_CONSIGN_DATE"},{"service_tag":"lgType=-4","service_type":"FAST"}]},"order_id":"${order_id}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${child_order_id_1}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${child_order_id_2}"}]},"service_type":"","shipping_type":"express","status":"WAIT_BUYER_CONFIRM_GOODS","tid":"${order_id}","tid_str":"${order_id}","title":"测试店铺Gerow","total_fee":"20.00","trade_from":"TAOBAO","type":"fixed","you_xiang":false}
+            $.order_id: ${order_id}
+            $.buyer_id: ${buyer_id}
+            $.status: ${order_state}
+            $.tbext.buyer_nick: ${buyer_id}
+            $.tbext.original_order: >-
+              {"orders":{"order":[{"invoice_no":"${out_sid_1}","consign_time":"${consign_time_1}","num_iid":607123276832,"oid":"${child_order_id_1}"},{"invoice_no":"${__RandomOrderId(out_sid_2)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_2)}","num_iid":607123276832,"oid":"${child_order_id_2}"},{"invoice_no":"${__RandomOrderId(out_sid_3)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_3)}","num_iid":607123276832,"oid":"${child_order_id_3}"}]}}
       - byName: 获取催单消息
         name: 获取催单消息-全部发货
         assertion:
           - json:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${text_with_vars2}
-  - name: 拆单发货-催单消息-3轮
+  - name: 催单消息-3轮
     severity: NORMAL
     step:
       - byName: 开启拆单发货催单任务
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送部分发货消息
-        name: 通过pulsar推送部分发货消息-第一轮
+      - byName: 推送部分发货消息-第一件
+      - byName: 获取催单消息-部分发货
+      - byName: 推送部分发货消息-第一件
+        name: 推送部分发货消息-第二件
         bodyEditor:
           json:
-            $.word.order_id: ${__RandomOrderId(order_id)}
-            $.word.buyer_id: ${buyer_id}
-            $.word.status: ${order_state}
-            $.word.tbext.buyer_nick: ${buyer_id}
-            $.word.tbext.item_ids: ["607123276832","604423906694","610043690892","603840846956","609803021235"]
-            $.word.tbext.original_order: >-
-              {"adjust_fee":"0.00","buyer_cod_fee":"0.00","buyer_nick":"${buyer_id}","buyer_open_uid":"AAHLHqFhAAgoIdHNSTX3kc0l","buyer_rate":false,"consign_time":"2019-12-18 19:26:36","coupon_fee":0,"created":"2019-12-18 19:02:48","discount_fee":"0.00","is_gift":false,"is_sh_ship":false,"modified":"2019-12-18 19:26:36","new_presell":false,"nr_shop_guide_id":"","nr_shop_guide_name":"","orders":{"order":[{"adjust_fee":"-9.98","buyer_rate":false,"cid":50000436,"consign_time":"2019-12-18 19:26:36","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"235654547840","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":607123276832,"oid":"${__RandomOrderId(sub_order_id_1)}","oid_str":"${sub_order_id_1}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01gv8KSf1KBkWy8uNse_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","sku_id":"4265234557342","sku_properties_name":"颜色:黄色;尺码:165/80A","snapshot_url":"q:${sub_order_id_1}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"二手铅笔图片","total_fee":"0.01"},{"adjust_fee":"-9.98","buyer_rate":false,"cid":50024657,"discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","is_daixiao":false,"is_oversold":false,"num":1,"num_iid":604423906694,"oid":"${__RandomOrderId(sub_order_id_2)}","oid_str":"${sub_order_id_2}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01PUtjEb1KBkX6UpzOm_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","snapshot_url":"q:${sub_order_id_2}_1","status":"WAIT_SELLER_SEND_GOODS","title":"二手铅笔","total_fee":"0.01"},{"adjust_fee":"-9.89","buyer_rate":false,"cid":50012720,"discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","is_daixiao":false,"is_oversold":false,"num":1,"num_iid":610043690892,"oid":"${__RandomOrderId(sub_order_id_3)}","oid_str":"${sub_order_id_3}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i2/1740721126/O1CN01ur4AoO1KBkY1OzMde_!!1740721126.jpg","price":"9.90","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","sku_id":"4459139787368","sku_properties_name":"颜色分类:黑色","snapshot_url":"q:${sub_order_id_3}_1","status":"WAIT_SELLER_SEND_GOODS","title":"中性笔1只","total_fee":"0.01"},{"adjust_fee":"-9.98","buyer_rate":false,"cid":50012767,"discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","is_daixiao":false,"is_oversold":false,"num":1,"num_iid":603840846956,"oid":"${__RandomOrderId(sub_order_id_4)}","oid_str":"${sub_order_id_4}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i2/1740721126/O1CN01P6agW51KBkWyuHJq3_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","snapshot_url":"q:${sub_order_id_4}_1","status":"WAIT_SELLER_SEND_GOODS","title":"二手烂毛笔图片","total_fee":"0.01"},{"adjust_fee":"-9.98","buyer_rate":false,"cid":50012751,"discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","is_daixiao":false,"is_oversold":false,"num":1,"num_iid":609803021235,"oid":"${__RandomOrderId(sub_order_id_5)}","oid_str":"${sub_order_id_5}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i1/1740721126/O1CN01Tcp3Dj1KBkXz8bdob_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","sku_id":"4288540917639","sku_properties_name":"颜色分类:黑色","snapshot_url":"q:${sub_order_id_5}_1","status":"WAIT_SELLER_SEND_GOODS","title":"N手烂笔芯","total_fee":"0.01"}]},"pay_time":"2019-12-18 19:03:39","payment":"0.05","platform_subsidy_fee":"0.00","post_fee":"0.00","received_payment":"0.00","receiver_address":"   石羊场街道 四川省成都市高新区南三环路五段188号美洲花园棕榈湾120栋","receiver_city":"成都市","receiver_country":"","receiver_district":"武侯区","receiver_mobile":"18908225658","receiver_name":"李志鹏","receiver_state":"四川省","receiver_town":"","receiver_zip":"610041","seller_flag":0,"seller_nick":"wangjq_1990","seller_rate":false,"service_tags":{"logistics_tag":[{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"origAreaId=510107;consignDate=1080","service_type":"TB_CONSIGN_DATE"},{"service_tag":"lgType=-4","service_type":"FAST"}]},"order_id":"${order_id}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_1}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_2}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_3}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_4}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_5}"}]},"service_type":"","shipping_type":"express","status":"SELLER_CONSIGNED_PART","tid":"${order_id}","tid_str":"${order_id}","title":"测试店铺Gerow","total_fee":"49.86","trade_from":"WAP,WAP","type":"fixed","you_xiang":false}
-      - byName: 部分发货催单消息
-      - byName: 通过pulsar推送部分发货消息
-        name: 通过pulsar推送部分发货消息-第二轮
+            $.order_id: ${order_id}
+            $.buyer_id: ${buyer_id}
+            $.status: ${order_state}
+            $.tbext.buyer_nick: ${buyer_id}
+            $.tbext.original_order: >-
+              {"orders":{"order":[{"invoice_no":"${out_sid_1}","consign_time":"${consign_time_1}","num_iid":607123276832,"oid":"${child_order_id_1}"},{"invoice_no":"${__RandomOrderId(out_sid_2)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_2)}","num_iid":607123276832,"oid":"${child_order_id_2}"},{"num_iid":607123276832,"oid":"${child_order_id_3}"}]}}
+      - byName: 获取催单消息-部分发货
+      - byName: 推送部分发货消息-第一件
+        name: 推送部分发货消息-第三件
         bodyEditor:
           json:
-            $.word.order_id: ${order_id}
-            $.word.buyer_id: ${buyer_id}
-            $.word.status: ${order_state}
-            $.word.tbext.buyer_nick: ${buyer_id}
-            $.word.tbext.item_ids: ["607123276832","604423906694","610043690892","603840846956","609803021235"]
-            $.word.tbext.original_order: >-
-              {"adjust_fee":"0.00","buyer_cod_fee":"0.00","buyer_nick":"${buyer_id}","buyer_open_uid":"AAHLHqFhAAgoIdHNSTX3kc0l","buyer_rate":false,"consign_time":"2019-12-18 19:30:54","coupon_fee":0,"created":"2019-12-18 19:02:48","discount_fee":"0.00","is_gift":false,"is_sh_ship":false,"modified":"2019-12-18 19:30:54","new_presell":false,"nr_shop_guide_id":"","nr_shop_guide_name":"","orders":{"order":[{"adjust_fee":"-9.98","buyer_rate":false,"cid":50000436,"consign_time":"2019-12-18 19:26:36","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"235654547840","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":607123276832,"oid":"${sub_order_id_1}","oid_str":"${sub_order_id_1}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01gv8KSf1KBkWy8uNse_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","sku_id":"4265234557342","sku_properties_name":"颜色:黄色;尺码:165/80A","snapshot_url":"q:${sub_order_id_1}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"二手铅笔图片","total_fee":"0.01"},{"adjust_fee":"-9.98","buyer_rate":false,"cid":50024657,"consign_time":"2019-12-18 19:30:54","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"235654547841","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":604423906694,"oid":"${sub_order_id_2}","oid_str":"${sub_order_id_2}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01PUtjEb1KBkX6UpzOm_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","snapshot_url":"q:${sub_order_id_2}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"二手铅笔","total_fee":"0.01"},{"adjust_fee":"-9.89","buyer_rate":false,"cid":50012720,"consign_time":"2019-12-18 19:30:54","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"235654547841","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":610043690892,"oid":"${sub_order_id_3}","oid_str":"${sub_order_id_3}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i2/1740721126/O1CN01ur4AoO1KBkY1OzMde_!!1740721126.jpg","price":"9.90","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","sku_id":"4459139787368","sku_properties_name":"颜色分类:黑色","snapshot_url":"q:${sub_order_id_3}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"中性笔1只","total_fee":"0.01"},{"adjust_fee":"-9.98","buyer_rate":false,"cid":50012767,"discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","is_daixiao":false,"is_oversold":false,"num":1,"num_iid":603840846956,"oid":"${sub_order_id_4}","oid_str":"${sub_order_id_4}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i2/1740721126/O1CN01P6agW51KBkWyuHJq3_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","snapshot_url":"q:${sub_order_id_4}_1","status":"WAIT_SELLER_SEND_GOODS","title":"二手烂毛笔图片","total_fee":"0.01"},{"adjust_fee":"-9.98","buyer_rate":false,"cid":50012751,"discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","is_daixiao":false,"is_oversold":false,"num":1,"num_iid":609803021235,"oid":"${sub_order_id_5}","oid_str":"${sub_order_id_5}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i1/1740721126/O1CN01Tcp3Dj1KBkXz8bdob_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","sku_id":"4288540917639","sku_properties_name":"颜色分类:黑色","snapshot_url":"q:${sub_order_id_5}_1","status":"WAIT_SELLER_SEND_GOODS","title":"N手烂笔芯","total_fee":"0.01"}]},"pay_time":"2019-12-18 19:03:39","payment":"0.05","platform_subsidy_fee":"0.00","post_fee":"0.00","received_payment":"0.00","receiver_address":"   石羊场街道 四川省成都市高新区南三环路五段188号美洲花园棕榈湾120栋","receiver_city":"成都市","receiver_country":"","receiver_district":"武侯区","receiver_mobile":"18908225658","receiver_name":"李志鹏","receiver_state":"四川省","receiver_town":"","receiver_zip":"610041","seller_flag":0,"seller_nick":"wangjq_1990","seller_rate":false,"service_tags":{"logistics_tag":[{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"origAreaId=510107;consignDate=1080","service_type":"TB_CONSIGN_DATE"},{"service_tag":"lgType=-4","service_type":"FAST"}]},"order_id":"576642791095728094"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_1}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_2}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_3}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_4}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_5}"}]},"service_type":"","shipping_type":"express","status":"SELLER_CONSIGNED_PART","tid":"576642791095728094","tid_str":"576642791095728094","title":"测试店铺Gerow","total_fee":"49.86","trade_from":"WAP,WAP","type":"fixed","you_xiang":false}
-      - byName: 部分发货催单消息
-      - byName: 通过pulsar推送订单消息
-        name: 通过pulsar推送消息-全部发货
-        bodyEditor:
-          json:
-            $.word.order_id: ${order_id}
-            $.word.buyer_id: ${buyer_id}
-            $.word.status: shipped
-            $.word.tbext.buyer_nick: ${buyer_id}
-            $.word.tbext.item_ids: ["607123276832","604423906694","610043690892","603840846956","609803021235"]
-            $.word.tbext.original_order: >-
-              {"adjust_fee":"0.00","buyer_cod_fee":"0.00","buyer_nick":"${buyer_id}","buyer_open_uid":"AAHLHqFhAAgoIdHNSTX3kc0l","buyer_rate":false,"consign_time":"2019-12-18 19:33:37","coupon_fee":0,"created":"2019-12-18 19:02:48","discount_fee":"0.00","is_gift":false,"is_sh_ship":false,"modified":"2019-12-18 19:33:36","new_presell":false,"nr_shop_guide_id":"","nr_shop_guide_name":"","orders":{"order":[{"adjust_fee":"-9.98","buyer_rate":false,"cid":50000436,"consign_time":"2019-12-18 19:26:36","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"235654547840","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":607123276832,"oid":"${sub_order_id_1}","oid_str":"${sub_order_id_1}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01gv8KSf1KBkWy8uNse_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","sku_id":"4265234557342","sku_properties_name":"颜色:黄色;尺码:165/80A","snapshot_url":"q:${sub_order_id_1}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"二手铅笔图片","total_fee":"0.01"},{"adjust_fee":"-9.98","buyer_rate":false,"cid":50024657,"consign_time":"2019-12-18 19:30:54","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"235654547841","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":604423906694,"oid":"${sub_order_id_2}","oid_str":"${sub_order_id_2}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01PUtjEb1KBkX6UpzOm_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","snapshot_url":"q:${sub_order_id_2}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"二手铅笔","total_fee":"0.01"},{"adjust_fee":"-9.89","buyer_rate":false,"cid":50012720,"consign_time":"2019-12-18 19:30:54","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"235654547841","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":610043690892,"oid":"${sub_order_id_3}","oid_str":"${sub_order_id_3}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i2/1740721126/O1CN01ur4AoO1KBkY1OzMde_!!1740721126.jpg","price":"9.90","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","sku_id":"4459139787368","sku_properties_name":"颜色分类:黑色","snapshot_url":"q:${sub_order_id_3}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"中性笔1只","total_fee":"0.01"},{"adjust_fee":"-9.98","buyer_rate":false,"cid":50012767,"consign_time":"2019-12-18 19:33:37","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"235654547842","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":603840846956,"oid":"${sub_order_id_4}","oid_str":"${sub_order_id_4}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i2/1740721126/O1CN01P6agW51KBkWyuHJq3_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","snapshot_url":"q:${sub_order_id_4}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"二手烂毛笔图片","total_fee":"0.01"},{"adjust_fee":"-9.98","buyer_rate":false,"cid":50012751,"consign_time":"2019-12-18 19:33:37","discount_fee":"0.00","divide_order_fee":"0.01","estimate_con_time":"付款后45天内","invoice_no":"235654547842","is_daixiao":false,"is_oversold":false,"logistics_company":"顺丰速运","num":1,"num_iid":609803021235,"oid":"${sub_order_id_5}","oid_str":"${sub_order_id_5}","order_from":"WAP,WAP","payment":"0.01","pic_path":"https://img.alicdn.com/bao/uploaded/i1/1740721126/O1CN01Tcp3Dj1KBkXz8bdob_!!1740721126.jpg","price":"9.99","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","shipping_type":"express","sku_id":"4288540917639","sku_properties_name":"颜色分类:黑色","snapshot_url":"q:${sub_order_id_5}_1","status":"WAIT_BUYER_CONFIRM_GOODS","title":"N手烂笔芯","total_fee":"0.01"}]},"pay_time":"2019-12-18 19:03:39","payment":"0.05","platform_subsidy_fee":"0.00","post_fee":"0.00","received_payment":"0.00","receiver_address":"   石羊场街道 四川省成都市高新区南三环路五段188号美洲花园棕榈湾120栋","receiver_city":"成都市","receiver_country":"","receiver_district":"武侯区","receiver_mobile":"18908225658","receiver_name":"李志鹏","receiver_state":"四川省","receiver_town":"","receiver_zip":"610041","seller_flag":0,"seller_nick":"wangjq_1990","seller_rate":false,"service_tags":{"logistics_tag":[{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"origAreaId=510107;consignDate=1080","service_type":"TB_CONSIGN_DATE"},{"service_tag":"lgType=-4","service_type":"FAST"}]},"order_id":"576642791095728094"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_1}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_2}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${__RandomOrderId(sub_order_id_3)}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_4}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${sub_order_id_5}"}]},"service_type":"","shipping_type":"express","status":"WAIT_BUYER_CONFIRM_GOODS","tid":"576642791095728094","tid_str":"576642791095728094","title":"测试店铺Gerow","total_fee":"49.86","trade_from":"WAP,WAP","type":"fixed","you_xiang":false}
+            $.order_id: ${order_id}
+            $.buyer_id: ${buyer_id}
+            $.status: ${order_state}
+            $.tbext.buyer_nick: ${buyer_id}
+            $.tbext.original_order: >-
+              {"orders":{"order":[{"invoice_no":"${out_sid_1}","consign_time":"${consign_time_1}","num_iid":607123276832,"oid":"${child_order_id_1}"},{"invoice_no":"${out_sid_2}","consign_time":"${consign_time_2}","num_iid":607123276832,"oid":"${child_order_id_2}"},{"invoice_no":"${__RandomOrderId(out_sid_3)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_3)}","num_iid":607123276832,"oid":"${child_order_id_3}"}]}}
       - byName: 获取催单消息-全部发货
       - byName: 根据订单查询trace
         assertion:
           - json:
               $.data.traces.length(): 3
-  - name: 拆单发货-催单消息-3轮-第12轮同时发货
+  - name: 催单消息-3轮-第12轮同时发货
     severity: NORMAL
     step:
       - byName: 开启拆单发货催单任务
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='send_shipped_message')].args.consign_part.state_delay: 10
-            $.rules[?(@.type=='send_shipped_message')].args.consign_part.message: ${consign_part_message}
-            $.rules[?(@.type=='send_shipped_message')].args.consign_part_all.state_delay: 0
-            $.rules[?(@.type=='send_shipped_message')].args.consign_part_all.message: ${message2}
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送部分发货消息-第一轮
-      - byName: 通过pulsar推送部分发货消息-第二轮
-      - byName: 部分发货催单消息
+      - byName: 推送部分发货消息-第一件
+      - byName: 推送部分发货消息-第二件
+      - byName: 获取催单消息-部分发货
         assertion:
           - json: {$.code: 0}
           - total:
               $.data.messages.length(): 2
-      - byName: 通过pulsar推送消息-全部发货
+      - byName: 推送部分发货消息-第三件
       - byName: 获取催单消息-全部发货
       - byName: 根据订单查询trace
         assertion:
           - json:
               $.data.traces.length(): 3
-      - byName: 通过pulsar推送消息-全部发货
-      - byName: 根据订单查询trace
-        extractor:
-          - json:
-              trace_id: $.data.traces[3].trace_id
-      - byName: 查看trace详情
-        name: 查看trace详情-只有订单消息
-        assertion:
-          - json:
-              $.data.traces.length(): 1
 afterMethod:
   name: 测试结束后查看订单trace
   step:
