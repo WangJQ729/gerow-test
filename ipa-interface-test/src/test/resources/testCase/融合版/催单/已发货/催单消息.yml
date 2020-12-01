@@ -61,13 +61,7 @@ testMethod:
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情
-      - byName: 获取催单消息
-        assertion:
-          - json:
-              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
-                - ${text_with_vars}
-              $.data.messages[?(@.order_id=='${order_id}')].images..id: [5dbbd61a9e3aad000d7de9fe]
-              $.data.messages[?(@.order_id=='${order_id}')].images..url: [https://xdmp-new.oss-cn-hangzhou.aliyuncs.com/answer_pics/eb1ddc7854a747ba9cfb8424c151ae04.jpg]
+      - byName: 获取催单消息-包含图片
 afterMethod:
   name: 测试结束后查看订单trace
   step:

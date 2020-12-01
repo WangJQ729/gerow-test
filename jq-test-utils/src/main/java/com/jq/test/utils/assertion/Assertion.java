@@ -288,13 +288,11 @@ public class Assertion {
     private void assertion(Object actual, Object value) {
         if (assertionType == AssertionType.TOTAL) {
             this.step.addAssertionLength(key, Integer.parseInt(actual.toString()));
-            Allure.step("判断结果:" + this.step.getAssertionLength().get(key) + " " + assertionType + " " + value, () -> {
-                assertionExec(actual, value);
-            });
+            Allure.step("判断结果:" + this.step.getAssertionLength().get(key) + " " + assertionType + " " + value,
+                    () -> assertionExec(actual, value));
         } else {
-            Allure.step("判断结果:" + actual + " " + assertionType + " " + value, () -> {
-                assertionExec(actual, value);
-            });
+            Allure.step("判断结果:" + actual + " " + assertionType + " " + value,
+                    () -> assertionExec(actual, value));
         }
     }
 

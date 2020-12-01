@@ -1,4 +1,4 @@
-name: 催单消息
+name: 拆单催单消息
 story: ${reminder_type}
 dataProvider:
   - node_state: shipped
@@ -40,7 +40,7 @@ testMethod:
           json:
             $.order_id: ${__RandomOrderId(order_id)}
             $.buyer_id: ${buyer_id}
-            $.status: ${order_state}
+            $.status: part_shipped
             $.tbext.buyer_nick: ${buyer_id}
             $.tbext.original_order: >-
               {"orders":{"order":[{"invoice_no":"${__RandomOrderId(out_sid_1)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_1)}","num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_1)}"},{"num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_2)}"},{"num_iid":607123276832,"oid":"${__RandomOrderId(child_order_id_3)}"}]}}
@@ -56,7 +56,7 @@ testMethod:
           json:
             $.order_id: ${order_id}
             $.buyer_id: ${buyer_id}
-            $.status: ${order_state}
+            $.status: part_shipped
             $.tbext.buyer_nick: ${buyer_id}
             $.tbext.original_order: >-
               {"orders":{"order":[{"invoice_no":"${out_sid_1}","consign_time":"${consign_time_1}","num_iid":607123276832,"oid":"${child_order_id_1}"},{"invoice_no":"${__RandomOrderId(out_sid_2)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_2)}","num_iid":607123276832,"oid":"${child_order_id_2}"},{"invoice_no":"${__RandomOrderId(out_sid_3)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_3)}","num_iid":607123276832,"oid":"${child_order_id_3}"}]}}
@@ -79,7 +79,7 @@ testMethod:
           json:
             $.order_id: ${order_id}
             $.buyer_id: ${buyer_id}
-            $.status: ${order_state}
+            $.status: part_shipped
             $.tbext.buyer_nick: ${buyer_id}
             $.tbext.original_order: >-
               {"orders":{"order":[{"invoice_no":"${out_sid_1}","consign_time":"${consign_time_1}","num_iid":607123276832,"oid":"${child_order_id_1}"},{"invoice_no":"${__RandomOrderId(out_sid_2)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_2)}","num_iid":607123276832,"oid":"${child_order_id_2}"},{"num_iid":607123276832,"oid":"${child_order_id_3}"}]}}
@@ -90,7 +90,7 @@ testMethod:
           json:
             $.order_id: ${order_id}
             $.buyer_id: ${buyer_id}
-            $.status: ${order_state}
+            $.status: part_shipped
             $.tbext.buyer_nick: ${buyer_id}
             $.tbext.original_order: >-
               {"orders":{"order":[{"invoice_no":"${out_sid_1}","consign_time":"${consign_time_1}","num_iid":607123276832,"oid":"${child_order_id_1}"},{"invoice_no":"${out_sid_2}","consign_time":"${consign_time_2}","num_iid":607123276832,"oid":"${child_order_id_2}"},{"invoice_no":"${__RandomOrderId(out_sid_3)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_3)}","num_iid":607123276832,"oid":"${child_order_id_3}"}]}}
@@ -110,7 +110,7 @@ testMethod:
         assertion:
           - json: {$.code: 0}
           - total:
-              $.data.messages.length(): 2
+              $.data.messages[?(@.text_with_vars == "${consign_part_text_with_vars}")].length(): 2
       - byName: 推送部分发货消息-第三件
       - byName: 获取催单消息-全部发货
       - byName: 根据订单查询trace
