@@ -280,6 +280,7 @@ testMethod:
               $.answer.custom_transfer.transfer_subnick_list:
                 - ${child_seller}
                 - ${seller_name}
+            assertionType: AllCONTAINS
   - name: 开启转接-多个子账号转接-都在线
     severity: NORMAL
     step:
