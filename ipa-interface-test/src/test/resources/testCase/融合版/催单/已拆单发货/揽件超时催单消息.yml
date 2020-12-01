@@ -1,4 +1,4 @@
-name: 拆单催单消息催单消息
+name: 拆单催单消息
 story: ${reminder_type}
 dataProvider:
   - node_state: got_delay
