@@ -1,0 +1,75 @@
+name: 催单消息
+story: ${reminder_type}
+dataProvider:
+  - node_state: paid
+    order_state: paid
+    message: 对我们的服务满意吗？让我成为你的专属客服吧，以后有事儿您找我！
+    text_with_vars: ${message}
+    reminder_type: 专属客服已付款
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取专属客服task_id
+    - byName: 删除其他催单任务
+    - byName: 获取专属客服task模板
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 催单消息校验-${message}
+    dataProvider:
+      - message: 纯文字催单消息
+        text_with_vars: 纯文字催单消息
+      - message: "#E-s20#E-s20#E-s20#E-s20#E-s20"
+        text_with_vars: "#E-s20#E-s20#E-s20#E-s20#E-s20"
+      - message: "{{子账号名称}}"
+        text_with_vars: ${seller_name}
+      - message: "1{↓1秒后分行发送↓}2"
+        text_with_vars: "1{↓1秒后分行发送↓}2"
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取专属客服催单消息
+  - name: 催单消息校验-订单编号
+    dataProvider:
+      - message: "{订单编号}"
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息
+        name: 获取专属客服催单消息-订单编号
+        assertion:
+          - json:
+              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
+                - ${order_id}
+              $.data.messages[?(@.order_id=='${order_id}')].content_type: [tb/subscribe_card]
+  - name: 催单消息校验-包含图片
+    dataProvider:
+      - message: 含图片的消息
+        text_with_vars: 含图片的消息
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务-包含图片
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息
+        name: 获取专属客服催单消息-包含图片
+        assertion:
+          - json:
+              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
+                - ${text_with_vars}
+              $.data.messages[?(@.order_id=='${order_id}')].images..id: [5dbbd61a9e3aad000d7de9fe]
+              $.data.messages[?(@.order_id=='${order_id}')].images..url: [https://xdmp-new.oss-cn-hangzhou.aliyuncs.com/answer_pics/eb1ddc7854a747ba9cfb8424c151ae04.jpg]
+              $.data.messages[?(@.order_id=='${order_id}')].content_type: [tb/subscribe_card]
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 获取专属客服task_id
+    - byName: 删除其他催单任务

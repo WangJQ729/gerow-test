@@ -55,7 +55,6 @@ beforeClass:
             disable_seller_name: $.subusers[?(@.auth_status!=1 && @.auth_status!=0)].seller_id
       assertion: [json: {$.code: 0}]
     - byName: 催单设置为自己和静默
-      name: 子账号设置为自己和静默
       form:
         sub_nick: ${disable_seller_name}
         reminder_type: mine,silence
