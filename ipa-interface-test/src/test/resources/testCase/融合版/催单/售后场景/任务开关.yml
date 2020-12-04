@@ -38,17 +38,6 @@ testMethod:
         order_state_name: 全部发货
       - order_state: succeeded
         order_state_name: 交易成功
-    description: |
-      """</br>
-      用例描述：</br>
-      1、开启任务会触发。</br>
-      </br>
-      测试步骤</br>
-      1、开启任务</br>
-      2、创建订单</br>
-      3、买家申请退款
-      4、校验催单消息</br>
-      """
     severity: CRITICAL
     step:
       - byName: 开启催单任务
@@ -67,17 +56,17 @@ testMethod:
       - byName: 发送消息给商家-固定问题
       - byName: 通过pulsar推送订单消息
       - name: 推送退款消息
-        byName: 通过pulsar推送订单消息
+        url: /api/client/reminder/v2/test/send?is_test=false&queue_type=4
+        method: POST
+        body: >-
+          {"refund_fee":"0.01","refund_phase":"onsale","bill_type":"return_bill","seller_nick":"${shopName}","modified":"2019-12-06 17:33:10.21"}
         bodyEditor:
           json:
-            $.topic: ${refundQueue}
-            $.word:
-              {"refund_fee":"0.01","refund_phase":"onsale","bill_type":"return_bill","seller_nick":"${shopName}","modified":"2019-12-06 17:33:10.21"}
-            $.word.buyer_nick: ${buyer_id}
-            $.word.tid: ${__BeanShell(${order_id}l,)}
-            $.word.oid: ${__BeanShell(${__RandomOrderId(sub_order_id)}l,)}
-            $.word.refund_id: ${__BeanShell(${refund_id}l,)}
-            $.word.channel: ${refund_state}
+            $.buyer_nick: ${buyer_id}
+            $.tid: ${__BeanShell(${order_id}l,)}
+            $.oid: ${__BeanShell(${__RandomOrderId(sub_order_id)}l,)}
+            $.refund_id: ${__BeanShell(${__RandomOrderId(sub_order_id)}l,)}
+            $.channel: ${refund_state}
       - byName: 获取催单消息
   - name: 关闭任务-订单状态为${order_state_name}时退款
     dataProvider:
@@ -93,17 +82,6 @@ testMethod:
         order_state_name: 全部发货
       - order_state: succeeded
         order_state_name: 交易成功
-    description: |
-      """</br>
-      用例描述：</br>
-      1、开启任务会触发。</br>
-      </br>
-      测试步骤</br>
-      1、开启任务</br>
-      2、创建订单</br>
-      3、买家申请退款
-      4、校验催单消息</br>
-      """
     severity: NORMAL
     step:
       - byName: 关闭催单任务

@@ -32,10 +32,7 @@ testMethod:
             $.rules[?(@.type=='send_shipped_message')].args.consign_part_all.message: ${consign_all_message}
       - byName: 发送消息给商家-固定问题
       - name: 推送部分发货消息-第一件
-        url: /api/client/reminder/v2/test/send?is_test=false&queue_type=0
-        method: POST
-        body: >-
-          {"platform":"${platform}","shop_id":"${shop_id}","payment":20,"created_at":${__time(/1000,)},"updated_at":${__time(/1000,)},"address":"四川省桂溪街道天府软件园A5-8","item_ids":["604423906694"],"tbext":{"items":[{"item_id":"604423906694","item_name":"二手铅笔","count":1}],"receiver":{"name":"王健强","zip":"000000"}}}
+        byName: 通过pulsar推送订单消息
         bodyEditor:
           json:
             $.order_id: ${__RandomOrderId(order_id)}
@@ -50,7 +47,7 @@ testMethod:
           - json:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${consign_part_text_with_vars}
-      - byName: 推送部分发货消息-第一件
+      - byName: 通过pulsar推送订单消息
         name: 推送部分发货消息-第二三件
         bodyEditor:
           json:
@@ -73,7 +70,7 @@ testMethod:
       - byName: 发送消息给商家-固定问题
       - byName: 推送部分发货消息-第一件
       - byName: 获取催单消息-部分发货
-      - byName: 推送部分发货消息-第一件
+      - byName: 通过pulsar推送订单消息
         name: 推送部分发货消息-第二件
         bodyEditor:
           json:
@@ -84,7 +81,7 @@ testMethod:
             $.tbext.original_order: >-
               {"orders":{"order":[{"invoice_no":"${out_sid_1}","consign_time":"${consign_time_1}","num_iid":607123276832,"oid":"${child_order_id_1}"},{"invoice_no":"${__RandomOrderId(out_sid_2)}","consign_time":"${__PlusDay(yyyy-MM-dd,0,consign_time_2)}","num_iid":607123276832,"oid":"${child_order_id_2}"},{"num_iid":607123276832,"oid":"${child_order_id_3}"}]}}
       - byName: 获取催单消息-部分发货
-      - byName: 推送部分发货消息-第一件
+      - byName: 通过pulsar推送订单消息
         name: 推送部分发货消息-第三件
         bodyEditor:
           json:
