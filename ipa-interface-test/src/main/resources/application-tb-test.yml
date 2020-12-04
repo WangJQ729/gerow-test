@@ -2,7 +2,6 @@ data:
   test:
     platform: tb
     host: wangcai-${env}.1yangai.com
-    test_tools_new: http://test-tools-${env}.1yangai.com
     api_host: https://api-${env}.1yangai.com
 
     shopName: ${shopName}
