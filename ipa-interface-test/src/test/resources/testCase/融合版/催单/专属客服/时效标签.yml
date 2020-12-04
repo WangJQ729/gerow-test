@@ -58,10 +58,7 @@ testMethod:
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
-      - byName: 查看trace详情
-        assertion:
-          - json:
-              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
+      - byName: 查看trace详情-时效标签不生效
   - name: 时效标签(每日重复-生效)-2小时前到2小时后
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -95,10 +92,7 @@ testMethod:
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
-      - byName: 查看trace详情
-        assertion:
-          - json:
-              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
+      - byName: 查看trace详情-时效标签不生效
   - name: 时效标签(自定义重复时段-生效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -153,10 +147,7 @@ testMethod:
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
-      - byName: 查看trace详情
-        assertion:
-          - json:
-              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
+      - byName: 查看trace详情-时效标签不生效
 afterMethod:
   name: 测试结束后查看订单trace
   step:

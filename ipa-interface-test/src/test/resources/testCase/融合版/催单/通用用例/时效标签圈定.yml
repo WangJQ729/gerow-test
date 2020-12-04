@@ -1,18 +1,49 @@
-name: 时效标签
+name: 时效标签圈定
 story: ${reminder_type}
 dataProvider:
-  - node_state: send_scan_delay
-    order_state: send_scan
-    message: 您好，您的快递已经派送，麻烦尽快签收呢！
-    text_with_vars: ${message}
-    reminder_type: 派件超时
-    action: SENT_SCAN
-  - node_state: logistics_update_delay
-    order_state: got
-    message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
-    text_with_vars: ${message}
-    reminder_type: 物流更新超时
-    action: GOT
+    - message2: 第二个任务哦!
+      text_with_vars2: ${message2}
+      dataProvider:
+        - node_state: created
+          order_state: created
+          message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+          text_with_vars: ${message}
+          reminder_type: 下单未付款
+        - node_state: checkaddr
+          order_state: created
+          message: 亲，您的订单已经收到，请核对以下信息是否正确，我们将尽快为您发出！
+          text_with_vars: ${message}
+          reminder_type: 核对地址
+        - node_state: deposited
+          order_state: deposited
+          message: defualt message!
+          text_with_vars: ${message}
+          reminder_type: 已付定金未付尾款
+        - node_state: paid
+          order_state: paid
+          message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
+          text_with_vars: ${message}
+          reminder_type: 已付款
+        - node_state: shipped_delay
+          order_state: paid
+          message: 由于近期订单量过大，发货小妹没能及时给您发货，实在抱歉。麻烦您耐心等待，小妹会尽快安排给您优先发货呢！
+          text_with_vars: ${message}
+          reminder_type: 发货超时
+        - node_state: got_delay
+          order_state: shipped
+          message: 由于近期订单量过大，快递小哥没能及时揽件，实在抱歉。请您耐心等待，小妹会尽快联系快递小哥安排给您优先处理呢！
+          text_with_vars: ${message}
+          reminder_type: 揽件超时
+        - node_state: send_scan
+          order_state: send_scan
+          message: 您的快递已经派件了！收货时，请检查快递的外包装是否完整，当场验货确认无误后，再签收哦！
+          text_with_vars: ${message}
+          reminder_type: 验收提醒
+        - node_state: closed
+          order_state: closed
+          message: 亲，您对宝贝有什么不满意的吗？
+          text_with_vars: ${message}
+          reminder_type: 交易取消
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -20,27 +51,25 @@ beforeClass:
     - byName: 获取task模板
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
+    - byName: 开启相同场景内任务去重
     - byName: 获取时效标签列表
     - byName: 删除时效标签
       iter:
         ageing_id: ${ageing_ids}
       form:
         id: ${ageing_id}
+    - byName: 使用模板新建第二个task
+    - byName: 设置第一个任务在前
+      name: 设置时效不满足的任务在前
+      body: |
+        {
+            "ids":[
+                "${task_id}",
+                "${task_id_2}"
+            ]
+        }
 testMethod:
-  - name: 时效标签(固定时段-生效)-今天生效
-    dataProvider:
-      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-        ageing_type: 1
-        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,0,start_time)}
-        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,0,end_time)}
-    severity: NORMAL
-    step:
-      - byName: 添加时效标签
-      - byName: 设置时效标签
-      - byName: 随机顾客推送已发货订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息
-  - name: 时效标签(固定时段-失效)-${ageing_name}
+  - name: 时效标签(固定时段-失效)-${ageing_name}-时效标签不生效应该催第二个任务
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 1
@@ -56,35 +85,12 @@ testMethod:
     step:
       - byName: 添加时效标签
       - byName: 设置时效标签
-      - byName: 随机顾客推送已发货订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-消息为空
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息-第二个任务
       - byName: 根据订单查询trace
-      - byName: 查看trace详情
-        name: 查看trace详情-时效标签不生效
-        assertion:
-          - json:
-              $.data.traces[?(@.phase=='TaskReject')].task_reject_reason: [ageing is not invalid]
-  - name: 时效标签(每日重复-生效)-2小时前到2小时后
-    dataProvider:
-      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-        ageing_type: 2
-        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
-        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
-    severity: NORMAL
-    step:
-      - byName: 添加时效标签
-        name: 添加时效标签(每日重复)
-        form:
-          everyday_start_time: ${everyday_start_time}
-          everyday_end_time: ${everyday_end_time}
-          start_time: ~
-          end_time: ~
-      - byName: 设置时效标签
-      - byName: 随机顾客推送已发货订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息
-  - name: 时效标签(每日重复-失效)-${ageing_name}
+      - byName: 查看trace详情-时效标签不生效
+  - name: 时效标签(每日重复-失效)-${ageing_name}-时效标签不生效应该催第二个任务
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 2
@@ -100,28 +106,12 @@ testMethod:
     step:
       - byName: 添加时效标签(每日重复)
       - byName: 设置时效标签
-      - byName: 随机顾客推送已发货订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-消息为空
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息-第二个任务
       - byName: 根据订单查询trace
       - byName: 查看trace详情-时效标签不生效
-  - name: 时效标签(自定义重复时段-生效)-${ageing_name}
-    dataProvider:
-      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-        ageing_type: 3
-        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
-        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
-        repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
-        repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
-        ageing_name: 2小时前到2小时后
-    severity: NORMAL
-    step:
-      - byName: 添加时效标签(自定义重复时段)
-      - byName: 设置时效标签
-      - byName: 随机顾客推送已发货订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息
-  - name: 时效标签(自定义重复时段-失效)-${ageing_name}
+  - name: 时效标签(自定义重复时段-失效)-${ageing_name}-时效标签不生效应该催第二个任务
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
@@ -155,9 +145,9 @@ testMethod:
     step:
       - byName: 添加时效标签(自定义重复时段)
       - byName: 设置时效标签
-      - byName: 随机顾客推送已发货订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-消息为空
+      - byName: 发送消息给商家-固定问题
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息-第二个任务
       - byName: 根据订单查询trace
       - byName: 查看trace详情-时效标签不生效
 afterMethod:
@@ -165,15 +155,11 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-    - name: 删除时效标签
-      url: /api/admin/config2/ageing/delete
-      headers:
-        Content-Type: multipart/form-data
-      method: POST
-      form:
-        id: ${ageing_id}
-      assertion: [json: {$.code: 0}]
+    - byName: 删除时效标签
 afterClass:
   name: 测试结束后删除任务
   step:
     - byName: 删除催单任务
+    - byName: 删除催单任务
+      body: |
+        {"id":"${task_id_2}"}
