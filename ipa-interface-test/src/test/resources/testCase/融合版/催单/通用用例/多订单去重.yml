@@ -28,7 +28,7 @@ testMethod:
       测试步骤</br>
       1、开启任务</br>
       2、创建下单未付款订单</br>
-      3、建议订单trace是否已经settimer</br>
+      3、校验订单trace是否已经settimer</br>
       4、创建一个已付款订单
       5、不应该发送催单消息</br>
       6、校验trace信息</br>
