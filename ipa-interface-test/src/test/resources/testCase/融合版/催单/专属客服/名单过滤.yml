@@ -20,7 +20,7 @@ testMethod:
     step:
       - byName: 开启催单任务-开启过滤名单
       - byName: 发送消息给商家-指定买家
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
       - byName: 查看trace详情-导入名单过滤
@@ -28,13 +28,13 @@ testMethod:
     step:
       - byName: 开启催单任务-开启过滤名单
       - byName: 发送消息给商家
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取专属客服催单消息
   - name: 名单过滤-买家在过滤名单内，但过滤条件未勾选
     step:
       - byName: 开启催单任务-不开启过滤名单
       - byName: 发送消息给商家-指定买家
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取专属客服催单消息
 afterMethod:
   name: 测试结束后查看订单trace

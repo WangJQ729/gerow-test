@@ -30,7 +30,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 设置金额限制为5-20元
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
         name: 随机顾客推送已发货订单消息-指定金额
         bodyEditor:
           json:

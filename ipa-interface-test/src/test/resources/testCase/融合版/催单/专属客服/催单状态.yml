@@ -29,7 +29,7 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 催单设置-不催单
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-客户端不发送消息
       - byName: 获取催单消息-消息为空
@@ -38,7 +38,7 @@ testMethod:
     step:
       - byName: 催单设置-不催单
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 模拟pulsar订单消息-随机顾客
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
@@ -48,7 +48,7 @@ testMethod:
       - byName: 发送消息给子账号
       - byName: 催单设置-不催单
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
@@ -58,14 +58,14 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 催单设置-仅自己
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取专属客服催单消息
   - name: ${reminder_type}-仅自己-静默客户
     severity: NORMAL
     step:
       - byName: 催单设置-仅自己
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 模拟pulsar订单消息-随机顾客
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
@@ -75,7 +75,7 @@ testMethod:
       - byName: 发送消息给子账号
       - byName: 催单设置-仅自己
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
@@ -85,7 +85,7 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 催单设置-仅静默
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-客户端不发送消息
       - byName: 获取催单消息-消息为空
@@ -95,7 +95,7 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 催单设置-仅静默
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 模拟pulsar订单消息-随机顾客
       - byName: 获取专属客服催单消息
   - name: ${reminder_type}-仅静默-别人的顾客
     severity: NORMAL
@@ -103,7 +103,7 @@ testMethod:
       - byName: 发送消息给子账号
       - byName: 催单设置-仅静默
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空
@@ -113,14 +113,14 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 催单设置为自己和静默
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取专属客服催单消息
   - name: ${reminder_type}-自己和静默-静默顾客
     severity: NORMAL
     step:
       - byName: 催单设置为自己和静默
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 模拟pulsar订单消息-随机顾客
       - byName: 获取专属客服催单消息
   - name: ${reminder_type}-自己和静默-别人的客户
     severity: NORMAL
@@ -128,7 +128,7 @@ testMethod:
       - byName: 发送消息给子账号
       - byName: 催单设置为自己和静默
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-没有催单的子账号设置等待时间
       - byName: 获取催单消息-消息为空

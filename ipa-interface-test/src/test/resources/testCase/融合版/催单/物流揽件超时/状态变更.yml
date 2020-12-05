@@ -94,7 +94,7 @@ testMethod:
       - byName: 随机顾客推送已发货订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 通过pulsar推送订单消息-状态变更
+      - byName: 模拟pulsar订单消息-状态变更
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
   - name: 状态变更为-${new_action_name}-${action}

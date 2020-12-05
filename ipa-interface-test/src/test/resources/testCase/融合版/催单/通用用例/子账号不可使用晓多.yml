@@ -75,7 +75,7 @@ testMethod:
               $.code: 0
               $.data.messages.length(): 0
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 模拟pulsar订单消息-随机顾客
       - byName: 获取消息-不能使用晓多账号拉取
         invocationCount: 5
         sleep: 2

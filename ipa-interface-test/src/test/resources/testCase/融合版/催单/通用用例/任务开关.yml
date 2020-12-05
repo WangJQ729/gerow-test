@@ -64,7 +64,7 @@ testMethod:
     step:
       - byName: 开启催单任务
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取催单消息
   - name: 关闭任务
     description: |
@@ -87,7 +87,7 @@ testMethod:
             $.enable: false
             $.shop_id: ${shop_id}
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取催单消息
         sleep: 5
         name: 获取催单消息-消息为空
@@ -99,7 +99,7 @@ testMethod:
         name: 查看trace详情-任务关闭
         assertion:
           - json:
-              $.data.traces.length(): 1
+              $.data.traces.length(): 2
 afterMethod:
   name: 测试结束后查看订单trace
   step:

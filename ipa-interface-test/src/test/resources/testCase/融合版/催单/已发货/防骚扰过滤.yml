@@ -29,9 +29,9 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: true
             $.rules[?(@.type=='send_limit')].args.second: 30
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取催单消息
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
       - byName: 查看trace详情
@@ -43,16 +43,16 @@ testMethod:
     step:
       - byName: 开启已发货催单任务-开启防骚扰过滤
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取催单消息
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
       - byName: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_limit]
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
         sleep: 35
       - byName: 获取催单消息
 afterMethod:
