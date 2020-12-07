@@ -33,10 +33,12 @@ testMethod:
         ageing_type: 1
         start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,0,start_time)}
         end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,0,end_time)}
+        task_status: starting
     severity: NORMAL
     step:
       - byName: 添加时效标签
       - byName: 设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 随机顾客推送已发货订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
@@ -47,15 +49,18 @@ testMethod:
         start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,-1,start_time)}
         end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,-1,end_time)}
         ageing_name: 1天前
+        task_status: ended
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 1
         start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,1,start_time)}
         end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,1,end_time)}
         ageing_name: 1天后
+        task_status: unstart
     severity: NORMAL
     step:
       - byName: 添加时效标签
       - byName: 设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 随机顾客推送已发货订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
@@ -71,6 +76,7 @@ testMethod:
         ageing_type: 2
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
         everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
+        task_status: starting
     severity: NORMAL
     step:
       - byName: 添加时效标签
@@ -81,6 +87,7 @@ testMethod:
           start_time: ~
           end_time: ~
       - byName: 设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 随机顾客推送已发货订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
@@ -91,15 +98,18 @@ testMethod:
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
         everyday_end_time: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,)}
         ageing_name: 2小时前到1小时前
+        task_status: unstart
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 2
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
         everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
         ageing_name: 1小时后到2小时后
+        task_status: unstart
     severity: NORMAL
     step:
       - byName: 添加时效标签(每日重复)
       - byName: 设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 随机顾客推送已发货订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
@@ -114,10 +124,12 @@ testMethod:
         repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
         ageing_name: 2小时前到2小时后
+        task_status: starting
     severity: NORMAL
     step:
       - byName: 添加时效标签(自定义重复时段)
       - byName: 设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 随机顾客推送已发货订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
@@ -130,6 +142,7 @@ testMethod:
         repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
         ageing_name: 2小时前到1小时前
+        task_status: unstart
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
@@ -137,6 +150,7 @@ testMethod:
         repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
         ageing_name: 1小时后到2小时后
+        task_status: unstart
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
@@ -144,6 +158,7 @@ testMethod:
         repeat_start_date: ${__PlusDay(yyyy-MM-dd,-2,)}
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,-1,)}
         ageing_name: 2天前到1天前
+        task_status: ended
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
@@ -151,10 +166,12 @@ testMethod:
         repeat_start_date: ${__PlusDay(yyyy-MM-dd,1,)}
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,2,)}
         ageing_name: 1天后到2天后
+        task_status: unstart
     severity: NORMAL
     step:
       - byName: 添加时效标签(自定义重复时段)
       - byName: 设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 随机顾客推送已发货订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
