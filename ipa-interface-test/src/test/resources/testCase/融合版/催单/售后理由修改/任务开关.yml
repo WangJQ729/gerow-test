@@ -6,16 +6,16 @@ dataProvider:
     text_with_vars: ${message}
     reminder_type: 售后理由修改
     refund_state: taobao_refund_RefundCreated
-  - node_state: refund_agree
-    message: 您好，您的退货申请已通过，麻烦您把货发给我们，我们也好尽快给您办理退换货呢！
-    text_with_vars: ${message}
-    reminder_type: 同意退货
-    refund_state: taobao_refund_RefundSellerAgreeAgreement
-  - node_state: refund_success
-    message: 您好，您的退款申请已通过，请注意查收哦！感谢您的耐心等待，欢迎下次再来光顾小店。
-    text_with_vars: ${message}
-    reminder_type: 退款成功
-    refund_state: taobao_refund_RefundSuccess
+#  - node_state: refund_agree
+#    message: 您好，您的退货申请已通过，麻烦您把货发给我们，我们也好尽快给您办理退换货呢！
+#    text_with_vars: ${message}
+#    reminder_type: 同意退货
+#    refund_state: taobao_refund_RefundSellerAgreeAgreement
+#  - node_state: refund_success
+#    message: 您好，您的退款申请已通过，请注意查收哦！感谢您的耐心等待，欢迎下次再来光顾小店。
+#    text_with_vars: ${message}
+#    reminder_type: 退款成功
+#    refund_state: taobao_refund_RefundSuccess
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -65,7 +65,7 @@ testMethod:
             $.buyer_nick: ${buyer_id}
             $.tid: ${__BeanShell(${order_id}l,)}
             $.oid: ${__BeanShell(${__RandomOrderId(sub_order_id)}l,)}
-            $.refund_id: ${__BeanShell(${__RandomOrderId(sub_order_id)}l,)}
+            $.refund_id: ${__BeanShell(${__RandomOrderId(refund_id)}l,)}
             $.channel: ${refund_state}
             $.reason: 多拍/错拍/不想要
       - byName: 获取催单消息

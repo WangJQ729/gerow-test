@@ -1,6 +1,5 @@
 name: 售后理由圈定
 story: ${reminder_type}
-enable: false
 dataProvider:
   - node_state: refund
     reminder_type: 售后理由修改
@@ -8,6 +7,7 @@ dataProvider:
     message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
     text_with_vars: ${message}
     order_state: succeeded
+    refund_reason: 多拍/错拍/不想要
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -17,36 +17,23 @@ beforeClass:
     - byName: 使用模板新建一个task
 testMethod:
   - name: 符合圈定-多拍/错拍/不想要
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务
       - byName: 发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
       - byName: 推送退款消息
+        name: 推送退款消息-指定退款理由
+        bodyEditor:
+          json:
+            $.buyer_nick: ${buyer_id}
+            $.tid: ${__BeanShell(${order_id}l,)}
+            $.oid: ${__BeanShell(${__RandomOrderId(sub_order_id)}l,)}
+            $.refund_id: ${__BeanShell(${__RandomOrderId(refund_id)}l,)}
+            $.channel: ${refund_state}
+            $.reason: ${refund_reason}
       - byName: 获取催单消息
   - name: 符合圈定-圈定多个理由
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务
@@ -64,6 +51,15 @@ testMethod:
       - byName: 发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
       - byName: 推送退款消息
+        name: 推送退款消息-指定退款理由
+        bodyEditor:
+          json:
+            $.buyer_nick: ${buyer_id}
+            $.tid: ${__BeanShell(${order_id}l,)}
+            $.oid: ${__BeanShell(${__RandomOrderId(sub_order_id)}l,)}
+            $.refund_id: ${__BeanShell(${__RandomOrderId(refund_id)}l,)}
+            $.channel: ${refund_state}
+            $.reason: ${refund_reason}
       - byName: 获取催单消息
   - name: 不符合圈定-${refund_reasons}
     dataProvider:
@@ -77,17 +73,6 @@ testMethod:
       - refund_reasons: 假冒品牌
       - refund_reasons: 商品少件/破损/污渍等
       - refund_reasons: 其他
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务

@@ -1,6 +1,6 @@
 name: 物流状态圈定
-enable: false
 story: ${reminder_type}
+enable: false
 dataProvider:
   - node_state: refund
     reminder_type: 售后理由修改
@@ -18,17 +18,6 @@ beforeClass:
     - byName: 使用模板新建一个task
 testMethod:
   - name: 符合圈定-设置未签收-实际未签收
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务
@@ -37,17 +26,6 @@ testMethod:
       - byName: 推送退款消息
       - byName: 获取催单消息
   - name: 符合圈定-设置未签收-实际已签收
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务
@@ -83,17 +61,6 @@ testMethod:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [logistics_filter]
   - name: 符合圈定-设置已签收-实际已签收
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务
@@ -116,17 +83,6 @@ testMethod:
       - byName: 推送退款消息
       - byName: 获取催单消息
   - name: 符合圈定-设置已签收-实际未签收
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务-已签收

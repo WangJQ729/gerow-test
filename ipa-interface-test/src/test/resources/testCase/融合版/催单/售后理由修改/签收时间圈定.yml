@@ -1,6 +1,6 @@
 name: 签收时间圈定
-enable: false
 story: ${reminder_type}
+enable: false
 dataProvider:
   - node_state: refund
     reminder_type: 售后理由修改
@@ -23,17 +23,6 @@ testMethod:
       - day_delay: 6
       - day_delay: 7
       - day_delay: 8
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务-已签收
@@ -48,17 +37,6 @@ testMethod:
       - day_delay: 0
       - day_delay: 1
       - day_delay: 6
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务
@@ -85,17 +63,6 @@ testMethod:
     dataProvider:
       - day_delay: 7
       - day_delay: 8
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务-物流签收7天内
@@ -115,17 +82,6 @@ testMethod:
     dataProvider:
       - day_delay: 7
       - day_delay: 8
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务
@@ -153,17 +109,6 @@ testMethod:
       - day_delay: 0
       - day_delay: 1
       - day_delay: 6
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务-物流签收7天后
