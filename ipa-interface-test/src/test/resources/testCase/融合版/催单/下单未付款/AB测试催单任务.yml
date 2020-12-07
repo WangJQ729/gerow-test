@@ -5,13 +5,12 @@ dataProvider:
     order_state: created
     message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
     message2: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~2
-    text_with_vars: ${message}
     reminder_type: 下单未付款
+    compare_field: message
 beforeClass:
   name: 获取taskID和模板
   step:
     - byName: 获取所有的task_id
-    - byName: 获取task模板
     - byName: 删除其他催单任务
     - name: 获取所有的测试任务
       url: /api/abtest/manage/plan/list
@@ -31,12 +30,41 @@ beforeClass:
     - byName: 删除测试催单任务
       iter:
         plan_id: ${plan_ids}
+    - name: 获取测试催单任务模板
+      url: /api/abtest/manage/plan/template
+      method: GET
+      variables:
+        service_name: reminder
+        platform: ${platform}
+        type: ${node_state}
+      extractor:
+        - json:
+            task_info: $.data
     - name: 新建测试催单任务
       url: /api/abtest/manage/plan
       method: POST
-      body: |
-        {"config":[{"type":"customer_type_limit","args":{"enable":false,"type":""}},{"type":"order_goods_limit","args":{"enable":false,"goods_ids":[]}},{"type":"pay_amount_limit","args":{"enable":false,"max":0,"min":0}},{"type":"order_address_limit","args":{"enable":false,"cities":[]}},{"type":"state_triggered_time_limit","args":{"enable":false,"from":1590667222,"to":1590753622}},{"type":"order_remark_keyword_filter","args":{"enable":false,"is_include":false,"keywords":[]}},{"type":"risk_user_filter","args":{"enable":true}},{"type":"chat_after_triggered_filter","args":{"enable":true}},{"type":"send_limit","args":{"enable":false,"second":3600}},{"type":"send_message","args":{"message":"亲，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~\n查看订单 {订单链接}","ageing_id":"","images":[],"state_delay":180,"receive_message_filter":false}},{"type":"send_sms","args":{"message":"","sign":"","state_delay":0}},{"type":"state_delay","args":{"delay":0}}],"name":"测试2","type":"created","start_time":${__timeShift(,,PT-2H,zh_CN,start_time)},"end_time":${__timeShift(,,PT2H,zh_CN,end_time)},"shop_ids":["${shop_id}"],"compare_field":"message","params":[{"name":"测试1","value_obj":{"images":[],"message":"${message}"}},{"name":"测试2","value_obj":{"images":[],"message":"${message2}"}}],"platform":"${platform}","service_name":"reminder"}
+      body: ${task_info}
       assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            task_id: $.data.id
+      bodyEditor:
+        json:
+          $.name: 测试
+          $.type: ${node_state}
+          $.start_time: ${__BeanShell(${__StartOfDay()}*1000l,)}
+          $.end_time: ${__BeanShell(${__EndOfDay()}*1000l,)}
+          $.shop_ids: ["${shop_id}"]
+          $.compare_field: ${compare_field}
+          $.params:
+            - name: 测试1
+              value_obj:
+                images: []
+                message: ${message}
+            - name: 测试2
+              value_obj:
+                images: []
+                message: ${message2}
     - name: 获取测试任务ID
       byName: 获取所有的测试任务
       variables:
@@ -56,13 +84,14 @@ beforeMethod:
   step:
     - byName: 拉一下催单消息
 testMethod:
-  - name: AB测试催单任务-下单未付款
+  - name: AB测试催单任务
     severity: NORMAL
     invocationCount: 1
     step:
       - byName: 发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
       - byName: 获取催单消息
+        name: 获取AB催单消息
         assertion:
           - json:
               $.data.messages[?(@.buyer_id=='${buyer_id}')].text_with_vars:
@@ -74,14 +103,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-afterClass:
-  name: 测试结束后删除任务
-  step:
-    - name: 删除测试催单任务
-      url: /api/abtest/manage/plan/delete
-      method: GET
-      variables:
-        service_name: reminder
-        platform: ${platform}
-        plan_id: ${plan_id}
-      assertion: [json: {$.code: 0}]
+#afterClass:
+#  name: 测试结束后删除任务
+#  step:
+#    - byName: 删除测试催单任务
