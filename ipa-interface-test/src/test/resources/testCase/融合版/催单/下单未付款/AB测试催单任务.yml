@@ -103,7 +103,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-#afterClass:
-#  name: 测试结束后删除任务
-#  step:
-#    - byName: 删除测试催单任务
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除测试催单任务
