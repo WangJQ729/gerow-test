@@ -50,6 +50,7 @@ testMethod:
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
       - byName: 查看trace详情
+        name: 查看trace详情-不满足金额圈定
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [pay_amount_limit]

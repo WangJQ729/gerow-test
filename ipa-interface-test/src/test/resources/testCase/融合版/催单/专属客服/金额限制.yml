@@ -42,10 +42,7 @@ testMethod:
       - byName: 模拟pulsar订单消息-指定金额
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
-      - byName: 查看trace详情
-        assertion:
-          - json:
-              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [pay_amount_limit]
+      - byName: 查看trace详情-不满足金额圈定
   - name: 金额限制-关闭-${payment}
     dataProvider:
       - payment: 4.99

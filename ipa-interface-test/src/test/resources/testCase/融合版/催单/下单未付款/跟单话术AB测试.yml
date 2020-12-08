@@ -57,14 +57,10 @@ beforeClass:
           $.shop_ids: ["${shop_id}"]
           $.compare_field: ${compare_field}
           $.params:
-            - name: 测试1
-              value_obj:
-                images: []
-                message: ${message}
-            - name: 测试2
-              value_obj:
-                images: []
-                message: ${message2}
+              - name: 测试1
+                value_obj: {images: [],message: "${message}"}
+              - name: 测试2
+                value_obj: {images: [],message: "${message2}"}
     - name: 获取测试任务ID
       byName: 获取所有的测试任务
       variables:
