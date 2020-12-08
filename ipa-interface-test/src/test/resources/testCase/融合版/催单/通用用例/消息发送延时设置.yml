@@ -78,17 +78,8 @@ testMethod:
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskSetTimer')].node_type: ["${node_state}"]
-      - byName: 查看trace详情
-        name: 获取任务触发时间
-        extractor:
-          - json:
-              task_created_at: $.data.traces[?(@.phase=='TriggerTask')].task_created_at
-      - byName: 查看trace详情
-        name: 校验TaskSetTimer正确
-        assertion:
-          - json:
-              $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired: ["${__BeanShell(${task_created_at}+${state_delay},)}"]
-            valueType: BIGDECIMAL
+      - byName: 获取任务触发时间
+      - byName: 校验TaskSetTimer正确
       - byName: 获取催单消息
         untilWait: 120
         intervals: 5000

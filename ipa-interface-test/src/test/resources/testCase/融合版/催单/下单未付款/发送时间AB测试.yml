@@ -4,50 +4,20 @@ dataProvider:
   - node_state: created
     order_state: created
     message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
-    message2: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~2
     reminder_type: 下单未付款
-    compare_field: message
+    compare_field: send_delay_time
+    dataProvider:
+      - state_delay1: 10
+        state_delay2: 15
 beforeClass:
   name: 获取taskID和模板
   step:
     - byName: 获取所有的task_id
     - byName: 删除其他催单任务
-    - name: 获取所有的测试任务
-      url: /api/abtest/manage/plan/list
-      method: GET
-      variables:
-        service_name: reminder
-        platform: ${platform}
-        shop_id: ${shop_id}
-        skip: 0
-        limit: 1000
-      assertion: [json: {$.code: 0}]
-      extractor:
-        - json:
-            plan_ids: $.data.plans[*].id
-          size: 100
-          options: [DEFAULT_PATH_LEAF_TO_NULL]
-    - byName: 删除测试催单任务
-      iter:
-        plan_id: ${plan_ids}
-    - name: 获取测试催单任务模板
-      url: /api/abtest/manage/plan/template
-      method: GET
-      variables:
-        service_name: reminder
-        platform: ${platform}
-        type: ${node_state}
-      extractor:
-        - json:
-            task_info: $.data
-    - name: 新建测试催单任务
-      url: /api/abtest/manage/plan
-      method: POST
-      body: ${task_info}
-      assertion: [json: {$.code: 0}]
-      extractor:
-        - json:
-            task_id: $.data.id
+    - byName: 获取所有的测试任务
+    - byName: 删除所有测试催单任务
+    - byName: 获取测试催单任务模板
+    - byName: 新建测试催单任务
       bodyEditor:
         json:
           $.name: 测试
@@ -55,30 +25,14 @@ beforeClass:
           $.start_time: ${__BeanShell(${__StartOfDay()}*1000l,)}
           $.end_time: ${__BeanShell(${__EndOfDay()}*1000l,)}
           $.shop_ids: ["${shop_id}"]
+          $.config[?(@.type=='send_message')].args.message: ${message}
           $.compare_field: ${compare_field}
           $.params:
             - name: 测试1
-              value_obj:
-                images: []
-                message: ${message}
+              value: ${state_delay1}
             - name: 测试2
-              value_obj:
-                images: []
-                message: ${message2}
-    - name: 获取测试任务ID
-      byName: 获取所有的测试任务
-      variables:
-        service_name: reminder
-        platform: ${platform}
-        type: ${node_state}
-        shop_id: ${shop_id}
-        skip: 0
-        limit: 1000
-      assertion: [json: {$.code: 0}]
-      extractor:
-        - json:
-            plan_id: $.data.plans[0].id
-            task_id: $.data.plans[0].params[0].id
+              value: ${state_delay2}
+    - byName: 获取测试任务ID
 beforeMethod:
   name: 拉一下催单消息
   step:
@@ -90,14 +44,23 @@ testMethod:
     step:
       - byName: 发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 获取任务触发时间
+      - byName: 校验TaskSetTimer正确
+        name: 校验AB测试TaskSetTimer正确
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired:
+                - ${__BeanShell(${task_created_at}+${state_delay1},)}
+                - ${__BeanShell(${task_created_at}+${state_delay2},)}
+            valueType: INTEGER
+            assertionType: ONEOF
       - byName: 获取催单消息
-        name: 获取AB催单消息
+        name: 获取AB测试催单消息-发送时间
         assertion:
           - json:
               $.data.messages[?(@.buyer_id=='${buyer_id}')].text_with_vars:
                 - ${message}
-                - ${message2}
-            assertionType: ONEOF
 afterMethod:
   name: 测试结束后查看订单trace
   step:

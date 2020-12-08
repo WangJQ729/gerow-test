@@ -332,7 +332,11 @@ public class Assertion {
                 Assertions.assertThat(this.step.getAssertionLength().get(key)).isEqualTo(value);
                 break;
             case ONEOF:
-                Assertions.assertThat((Collection<Object>) value).containsAnyElementsOf((Collection<Object>) actual);
+                if (value instanceof Collection) {
+                    Assertions.assertThat((Collection) value).containsAnyElementsOf((Collection<Object>) actual);
+                } else {
+                    Assertions.assertThat((Object[]) value).containsAnyOf(((Object[]) actual)[0]);
+                }
                 break;
             case EQ:
             default:
