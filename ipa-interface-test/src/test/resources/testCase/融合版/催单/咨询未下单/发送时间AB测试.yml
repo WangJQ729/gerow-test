@@ -1,4 +1,4 @@
-name: AB测试催单任务
+name: 发送时间AB测试
 story: ${reminder_type}
 dataProvider:
   - node_state: asked
