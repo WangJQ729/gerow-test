@@ -35,7 +35,7 @@ beforeClass:
               value: ${state_delay2}
     - byName: 获取测试任务ID
 beforeMethod:
-  name: 拉一下催单消息
+  name: 测试前拉一下消息表示在线
   step:
     - byName: 拉一下催单消息
 testMethod:

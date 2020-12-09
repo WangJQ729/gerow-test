@@ -5,7 +5,7 @@ dataProvider:
     reminder_type: 咨询未下单
     question: 你好
 beforeMethod:
-  name: 拉一下催单消息
+  name: 测试前拉一下消息表示在线
   step:
     - byName: 拉一下催单消息
 beforeClass:

@@ -37,7 +37,7 @@ beforeClass:
             plan_id: $.data.plans[0].id
             task_id: $.data.plans[0].params[0].id
 beforeMethod:
-  name: 拉一下催单消息
+  name: 测试前拉一下消息表示在线
   step:
     - byName: 拉一下催单消息
 testMethod:

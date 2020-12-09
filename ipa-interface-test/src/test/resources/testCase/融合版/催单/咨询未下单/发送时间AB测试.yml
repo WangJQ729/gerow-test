@@ -1,5 +1,4 @@
 name: 发送时间AB测试
-enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: asked
@@ -9,31 +8,31 @@ dataProvider:
     compare_field: send_delay_time
     state_delay1: 60
     state_delay2: 120
-beforeClass:
-  name: 获取taskID和模板
-  step:
-    - byName: 获取所有的task_id
-    - byName: 删除其他催单任务
-    - byName: 获取所有的测试任务
-    - byName: 删除所有测试催单任务
-    - byName: 获取测试催单任务模板
-    - byName: 新建测试催单任务
-      bodyEditor:
-        json:
-          $.name: 测试
-          $.type: asked
-          $.start_time: ${__BeanShell(${__StartOfDay()}*1000l,)}
-          $.end_time: ${__BeanShell(${__EndOfDay()}*1000l,)}
-          $.shop_ids: ["${shop_id}"]
-          $.compare_field: ${compare_field}
-          $.params:
-            - name: 测试1
-              value: ${state_delay1}
-            - name: 测试2
-              value: ${state_delay2}
-    - byName: 获取测试任务ID
+#beforeClass:
+#  name: 获取taskID和模板
+#  step:
+#    - byName: 获取所有的task_id
+#    - byName: 删除其他催单任务
+#    - byName: 获取所有的测试任务
+#    - byName: 删除所有测试催单任务
+#    - byName: 获取测试催单任务模板
+#    - byName: 新建测试催单任务
+#      bodyEditor:
+#        json:
+#          $.name: 测试
+#          $.type: asked
+#          $.start_time: ${__BeanShell(${__StartOfDay()}*1000l,)}
+#          $.end_time: ${__BeanShell(${__EndOfDay()}*1000l,)}
+#          $.shop_ids: ["${shop_id}"]
+#          $.compare_field: ${compare_field}
+#          $.params:
+#            - name: 测试1
+#              value: ${state_delay1}
+#            - name: 测试2
+#              value: ${state_delay2}
+#    - byName: 获取测试任务ID
 beforeMethod:
-  name: 拉一下催单消息
+  name: 测试前拉一下消息表示在线
   step:
     - byName: 拉一下催单消息
 testMethod:
@@ -46,13 +45,15 @@ testMethod:
       - byName: 获取任务触发时间
       - byName: 校验AB测试TaskSetTimer正确
       - byName: 获取AB测试催单消息-发送时间
+        untilWait: 120
+        intervals: 5000
         sleep: 50
 afterMethod:
   name: 测试结束后查看订单trace
   step:
     - byName: 根据聊天记录查询trace
     - byName: 查看trace详情
-afterClass:
-  name: 测试结束后删除任务
-  step:
-    - byName: 删除测试催单任务
+#afterClass:
+#  name: 测试结束后删除任务
+#  step:
+#    - byName: 删除测试催单任务
