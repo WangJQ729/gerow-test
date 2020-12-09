@@ -68,11 +68,4 @@ afterMethod:
 afterClass:
   name: 测试结束后删除任务
   step:
-    - name: 删除测试催单任务
-      url: /api/abtest/manage/plan/delete
-      method: GET
-      variables:
-        service_name: reminder
-        platform: ${platform}
-        plan_id: ${plan_id}
-      assertion: [json: {$.code: 0}]
+    - byName: 删除测试催单任务
