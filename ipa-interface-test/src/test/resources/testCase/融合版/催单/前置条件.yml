@@ -81,3 +81,5 @@ beforeSuite:
           size: 100
           options: [DEFAULT_PATH_LEAF_TO_NULL]
     - byName: 删除其他催单任务
+    - byName: 获取所有的测试任务
+    - byName: 删除所有测试催单任务
