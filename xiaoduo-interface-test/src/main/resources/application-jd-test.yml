@@ -1,12 +1,12 @@
 data:
   test:
     host: ${env}.xiaoduoai.com
-    shopName: 晓多生鲜-fkl
-    seller_name: 智晓多谋生鲜专营店:晓多生鲜-fkl
+    shopName: 智晓多谋生鲜专营店
+    seller_name: 晓多生鲜-zdx
     shop: 智晓多谋生鲜专营店
     buyer: tester002
     platform: jd
-    child_seller: 智晓多谋生鲜专营店:晓多生鲜-hxx
+    child_seller: 晓多生鲜-ld
 client:
   protocol: https
   timeOut: 30
