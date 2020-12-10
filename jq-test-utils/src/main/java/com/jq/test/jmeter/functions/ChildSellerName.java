@@ -22,9 +22,11 @@ public class ChildSellerName extends AbstractFunction {
     @Override
     public String execute(SampleResult previousResult, Sampler currentSampler) {
         String[] split = vars.execute().split(":");
-        String result = "";
+        String result;
         if (split.length > 1) {
             result = split[1];
+        } else {
+            result = split[0];
         }
         if (varName != null && StringUtils.isNotBlank(varName.execute())) {
             TestUtils.saveVariables(varName, result);

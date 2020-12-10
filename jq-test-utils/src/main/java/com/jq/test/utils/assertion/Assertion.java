@@ -291,7 +291,7 @@ public class Assertion {
             Allure.step("判断结果:" + this.step.getAssertionLength().get(key) + " " + assertionType + " " + value,
                     () -> assertionExec(actual, value));
         } else {
-            Allure.step("判断结果:" + actual + " " + assertionType + " " + value,
+            Allure.step("实际结果：" + actual + " " + assertionType + " 预期结果：" + value,
                     () -> assertionExec(actual, value));
         }
     }
