@@ -1,5 +1,6 @@
 name: 售后理由圈定
 story: ${reminder_type}
+enable: false
 dataProvider:
   - node_state: refund
     reminder_type: 售后理由修改

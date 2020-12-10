@@ -1,5 +1,6 @@
 name: 任务开关
 story: ${reminder_type}
+enable: false
 dataProvider:
   - node_state: refund
     message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
