@@ -17,18 +17,6 @@ beforeClass:
     - byName: 使用模板新建一个task
 testMethod:
   - name: 有退款交易取消
-    description: |
-      """</br>
-      用例描述：</br>
-      1、开启任务会触发。</br>
-      </br>
-      测试步骤</br>
-      1、开启任务</br>
-      2、创建订单</br>
-      3、申请退款、退款成功</br>
-      4、订单状态变更为取消</br>
-      5、校验催单消息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启催单任务-10秒后触发
@@ -41,19 +29,12 @@ testMethod:
         extractor:
           - json:
               trace_id: $.data.traces[?(@.order_state=='${new_order_state}')].trace_id
-      - byName: 查看trace详情-任务关闭
+      - byName: 查看trace详情
+        name: 查看trace详情-交易成功后不催交易取消
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='EventFilter')].info: [filter event after handle]
   - name: 无退款交易取消
-    description: |
-      """</br>
-      用例描述：</br>
-      1、开启任务会触发。</br>
-      </br>
-      测试步骤</br>
-      1、开启任务</br>
-      2、创建订单</br>
-      3、订单状态变更为取消</br>
-      4、校验催单消息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启催单任务-10秒后触发
