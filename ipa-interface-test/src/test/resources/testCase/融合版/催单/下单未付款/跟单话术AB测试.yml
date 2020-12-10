@@ -20,6 +20,7 @@ beforeClass:
         service_name: reminder
         platform: ${platform}
         shop_id: ${shop_id}
+        status: running
         skip: 0
         limit: 1000
       assertion: [json: {$.code: 0}]
@@ -75,7 +76,7 @@ beforeClass:
             - {type: specify_send_seller,args: {seller_ids: [],recently_seller_priority: true,sub_users_info_id: "",asked_seller: false,transfer_after_asked: false,transfer_seller_ids: [],transfer_sub_silence_users_info_id: "",sub_silence_users_info_id: "",transfer_asked_seller: false,transfer_sub_users_info_id: "",transfer_silence_seller: false,status: 2}}
             - {type: send_limit,args: {enable: false,second: 3600}}
             - {type: state_delay,args: {delay: 0}}
-            - {type: send_message,args: {ageing_id: "",images: [],state_delay: 180,receive_message_filter: false,message: "亲，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~查看订单 {订单链接}"}}
+            - {type: send_message,args: {ageing_id: "",images: [],state_delay: 180,receive_message_filter: false,message: "${message}"}}
     - name: 获取测试任务ID
       byName: 获取所有的测试任务
       variables:
