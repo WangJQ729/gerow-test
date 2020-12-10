@@ -20,9 +20,15 @@ public class StartOfDay extends AbstractFunction {
 
     private CompoundVariable varName;
 
+    private CompoundVariable index;
+
     @Override
     public String execute(SampleResult previousResult, Sampler currentSampler) {
-        LocalDateTime now = LocalDateTime.now();
+        int i = 0;
+        if (index != null) {
+            i = Integer.parseInt(index.execute());
+        }
+        LocalDateTime now = LocalDateTime.now().plusDays(i);
         LocalDateTime end = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0);
         long milli = end.toInstant(ZoneOffset.of("+8")).getEpochSecond();
         if (varName != null && StringUtils.isNotBlank(varName.execute())) {
@@ -34,8 +40,11 @@ public class StartOfDay extends AbstractFunction {
     @Override
     public void setParameters(Collection<CompoundVariable> parameters) throws InvalidVariableException {
         CompoundVariable[] compoundVariables = parameters.toArray(new CompoundVariable[0]);
-        if (compoundVariables.length > 0) {
-            this.varName = compoundVariables[0];
+        if (compoundVariables.length > 1) {
+            this.index = compoundVariables[0];
+            this.varName = compoundVariables[1];
+        } else if (compoundVariables.length > 0) {
+            this.index = compoundVariables[0];
         }
     }
 
