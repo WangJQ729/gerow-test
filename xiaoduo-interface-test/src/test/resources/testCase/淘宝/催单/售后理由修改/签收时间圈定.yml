@@ -1,6 +1,6 @@
 name: 签收时间圈定
-enable: false
 story: ${reminder_type}
+enable: false
 dataProvider:
   - node_state: refund
     reminder_type: 售后理由修改
@@ -23,22 +23,11 @@ testMethod:
       - day_delay: 6
       - day_delay: 7
       - day_delay: 8
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务-已签收
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取orderstate
       - byName: 修改orderstate-已签收
       - byName: 推送退款消息
@@ -48,17 +37,6 @@ testMethod:
       - day_delay: 0
       - day_delay: 1
       - day_delay: 6
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务
@@ -76,7 +54,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取orderstate
       - byName: 修改orderstate-已签收
       - byName: 推送退款消息
@@ -85,22 +63,11 @@ testMethod:
     dataProvider:
       - day_delay: 7
       - day_delay: 8
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务-物流签收7天内
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取orderstate
       - byName: 修改orderstate-已签收
       - byName: 推送退款消息
@@ -115,17 +82,6 @@ testMethod:
     dataProvider:
       - day_delay: 7
       - day_delay: 8
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务
@@ -143,7 +99,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取orderstate
       - byName: 修改orderstate-已签收
       - byName: 推送退款消息
@@ -153,22 +109,11 @@ testMethod:
       - day_delay: 0
       - day_delay: 1
       - day_delay: 6
-    description: |
-      """</br>
-      用例描述：</br>
-      1、催单消息的内容正确。</br>
-      </br>
-      测试步骤</br>
-      1、修改reminder</br>
-      2、创建订单</br>
-      3、申请退款
-      4、校验催单信息</br>
-      """
     severity: NORMAL
     step:
       - byName: 开启售后理由修改催单任务-物流签收7天后
       - byName: 发送消息给商家-固定问题
-      - byName: 通过pulsar推送订单消息
+      - byName: 模拟pulsar订单消息
       - byName: 获取orderstate
       - byName: 修改orderstate-已签收
       - byName: 推送退款消息

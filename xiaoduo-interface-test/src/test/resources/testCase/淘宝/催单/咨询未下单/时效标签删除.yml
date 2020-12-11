@@ -1,5 +1,4 @@
 name: 时效标签删除
-enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: asked

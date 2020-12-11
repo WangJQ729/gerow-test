@@ -62,13 +62,12 @@ beforeSuite:
     - name: 拉一下催单消息
       url: /api/client/reminder/v2/client/reminder/messages
       untilWait: 15
-#      headers:
-#        Xd-Metadata: "flow_color=pt"
       variables:
         shop_id: ${shop_id}
         seller_id: ${seller_name}
         platform: ${platform}
         service_names: reminder
+        accept: tb/subscribe_card
       method: GET
       assertion: [json: {$.code: 0}]
     - name: 获取所有催单节点的task_id
@@ -83,3 +82,5 @@ beforeSuite:
           size: 100
           options: [DEFAULT_PATH_LEAF_TO_NULL]
     - byName: 删除其他催单任务
+    - byName: 获取所有的测试任务
+    - byName: 删除所有测试催单任务

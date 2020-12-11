@@ -21,11 +21,6 @@ dataProvider:
 #    message: 由于近期订单量过大，发货小妹没能及时给您发货，实在抱歉。麻烦您耐心等待，小妹会尽快安排给您优先发货呢！
 #    text_with_vars: ${message}
 #    reminder_type: 发货超时
-#  - node_state: shipped
-#    order_state: shipped
-#    reminder_type: 已发货
-#    message: 亲，您订购的宝贝已经启程了，请注意物流查收哦，记得好评哦！
-#    text_with_vars: ${message}
 #  - node_state: got_delay
 #    order_state: shipped
 #    message: 由于近期订单量过大，快递小哥没能及时揽件，实在抱歉。请您耐心等待，小妹会尽快联系快递小哥安排给您优先处理呢！
@@ -57,10 +52,9 @@ beforeClass:
       name: 获取一个不可使用晓多的账号
       extractor:
         - json:
-            disable_seller_name: $.subusers[?(@.auth_status==3)].seller_id
+            disable_seller_name: $.subusers[?(@.auth_status!=1 && @.auth_status!=0)].seller_id
       assertion: [json: {$.code: 0}]
     - byName: 催单设置为自己和静默
-      name: 子账号设置为自己和静默
       form:
         sub_nick: ${disable_seller_name}
         reminder_type: mine,silence
@@ -81,7 +75,7 @@ testMethod:
               $.code: 0
               $.data.messages.length(): 0
       - byName: 开启催单任务
-      - byName: 通过pulsar推送订单消息-随机顾客
+      - byName: 模拟pulsar订单消息-随机顾客
       - byName: 获取消息-不能使用晓多账号拉取
         invocationCount: 5
         sleep: 2

@@ -1,0 +1,51 @@
+name: 消息发送延时设置
+story: ${reminder_type}
+dataProvider:
+  - node_state: shipped
+    order_state: shipped
+    reminder_type: 已发货
+    message: 亲，您订购的宝贝已经启程了，请注意物流查收哦，记得好评哦！
+    text_with_vars: ${message}
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 设置${state_delay}秒后发送催单消息
+    dataProvider:
+      - state_delay: 20
+      - state_delay: 60
+    #      - state_delay: 120
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务
+        name: 开启已发货催单任务-设置消息延迟
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.state_delay: ${__BeanShell(${state_delay},)}
+            $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.message: ${message}
+      - byName: 发送消息给商家-固定问题
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 获取任务触发时间
+      - byName: 校验TaskSetTimer正确
+      - byName: 获取催单消息
+        untilWait: 120
+        intervals: 5000
+        sleep: 15
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

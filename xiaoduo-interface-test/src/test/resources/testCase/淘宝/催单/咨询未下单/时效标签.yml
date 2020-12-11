@@ -25,6 +25,7 @@ testMethod:
         ageing_type: 1
         start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,0,start_time)}
         end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,0,end_time)}
+        task_status: starting
     severity: NORMAL
     step:
       - byName: 添加时效标签
@@ -41,6 +42,7 @@ testMethod:
               - ageing_id: ${ageing_id}
                 images: []
                 message: ${text_with_vars1}
+      - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
   - name: 时效标签(固定时段-失效)-${ageing_name}
@@ -50,15 +52,18 @@ testMethod:
         start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,-1,start_time)}
         end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,-1,end_time)}
         ageing_name: 1天前
+        task_status: ended
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 1
         start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,1,start_time)}
         end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,1,end_time)}
         ageing_name: 1天后
+        task_status: unstart
     severity: NORMAL
     step:
       - byName: 添加时效标签
       - byName: 修改咨询未下单内容-设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取催单消息-消息为空
         assertion:
@@ -77,12 +82,14 @@ testMethod:
         end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,-1,end_time)}
         ageing_name: 1天前
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈（无时效标签）
+        task_status: starting
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 1
         start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,1,start_time)}
         end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,1,end_time)}
         ageing_name: 1天后
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈（无时效标签）
+        task_status: starting
     severity: NORMAL
     step:
       - byName: 添加时效标签
@@ -102,6 +109,7 @@ testMethod:
               - ageing_id: ~
                 images: []
                 message: ${text_with_vars2}
+      - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
         assertion:
@@ -114,10 +122,12 @@ testMethod:
         ageing_type: 2
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
         everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
+        task_status: starting
     severity: NORMAL
     step:
       - byName: 添加时效标签(每日重复)
       - byName: 修改咨询未下单内容-设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
   - name: 时效标签(每日重复-失效)-${ageing_name}
@@ -127,15 +137,18 @@ testMethod:
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
         everyday_end_time: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,)}
         ageing_name: 2小时前到1小时前
+        task_status: unstart
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 2
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
         everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
         ageing_name: 1小时后到2小时后
+        task_status: unstart
     severity: NORMAL
     step:
       - byName: 添加时效标签(每日重复)
       - byName: 修改咨询未下单内容-设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取催单消息-消息为空
         assertion:
@@ -154,16 +167,19 @@ testMethod:
         everyday_end_time: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,)}
         ageing_name: 2小时前到1小时前
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈（无时效标签）
+        task_status: starting
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 2
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
         everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
         ageing_name: 1小时后到2小时后
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈（无时效标签）
+        task_status: starting
     severity: NORMAL
     step:
       - byName: 添加时效标签(每日重复)
       - byName: 修改咨询未下单内容-设置时效标签+无时效标签话术
+      - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
         assertion:
@@ -179,6 +195,7 @@ testMethod:
         repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,-1,)}
         ageing_name: 30天前到1天前
+        task_status: ended
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
@@ -186,6 +203,7 @@ testMethod:
         repeat_start_date: ${__PlusDay(yyyy-MM-dd,1,)}
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
         ageing_name: 1天后到30天后
+        task_status: unstart
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
@@ -193,6 +211,7 @@ testMethod:
         repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
         ageing_name: 2小时前到1小时前
+        task_status: unstart
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
@@ -200,6 +219,7 @@ testMethod:
         repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
         ageing_name: 1小时后到2小时后
+        task_status: unstart
     severity: NORMAL
     step:
       - byName: 添加时效标签(每日重复)
@@ -212,6 +232,7 @@ testMethod:
           start_time: ~
           end_time: ~
       - byName: 修改咨询未下单内容-设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取催单消息-消息为空
         assertion:
@@ -232,6 +253,7 @@ testMethod:
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,-1,)}
         ageing_name: 30天前到1天前
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈（无时效标签）
+        task_status: starting
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
@@ -240,6 +262,7 @@ testMethod:
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
         ageing_name: 1天后到30天后
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈（无时效标签）
+        task_status: starting
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
@@ -248,6 +271,7 @@ testMethod:
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
         ageing_name: 2小时前到1小时前
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈（无时效标签）
+        task_status: starting
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 3
         everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
@@ -256,10 +280,12 @@ testMethod:
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
         ageing_name: 1小时后到2小时后
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈（无时效标签）
+        task_status: starting
     severity: NORMAL
     step:
       - byName: 添加时效标签(自定义重复时段)
       - byName: 修改咨询未下单内容-设置时效标签+无时效标签话术
+      - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
         assertion:
@@ -275,10 +301,12 @@ testMethod:
         repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
         repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
         ageing_name: 2小时前到2小时后
+        task_status: starting
     severity: NORMAL
     step:
       - byName: 添加时效标签(自定义重复时段)
       - byName: 修改咨询未下单内容-设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
 afterMethod:
