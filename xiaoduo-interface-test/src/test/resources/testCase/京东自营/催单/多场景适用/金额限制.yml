@@ -64,8 +64,7 @@ testMethod:
         name: 推送指定金额订单消息
         bodyEditor:
           json:
-            $.word: >-
-              {"platform":"${platform}","order_id":"${__RandomOrderId(order_id)}","shop_id":"${shop_id}","buyer_id":"${buyer}","payment":${payment},"address":"内环到三环里北京东城区","status":"${order_state}","created_at":1574671841,"updated_at":1574671841,"jdext":{"items":[{"sku_id":"100003840169","sku_name":"双庆（ShuangQing）脸盆置物架 浴室免打孔不锈钢收纳架卫生间盆架厕所盆子洗脸盆收纳架 SQ-5243","count":2},{"sku_id":"100003840165","sku_name":"双庆（ShuangQing）单杆毛巾架 太空铝卫生间浴巾架复古免打孔挂架洗手间置物架 SQ-5252","count":1},{"sku_id":"1293281","sku_name":"双庆家居 吸盘香皂架无痕贴沥水香皂盒浴室肥皂架 SQ-5003","count":2}],"receiver":{}}}
+            $.payment: ${__BeanShell(${payment})}
       - byName: 获取催单消息
   - name: 金额限制-不满足-${payment}
     dataProvider:
