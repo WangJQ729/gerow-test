@@ -28,7 +28,7 @@ testMethod:
     severity: CRITICAL
     step:
       - byName: 开启物流停滞超时催单任务
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
 afterMethod:

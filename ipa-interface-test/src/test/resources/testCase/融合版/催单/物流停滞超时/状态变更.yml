@@ -50,7 +50,7 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 10
             $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
@@ -70,7 +70,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启物流停滞超时催单任务-10秒后触发
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer

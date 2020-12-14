@@ -35,7 +35,7 @@ testMethod:
             $.rules[?(@.type=='pay_amount_limit')].args.enable: true
             $.rules[?(@.type=='pay_amount_limit')].args.min: 5
             $.rules[?(@.type=='pay_amount_limit')].args.max: 20
-      - byName: 随机顾客推送已发货订单消息-指定金额
+      - byName: 随机顾客推送已付款订单消息-指定金额
       - byName: 发送物流消息
       - byName: 获取催单消息
   - name: 金额限制-不满足-${payment}
@@ -45,7 +45,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 物流停滞超时催单任务-设置金额限制为5-20元
-      - byName: 随机顾客推送已发货订单消息-指定金额
+      - byName: 随机顾客推送已付款订单消息-指定金额
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -76,7 +76,7 @@ testMethod:
             $.rules[?(@.type=='pay_amount_limit')].args.enable: false
             $.rules[?(@.type=='pay_amount_limit')].args.min: 5
             $.rules[?(@.type=='pay_amount_limit')].args.max: 20
-      - byName: 随机顾客推送已发货订单消息-指定金额
+      - byName: 随机顾客推送已付款订单消息-指定金额
       - byName: 发送物流消息
       - byName: 获取催单消息
 afterMethod:

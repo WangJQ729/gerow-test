@@ -73,7 +73,7 @@ testMethod:
         time_name: 满足的时间
     step:
       - byName: 开启物流停滞超时催单任务-设置付款时间圈定
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace

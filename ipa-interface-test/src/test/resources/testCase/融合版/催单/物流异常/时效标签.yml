@@ -39,7 +39,7 @@ testMethod:
       - byName: 添加时效标签
       - byName: 设置时效标签
       - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
   - name: 时效标签(固定时段-失效)-${ageing_name}
@@ -61,7 +61,7 @@ testMethod:
       - byName: 添加时效标签
       - byName: 设置时效标签
       - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -88,7 +88,7 @@ testMethod:
           end_time: ~
       - byName: 设置时效标签
       - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
   - name: 时效标签(每日重复-失效)-${ageing_name}
@@ -110,7 +110,7 @@ testMethod:
       - byName: 添加时效标签(每日重复)
       - byName: 设置时效标签
       - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -130,7 +130,7 @@ testMethod:
       - byName: 添加时效标签(自定义重复时段)
       - byName: 设置时效标签
       - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
   - name: 时效标签(自定义重复时段-失效)-${ageing_name}
@@ -172,7 +172,7 @@ testMethod:
       - byName: 添加时效标签(自定义重复时段)
       - byName: 设置时效标签
       - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace

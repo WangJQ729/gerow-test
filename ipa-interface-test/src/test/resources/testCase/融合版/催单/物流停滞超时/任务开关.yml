@@ -27,7 +27,7 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 0
             $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
   - name: 关闭任务-物流状态-${action}
@@ -42,7 +42,7 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 0
             $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace

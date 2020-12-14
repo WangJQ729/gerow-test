@@ -31,12 +31,12 @@ testMethod:
     step:
       - byName: 设置金额限制为5-20元
       - byName: 模拟pulsar订单消息
-        name: 随机顾客推送已发货订单消息-指定金额
+        name: 随机顾客推送已付款订单消息-指定金额
         bodyEditor:
           json:
             $.order_id: ${__RandomOrderId(order_id)}
             $.buyer_id: ${__RandomName(buyer_id)}
-            $.status: shipped
+            $.status: paid
             $.payment: ${__BeanShell(${payment})}
             $.tbext.buyer_nick: ${buyer_id}
             $.tbext.original_order: >-
@@ -50,7 +50,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 设置金额限制为5-20元
-      - byName: 随机顾客推送已发货订单消息-指定金额
+      - byName: 随机顾客推送已付款订单消息-指定金额
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -66,7 +66,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 设置金额限制为5-20元-关闭限制
-      - byName: 随机顾客推送已发货订单消息-指定金额
+      - byName: 随机顾客推送已付款订单消息-指定金额
       - byName: 发送物流消息
       - byName: 获取催单消息
 afterMethod:

@@ -29,7 +29,7 @@ testMethod:
             $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
             $.rules[?(@.type=='send_limit')].args.enable: true
             $.rules[?(@.type=='send_limit')].args.second: 30
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
       - byName: 指定顾客推送已发货订单消息
@@ -44,7 +44,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启物流停滞超时催单任务-开启防骚扰过滤
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
       - byName: 指定顾客推送已发货订单消息

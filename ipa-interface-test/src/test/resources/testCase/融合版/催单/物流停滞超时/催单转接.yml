@@ -22,7 +22,7 @@ testMethod:
       - byName: 客户端设置-开启催单转接
       - byName: 新建催单转接分组
       - byName: 更新转接列表
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
@@ -36,7 +36,7 @@ testMethod:
       - byName: 更新转接列表
         form:
           settings_is_begin_words_filter: false
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
@@ -48,7 +48,7 @@ testMethod:
       - byName: 客户端设置-开启催单转接
       - byName: 新建催单转接分组
       - byName: 更新转接列表
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
@@ -68,7 +68,7 @@ testMethod:
       - byName: 客户端设置-开启催单转接
       - byName: 新建催单转接分组
       - byName: 更新转接列表
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 客户端设置-开启催单转接
         name: 客户端设置-关闭催单转接
@@ -83,7 +83,7 @@ testMethod:
       - byName: 客户端设置-开启催单转接
       - byName: 新建催单转接分组
       - byName: 更新转接列表
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
@@ -104,7 +104,7 @@ testMethod:
           json:
             $.sub_user_name_list: ${child_seller2}
       - byName: 更新转接列表
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-回复后转接
       - byName: 发送消息给商家-转接列表为空
@@ -123,7 +123,7 @@ testMethod:
           json:
             $.sub_user_name_list: ${child_seller},${seller_name}
       - byName: 更新转接列表
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 子账号发送心跳检测
       - byName: 主账号发送心跳检测
@@ -148,7 +148,7 @@ testMethod:
           json:
             $.sub_user_name_list: ${child_seller},${child_seller2}
       - byName: 更新转接列表
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
@@ -164,7 +164,7 @@ testMethod:
           json:
             $.sub_user_name_list: ${child_seller},${child_seller3}
       - byName: 更新转接列表
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
@@ -181,7 +181,7 @@ testMethod:
           json:
             $.sub_user_name_list: ${child_seller},${child_seller2},${child_seller3}
       - byName: 更新转接列表
-      - byName: 随机顾客推送已发货订单消息
+      - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
