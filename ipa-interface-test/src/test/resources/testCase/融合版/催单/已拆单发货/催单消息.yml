@@ -97,7 +97,7 @@ testMethod:
       - byName: 根据订单查询trace
         assertion:
           - json:
-              $.data.traces.length(): 3
+              $.data.traces.length(): 4
   - name: 催单消息-3轮-第12轮同时发货
     severity: NORMAL
     step:
