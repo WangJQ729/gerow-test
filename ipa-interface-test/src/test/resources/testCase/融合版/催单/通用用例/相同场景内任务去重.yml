@@ -25,11 +25,6 @@ dataProvider:
         message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
         text_with_vars: ${message}
         reminder_type: 已付款
-      - node_state: got_delay
-        order_state: shipped
-        message: 由于近期订单量过大，快递小哥没能及时揽件，实在抱歉。请您耐心等待，小妹会尽快联系快递小哥安排给您优先处理呢!
-        text_with_vars: ${message}
-        reminder_type: 揽件超时
       - node_state: closed
         order_state: closed
         message: 亲，您对宝贝有什么不满意的吗？

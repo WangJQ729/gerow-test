@@ -26,11 +26,6 @@ dataProvider:
     message: 由于近期订单量过大，发货小妹没能及时给您发货，实在抱歉。麻烦您耐心等待，小妹会尽快安排给您优先发货呢！
     text_with_vars: ${message}
     reminder_type: 发货超时
-  - node_state: got_delay
-    order_state: shipped
-    message: 由于近期订单量过大，快递小哥没能及时揽件，实在抱歉。请您耐心等待，小妹会尽快联系快递小哥安排给您优先处理呢！
-    text_with_vars: ${message}
-    reminder_type: 揽件超时
   - node_state: send_scan
     order_state: send_scan
     message: 您的快递已经派件了！收货时，请检查快递的外包装是否完整，当场验货确认无误后，再签收哦！
