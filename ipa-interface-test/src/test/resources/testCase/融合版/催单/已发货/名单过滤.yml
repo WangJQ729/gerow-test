@@ -38,7 +38,7 @@ testMethod:
   - name: 名单过滤-买家不在过滤名单内
     step:
       - byName: 开启已发货催单任务-开启过滤名单
-      - byName: 发送消息给商家-指定买家
+      - byName: 发送消息给商家
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 获取催单消息
