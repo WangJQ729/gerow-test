@@ -52,7 +52,7 @@ testMethod:
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
-      - byName: 指定顾客推送已发货订单消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -60,7 +60,7 @@ testMethod:
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_limit]
-      - byName: 指定顾客推送已发货订单消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 获取催单消息-消息为空
       - byName: 发送物流消息
         sleep: 35

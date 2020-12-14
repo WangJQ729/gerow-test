@@ -50,8 +50,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启已发货催单任务
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 指定顾客指定订单推送已发货订单消息
+      - byName: 模拟pulsar订单消息-随机顾客
       - byName: 根据订单查询trace
       - byName: 查看trace详情
         name: 查看trace详情-只有已发货消息不催单
