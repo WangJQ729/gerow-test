@@ -35,6 +35,7 @@ testMethod:
     step:
       - byName: 开启催单任务
       - byName: 发送消息给商家-固定问题
+      - byName: 指定顾客推送已付款订单消息
       - byName: 推送部分发货消息-第一件
       - byName: 推送部分发货消息-第二件
       - byName: 推送部分发货消息-第三件
