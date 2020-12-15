@@ -106,7 +106,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='specify_send_seller')].args.status: 1
             $.rules[?(@.type=='specify_send_seller')].args.recently_seller_priority: true
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_asked_seller: true
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_asked_seller: false
             $.rules[?(@.type=='specify_send_seller')].args.transfer_silence_seller: false
             $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
