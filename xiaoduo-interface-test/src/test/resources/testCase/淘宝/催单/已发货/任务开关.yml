@@ -55,18 +55,6 @@ testMethod:
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
       - byName: 查看trace详情-任务关闭
-  - name: 开启任务-只有已发货消息不催单
-    severity: NORMAL
-    step:
-      - byName: 开启已发货催单任务
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情
-        name: 查看trace详情-只有已发货消息不催单
-        assertion:
-          - json:
-              $.data.traces[?(@.phase=='EventFilter')].info: ['filter event before handle,from:,to:shipped']
-      - byName: 获取催单消息-消息为空
 afterMethod:
   name: 测试结束后查看订单trace
   step:
