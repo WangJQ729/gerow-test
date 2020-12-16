@@ -69,6 +69,7 @@ testMethod:
             $.no_answer_filter: false
             $.task_remove_duplicates: false
             $.repeat_aging_day: 5
+            $.order_after_sale_judge_day: 30
             $.node_type: asked
       - byName: 发送消息给商家
       - byName: 获取到2条催单消息
@@ -100,6 +101,7 @@ testMethod:
             $.no_answer_filter: false
             $.task_remove_duplicates: true
             $.repeat_aging_day: 5
+            $.order_after_sale_judge_day: 30
             $.node_type: asked
       - byName: 设置第一个任务在前
       - byName: 断言修改后的顺序是否正确
