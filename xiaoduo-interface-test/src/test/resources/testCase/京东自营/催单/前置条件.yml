@@ -53,14 +53,3 @@ beforeSuite:
         platform: ${platform}
       method: GET
       assertion: [json: {$.code: 0}]
-    - name: 登录test-tools
-      host: ${test_tools}
-      url: /api/api/v1/login/
-      method: POST
-      body: |
-        {"username":"auto_data","password":"auto_data123456"}
-      assertion: [json: {$.code: 0}]
-      extractor:
-        - json:
-            token: $.data.token
-          site: TESTSUIT

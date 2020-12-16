@@ -1,16 +1,12 @@
 data:
   test:
     host: jd-${env}.xiaoduoai.com
-    shopName: jd_dcrdp2018
-    seller_name: 稻草人男装服饰京东自营专区:jd_dcrdp2018
-    shop: 稻草人男装服饰京东自营专区
-    sign: ca61da42f143ef040fc22afee498a622
+    shopName: xinke2015
+    seller_name: 新科影音京东自营旗舰店:xinke2015
+    shop: 新科影音京东自营旗舰店
     buyer: tester002
     platform: jd
-    child_seller: 稻草人男装服饰京东自营专区:jd_dcrdp2018
-    test_tools: http://test-tools.xiaoduoai.com
-    test_tools_new: http://test-tools-${env}.xiaoduoai.com
-    topic: persistent://zhongtai/reminder/rmd-trade-jd
+    child_seller: 新科影音京东自营旗舰店:xinke2015
 client:
   protocol: http
   timeOut: 30
