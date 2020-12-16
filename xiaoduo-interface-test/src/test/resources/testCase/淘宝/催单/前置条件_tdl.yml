@@ -47,6 +47,11 @@ beforeSuite:
       method: GET
       responseType: DEFAULT
     - byName: 获取子账号
+      extractor:
+        - json:
+            seller_name: $.subusers[?(@.auth_status==0)].sub_nick[0]
+            child_seller: $.subusers[?(@.auth_status==1)].sub_nick[0]
+          site: TESTSUIT
     - byName: 催单设置-仅自己
     - byName: 设置单个顾客单日最高催单数
     - byName: 拉一下催单消息
