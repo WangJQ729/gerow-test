@@ -16,7 +16,6 @@ beforeClass:
 
 testMethod:
   - name: 咨询未下单-咨询时间在圈定时间内
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>
@@ -47,7 +46,6 @@ testMethod:
       - byName: 获取第一轮催单消息
 
   - name: 咨询未下单-咨询时间在圈定时间外，但条件未勾选
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>
@@ -78,7 +76,6 @@ testMethod:
       - byName: 获取第一轮催单消息
 
   - name: 咨询未下单-咨询时间晚于圈定时间
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>
@@ -114,7 +111,6 @@ testMethod:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [state_triggered_time_limit]
 
   - name: 咨询未下单-咨询时间早于圈定时间
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>

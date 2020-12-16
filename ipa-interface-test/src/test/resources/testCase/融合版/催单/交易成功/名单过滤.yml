@@ -16,7 +16,6 @@ beforeClass:
     - byName: 使用模板新建一个task
 testMethod:
   - name: 交易成功名单过滤-买家在过滤名单内
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>
@@ -47,7 +46,6 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-导入名单过滤
   - name: 交易成功名单过滤-买家不在过滤名单内
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>
@@ -64,7 +62,6 @@ testMethod:
       - byName: 模拟pulsar订单消息
       - byName: 获取催单消息
   - name: 交易成功名单过滤-买家在过滤名单内，但过滤条件未勾选
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>

@@ -16,7 +16,6 @@ beforeClass:
     - byName: 使用模板新建一个task
 testMethod:
   - name: 咨询未下单发送轮次-只打开第一、三轮开关
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>
@@ -59,7 +58,6 @@ testMethod:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${text_with_vars3}
   - name: 咨询未下单发送轮次-只打开第一、二轮开关
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>
@@ -97,7 +95,6 @@ testMethod:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${text_with_vars2}
   - name: 咨询未下单发送轮次-三轮全部打开
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>
@@ -142,7 +139,6 @@ testMethod:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${text_with_vars3}
   - name: 咨询未下单发送轮次-第一轮不打开，二、三轮打开
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>
@@ -179,7 +175,6 @@ testMethod:
       - byName: 根据聊天记录查询trace
       - byName: 查看trace详情-任务关闭
   - name: 咨询未下单发送轮次-只打开第一轮
-    author: 何相玄
     description: |
       """</br>
       用例描述：</br>
