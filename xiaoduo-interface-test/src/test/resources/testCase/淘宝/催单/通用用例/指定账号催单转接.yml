@@ -88,10 +88,9 @@ testMethod:
       - byName: 发送消息给商家-含转接内容
         assertion:
           - json:
-              $.custom_transfer.transfer_type: "reminder_transfer"
-              $.custom_transfer.is_transfer: true
-              $.custom_transfer.transfer_subnick_list: ["${child_seller}"]
-            need_decode: true
+              $.answer.custom_transfer.transfer_type: "reminder_transfer"
+              $.answer.custom_transfer.is_transfer: true
+              $.answer.custom_transfer.transfer_subnick_list: ["${child_seller}"]
   - name: 子账号在线-关闭转接
     severity: NORMAL
     step:
@@ -107,7 +106,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='specify_send_seller')].args.status: 1
             $.rules[?(@.type=='specify_send_seller')].args.recently_seller_priority: true
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_asked_seller: true
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_asked_seller: false
             $.rules[?(@.type=='specify_send_seller')].args.transfer_silence_seller: false
             $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
@@ -124,9 +123,8 @@ testMethod:
         name: 发送消息给商家-转接关闭
         assertion:
           - json:
-              $.custom_transfer.is_transfer: false
-              $.custom_transfer.transfer_subnick_list: ~
-            need_decode: true
+              $.answer.custom_transfer.is_transfer: false
+              $.answer.custom_transfer.transfer_subnick_list: ~
   - name: 子账号在线-关闭咨询顾客转接
     severity: NORMAL
     step:
@@ -171,10 +169,9 @@ testMethod:
       - byName: 发送消息给商家-含转接内容
         assertion:
           - json:
-              $.custom_transfer.transfer_type: "reminder_transfer"
-              $.custom_transfer.is_transfer: true
-              $.custom_transfer.transfer_subnick_list: ["${child_seller}"]
-            need_decode: true
+              $.answer.custom_transfer.transfer_type: "reminder_transfer"
+              $.answer.custom_transfer.is_transfer: true
+              $.answer.custom_transfer.transfer_subnick_list: ["${child_seller}"]
   - name: 子账号在线-开启咨询顾客转接
     severity: NORMAL
     step:
@@ -201,9 +198,8 @@ testMethod:
       - byName: 发送消息给商家-转接列表为空
         assertion:
           - json:
-              $.custom_transfer.is_transfer: false
-              $.custom_transfer.transfer_subnick_list: null
-            need_decode: true
+              $.answer.custom_transfer.is_transfer: false
+              $.answer.custom_transfer.transfer_subnick_list: null
   - name: 子账号在线-催单前关闭转接
     severity: NORMAL
     step:
@@ -238,10 +234,9 @@ testMethod:
         name: 发送消息给商家-转接列表为空
         assertion:
           - json:
-              $.custom_transfer.transfer_type: "reminder_transfer"
-              $.custom_transfer.is_transfer: true
-              $.custom_transfer.transfer_subnick_list: null
-            need_decode: true
+              $.answer.custom_transfer.transfer_type: "reminder_transfer"
+              $.answer.custom_transfer.is_transfer: true
+              $.answer.custom_transfer.transfer_subnick_list: null
   - name: 开启转接-多个子账号转接-只有一个在线
     severity: NORMAL
     step:
@@ -274,15 +269,13 @@ testMethod:
       - byName: 发送消息给商家-含转接内容
         assertion:
           - json:
-              $.custom_transfer.transfer_type: "reminder_transfer"
-              $.custom_transfer.is_transfer: true
-            need_decode: true
+              $.answer.custom_transfer.transfer_type: "reminder_transfer"
+              $.answer.custom_transfer.is_transfer: true
           - json:
-              $.custom_transfer.transfer_subnick_list:
+              $.answer.custom_transfer.transfer_subnick_list:
                 - ${child_seller}
                 - ${seller_name}
             assertionType: AllCONTAINS
-            need_decode: true
   - name: 开启转接-多个子账号转接-都在线
     severity: NORMAL
     step:
@@ -306,15 +299,13 @@ testMethod:
         name: 发送消息给商家-转接给在线的子账号
         assertion:
           - json:
-              $.custom_transfer.transfer_type: "reminder_transfer"
-              $.custom_transfer.is_transfer: true
-            need_decode: true
+              $.answer.custom_transfer.transfer_type: "reminder_transfer"
+              $.answer.custom_transfer.is_transfer: true
           - json:
-              $.custom_transfer.transfer_subnick_list:
+              $.answer.custom_transfer.transfer_subnick_list:
                 - ${child_seller}
                 - ${child_seller3}
             assertionType: AllCONTAINS
-            need_decode: true
   - name: 开启转接-多个子账号转接-部分在线
     severity: NORMAL
     step:

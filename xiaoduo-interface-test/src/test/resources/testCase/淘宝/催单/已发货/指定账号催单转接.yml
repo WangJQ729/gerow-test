@@ -28,6 +28,7 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.state_delay: 0
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
             $.rules[?(@.type=='specify_send_seller')].args.status: 1
             $.rules[?(@.type=='specify_send_seller')].args.recently_seller_priority: true
             $.rules[?(@.type=='specify_send_seller')].args.transfer_asked_seller: true
@@ -35,8 +36,6 @@ testMethod:
             $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
@@ -62,15 +61,14 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.state_delay: 0
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
             $.rules[?(@.type=='specify_send_seller')].args.status: 1
             $.rules[?(@.type=='specify_send_seller')].args.recently_seller_priority: true
-            $.rules[?(@.type=='specify_send_seller')].args.transfer_asked_seller: true
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_asked_seller: false
             $.rules[?(@.type=='specify_send_seller')].args.transfer_silence_seller: false
             $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
@@ -93,6 +91,7 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.state_delay: 0
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
             $.rules[?(@.type=='specify_send_seller')].args.status: 1
             $.rules[?(@.type=='specify_send_seller')].args.recently_seller_priority: true
             $.rules[?(@.type=='specify_send_seller')].args.transfer_asked_seller: false
@@ -100,8 +99,6 @@ testMethod:
             $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
-            $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
@@ -153,7 +150,7 @@ testMethod:
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
-      - byName: 开启催单任务-关闭催单转接
+      - byName: 开启已发货催单任务-关闭催单转接
       - byName: 发送消息给商家-转接列表为空
         assertion:
           - json:

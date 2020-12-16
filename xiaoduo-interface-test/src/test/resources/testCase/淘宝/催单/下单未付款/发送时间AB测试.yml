@@ -23,7 +23,7 @@ beforeClass:
         json:
           $.name: 测试
           $.type: ${node_state}
-          $.start_time: ${__BeanShell(${__StartOfDay(-10)}*1000l,)}
+          $.start_time: ${__BeanShell(${__StartOfDay()}*1000l,)}
           $.end_time: ${__BeanShell(${__EndOfDay()}*1000l,)}
           $.shop_ids: ["${shop_id}"]
           $.config:
@@ -80,7 +80,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-#afterClass:
-#  name: 测试结束后删除任务
-#  step:
-#    - byName: 删除测试催单任务
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除测试催单任务

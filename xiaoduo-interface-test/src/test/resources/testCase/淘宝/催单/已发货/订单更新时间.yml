@@ -1,11 +1,11 @@
-name: 揽收不触发已发货
+name: 订单更新时间
 story: ${reminder_type}
 dataProvider:
   - node_state: shipped
     order_state: shipped
+    reminder_type: 已发货
     message: 亲，您订购的宝贝已经启程了，请注意物流查收哦，记得好评哦！
     text_with_vars: ${message}
-    reminder_type: 已发货
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -14,43 +14,41 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
 testMethod:
-  - name: ${new_action_name}-${action}-不触发已发货任务
+  - name: 更新时间-${updated_at}天前
     dataProvider:
-      - new_action_name: 物流揽件
-        dataProvider:
-          - action: GOT
-          - action: TRUNK_ACCEPT
-          - action: AC_ACCEPT
-          - action: WMS_PICK
-          - action: TMS_ACCEPT
+      - updated_at: 0
+      - updated_at: 1
+      - updated_at: 30
     severity: NORMAL
     step:
-      - byName: 开启已发货催单任务-10秒后触发
+      - byName: 开启已发货催单任务
+      - byName: 发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
-        name: 随机顾客推送已付款订单消息
+        name: 模拟pulsar已付款订单消息-指定订单更新时间
         bodyEditor:
           json:
             $.order_id: ${__RandomOrderId(order_id)}
-            $.buyer_id: ${__RandomName(buyer_id)}
+            $.buyer_id: ${buyer_id}
             $.status: paid
             $.tbext.buyer_nick: ${buyer_id}
+            $.updated_at: ${__BeanShell(${__time(/1000,)}-24*60*60*${updated_at},)}
             $.tbext.original_order: >-
               {"adjust_fee":"0.00","buyer_cod_fee":"0.00","buyer_nick":"${buyer_id}","buyer_open_uid":"AAGdHqFhAAgoIdPNSTRGF2WJ","buyer_rate":false,"coupon_fee":0,"created":"${__timeShift(yyyy-MM-dd HH:mm:ss,,,zh_CN,everyday_start_time)}","discount_fee":"0.00","est_con_time":"付款后45天内","is_gift":false,"is_sh_ship":false,"modified":"${__timeShift(yyyy-MM-dd HH:mm:ss,,,zh_CN,everyday_start_time)}","new_presell":false,"nr_shop_guide_id":"","nr_shop_guide_name":"","num":1,"num_iid":604423906694,"orders":{"order":[{"adjust_fee":"0.00","buyer_rate":false,"cid":50024657,"discount_fee":"0.00","estimate_con_time":"付款后45天内","is_daixiao":false,"is_oversold":false,"num":1,"num_iid":604423906694,"oid":"${order_id}","oid_str":"${order_id}","order_from":"TAOBAO","payment":"20.00","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01PUtjEb1KBkX6UpzOm_!!1740721126.jpg","price":"10.00","refund_status":"NO_REFUND","seller_rate":false,"seller_type":"C","snapshot_url":"q:${order_id}_1","status":"WAIT_BUYER_PAY","title":"二手铅笔","total_fee":"10.00"}]},"payment":"20.00","pic_path":"https://img.alicdn.com/bao/uploaded/i3/1740721126/O1CN01PUtjEb1KBkX6UpzOm_!!1740721126.jpg","platform_subsidy_fee":"0.00","post_fee":"10.00","price":"10.00","received_payment":"0.00","receiver_address":"桂溪街道天府软件园A5-8","receiver_city":"成都市","receiver_country":"","receiver_district":"武侯区","receiver_mobile":"17721883949","receiver_name":"王健强","receiver_state":"四川省","receiver_town":"桂溪街道","receiver_zip":"000000","seller_flag":0,"seller_nick":"wangjq_1990","seller_rate":false,"service_tags":{"logistics_tag":[{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"origAreaId=510107;consignDate=1080","service_type":"TB_CONSIGN_DATE"},{"service_tag":"lgType=-4","service_type":"FAST"}]},"order_id":"${order_id}"},{"logistic_service_tag_list":{"logistic_service_tag":[{"service_tag":"consignDate=1080","service_type":"TB_CONSIGN_DATE"}]},"order_id":"${order_id}"}]},"service_type":"","shipping_type":"express","status":"WAIT_BUYER_PAY","tid":"${order_id}","tid_str":"${order_id}","title":"测试店铺Gerow","total_fee":"10.00","trade_from":"TAOBAO","type":"fixed","you_xiang":false}
-      - name: 发送物流消息
-        url: /api/client/reminder/v2/test/send?is_test=false&queue_type=1
-        method: POST
-        body: |
-          {"tid":${order_id},
-           "action":"${action}",
-           "out_sid":"${__RandomOrderId(out_sid)}",
-           "shop_id":"${shop_id}",
-           "buyer_id":"${buyer_id}"}
+      - byName: 模拟pulsar订单消息-指定订单更新时间
+      - byName: 获取催单消息
+  - name: 更新时间-${updated_at}天前
+    dataProvider:
+      - updated_at: 31
+      - updated_at: 32
+    severity: NORMAL
+    step:
+      - byName: 开启已发货催单任务
+      - byName: 发送消息给商家-固定问题
+      - byName: 模拟pulsar已付款订单消息-指定订单更新时间
+      - byName: 模拟pulsar订单消息-指定订单更新时间
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
-        extractor:
-          - json:
-              trace_id: $.data.traces[?(@.order_state=='got')].trace_id
-      - byName: 查看trace详情-got不触发已发货
+      - byName: 查看trace详情-超出订单时效
 afterMethod:
   name: 测试结束后查看订单trace
   step:

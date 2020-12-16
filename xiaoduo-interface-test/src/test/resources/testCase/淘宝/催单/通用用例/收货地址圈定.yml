@@ -59,6 +59,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启催单任务
+        name: 开启催单任务-地址圈定四川
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -85,6 +86,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启催单任务
+        name: 开启催单任务-地址圈定湖南
         bodyEditor:
           json:
             $.id: ${task_id}
