@@ -26,15 +26,7 @@ testMethod:
     step:
       - byName: 开启催单任务
       - byName: 随机顾客推送已付款订单消息
-      - name: 发送物流消息
-        url: /api/client/reminder/v2/test/send?is_test=false&queue_type=1
-        method: POST
-        body: |
-          {"tid":${order_id},
-           "action":"${action}",
-           "out_sid":"${__RandomOrderId(out_sid)}",
-           "shop_id":"${shop_id}",
-           "buyer_id":"${buyer_id}"}
+      - byName: 发送物流消息
       - byName: 获取催单消息
   - name: 关闭任务-物流状态-${action}
     severity: CRITICAL

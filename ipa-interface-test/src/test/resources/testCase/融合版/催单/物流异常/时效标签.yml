@@ -182,14 +182,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-    - name: 删除时效标签
-      url: /api/admin/config2/ageing/delete
-      headers:
-        Content-Type: multipart/form-data
-      method: POST
-      form:
-        id: ${ageing_id}
-      assertion: [json: {$.code: 0}]
+    - byName: 删除时效标签
 afterClass:
   name: 测试结束后删除任务
   step:
