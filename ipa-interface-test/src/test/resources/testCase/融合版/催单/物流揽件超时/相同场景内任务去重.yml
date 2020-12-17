@@ -1,4 +1,5 @@
 name: 相同场景内任务去重
+platform: 融合版
 story: ${reminder_type}
 invocationCount: 1
 dataProvider:

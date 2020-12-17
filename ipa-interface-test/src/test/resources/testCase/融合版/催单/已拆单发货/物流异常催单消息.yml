@@ -1,4 +1,5 @@
 name: 拆单催单消息
+platform: 融合版
 story: ${reminder_type}
 dataProvider:
   - node_state: send_scan_delay

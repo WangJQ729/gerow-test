@@ -1,4 +1,5 @@
 name: 催单转接
+platform: 融合版
 story: ${reminder_type}
 dataProvider:
   - node_state: send_scan_delay

@@ -1,4 +1,5 @@
 name: 时效标签
+platform: 融合版
 story: ${reminder_type}
 dataProvider:
   - node_state: got_delay

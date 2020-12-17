@@ -1,4 +1,5 @@
 name: 催单消息
+platform: 融合版
 story: ${reminder_type}
 dataProvider:
   - node_state: logistics_stagnate_delay
