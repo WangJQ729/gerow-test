@@ -74,9 +74,10 @@ testMethod:
             $.q: ${__DES3Cipher(好的,,)}
         assertion:
           - json:
-              $.answer.custom_transfer.transfer_type: ""
-              $.answer.custom_transfer.is_transfer: false
-              $.answer.custom_transfer.transfer_subnick_list: null
+              $.custom_transfer.transfer_type: ""
+              $.custom_transfer.is_transfer: false
+              $.custom_transfer.transfer_subnick_list: null
+            need_decode: true
   - name: 开启转接-子账号在线-催单前关闭转接
     severity: NORMAL
     step:
@@ -107,9 +108,10 @@ testMethod:
       - byName: 发送消息给商家-转接列表为空
         assertion:
           - json:
-              $.answer.custom_transfer.transfer_type: ""
-              $.answer.custom_transfer.is_transfer: false
-              $.answer.custom_transfer.transfer_subnick_list: null
+              $.custom_transfer.transfer_type: ""
+              $.custom_transfer.is_transfer: false
+              $.custom_transfer.transfer_subnick_list: null
+            need_decode: true
   - name: 开启转接-子账号不在线
     severity: NORMAL
     step:
@@ -125,9 +127,10 @@ testMethod:
       - byName: 发送消息给商家-转接列表为空
         assertion:
           - json:
-              $.answer.custom_transfer.transfer_type: "reminder_transfer"
-              $.answer.custom_transfer.is_transfer: true
-              $.answer.custom_transfer.transfer_subnick_list: null
+              $.custom_transfer.transfer_type: "reminder_transfer"
+              $.custom_transfer.is_transfer: true
+              $.custom_transfer.transfer_subnick_list: null
+            need_decode: true
   - name: 开启转接-转接列表含自己
     enable: false
     severity: NORMAL
@@ -148,13 +151,15 @@ testMethod:
       - byName: 发送消息给商家-含转接内容
         assertion:
           - json:
-              $.answer.custom_transfer.transfer_type: "reminder_transfer"
-              $.answer.custom_transfer.is_transfer: true
+              $.custom_transfer.transfer_type: "reminder_transfer"
+              $.custom_transfer.is_transfer: true
+            need_decode: true
           - json:
-              $.answer.custom_transfer.transfer_subnick_list:
+              $.custom_transfer.transfer_subnick_list:
                 - ${child_seller}
                 - ${seller_name}
             assertionType: AllCONTAINS
+            need_decode: true
   - name: 开启转接-多个子账号转接-只有一个在线
     step:
       - byName: 客户端设置-开启催单转接
