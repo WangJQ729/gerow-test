@@ -1,0 +1,9 @@
+data:
+  test:
+    platform: tb
+    host: wangcai-${env}.1yangai.com
+    api_host: https://api-${env}.1yangai.com
+
+    shopName: ${shopName}
+
+    seller_name: ${shopName}
