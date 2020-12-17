@@ -1,5 +1,5 @@
 name: 催单转接
-platform: 淘宝
+platform: 淘宝,融合版
 story: ${reminder_type}
 dataProvider:
   - node_state: paid

@@ -1,5 +1,5 @@
 name: 顾客类型圈定
-enable: false
+platform: 淘宝,融合版
 story: ${reminder_type}
 dataProvider:
   - node_state: paid
