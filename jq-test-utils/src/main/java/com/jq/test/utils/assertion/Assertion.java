@@ -217,13 +217,13 @@ public class Assertion {
                             String json;
                             if (StringUtils.equals(platform, "融合版")) {
                                 json = entity.getBody().toString();
-                                key = key.replace("$", "$.answer");
+                                actual = JsonPathUtils.read(json, key.replace("$", "$.answer"), options);
                             } else {
                                 json = TestUtils.des3Cipher("828d1bc65eefc6c88ca1a5d4", "828d1bc6", 2,
                                         Objects.requireNonNull(entity.getBody()).toString());
                                 Allure.addAttachment("解密结果：", json);
+                                actual = JsonPathUtils.read(json, key, options);
                             }
-                            actual = JsonPathUtils.read(json, key, options);
                         } else {
                             actual = JsonPathUtils.read(body, key, options);
                         }

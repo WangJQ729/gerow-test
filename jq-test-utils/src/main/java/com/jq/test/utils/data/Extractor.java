@@ -2,11 +2,11 @@ package com.jq.test.utils.data;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jayway.jsonpath.Option;
-import com.jq.test.utils.json.JsonPathUtils;
 import com.jq.test.task.ITest;
 import com.jq.test.task.ITestMethod;
 import com.jq.test.task.ITestStep;
 import com.jq.test.utils.TestUtils;
+import com.jq.test.utils.json.JsonPathUtils;
 import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;
@@ -116,13 +116,13 @@ public class Extractor {
                             String json;
                             if (StringUtils.equals(platform, "融合版")) {
                                 json = Objects.requireNonNull(entity.getBody()).toString();
-                                value = value.replace("$", "$.answer");
+                                saveJsonPath(save, JsonPathUtils.read(json, value.replace("$", "$.answer"), options));
                             } else {
                                 json = TestUtils.des3Cipher("828d1bc65eefc6c88ca1a5d4", "828d1bc6", 2,
                                         Objects.requireNonNull(entity.getBody()).toString());
                                 Allure.addAttachment("解密结果：", json);
+                                saveJsonPath(save, JsonPathUtils.read(json, value, options));
                             }
-                            saveJsonPath(save, JsonPathUtils.read(json, value, options));
                         } else
                             saveJsonPath(save, JsonPathUtils.read(entity.getBody(), value, options));
                         break;
