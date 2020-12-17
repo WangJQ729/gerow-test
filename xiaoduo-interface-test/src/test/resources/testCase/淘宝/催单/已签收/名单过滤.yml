@@ -1,4 +1,5 @@
 name: 名单过滤
+enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: signed
