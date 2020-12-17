@@ -1,4 +1,5 @@
 name: 催单消息
+platform: 淘宝,融合版
 story: ${reminder_type}
 dataProvider:
   - node_state: asked
