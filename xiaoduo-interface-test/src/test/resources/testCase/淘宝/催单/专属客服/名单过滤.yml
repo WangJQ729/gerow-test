@@ -1,5 +1,5 @@
 name: 名单过滤
-platform: 淘宝,融合版
+platform: 融合版
 story: ${reminder_type}
 dataProvider:
   - question: 你好
