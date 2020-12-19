@@ -24,7 +24,7 @@ testMethod:
         bodyEditor:
           json:
             $.pin: cntaobao${__RandomName(buyer_id)}
-            $.spin: cntaobao${shopName}:111服务助手
+            $.spin: cntaobao${shopName}:服务助手
       - byName: 获取催单消息-咨询未下单消息为空
       - byName: 根据聊天记录查询trace
       - byName: 查看trace详情
