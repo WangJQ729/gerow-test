@@ -1,5 +1,6 @@
 name: 服务助手接待
 platform: 融合版
+enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: asked
@@ -32,6 +33,48 @@ testMethod:
         assertion:
           - json:
               $.data.traces[?(@.phase=='InQueueReject')].in_queue_reject_reason: ['reject,in reception priority mode, service assistant reception will not send reminder message']
+  - name: 服务助手接待买家-指定账号发送
+    severity: NORMAL
+    step:
+      - byName: 新建分组-只有主账号
+      - byName: 开启咨询未下单任务
+        name: 开启咨询未下单任务-设置发送静默消息的账号为主账号
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].replies:
+              - ageing_id: ""
+                message: ${message}
+                images: []
+            $.rules[?(@.type=='specify_send_seller')].args.status: 1
+            $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
+      - byName: 随机顾客发送消息给服务助手
+      - byName: 获取催单消息
+  - name: 服务助手接待买家-指定账号(不在线)发送
+    severity: NORMAL
+    step:
+      - byName: 新建催单转接分组
+      - byName: 开启咨询未下单任务
+        name: 开启咨询未下单任务-设置发送静默消息的账号为不在线的账号
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].replies:
+              - ageing_id: ""
+                message: ${message}
+                images: []
+            $.rules[?(@.type=='specify_send_seller')].args.status: 1
+            $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
+      - byName: 随机顾客发送消息给服务助手
+      - byName: 获取催单消息-咨询未下单消息为空
+      - byName: 根据聊天记录查询trace
+      - byName: 查看trace详情-TaskSetTimer
 afterMethod:
   name: 测试结束后查看订单trace
   step:

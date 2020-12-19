@@ -1,4 +1,5 @@
 name: 服务助手接待
+enable: false
 platform: 融合版
 story: ${reminder_type}
 dataProvider:
@@ -54,6 +55,46 @@ testMethod:
       - byName: 随机顾客发送消息给服务助手
       - byName: 模拟pulsar订单消息
       - byName: 获取催单消息
+  - name: 服务助手接待买家-指定账号发送
+    severity: NORMAL
+    step:
+      - byName: 新建分组-只有主账号
+      - byName: 开启催单任务
+        name: 开启催单任务-设置发送服务助手接待的账号在线
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='specify_send_seller')].args.status: 1
+            $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 随机顾客发送消息给服务助手
+      - byName: 模拟pulsar订单消息
+      - byName: 获取催单消息
+  - name: 服务助手接待买家-指定账号(不在线)发送
+    severity: NORMAL
+    step:
+      - byName: 新建催单转接分组
+      - byName: 开启催单任务
+        name: 开启催单任务-设置发送服务助手接待的账号不在线
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='specify_send_seller')].args.status: 1
+            $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 随机顾客发送消息给服务助手
+      - byName: 模拟pulsar订单消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
 afterMethod:
   name: 测试结束后查看订单trace
   step:
