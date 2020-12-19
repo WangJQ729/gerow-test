@@ -15,27 +15,23 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
 testMethod:
-  - name: 服务助手接待买家
+  - name: 服务助手接待买家-优先接待发送不发咨询未下单消息
     severity: NORMAL
     step:
-      - byName: 修改咨询未下单内容
-        bodyEditor:
-          json:
-            $.id: ${task_id}
-            $.enable: true
-            $.shop_id: ${shop_id}
-            $.rules[?(@.type=='state_delay')].args.delay: 0
-            $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].replies:
-              - ageing_id: ""
-                message: ${message}
-                images: []
+      - byName: 开启咨询未下单任务
       - byName: 发送消息给商家
-        name: 发送消息给服务助手
+        name: 随机顾客发送消息给服务助手
         bodyEditor:
           json:
             $.pin: cntaobao${__RandomName(buyer_id)}
-            $.spin: cntaobao${shopName}:服务助手
-      - byName: 获取催单消息
+            $.spin: cntaobao${shopName}:111服务助手
+      - byName: 获取催单消息-咨询未下单消息为空
+      - byName: 根据聊天记录查询trace
+      - byName: 查看trace详情
+        name: 查看trace详情-服务助手接待不催单
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='InQueueReject')].in_queue_reject_reason: ['reject,in reception priority mode, service assistant reception will not send reminder message']
 afterMethod:
   name: 测试结束后查看订单trace
   step:

@@ -18,6 +18,7 @@ testMethod:
     severity: CRITICAL
     step:
       - byName: 修改咨询未下单内容
+        name: 开启咨询未下单任务
         bodyEditor:
           json:
             $.id: ${task_id}
