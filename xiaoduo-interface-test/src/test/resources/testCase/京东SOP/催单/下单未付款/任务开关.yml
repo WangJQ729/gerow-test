@@ -9,9 +9,40 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
-    - byName: 获取老的task配置
-    - byName: 获取task模板
+    - name: 获取所有的task_id
+      url: /api/admin/reminder/v2/manage/task/list
+      variables:
+        template_keys: 0
+        node_type: ${node_state}
+      method: GET
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            task_list: $.data.tasks[*].id
+          size: 100
+          options: [DEFAULT_PATH_LEAF_TO_NULL]
+    - name: 获取task模板
+      url: /api/admin/reminder/v2/manage/task/template
+      variables:
+        node_type: ${node_state}
+        template_key: 0
+      method: GET
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            task_info: $.data
+    - byName: 删除催单任务
+      name: 删除其他催单任务
+      iter:
+        task_id: ${task_list}
+    - name: 使用模板新建一个task
+      url: /api/admin/reminder/v2/manage/task/create
+      method: POST
+      body: ${task_info}
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            task_id: $.data.id
 testMethod:
   - name: 开启任务
     severity: NORMAL
@@ -31,6 +62,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 关闭催单任务
+      - byName: 清楚任务缓存
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -41,6 +73,10 @@ afterMethod:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
 afterClass:
-  name: 测试结束后还原task
+  name: 测试结束后删除任务
   step:
-    - byName: 还原催单任务
+    - name: 删除催单任务
+      url: /api/admin/reminder/v2/manage/task/delete
+      method: POST
+      body: |
+        {"id":"${task_id}"}
