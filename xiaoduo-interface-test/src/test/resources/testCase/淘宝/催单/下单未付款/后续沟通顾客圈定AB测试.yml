@@ -47,7 +47,7 @@ beforeClass:
             - {type: state_delay,args: {delay: 15}}
             - {type: send_message,args: {ageing_id: "",images: [],state_delay: 180,receive_message_filter: false,message: "${message}"}}
     - byName: 获取测试任务ID
-    - byName: 获取任务详情
+    - byName: 获取AB测试任务详情
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:

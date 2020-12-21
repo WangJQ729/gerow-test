@@ -18,7 +18,7 @@ beforeClass:
     - byName: 获取测试催单任务模板
     - byName: 新建测试催单任务
     - byName: 获取测试任务ID
-    - byName: 获取任务详情
+    - byName: 获取AB测试任务详情
     - byName: 编辑测试催单任务-开启顾客类型圈定
       name: 编辑测试催单任务-开启避免骚扰
       bodyEditor:

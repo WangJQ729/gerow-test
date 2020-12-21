@@ -1,0 +1,45 @@
+name: 时效标签删除后任务关闭
+story: ${reminder_type}
+dataProvider:
+  - node_state: got_delay
+    order_state: shipped
+    message: 由于近期订单量过大，快递小哥没能及时揽件，实在抱歉。请您耐心等待，小妹会尽快联系快递小哥安排给您优先处理呢！
+    text_with_vars: ${message}
+    reminder_type: 揽件超时
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+    - byName: 获取时效标签列表
+    - byName: 删除时效标签
+      iter:
+        ageing_id: ${ageing_ids}
+      form:
+        id: ${ageing_id}
+testMethod:
+  - name: 时效标签删除后任务关闭
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,0,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,0,end_time)}
+        task_status: starting
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签
+      - byName: 设置时效标签
+      - byName: 获取催单任务时效标签状态
+      - byName: 删除时效标签
+      - byName: 查看任务详情-任务关闭
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
