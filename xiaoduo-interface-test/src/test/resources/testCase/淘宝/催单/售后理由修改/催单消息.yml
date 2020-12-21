@@ -1,6 +1,5 @@
 name: 催单消息
 story: ${reminder_type}
-enable: false
 dataProvider:
   - node_state: refund
     order_state: succeeded
