@@ -70,12 +70,7 @@ testMethod:
           task_id: ${task_id}
         method: GET
         assertion: [json: {$.data.enable: false}]
-afterMethod:
-  name: 测试结束后查看订单trace
+afterClass:
+  name: 测试结束后删除任务
   step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
-#afterClass:
-#  name: 测试结束后删除任务
-#  step:
-#    - byName: 删除催单任务
+    - byName: 删除催单任务

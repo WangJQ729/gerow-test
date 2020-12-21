@@ -1,4 +1,5 @@
 name: 时效标签删除后任务关闭
+platform: 融合版
 story: ${reminder_type}
 dataProvider:
   - node_state: send_scan_delay
@@ -41,11 +42,6 @@ testMethod:
       - byName: 获取催单任务时效标签状态
       - byName: 删除时效标签
       - byName: 查看任务详情-任务关闭
-afterMethod:
-  name: 测试结束后查看订单trace
-  step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
