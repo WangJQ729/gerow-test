@@ -60,7 +60,17 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 添加时效标签
-      - byName: 设置时效标签
+      - byName: 开启催单任务
+        name: 开启交易成功催单任务-设置时效标签
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 获取催单任务时效标签状态
       - byName: 删除时效标签
       - name: 查看任务详情-任务关闭
