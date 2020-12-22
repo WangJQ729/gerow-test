@@ -1,6 +1,5 @@
 name: 服务助手接待
 platform: 融合版
-enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: asked
@@ -28,11 +27,7 @@ testMethod:
             $.spin: cntaobao${shopName}:服务助手
       - byName: 获取催单消息-咨询未下单消息为空
       - byName: 根据聊天记录查询trace
-      - byName: 查看trace详情
-        name: 查看trace详情-服务助手接待不催单
-        assertion:
-          - json:
-              $.data.traces[?(@.phase=='InQueueReject')].in_queue_reject_reason: ['reject,in reception priority mode, service assistant reception will not send reminder message']
+      - byName: 查看trace详情-TaskSetTimer
   - name: 服务助手接待买家-指定账号发送
     severity: NORMAL
     step:
@@ -50,7 +45,8 @@ testMethod:
                 message: ${message}
                 images: []
             $.rules[?(@.type=='specify_send_seller')].args.status: 1
-            $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
+            $.rules[?(@.type=='specify_send_seller')].args.asked_seller: true
+            $.rules[?(@.type=='specify_send_seller')].args.sub_users_info_id: ${sub_silence_users_info_id}
       - byName: 随机顾客发送消息给服务助手
       - byName: 获取催单消息
   - name: 服务助手接待买家-指定账号(不在线)发送
@@ -70,7 +66,8 @@ testMethod:
                 message: ${message}
                 images: []
             $.rules[?(@.type=='specify_send_seller')].args.status: 1
-            $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
+            $.rules[?(@.type=='specify_send_seller')].args.asked_seller: true
+            $.rules[?(@.type=='specify_send_seller')].args.sub_users_info_id: ${reminder_transfer_sub_users_info_id}
       - byName: 随机顾客发送消息给服务助手
       - byName: 获取催单消息-咨询未下单消息为空
       - byName: 根据聊天记录查询trace
