@@ -125,6 +125,9 @@ testMethod:
             "spin": "cntaobao${seller_name}",
             "customer_data": ${customer_data}
           }
+        bodyEditor:
+          json:
+            $.pin: cntaobao${buyer_id}
         assertion:
           - json:
               $.custom_transfer.transfer_type: "reminder_transfer"
