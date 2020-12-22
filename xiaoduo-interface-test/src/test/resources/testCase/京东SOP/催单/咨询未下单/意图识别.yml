@@ -21,9 +21,10 @@ beforeClass:
       byName: 切换类目
       form:
         category_id: ${category_id}
-    - byName: 获取task_id
-    - byName: 获取老的task配置
+    - byName: 获取所有的task_id
     - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
     - byName: 修改task内容
       name: 开启所有首轮催拍
       bodyEditor:
@@ -103,8 +104,9 @@ afterMethod:
     - byName: 根据聊天记录查询trace
     - byName: 查看trace详情
 afterClass:
-  name: 测试结束后还原task
+  name: 测试结束后删除催单任务
   step:
+    - byName: 删除催单任务
     - name: 切换类目
       url: /api/admin/guide/shop_setup
       headers:
@@ -115,4 +117,3 @@ afterClass:
         other_express_name: other_express_name
         category_id: ${shop_category_id}
       assertion: [json: {$.code: 0}]
-    - byName: 还原催单任务

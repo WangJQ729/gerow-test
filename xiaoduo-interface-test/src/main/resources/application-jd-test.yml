@@ -4,7 +4,6 @@ data:
     shopName: 智晓多谋生鲜专营店
     seller_name: 晓多生鲜-zdx
     shop: 智晓多谋生鲜专营店
-    buyer: tester002
     platform: jd
     child_seller: 晓多生鲜-ld
 client:

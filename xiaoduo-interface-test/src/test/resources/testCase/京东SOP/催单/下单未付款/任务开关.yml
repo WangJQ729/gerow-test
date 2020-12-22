@@ -56,13 +56,21 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
+#      - name: 清楚任务缓存
+#        url: /reminder/v2/test/cache_clean/task
+#        variables:
+#          shop_id: ${shop_id}
+#          task_id: ${task_id}
+#          node_type: ${order_state}
+#        method: GET
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
+        sleep: 5
   - name: 关闭任务
     severity: NORMAL
     step:
       - byName: 关闭催单任务
-      - byName: 清楚任务缓存
+#      - byName: 清楚任务缓存
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
