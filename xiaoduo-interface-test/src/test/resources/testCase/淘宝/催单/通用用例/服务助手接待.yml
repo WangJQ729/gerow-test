@@ -47,7 +47,7 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
 testMethod:
-  - name: 服务助手接待买家-当作静默顾客发送消息
+  - name: 服务助手接待买家-客服不在线SetTimer
     severity: NORMAL
     step:
       - byName: 开启催单任务
