@@ -47,7 +47,7 @@ testMethod:
             $.rules[?(@.type=='pay_amount_limit')].args.min: 5
             $.rules[?(@.type=='pay_amount_limit')].args.max: 20
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-指定金额
       - byName: 获取催单消息
   - name: 金额限制-不满足-${payment}
@@ -68,7 +68,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 设置金额限制为5-20元-已签收
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-指定金额
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -108,7 +108,7 @@ testMethod:
             $.rules[?(@.type=='pay_amount_limit')].args.min: 5
             $.rules[?(@.type=='pay_amount_limit')].args.max: 20
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-指定金额
       - byName: 获取催单消息
 afterMethod:

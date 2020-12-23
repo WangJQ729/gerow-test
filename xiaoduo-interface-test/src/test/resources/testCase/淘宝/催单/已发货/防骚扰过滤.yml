@@ -28,7 +28,7 @@ testMethod:
             $.rules[?(@.type=='send_shipped_message')].args.no_consign_part.message: ${message}
             $.rules[?(@.type=='send_limit')].args.enable: true
             $.rules[?(@.type=='send_limit')].args.second: 30
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 获取催单消息
@@ -44,7 +44,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 开启已发货催单任务-开启防骚扰过滤
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 获取催单消息

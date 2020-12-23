@@ -80,7 +80,7 @@ testMethod:
         body: |
           {"task_remove_duplicates":false,"node_type":"${node_state}"}
       - byName: 拉一下催单消息
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
       - byName: 拉一下催单消息
         name: 获取到2条催单消息
@@ -133,7 +133,7 @@ testMethod:
           - json:
               $.data.tasks[0].id: ${task_id_1}
               $.data.tasks[1].id: ${task_id_2}
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
       - byName: 获取催单消息
         assertion:
@@ -176,7 +176,7 @@ testMethod:
           - json:
               $.data.tasks[0].id: ${task_id_2}
               $.data.tasks[1].id: ${task_id_1}
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
       - byName: 获取催单消息
         name: 获取催单消息-第二个任务
@@ -221,7 +221,7 @@ testMethod:
       - byName: 开启相同场景内任务去重
       - byName: 设置第一个任务在前
       - byName: 断言修改后的顺序是否正确
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
       - byName: 获取催单消息-第二个任务
       - byName: 根据订单查询trace

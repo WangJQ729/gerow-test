@@ -35,7 +35,7 @@ testMethod:
             $.plan.config[?(@.type=='pay_amount_limit')].args.enable: true
             $.plan.config[?(@.type=='pay_amount_limit')].args.max: 20
             $.plan.config[?(@.type=='pay_amount_limit')].args.min: 5
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-指定金额
       - byName: 获取AB测试催单消息
   - name: 金额限制-不满足-${payment}
@@ -45,7 +45,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 编辑测试催单任务-设置金额圈定
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-指定金额
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
@@ -67,7 +67,7 @@ testMethod:
             $.plan.config[?(@.type=='pay_amount_limit')].args.enable: false
             $.plan.config[?(@.type=='pay_amount_limit')].args.max: 20
             $.plan.config[?(@.type=='pay_amount_limit')].args.min: 5
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-指定金额
       - byName: 获取AB测试催单消息
 afterMethod:

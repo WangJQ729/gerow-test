@@ -28,7 +28,7 @@ testMethod:
       - byName: 新建催单转接分组
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
@@ -45,7 +45,7 @@ testMethod:
       - byName: 新建催单转接分组
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-关闭催单转接
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 子账号发送心跳检测
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 子账号发送心跳检测
@@ -58,7 +58,7 @@ testMethod:
       - byName: 新建催单转接分组
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
@@ -76,7 +76,7 @@ testMethod:
       - byName: 新建催单转接分组
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 开启催单任务-关闭催单转接
@@ -89,7 +89,7 @@ testMethod:
           {"group_id_list":"","sub_user_name_list":"${child_seller2}"}
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 获取催单消息-提取转接信息
       - byName: 发送消息给商家-转接列表为空
@@ -101,7 +101,7 @@ testMethod:
           {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller2}"}
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
@@ -115,7 +115,7 @@ testMethod:
           {"group_id_list":"","sub_user_name_list":"${child_seller},${seller_name}"}
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
       - byName: 主账号发送心跳检测
       - byName: 子账号发送心跳检测
@@ -142,7 +142,7 @@ testMethod:
           {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller3}"}
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
@@ -158,7 +158,7 @@ testMethod:
           {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller2},${child_seller3}"}
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
-      - byName: 发送消息给商家-固定问题
+      - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
