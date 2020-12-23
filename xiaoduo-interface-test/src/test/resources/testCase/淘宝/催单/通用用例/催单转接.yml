@@ -71,6 +71,7 @@ testMethod:
         assertion: [json: {$.code: 0}]
       - name: 新建催单转接分组
         url: /api/admin/xd_sub_user/groups/selection/new
+        untilWait: 30
         method: POST
         body: |
           {"group_id_list":"","sub_user_name_list":"${child_seller}"}
@@ -300,6 +301,12 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
+#    - name: 清楚转接列表缓存
+#      url: /reminder/v2/test/cache_clean/sellers_info
+#      variables:
+#        shop_id: ${shop_id}
+#        sub_users_info_id: ${reminder_transfer_sub_users_info_id}
+#      method: GET
 afterClass:
   name: 测试结束后删除任务
   step:
