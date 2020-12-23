@@ -1,19 +1,14 @@
 name: 指定账号催单转接
-platform: 融合版
+platform: 融合版,淘宝
 story: ${reminder_type}
 dataProvider:
-  - node_state: send_scan_delay
-    order_state: send_scan
-    message: 您好，您的快递已经派送，麻烦尽快签收呢！
-    text_with_vars: ${message}
-    reminder_type: 派件超时
-    action: SENT_SCAN
-  - node_state: logistics_update_delay
-    order_state: got
-    message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
-    text_with_vars: ${message}
-    reminder_type: 物流更新超时
-    action: GOT
+  - node_state: rated
+    reminder_type: 已评价
+    message: 对不起，可能有一些原因给您的这次购物带来了一些不愉快，我是售后客服，希望真诚和您沟通一下，看我能不能帮到您，让您消消气。
+    text_with_vars: 对不起，可能有一些原因给您的这次购物带来了一些不愉快，我是售后客服，希望真诚和您沟通一下，看我能不能帮到您，让您消消气。
+    order_state: succeeded
+    rate_result: bad
+    rate_code: -1
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -29,6 +24,7 @@ testMethod:
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
       - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 推送评价消息
       - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
@@ -46,10 +42,45 @@ testMethod:
       - byName: 开启催单任务-关闭催单转接
       - byName: 子账号发送心跳检测
       - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 推送评价消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-转接关闭
+  - name: 子账号在线-关闭咨询顾客转接
+    severity: NORMAL
+    step:
+      - byName: 新建催单转接分组
+      - byName: 新建分组-只有主账号
+      - byName: 开启催单任务-关闭咨询顾客催单转接
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 子账号发送心跳检测
+      - byName: 模拟pulsar订单消息
+      - byName: 推送评价消息
+      - byName: 子账号发送心跳检测
+      - byName: 获取催单消息-提取转接信息
+      - byName: 子账号发送心跳检测
+      - byName: 发送消息给商家-转接关闭
+  - name: 子账号在线-开启咨询顾客转接
+    severity: NORMAL
+    step:
+      - byName: 新建催单转接分组
+      - byName: 新建分组-只有主账号
+      - byName: 开启催单任务-开启催单转接
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 子账号发送心跳检测
+      - byName: 模拟pulsar订单消息
+      - byName: 推送评价消息
+      - byName: 子账号发送心跳检测
+      - byName: 获取催单消息-提取转接信息
+      - byName: 子账号发送心跳检测
+      - byName: 发送消息给商家-含转接内容
+        assertion:
+          - json:
+              $.custom_transfer.transfer_type: "reminder_transfer"
+              $.custom_transfer.is_transfer: true
+              $.custom_transfer.transfer_subnick_list: ["${child_seller}"]
+            need_decode: true
   - name: 子账号在线-回复前关闭转接
     severity: NORMAL
     step:
@@ -57,6 +88,7 @@ testMethod:
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
       - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 推送评价消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
@@ -74,6 +106,7 @@ testMethod:
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
       - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 推送评价消息
       - byName: 子账号发送心跳检测
       - byName: 开启催单任务-关闭催单转接
       - byName: 获取催单消息-转接关闭
@@ -86,6 +119,7 @@ testMethod:
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
       - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 推送评价消息
       - byName: 获取催单消息-提取转接信息
       - byName: 发送消息给商家-转接列表为空
   - name: 开启转接-多个子账号转接-只有一个在线
@@ -97,6 +131,7 @@ testMethod:
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
       - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 推送评价消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
@@ -111,6 +146,7 @@ testMethod:
       - byName: 开启催单任务-开启催单转接
       - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
+      - byName: 推送评价消息
       - byName: 主账号发送心跳检测
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
@@ -137,6 +173,7 @@ testMethod:
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
       - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 推送评价消息
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
       - byName: 获取催单消息-提取转接信息
@@ -152,6 +189,7 @@ testMethod:
       - byName: 新建分组-只有主账号
       - byName: 开启催单任务-开启催单转接
       - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 推送评价消息
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
       - byName: 获取催单消息-提取转接信息
@@ -161,7 +199,7 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
+    - byName: 根据订单查询评价trace
     - byName: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
