@@ -48,6 +48,7 @@ beforeSuite:
       url: /api/admin/user/shop_subnick_client_config_edit_v3
       headers:
         Content-Type: multipart/form-data
+      untilWait: 15
       method: POST
       form:
         sub_nick: ${seller_name}

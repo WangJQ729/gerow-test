@@ -95,6 +95,7 @@ testMethod:
         variables:
           spin: cntaobao${child_seller}
           sign: ${__HmacMD5(spin=cntaobao${child_seller})}
+        untilWait: 30
         method: GET
         assertion: [json: {$.code: 0}]
       - byName: 获取催单消息
