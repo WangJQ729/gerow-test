@@ -3,7 +3,7 @@ story: ${reminder_type}
 dataProvider:
   - node_state: finished
     order_state: FINISHED_L
-    message: 交易成功了
+    message: Baby，如果您收到的货物有出现任何问题~欢迎您随时滴滴小客服，我随时在哒~！
     text_with_vars: ${message}
     reminder_type: 交易成功
 beforeClass:
