@@ -86,7 +86,7 @@ testMethod:
           qianniu_version_num: 8.9.1.500
           service_status: 7
           usr_shut: 0
-          spin: cnjd${shopName}
+          spin: cnjd${seller_name}
         method: GET
         responseType: DEFAULT
         extractor:

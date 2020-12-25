@@ -31,7 +31,7 @@ testMethod:
       - message: "#E-s20#E-s20#E-s20#E-s20#E-s20"
         text_with_vars: "#E-s20#E-s20#E-s20#E-s20#E-s20"
       - message: "{{子账号名称}}"
-        text_with_vars: ${shopName}
+        text_with_vars: ${seller_name}
       - message: "1{↓1秒后分行发送↓}2"
         text_with_vars: "1{↓1秒后分行发送↓}2"
     description: |
@@ -63,7 +63,14 @@ testMethod:
         url: /api/client/reminder/v2/test/send?is_test=false&queue_type=0
         method: POST
         body: |
-          {"platform":"jd","order_id":"${__RandomOrderId(order_id)}","shop_id":"${shop_id}","buyer_id":"${__RandomName(buyer_id)}","address":"AATRkxbhRDexFQqaaj1DmxwFYrnn87mGyjhngO9AagZ47mJcjBXnOpFgAZ7Qomf4RvACXmETqDOfY5cT5GCflciwGx1BSmOVRJ3lMUg8vu9F77ka+pr8z96FU5KkdCjGDtbijUTr187JHufPh09JKsvP","status":"${order_state}","created_at":1572263720,"updated_at":1572265460,"item_ids":["10348221568"],"jdext":{"state_desc":"未付款","items":[{"item_id":"10348221568","sku_id":"13306184664","sku_name":"佳通轮胎 155R12 6PR VAN600 适配哈飞 松花江 经济耐磨载货升级600V1花纹 155R12C","count":1}],"receiver":{"name":"AATRkxbhRDexFQqaaj1DmxwFaYWe8eL5vWMbkBc/MrjDRApjYGTU/JUrVrDvAyUfQig=","phone":"AATRkxbhRDexFQqaaj1DmxwFu3TZXcy+gaBNHatTq7FEZv6aYgn1PJGgNzkGtTIl2DM="}}}
+          {"address":"AATRkxbhRDexFQqaaj1DmxwFYrnn87mGyjhngO9AagZ47mJcjBXnOpFgAZ7Qomf4RvACXmETqDOfY5cT5GCflciwGx1BSmOVRJ3lMUg8vu9F77ka+pr8z96FU5KkdCjGDtbijUTr187JHufPh09JKsvP","created_at":1572263720,"updated_at":1572265460,"item_ids":["10348221568"],"jdext":{"state_desc":"未付款","items":[{"item_id":"10348221568","sku_id":"13306184664","sku_name":"佳通轮胎 155R12 6PR VAN600 适配哈飞 松花江 经济耐磨载货升级600V1花纹 155R12C","count":1}],"receiver":{"name":"AATRkxbhRDexFQqaaj1DmxwFaYWe8eL5vWMbkBc/MrjDRApjYGTU/JUrVrDvAyUfQig=","phone":"AATRkxbhRDexFQqaaj1DmxwFu3TZXcy+gaBNHatTq7FEZv6aYgn1PJGgNzkGtTIl2DM="}}}
+        bodyEditor:
+          json:
+            $.platform: ${platform}
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.shop_id: ${shop_id}
+            $.buyer_id: ${__RandomName(buyer_id)}
+            $.status: ${order_state}
       - name: 获取催单消息
         byName: 拉一下催单消息
         assertion:

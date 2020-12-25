@@ -65,7 +65,12 @@ testMethod:
         name: 推送指定金额订单消息
         bodyEditor:
           json:
+            $.platform: ${platform}
+            $.shop_id: ${shop_id}
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.buyer_id: ${__RandomName(buyer_id)}
             $.payment:  ${__BeanShell(${payment},)}
+            $.status: ${order_state}
       - byName: 获取催单消息
   - name: 金额限制-不满足-${payment}
     dataProvider:

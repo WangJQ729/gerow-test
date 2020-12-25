@@ -14,7 +14,11 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
 testMethod:
-  - name: 设置20秒后发送催单消息
+  - name: 设置${state_delay}秒后发送催单消息
+    dataProvider:
+      - state_delay: 20
+      - state_delay: 60
+      - state_delay: 120
     severity: NORMAL
     step:
       - byName: 修改task内容
@@ -24,12 +28,14 @@ testMethod:
             $.enable: true
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_limit')].args.enable: false
-            $.rules[?(@.type=='state_delay')].args.delay: 20
+            $.rules[?(@.type=='state_delay')].args.delay: ${state_delay}
             $.rules[?(@.type=='send_message')].args.message: ${message}
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 获取催单消息
+        untilWait: 120
+        intervals: 5000
         sleep: 15
 afterMethod:
   name: 测试结束后查看订单trace

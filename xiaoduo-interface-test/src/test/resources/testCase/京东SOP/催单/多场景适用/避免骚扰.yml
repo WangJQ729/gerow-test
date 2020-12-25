@@ -35,20 +35,6 @@ beforeClass:
     - byName: 使用模板新建一个task
 testMethod:
   - name: 避免骚扰
-    description: |
-      """</br>
-      用例描述：</br>
-      1、1小时内只触发一次。</br>
-      </br>
-      测试步骤</br>
-      1、开启避免骚扰</br>
-      2、创建第一个订单</br>
-      3、校验催单信息</br>
-      4、校验traces</br>
-      5、创建第二个订单</br>
-      6、校验催单信息</br>
-      7、校验traces</br>
-      """
     severity: NORMAL
     step:
       - byName: 修改task内容
@@ -62,16 +48,16 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: true
             $.rules[?(@.type=='send_message')].args.message: ${message}
       - byName: 通过pulsar推送订单消息
-        name: 指定随机顾客通过pulsar推送订单消息
-        bodyEditor:
-          json:
-            $.buyer_id: ${buyer_id}
       - byName: 获取催单消息
       - byName: 通过pulsar推送订单消息
         name: 指定顾客通过pulsar推送订单消息
         bodyEditor:
           json:
-            $.buyer_id: ${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,buyer_id)}
+            $.platform: ${platform}
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.shop_id: ${shop_id}
+            $.buyer_id: ${buyer_id}
+            $.status: ${order_state}
       - byName: 根据订单查询trace
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情
@@ -105,7 +91,7 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 指定随机顾客通过pulsar推送订单消息
+      - byName: 指定顾客通过pulsar推送订单消息
       - byName: 获取催单消息
       - byName: 指定顾客通过pulsar推送订单消息
       - byName: 根据订单查询trace
