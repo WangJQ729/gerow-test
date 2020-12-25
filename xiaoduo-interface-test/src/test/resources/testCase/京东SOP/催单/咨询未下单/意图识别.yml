@@ -94,6 +94,7 @@ testMethod:
               qstr: $.answer
             need_decode: true
       - byName: 获取催单消息
+        name: 获取对应task的催单消息
         assertion:
           - json:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:

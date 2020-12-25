@@ -3,6 +3,7 @@ story: ${reminder_type}
 dataProvider:
   - node_state: shopping_cart_added
     message: 您好，您加购的商品很抢手哦，喜欢就尽快下单吧
+    text_with_vars: 您好，您加购的商品很抢手哦，喜欢就尽快下单吧
     reminder_type: 加购未下单
     goods_id: 5695456321
 beforeClass:
@@ -30,18 +31,18 @@ testMethod:
     dataProvider:
       - new_order_state: NOT_PAY
         new_order_state_name: 下单未付款
-    #      - new_order_state: PAUSE
-    #        new_order_state_name: 订单暂停
-    #      - new_order_state: WAIT_GOODS_RECEIVE_CONFIRM
-    #        new_order_state_name: 已发货
-    #      - new_order_state: LOCKED
-    #        new_order_state_name: 订单锁定
-    #      - new_order_state: FINISHED_L
-    #        new_order_state_name: 交易成功
-    #      - new_order_state: WAIT_SELLER_STOCK_OUT
-    #        new_order_state_name: 等待出库
-    #      - new_order_state: TRADE_CANCELED
-    #        new_order_state_name: 订单取消
+      - new_order_state: PAUSE
+        new_order_state_name: 订单暂停
+      - new_order_state: WAIT_GOODS_RECEIVE_CONFIRM
+        new_order_state_name: 已发货
+      - new_order_state: LOCKED
+        new_order_state_name: 订单锁定
+      - new_order_state: FINISHED_L
+        new_order_state_name: 交易成功
+      - new_order_state: WAIT_SELLER_STOCK_OUT
+        new_order_state_name: 等待出库
+      - new_order_state: TRADE_CANCELED
+        new_order_state_name: 订单取消
     severity: NORMAL
     step:
       - byName: 通过pulsar推送加购消息
@@ -55,6 +56,12 @@ testMethod:
             $.buyer_id: ${buyer_id}
             $.status: ${new_order_state}
       - byName: 获取催单消息-消息为空
+  - name: 任务触发后，买家有咨询
+    severity: NORMAL
+    step:
+      - byName: 通过pulsar推送加购消息
+      - byName: 买家主动发送消息给商家
+      - byName: 获取加购催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:

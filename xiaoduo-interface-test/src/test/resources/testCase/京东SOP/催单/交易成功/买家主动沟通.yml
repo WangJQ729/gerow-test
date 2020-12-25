@@ -44,11 +44,7 @@ testMethod:
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 发送消息给商家
-        variables:
-          pin: cnjd${buyer_id}
-          q: ${__DES3Cipher(东西很好哦！,,)}
-        name: 买家主动发送消息给商家
+      - byName: 买家主动发送消息给商家
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情
         name: 查看trace详情-因为收到买家消息
