@@ -52,7 +52,7 @@ testMethod:
         variables:
           q: ${__DES3Cipher(在吗,,)}
       - name: 根据聊天记录查询trace
-        url: /api/reminder/v2/trace/search
+        url: /api/client/reminder/v2/trace/search
         variables:
           platform: ${platform}
           shop_id: ${shop_id}
@@ -71,6 +71,9 @@ testMethod:
           json:
             $.buyer_id: ${buyer_id}
             $.status: ${new_order_state}
+            $.platform: ${platform}
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.shop_id: ${shop_id}
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
         sleep: 5

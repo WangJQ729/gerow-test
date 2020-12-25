@@ -56,16 +56,16 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: true
             $.rules[?(@.type=='send_message')].args.message: ${message}
       - byName: 通过pulsar推送订单消息
-        name: 指定随机顾客通过pulsar推送订单消息
-        bodyEditor:
-          json:
-            $.buyer_id: ${__RandomName(buyer_id)}
       - byName: 获取催单消息
       - byName: 通过pulsar推送订单消息
         name: 指定顾客通过pulsar推送订单消息
         bodyEditor:
           json:
             $.buyer_id: ${buyer_id}
+            $.platform: ${platform}
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.shop_id: ${shop_id}
+            $.status: ${order_state}
       - byName: 根据订单查询trace
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情
@@ -99,7 +99,7 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 指定随机顾客通过pulsar推送订单消息
+      - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
       - byName: 指定顾客通过pulsar推送订单消息
       - byName: 根据订单查询trace

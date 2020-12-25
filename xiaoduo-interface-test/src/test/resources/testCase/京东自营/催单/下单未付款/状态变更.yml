@@ -57,8 +57,10 @@ testMethod:
         name: 修改订单状态
         bodyEditor:
           json:
-            $.order_id: ${order_id}
-            $.buyer_id: ${buyer}
+            $.platform: ${platform}
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.shop_id: ${shop_id}
+            $.buyer_id: ${__RandomName(buyer_id)}
             $.status: ${order_state}
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更

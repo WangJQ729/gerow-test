@@ -85,8 +85,14 @@ testMethod:
         url: /api/client/reminder/v2/test/send?is_test=false&queue_type=0
         method: POST
         body: |
-          {"platform":"${platform}","order_id":"${__RandomOrderId(order_id)}","shop_id":"${shop_id}","buyer_id":"${buyer}","payment":205,"address":"内环到三环里北京东城区","status":"${order_state}","created_at":1574671841,"updated_at":1574671841,"jdext":{"items":[{"sku_id":"100003840169","sku_name":"双庆（ShuangQing）脸盆置物架 浴室免打孔不锈钢收纳架卫生间盆架厕所盆子洗脸盆收纳架 SQ-5243","count":2},{"sku_id":"100003840165","sku_name":"双庆（ShuangQing）单杆毛巾架 太空铝卫生间浴巾架复古免打孔挂架洗手间置物架 SQ-5252","count":1},{"sku_id":"1293281","sku_name":"双庆家居 吸盘香皂架无痕贴沥水香皂盒浴室肥皂架 SQ-5003","count":2}],"receiver":{}}}
-        sleep: 2 #等待oplog服务
+          {"updated_at":${__time(/1000,)},"payment":205,"address":"内环到三环里北京东城区","created_at":1574671841,"updated_at":1574671841,"jdext":{"items":[{"sku_id":"100003840169","sku_name":"双庆（ShuangQing）脸盆置物架 浴室免打孔不锈钢收纳架卫生间盆架厕所盆子洗脸盆收纳架 SQ-5243","count":2},{"sku_id":"100003840165","sku_name":"双庆（ShuangQing）单杆毛巾架 太空铝卫生间浴巾架复古免打孔挂架洗手间置物架 SQ-5252","count":1},{"sku_id":"1293281","sku_name":"双庆家居 吸盘香皂架无痕贴沥水香皂盒浴室肥皂架 SQ-5003","count":2}],"receiver":{}}}
+        bodyEditor:
+          json:
+            $.platform: ${platform}
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.shop_id: ${shop_id}
+            $.buyer_id: ${__RandomName(buyer_id)}
+            $.status: ${order_state}
       - name: 获取催单消息
         byName: 拉一下催单消息
         assertion:
@@ -133,7 +139,7 @@ afterMethod:
   name: 测试结束后查看订单trace
   step:
     - name: 根据订单查询trace
-      url: /api/reminder/v2/trace/search/order
+      url: /api/client/reminder/v2/trace/search/order
       variables:
         platform: ${platform}
         order_id: ${order_id}
@@ -146,7 +152,7 @@ afterMethod:
     #          options: [DEFAULT_PATH_LEAF_TO_NULL]
     - name: 查看trace详情
       untilWait: 10
-      url: /api/reminder/v2/trace/info
+      url: /api/client/reminder/v2/trace/info
       variables:
         trace_id: ${trace_id}
         platform: ${platform}
