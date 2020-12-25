@@ -1,12 +1,9 @@
 data:
   test:
     host: jd-${env}.xiaoduoai.com
-    shopName: xinke2015
-    seller_name: 新科影音京东自营旗舰店:xinke2015
-    shop: 新科影音京东自营旗舰店
-    buyer: tester002
     platform: jd
-    child_seller: 新科影音京东自营旗舰店:xinke2015
+    shopName: ${shopName}
+    seller_name: ${shopName}
 client:
   protocol: http
   timeOut: 30
