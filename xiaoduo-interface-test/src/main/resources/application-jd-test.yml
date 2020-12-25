@@ -1,6 +1,6 @@
 data:
   test:
-    host: ${env}.xiaoduoai.com
+    host: jd-${env}.xiaoduoai.com
     shopName: 智晓多谋生鲜专营店
     seller_name: 晓多生鲜-zdx
     shop: 智晓多谋生鲜专营店

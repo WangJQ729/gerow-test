@@ -131,6 +131,7 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
+    - byName: 清楚任务缓存
     - byName: 根据订单查询trace
     - byName: 查看trace详情
 afterClass:
