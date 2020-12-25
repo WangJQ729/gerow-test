@@ -28,7 +28,7 @@ testMethod:
             $.enable: true
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_limit')].args.enable: false
-            $.rules[?(@.type=='state_delay')].args.delay: ${state_delay}
+            $.rules[?(@.type=='state_delay')].args.delay: ${__BeanShell(${state_delay},)}
             $.rules[?(@.type=='send_message')].args.message: ${message}
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
