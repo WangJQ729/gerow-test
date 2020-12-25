@@ -58,6 +58,9 @@ testMethod:
         name: 修改订单状态
         bodyEditor:
           json:
+            $.platform: ${platform}
+            $.shop_id: ${shop_id}
+            $.buyer_id: ${__RandomName(buyer_id)}
             $.order_id: ${order_id}
             $.status: ${new_order_state}
       - byName: 获取催单消息-消息为空
