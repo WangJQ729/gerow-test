@@ -45,7 +45,7 @@ beforeClass:
             task_id: $.data.id
 testMethod:
   - name: 开启任务
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 修改task内容
         bodyEditor:
@@ -61,7 +61,7 @@ testMethod:
       - byName: 获取催单消息
         sleep: 5
   - name: 关闭任务
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 关闭催单任务
       - byName: 通过pulsar推送订单消息

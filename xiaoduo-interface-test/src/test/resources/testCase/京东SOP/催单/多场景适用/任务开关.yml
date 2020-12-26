@@ -45,7 +45,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单消息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 修改task内容
         name: 开启催单任务
@@ -71,7 +71,7 @@ testMethod:
       2、创建订单</br>
       3、校验催单消息</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 修改task内容
         name: 关闭催单任务

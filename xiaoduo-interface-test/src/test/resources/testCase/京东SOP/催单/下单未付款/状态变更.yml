@@ -27,7 +27,7 @@ testMethod:
       4、订单状态变更为${new_order_state_name}</br>
       5、校验trace（timer 到期后无后续变化）</br>
       """
-    severity: NORMAL
+    severity: CRITICAL
     dataProvider:
       - new_order_state: PAUSE
         new_order_state_name: 订单暂停

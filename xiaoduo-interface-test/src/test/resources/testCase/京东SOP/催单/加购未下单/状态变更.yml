@@ -43,7 +43,7 @@ testMethod:
         new_order_state_name: 等待出库
       - new_order_state: TRADE_CANCELED
         new_order_state_name: 订单取消
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 通过pulsar推送加购消息
       - byName: 通过pulsar推送订单消息

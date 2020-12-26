@@ -15,7 +15,7 @@ beforeClass:
     - byName: 使用模板新建一个task
 testMethod:
   - name: 开启任务
-    severity: NORMAL
+    severity: CRITICAL
     step:
       - byName: 修改task内容
         name: 开启加购未下单催单任务
