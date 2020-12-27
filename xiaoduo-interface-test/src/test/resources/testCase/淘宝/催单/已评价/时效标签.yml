@@ -41,6 +41,7 @@ testMethod:
             $.enable: true
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='send_message')].args.ageing_id: ${ageing_id}
