@@ -88,7 +88,7 @@ testMethod:
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-            $.rules[?(@.type=='pay_amount_limit')].args.enable: true
+            $.rules[?(@.type=='pay_amount_limit')].args.enable: false
             $.rules[?(@.type=='pay_amount_limit')].args.min: 5
             $.rules[?(@.type=='pay_amount_limit')].args.max: 20
       - byName: 随机顾客发送消息给商家-固定问题
