@@ -19,7 +19,7 @@ testMethod:
     dataProvider:
       - action: SIGNED
     step:
-      - byName: 开启售后理由修改催单任务-已签收
+      - byName: 开启售后场景催单任务-已签收
       - byName: 随机顾客发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
@@ -31,8 +31,8 @@ testMethod:
     dataProvider:
       - action: SIGNED
     step:
-      - byName: 开启售后理由修改催单任务
-        name: 开启售后理由修改催单任务-物流签收7天内
+      - byName: 开启售后场景催单任务
+        name: 开启售后场景催单任务-物流签收7天内
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -56,8 +56,8 @@ testMethod:
     dataProvider:
       - action: SIGNED
     step:
-      - byName: 开启售后理由修改催单任务
-        name: 开启售后理由修改催单任务-物流签收7天后
+      - byName: 开启售后场景催单任务
+        name: 开启售后场景催单任务-物流签收7天后
         bodyEditor:
           json:
             $.id: ${task_id}

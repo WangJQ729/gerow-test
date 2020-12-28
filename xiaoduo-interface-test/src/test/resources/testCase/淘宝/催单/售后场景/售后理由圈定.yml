@@ -18,7 +18,7 @@ testMethod:
   - name: 符合圈定-多拍/错拍/不想要
     severity: NORMAL
     step:
-      - byName: 开启售后理由修改催单任务
+      - byName: 开启售后场景催单任务
       - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
       - byName: 推送退款消息
@@ -31,8 +31,8 @@ testMethod:
       - refund_reasons: 错拍/多拍/不想要
     severity: NORMAL
     step:
-      - byName: 开启售后理由修改催单任务
-        name: 开启售后理由修改催单任务-圈定多个退款原因
+      - byName: 开启售后场景催单任务
+        name: 开启售后场景催单任务-圈定多个退款原因
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -68,7 +68,7 @@ testMethod:
       - refund_reasons: 其他
     severity: NORMAL
     step:
-      - byName: 开启售后理由修改催单任务-圈定多个退款原因
+      - byName: 开启售后场景催单任务-圈定多个退款原因
       - byName: 随机顾客发送消息给商家-固定问题
       - byName: 模拟pulsar订单消息
       - byName: 推送退款消息-指定退款理由

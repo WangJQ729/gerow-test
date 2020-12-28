@@ -1,0 +1,89 @@
+name: 名单过滤
+platform: 融合版
+story: ${reminder_type}
+dataProvider:
+  - question: 你好
+    dataProvider:
+      - node_state: refund
+        message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
+        text_with_vars: ${message}
+        reminder_type: 售后理由修改
+        refund_state: taobao_refund_RefundCreated
+      - node_state: refund_agree
+        message: 您好，您的退货申请已通过，麻烦您把货发给我们，我们也好尽快给您办理退换货呢！
+        text_with_vars: ${message}
+        reminder_type: 同意退货
+        refund_state: taobao_refund_RefundSellerAgreeAgreement
+      - node_state: refund_success
+        message: 您好，您的退款申请已通过，请注意查收哦！感谢您的耐心等待，欢迎下次再来光顾小店。
+        text_with_vars: ${message}
+        reminder_type: 退款成功
+        refund_state: taobao_refund_RefundSuccess
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 名单过滤-买家在过滤名单内
+    step:
+      - byName: 开启催单任务
+        name: 开启售后场景催单任务-设置名单过滤
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='logistics_filter')].args.status: 2
+            $.rules[?(@.type=='refund_reasons')].args.reasons: [多拍/错拍/不想要]
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+            $.rules[?(@.type=='exclude_buyers')].args.enable: true
+            $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1605772288}]
+      - byName: 发送消息给商家-指定买家
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 推送退款消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询退款trace
+      - byName: 查看trace详情-导入名单过滤
+  - name: 名单过滤-买家不在过滤名单内
+    step:
+      - byName: 开启售后场景催单任务-设置名单过滤
+      - byName: 发送消息给商家
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 推送退款消息
+      - byName: 获取催单消息
+  - name: 名单过滤-买家在过滤名单内，但过滤条件未勾选
+    step:
+      - byName: 开启催单任务
+        name: 开启售后催单任务-不开启过滤名单
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='logistics_filter')].args.status: 2
+            $.rules[?(@.type=='refund_reasons')].args.reasons: [多拍/错拍/不想要]
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+            $.rules[?(@.type=='exclude_buyers')].args.enable: false
+            $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1605772288}]
+      - byName: 发送消息给商家-指定买家
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 推送退款消息
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询退款trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

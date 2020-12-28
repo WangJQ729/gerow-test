@@ -31,7 +31,7 @@ testMethod:
     severity: CRITICAL
     step:
       - byName: 开启催单任务
-        name: 开启售后理由修改催单任务
+        name: 开启售后场景催单任务
         bodyEditor:
           json:
             $.id: ${task_id}
