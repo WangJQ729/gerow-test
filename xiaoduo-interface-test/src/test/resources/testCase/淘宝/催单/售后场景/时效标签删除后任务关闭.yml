@@ -1,0 +1,50 @@
+name: 时效标签删除后任务关闭
+story: ${reminder_type}
+dataProvider:
+  - node_state: refund
+    message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
+    text_with_vars: ${message}
+    reminder_type: 售后理由修改
+    refund_state: taobao_refund_RefundCreated
+  - node_state: refund_agree
+    message: 您好，您的退货申请已通过，麻烦您把货发给我们，我们也好尽快给您办理退换货呢！
+    text_with_vars: ${message}
+    reminder_type: 同意退货
+    refund_state: taobao_refund_RefundSellerAgreeAgreement
+  - node_state: refund_success
+    message: 您好，您的退款申请已通过，请注意查收哦！感谢您的耐心等待，欢迎下次再来光顾小店。
+    text_with_vars: ${message}
+    reminder_type: 退款成功
+    refund_state: taobao_refund_RefundSuccess
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+    - byName: 获取时效标签列表
+    - byName: 删除时效标签
+      iter:
+        ageing_id: ${ageing_ids}
+      form:
+        id: ${ageing_id}
+testMethod:
+  - name: 时效标签删除后任务关闭
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,0,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,0,end_time)}
+        task_status: starting
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签
+      - byName: 售后场景设置时效标签
+      - byName: 获取催单任务时效标签状态
+      - byName: 删除时效标签
+      - byName: 查看任务详情-任务关闭
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
