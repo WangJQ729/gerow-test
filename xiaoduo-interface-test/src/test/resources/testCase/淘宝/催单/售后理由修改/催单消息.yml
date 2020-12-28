@@ -5,14 +5,14 @@ dataProvider:
     order_state: succeeded
     reminder_type: 售后理由修改
     refund_state: taobao_refund_RefundCreated
-#  - node_state: refund_agree
-#    order_state: succeeded
-#    reminder_type: 同意退货
-#    refund_state: taobao_refund_RefundSellerAgreeAgreement
-#  - node_state: refund_success
-#    order_state: succeeded
-#    reminder_type: 退款成功
-#    refund_state: taobao_refund_RefundSuccess
+  - node_state: refund_agree
+    order_state: succeeded
+    reminder_type: 同意退货
+    refund_state: taobao_refund_RefundSellerAgreeAgreement
+  - node_state: refund_success
+    order_state: succeeded
+    reminder_type: 退款成功
+    refund_state: taobao_refund_RefundSuccess
 beforeClass:
   name: 获取taskID和模板
   step:
