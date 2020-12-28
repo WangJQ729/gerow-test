@@ -17,8 +17,8 @@ testMethod:
   - name: 金额限制-满足-${payment}
     dataProvider:
       - payment: 5
-      - payment: 5.01
-      - payment: 19.99
+#      - payment: 5.01
+#      - payment: 19.99
       - payment: 20
     severity: NORMAL
     step:
@@ -75,10 +75,10 @@ testMethod:
     dataProvider:
       - payment: 4.99
       - payment: 5
-      - payment: 5.01
-      - payment: 19.99
-      - payment: 20
-      - payment: 20.01
+#      - payment: 5.01
+#      - payment: 19.99
+#      - payment: 20
+#      - payment: 20.01
     severity: NORMAL
     step:
       - byName: 设置金额限制为5-20元-不拆单发货

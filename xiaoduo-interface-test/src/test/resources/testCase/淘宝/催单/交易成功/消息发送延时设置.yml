@@ -17,7 +17,7 @@ testMethod:
   - name: 设置${state_delay}秒后发送催单消息
     dataProvider:
       - state_delay: 20
-      - state_delay: 60
+#      - state_delay: 60
 #      - state_delay: 120
     description: |
       """</br>

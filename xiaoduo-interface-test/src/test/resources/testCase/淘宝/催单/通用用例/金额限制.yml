@@ -47,8 +47,8 @@ testMethod:
   - name: 金额限制-满足-${payment}
     dataProvider:
       - payment: 5
-      - payment: 5.01
-      - payment: 19.99
+#      - payment: 5.01
+#      - payment: 19.99
       - payment: 20
     description: |
       """</br>
@@ -115,10 +115,10 @@ testMethod:
     dataProvider:
       - payment: 4.99
       - payment: 5
-      - payment: 5.01
-      - payment: 19.99
-      - payment: 20
-      - payment: 20.01
+#      - payment: 5.01
+#      - payment: 19.99
+#      - payment: 20
+#      - payment: 20.01
     description: |
       """</br>
       用例描述：</br>
