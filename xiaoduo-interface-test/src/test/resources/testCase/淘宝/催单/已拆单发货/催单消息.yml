@@ -116,7 +116,7 @@ testMethod:
       - byName: 根据订单查询trace
         assertion:
           - json:
-              $.data.traces.length(): 3
+              $.data.traces.length(): 4
 afterMethod:
   name: 测试结束后查看订单trace
   step:
