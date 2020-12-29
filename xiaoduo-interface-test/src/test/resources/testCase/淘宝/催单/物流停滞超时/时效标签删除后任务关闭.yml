@@ -23,6 +23,8 @@ beforeClass:
         id: ${ageing_id}
 testMethod:
   - name: 时效标签删除后任务关闭
+    links:
+      【物流停滞超时】时效标签删除后，关联了该时效标签的任务应该关闭: https://jira.xiaoduoai.com/browse/REMINDER-468
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         ageing_type: 1
