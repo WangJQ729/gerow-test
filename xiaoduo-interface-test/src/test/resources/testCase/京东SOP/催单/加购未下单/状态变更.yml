@@ -56,6 +56,8 @@ testMethod:
             $.buyer_id: ${buyer_id}
             $.status: ${new_order_state}
       - byName: 获取催单消息-消息为空
+      - byName: 根据加购消息查询trace
+      - byName: 查看trace详情-订单状态变更
   - name: 任务触发后，买家有咨询
     severity: NORMAL
     step:
@@ -65,6 +67,8 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
+    - byName: 根据加购消息查询trace
+    - byName: 查看trace详情
     - byName: 清楚任务缓存
 afterClass:
   name: 测试结束后删除催单任务
