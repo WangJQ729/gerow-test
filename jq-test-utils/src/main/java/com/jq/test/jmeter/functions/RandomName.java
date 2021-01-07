@@ -46,7 +46,7 @@ public class RandomName extends AbstractFunction {
             index = getNum(0, length - 1);
             third = str.substring(index, index + 1);
         }
-        return first + second + third + "(" + System.currentTimeMillis() + ")";
+        return first + second + third + "(" + System.currentTimeMillis() / 1000 + ")";
     }
 
     @Override
