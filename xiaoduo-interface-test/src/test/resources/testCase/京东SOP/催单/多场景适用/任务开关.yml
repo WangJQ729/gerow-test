@@ -57,7 +57,7 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 清楚任务缓存
+      - byName: 清除任务缓存
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
   - name: 关闭任务
@@ -95,7 +95,7 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 清楚任务缓存
+    - byName: 清除任务缓存
     - byName: 根据订单查询trace
     - byName: 查看trace详情
 afterClass:

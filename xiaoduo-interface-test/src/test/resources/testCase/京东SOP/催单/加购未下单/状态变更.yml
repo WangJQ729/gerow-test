@@ -25,7 +25,7 @@ beforeClass:
           $.rules[?(@.type=='send_message')].args.message: ${message}
           $.rules[?(@.type=='shopping_cart_goods_limit')].args.goods_ids:
             - ${goods_id}
-    - byName: 清楚任务缓存
+    - byName: 清除任务缓存
 testMethod:
   - name: 状态变更为-${new_order_state_name}
     dataProvider:
@@ -69,7 +69,7 @@ afterMethod:
   step:
     - byName: 根据加购消息查询trace
     - byName: 查看trace详情
-    - byName: 清楚任务缓存
+    - byName: 清除任务缓存
 afterClass:
   name: 测试结束后删除催单任务
   step:

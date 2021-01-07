@@ -44,13 +44,13 @@ beforeClass:
       extractor:
         - json:
             task_id_2: $.data.id
-    - byName: 清楚任务缓存
+    - byName: 清除任务缓存
       variables:
         task_id: ${task_id_1}
-    - byName: 清楚任务缓存
+    - byName: 清除任务缓存
       variables:
         task_id: ${task_id_2}
-    - byName: 清楚店铺缓存
+    - byName: 清除店铺缓存
 testMethod:
   - name: 关闭相同场景内任务去重
     severity: NORMAL
@@ -94,7 +94,7 @@ afterMethod:
   step:
     - byName: 根据加购消息查询trace
     - byName: 查看trace详情
-    - name: 清楚店铺缓存
+    - name: 清除店铺缓存
       url: /api/client/reminder/v2/test/cache_clean/shop_setting
       method: GET
       variables:

@@ -40,7 +40,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='send_message')].args.receive_message_filter: true
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
-      - byName: 清楚任务缓存
+      - byName: 清除任务缓存
       - byName: 通过pulsar推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
@@ -127,7 +127,7 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 清楚任务缓存
+    - byName: 清除任务缓存
     - byName: 根据订单查询trace
     - byName: 查看trace详情
 afterClass:

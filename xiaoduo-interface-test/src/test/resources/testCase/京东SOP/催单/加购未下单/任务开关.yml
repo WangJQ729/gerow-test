@@ -29,7 +29,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='shopping_cart_goods_limit')].args.goods_ids:
               - ${goods_id}
-      - byName: 清楚任务缓存
+      - byName: 清除任务缓存
       - name: 通过pulsar推送加购消息
         url: /api/client/reminder/v2/test/send?is_test=false&queue_type=5
         method: POST
@@ -62,7 +62,7 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='shopping_cart_goods_limit')].args.goods_ids:
               - ${goods_id}
-      - byName: 清楚任务缓存
+      - byName: 清除任务缓存
       - byName: 通过pulsar推送加购消息
       - byName: 获取催单消息-消息为空
         name: 获取加购催单消息-消息为空
@@ -74,7 +74,7 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 清楚任务缓存
+    - byName: 清除任务缓存
     - byName: 根据聊天记录查询trace
       name: 根据加购消息查询trace
       variables:

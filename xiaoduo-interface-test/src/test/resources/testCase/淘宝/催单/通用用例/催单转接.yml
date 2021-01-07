@@ -302,7 +302,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-#    - name: 清楚转接列表缓存
+#    - name: 清除转接列表缓存
 #      url: /reminder/v2/test/cache_clean/sellers_info
 #      variables:
 #        shop_id: ${shop_id}
