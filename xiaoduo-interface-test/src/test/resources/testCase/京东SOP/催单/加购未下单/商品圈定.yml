@@ -30,7 +30,7 @@ testMethod:
       - byName: 获取加购催单消息-消息为空
       - byName: 根据加购消息查询trace
       - byName: 查看trace详情
-        name: 查看trace详情-因为收到买家消息
+        name: 查看trace详情-不符合商品圈定
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_reject_reason: [shopping cart goods is:15456955465462324]
