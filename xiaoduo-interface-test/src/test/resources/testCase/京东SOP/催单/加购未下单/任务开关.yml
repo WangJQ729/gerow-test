@@ -35,6 +35,12 @@ testMethod:
         method: POST
         body: |
           {}
+        bodyEditor:
+          json:
+            $.platform: ${platform}
+            $.shop_id: ${shop_id}
+            $.buyer_id: ${__RandomName(buyer_id)}
+            $.goods_id: ${goods_id}
       - name: 获取加购催单消息
         byName: 拉一下催单消息
         assertion:
