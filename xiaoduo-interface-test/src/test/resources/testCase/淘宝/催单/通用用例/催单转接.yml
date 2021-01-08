@@ -302,12 +302,12 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-#    - name: 清除转接列表缓存
-#      url: /reminder/v2/test/cache_clean/sellers_info
-#      variables:
-#        shop_id: ${shop_id}
-#        sub_users_info_id: ${reminder_transfer_sub_users_info_id}
-#      method: GET
+    - name: 清除转接列表缓存
+      url: /api/admin/reminder/v2/test/cache_clean/sellers_info
+      variables:
+        shop_id: ${shop_id}
+        sub_users_info_id: ${reminder_transfer_sub_users_info_id}
+      method: GET
 afterClass:
   name: 测试结束后删除任务
   step:
