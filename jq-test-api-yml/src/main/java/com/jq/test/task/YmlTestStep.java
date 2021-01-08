@@ -191,22 +191,26 @@ public class YmlTestStep implements ITestStep {
                 check(response);
                 saveParam(response);
             }
-            if (step.isOrderStateExtractor()) {
-                Map<String, String> testClassParams = this.getTestMethod().getTestClass().getParams();
-                String buyer_id = testClassParams.get("buyer_id");
-                String order_id = testClassParams.get("order_id");
-                String task_id = testClassParams.get("task_id");
-                Map<String, String> testSuitParams = this.getTestMethod().getTestClass().getTestSuite().getParams();
-                String shop_id = testSuitParams.get("shop_id");
-                String platform = testSuitParams.get("platform");
-                String md5DigestAsHex = DigestUtils.md5DigestAsHex((buyer_id + ":" + order_id + ":" + task_id).getBytes());
-                String result = platform + ":rmdsrv:state:taskstate:" + platform + ":" + shop_id + ":" + md5DigestAsHex;
-                Allure.step(result);
+            if (step.isExtractTaskState()) {
+                extractTaskState();
             }
         } else {
             check(new ResponseEntity<>(HttpStatus.OK));
             saveParam();
         }
+    }
+
+    private void extractTaskState() {
+        Map<String, String> testClassParams = this.getTestMethod().getTestClass().getParams();
+        String buyer_id = testClassParams.get("buyer_id");
+        String order_id = testClassParams.get("order_id");
+        String task_id = testClassParams.get("task_id");
+        Map<String, String> testSuitParams = this.getTestMethod().getTestClass().getTestSuite().getParams();
+        String shop_id = testSuitParams.get("shop_id");
+        String platform = testSuitParams.get("platform");
+        String md5DigestAsHex = DigestUtils.md5DigestAsHex((buyer_id + ":" + order_id + ":" + task_id).getBytes());
+        String result = platform + ":rmdsrv:state:taskstate:" + platform + ":" + shop_id + ":" + md5DigestAsHex;
+        Allure.step("获取taskState", () -> Allure.step(result));
     }
 
     /**
