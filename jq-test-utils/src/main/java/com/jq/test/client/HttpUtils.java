@@ -63,6 +63,8 @@ public class HttpUtils {
             responseEntity = templateTool.exchange(url, method, buildHttpEntity, responseType, uriVariables);
         } catch (ResourceAccessException e) {
             throw new RuntimeException("接口超时：" + url);
+        } catch (Exception e) {
+            throw new RuntimeException("接口响应错误：" + url, e);
         }
         addResponseAttachment(responseEntity);
         return responseEntity;
