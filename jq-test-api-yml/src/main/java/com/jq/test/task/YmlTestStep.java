@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -363,6 +364,16 @@ public class YmlTestStep implements ITestStep {
         List<Extractor> extractorList = new LinkedList<>(step.getExtractor());
         for (Extractor extractor : extractorList) {
             extractor.save(this, entity, testMethod);
+            if (StringUtils.equals(getStep().getName(), "根据订单查询trace")) {
+                Map<String, String> params = this.getTestMethod().getTestClass().getParams();
+                String buyer_id = params.get("buyer_id");
+                String order_id = params.get("order_id");
+                String task_id = params.get("task_id");
+                String shop_id = this.getTestMethod().getTestClass().getTestSuite().getParams().get("shop_id");
+                String md5DigestAsHex = DigestUtils.md5DigestAsHex((buyer_id + ":" + order_id + ":" + task_id).getBytes());
+                String result = "tb" + ":rmdsrv:state:taskstate:" + "tb" + ":" + shop_id + ":" + md5DigestAsHex;
+                Allure.step(result);
+            }
         }
     }
 
