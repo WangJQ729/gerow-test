@@ -157,6 +157,7 @@ afterMethod:
       method: GET
       #每0.5秒重试一次，10秒后仍没有获取到即不再获取，标记任务为失败
       untilWait: 10
+      orderStateExtractor: true
       extractor:
         - json:
             #根据测试步骤中获取到的order_id获取trace_id

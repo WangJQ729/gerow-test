@@ -93,6 +93,8 @@ public class YmlHttpStepEntity {
 
     private DataType responseType = DataType.JSON;
 
+    private boolean orderStateExtractor = false;
+
     /**
      * 构造测试步骤
      *

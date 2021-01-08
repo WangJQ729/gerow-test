@@ -191,7 +191,18 @@ public class YmlTestStep implements ITestStep {
                 check(response);
                 saveParam(response);
             }
-
+            if (step.isOrderStateExtractor()) {
+                Map<String, String> testClassParams = this.getTestMethod().getTestClass().getParams();
+                String buyer_id = testClassParams.get("buyer_id");
+                String order_id = testClassParams.get("order_id");
+                String task_id = testClassParams.get("task_id");
+                Map<String, String> testSuitParams = this.getTestMethod().getTestClass().getTestSuite().getParams();
+                String shop_id = testSuitParams.get("shop_id");
+                String platform = testSuitParams.get("platform");
+                String md5DigestAsHex = DigestUtils.md5DigestAsHex((buyer_id + ":" + order_id + ":" + task_id).getBytes());
+                String result = platform + ":rmdsrv:state:taskstate:" + platform + ":" + shop_id + ":" + md5DigestAsHex;
+                Allure.step(result);
+            }
         } else {
             check(new ResponseEntity<>(HttpStatus.OK));
             saveParam();
@@ -364,16 +375,6 @@ public class YmlTestStep implements ITestStep {
         List<Extractor> extractorList = new LinkedList<>(step.getExtractor());
         for (Extractor extractor : extractorList) {
             extractor.save(this, entity, testMethod);
-            if (StringUtils.equals(getStep().getName(), "根据订单查询trace")) {
-                Map<String, String> params = this.getTestMethod().getTestClass().getParams();
-                String buyer_id = params.get("buyer_id");
-                String order_id = params.get("order_id");
-                String task_id = params.get("task_id");
-                String shop_id = this.getTestMethod().getTestClass().getTestSuite().getParams().get("shop_id");
-                String md5DigestAsHex = DigestUtils.md5DigestAsHex((buyer_id + ":" + order_id + ":" + task_id).getBytes());
-                String result = "tb" + ":rmdsrv:state:taskstate:" + "tb" + ":" + shop_id + ":" + md5DigestAsHex;
-                Allure.step(result);
-            }
         }
     }
 
