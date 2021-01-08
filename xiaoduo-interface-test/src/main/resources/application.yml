@@ -6,7 +6,7 @@ logging:
     org.mongodb.driver.cluster: OFF
 client:
   protocol: https
-  timeOut: 30
+  timeOut: 5
   headers:
     Content-Type: "application/json;charset=UTF-8"
 data:
