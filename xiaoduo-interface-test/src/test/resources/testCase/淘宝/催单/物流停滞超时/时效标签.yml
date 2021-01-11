@@ -86,8 +86,8 @@ testMethod:
           everyday_end_time: ${everyday_end_time}
           start_time: ~
           end_time: ~
-      - byName: 获取催单任务时效标签状态
       - byName: 物流停滞超时催单任务-设置时效标签
+      - byName: 获取催单任务时效标签状态
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息
