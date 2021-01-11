@@ -6,6 +6,7 @@ dataProvider:
     message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
     text_with_vars: ${message}
     reminder_type: 已签收
+    action: SIGNED
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -33,7 +34,8 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 模拟pulsar订单消息
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 模拟pulsar订单消息
@@ -66,43 +68,46 @@ testMethod:
     step:
       - byName: 开启已签收催单任务-10s后发送
       - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 模拟pulsar订单消息
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 模拟pulsar订单消息-状态变更
       - byName: 获取催单消息
-  - name: 状态变更为-${new_action_name}-${action}
+  - name: 状态变更为-${new_action_name}-${new_action}
     dataProvider:
       - new_action_name: 物流状态
         dataProvider:
-          - action: SENT_SCAN
-          - action: SIGNED
-          - action: GOT
-          - action: ARRIVAL
-          - action: DEPARTURE
-          - action: ERROR
+          - new_action: SENT_SCAN
+          - new_action: SIGNED
+          - new_action: GOT
+          - new_action: ARRIVAL
+          - new_action: DEPARTURE
+          - new_action: ERROR
     severity: NORMAL
     step:
       - byName: 开启已签收催单任务-10s后发送
       - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 模拟pulsar订单消息
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 发送物流消息
+      - byName: 发送物流消息-状态变更
       - byName: 获取催单消息
-  - name: 状态变更为-${new_action_name}-${action}
+  - name: 状态变更为-${new_action_name}-${new_action}
     dataProvider:
       - new_action_name: 物流状态
         dataProvider:
-          - action: STA_BUYER_REJECT
+          - new_action: STA_BUYER_REJECT
     severity: NORMAL
     step:
       - byName: 开启已签收催单任务-10s后发送
       - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 模拟pulsar订单消息
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 发送物流消息
+      - byName: 发送物流消息-状态变更
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
 afterMethod:
