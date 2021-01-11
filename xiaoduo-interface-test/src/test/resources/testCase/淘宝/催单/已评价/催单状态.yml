@@ -58,7 +58,7 @@ testMethod:
       - byName: 催单设置-仅自己
       - byName: 模拟pulsar订单消息
       - byName: 推送评价消息
-      - byName: 获取催单消息
+      - byName: 获取催单消息-指定订单
   - name: ${reminder_type}-仅自己-静默客户
     severity: NORMAL
     step:
@@ -95,7 +95,7 @@ testMethod:
       - byName: 催单设置-仅静默
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 推送评价消息
-      - byName: 获取催单消息
+      - byName: 获取催单消息-指定订单
   - name: ${reminder_type}-仅静默-别人的顾客
     severity: NORMAL
     step:
@@ -113,14 +113,14 @@ testMethod:
       - byName: 催单设置为自己和静默
       - byName: 模拟pulsar订单消息
       - byName: 推送评价消息
-      - byName: 获取催单消息
+      - byName: 获取催单消息-指定订单
   - name: ${reminder_type}-自己和静默-静默顾客
     severity: NORMAL
     step:
       - byName: 催单设置为自己和静默
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 推送评价消息
-      - byName: 获取催单消息
+      - byName: 获取催单消息-指定订单
   - name: ${reminder_type}-自己和静默-别人的客户
     severity: NORMAL
     step:
