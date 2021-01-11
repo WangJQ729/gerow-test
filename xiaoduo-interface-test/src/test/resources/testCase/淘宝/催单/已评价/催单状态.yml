@@ -11,7 +11,7 @@ dataProvider:
         order_state: succeeded
         rate_result: bad
         rate_code: -1
-beforeMethod:
+beforeClass:
   name: 获取taskID和模板
   step:
     - byName: 获取所有的task_id
@@ -20,13 +20,13 @@ beforeMethod:
     - byName: 使用模板新建一个task
     - byName: 拉一下催单消息
     - byName: 子账号设置为自己和静默
+    - byName: 开启已评价催单任务
 testMethod:
   - name: ${reminder_type}-不催单-自己的客户
     severity: NORMAL
     step:
       - byName: 发送消息给商家
       - byName: 催单设置-不催单
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息
       - byName: 推送评价消息
       - byName: 根据订单查询评价trace
@@ -36,7 +36,6 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 催单设置-不催单
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 推送评价消息
       - byName: 根据订单查询评价trace
@@ -47,7 +46,6 @@ testMethod:
     step:
       - byName: 发送消息给子账号
       - byName: 催单设置-不催单
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息
       - byName: 推送评价消息
       - byName: 根据订单查询评价trace
@@ -58,7 +56,6 @@ testMethod:
     step:
       - byName: 发送消息给商家
       - byName: 催单设置-仅自己
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息
       - byName: 推送评价消息
       - byName: 获取催单消息
@@ -66,7 +63,6 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 催单设置-仅自己
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 推送评价消息
       - byName: 获取催单消息-消息为空
@@ -77,7 +73,6 @@ testMethod:
     step:
       - byName: 发送消息给子账号
       - byName: 催单设置-仅自己
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息
       - byName: 推送评价消息
       - byName: 根据订单查询评价trace
@@ -88,7 +83,6 @@ testMethod:
     step:
       - byName: 发送消息给商家
       - byName: 催单设置-仅静默
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息
       - byName: 推送评价消息
       - byName: 根据订单查询评价trace
@@ -99,7 +93,6 @@ testMethod:
     step:
       - byName: 发送消息给商家
       - byName: 催单设置-仅静默
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 推送评价消息
       - byName: 获取催单消息
@@ -108,7 +101,6 @@ testMethod:
     step:
       - byName: 发送消息给子账号
       - byName: 催单设置-仅静默
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息
       - byName: 推送评价消息
       - byName: 根据订单查询评价trace
@@ -119,7 +111,6 @@ testMethod:
     step:
       - byName: 发送消息给商家
       - byName: 催单设置为自己和静默
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息
       - byName: 推送评价消息
       - byName: 获取催单消息
@@ -127,7 +118,6 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 催单设置为自己和静默
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 推送评价消息
       - byName: 获取催单消息
@@ -136,7 +126,6 @@ testMethod:
     step:
       - byName: 发送消息给子账号
       - byName: 催单设置为自己和静默
-      - byName: 开启已评价催单任务
       - byName: 模拟pulsar订单消息
       - byName: 推送评价消息
       - byName: 根据订单查询评价trace
@@ -146,10 +135,10 @@ afterMethod:
   name: 测试结束后查看订单trace
   step:
     - byName: 催单设置为自己和静默
-    - byName: 删除催单任务
     - byName: 根据订单查询评价trace
     - byName: 查看trace详情
 afterClass:
   name: 测试结束后查看订单trace
   step:
     - byName: 催单设置为自己和静默
+    - byName: 删除催单任务
