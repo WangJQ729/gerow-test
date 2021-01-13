@@ -43,6 +43,13 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 模拟pulsar订单消息
       - byName: 获取AB测试催单消息
+      - byName: 根据订单查询trace
+      - byName: 拉一下催单消息
+        invocationCount: 5
+      - byName: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='SendToClient')].length(): 1
   - name: 开启相同场景内任务去重-不满足AB测试触发普通任务
     severity: NORMAL
     step:
