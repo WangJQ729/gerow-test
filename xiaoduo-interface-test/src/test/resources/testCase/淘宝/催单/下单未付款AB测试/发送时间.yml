@@ -25,6 +25,12 @@ beforeClass:
           $.start_time: ${__BeanShell(${__StartOfDay()}*1000l,)}
           $.end_time: ${__BeanShell(${__EndOfDay()}*1000l,)}
           $.shop_ids: ["${shop_id}"]
+          $.compare_field: ${compare_field}
+          $.params:
+            - name: 测试1
+              value: ${state_delay1}
+            - name: 测试2
+              value: ${state_delay2}
           $.config:
             - {type: customer_type_limit,args: {enable: false,type: ""}}
             - {type: order_goods_limit,args: {enable: false,goods_ids:[]}}
@@ -38,12 +44,6 @@ beforeClass:
             - {type: specify_send_seller,args: {seller_ids: [],recently_seller_priority: true,sub_users_info_id: "",asked_seller: false,transfer_after_asked: false,transfer_seller_ids: [],transfer_sub_silence_users_info_id: "",sub_silence_users_info_id: "",transfer_asked_seller: false,transfer_sub_users_info_id: "",transfer_silence_seller: false,status: 2}}
             - {type: send_limit,args: {enable: false,second: 3600}}
             - {type: send_message,args: {ageing_id: "",images: [],state_delay: 180,receive_message_filter: false,message: "${message}"}}
-          $.compare_field: ${compare_field}
-          $.params:
-            - name: 测试1
-              value: ${state_delay1}
-            - name: 测试2
-              value: ${state_delay2}
     - byName: 获取测试任务ID
 beforeMethod:
   name: 测试前拉一下消息表示在线
