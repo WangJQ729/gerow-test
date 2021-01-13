@@ -14,6 +14,10 @@ beforeClass:
     - byName: 获取task模板
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 拉一下催单消息
 testMethod:
   - name: 开启任务
     description: |

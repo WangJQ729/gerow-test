@@ -55,6 +55,10 @@ beforeClass:
           $.rules[?(@.type=='send_message')].args.message: ${message2}
           $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
     - byName: 设置时效不满足的任务在前
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 拉一下催单消息
 testMethod:
   - name: 时效标签(固定时段-失效)-${ageing_name}-时效标签不生效应该催第二个任务
     dataProvider:

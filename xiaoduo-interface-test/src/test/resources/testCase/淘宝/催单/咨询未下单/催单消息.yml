@@ -36,6 +36,10 @@ beforeClass:
 #      body: |
 #        {"id":"${recommend_id}","marketing_answer":{"answer":"{{子账号名称}}_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,marketing_answer)}"},"selling_point":{"answer":""}}
 #      assertion: [json: {$.code: 0}]
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 拉一下催单消息
 testMethod:
   - name: 消息内容-${message}
     dataProvider:

@@ -18,6 +18,10 @@ beforeClass:
         ageing_id: ${ageing_ids}
       form:
         id: ${ageing_id}
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 拉一下催单消息
 testMethod:
   - name: 时效标签(固定时段-生效)-今天生效-删除标签
     dataProvider:

@@ -27,6 +27,10 @@ beforeClass:
           $.plan.config[?(@.type=='customer_type_limit')].args.type: ""
           $.plan.config[?(@.type=='send_limit')].args.enable: true
           $.plan.config[?(@.type=='send_limit')].args.second: 30
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 拉一下催单消息
 testMethod:
   - name: 开启防骚扰过滤
     severity: NORMAL

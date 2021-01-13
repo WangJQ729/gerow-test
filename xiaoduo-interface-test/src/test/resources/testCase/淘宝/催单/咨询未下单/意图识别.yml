@@ -88,6 +88,10 @@ beforeClass:
             - ageing_id: ""
               message: 您好～喜欢就不要犹豫啦，我们会给您安排尽快发货，让你早点收到宝贝哦～
       assertion: [json: {$.code: 0}]
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 拉一下催单消息
 testMethod:
   - name: 第一轮催拍消息-${question}
     links:
