@@ -1,8 +1,8 @@
-name: 跟单话术AB测试
+name: 跟单话术
 story: ${reminder_type}
 dataProvider:
   - node_state: asked
-    reminder_type: 咨询未下单
+    reminder_type: 咨询未下单AB测试
     message: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
     message2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈~2
     text_with_vars: ${message}

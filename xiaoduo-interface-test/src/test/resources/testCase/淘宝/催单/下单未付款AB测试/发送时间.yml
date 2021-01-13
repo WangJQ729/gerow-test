@@ -1,10 +1,10 @@
-name: 发送时间AB测试
+name: 发送时间
 story: ${reminder_type}
 dataProvider:
   - node_state: created
     order_state: created
     message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
-    reminder_type: 下单未付款
+    reminder_type: 下单未付款AB测试
     compare_field: send_delay_time
     dataProvider:
       - state_delay1: 10

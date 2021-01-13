@@ -1,11 +1,11 @@
-name: 时间圈定AB测试
+name: 时间圈定
 story: ${reminder_type}
 dataProvider:
   - node_state: created
     order_state: created
     message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
     message2: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~2
-    reminder_type: 下单未付款
+    reminder_type: 下单未付款AB测试
     compare_field: message
 beforeClass:
   name: 获取taskID和模板
