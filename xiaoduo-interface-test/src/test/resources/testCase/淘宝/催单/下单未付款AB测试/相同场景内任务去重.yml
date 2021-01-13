@@ -1,0 +1,83 @@
+name: 相同场景内任务去重
+story: ${reminder_type}
+dataProvider:
+  - message3: 第二个任务哦!
+    text_with_vars3: ${message3}
+    dataProvider:
+      - node_state: created
+        order_state: created
+        message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+        message2: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~2
+        reminder_type: 下单未付款AB测试
+        compare_field: message
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 删除其他催单任务
+    - byName: 获取所有的测试任务
+    - byName: 删除所有测试催单任务
+    - byName: 获取task模板
+    - byName: 使用模板新建第二个task
+      bodyEditor:
+        json:
+          $.name: 第二个任务
+          $.enable: true
+          $.shop_id: ${shop_id}
+          $.rules[?(@.type=='send_message')].args.state_delay: 0
+          $.rules[?(@.type=='send_message')].args.message: ${message3}
+    - byName: 获取测试催单任务模板
+    - byName: 新建测试催单任务
+    - byName: 获取测试任务ID
+    - byName: 获取AB测试任务详情
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 拉一下催单消息
+    - byName: 清除AB测试任务缓存
+testMethod:
+  - name: 开启相同场景内任务去重优先触发AB测试任务
+    severity: NORMAL
+    step:
+      - byName: 开启相同场景内任务去重
+      - byName: 发送消息给商家
+      - byName: 模拟pulsar订单消息
+      - byName: 获取AB测试催单消息
+  - name: 开启相同场景内任务去重-不满足AB测试触发普通任务
+    severity: NORMAL
+    step:
+      - byName: 开启相同场景内任务去重
+      - byName: 编辑测试催单任务-开启按名单过滤
+      - byName: 发送消息给商家-指定买家
+      - byName: 模拟pulsar订单消息
+      - byName: 获取催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id_2}')].text_with_vars:
+                - ${text_with_vars3}
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-导入名单过滤
+  - name: 关闭相同场景内任务去重优先触发AB测试任务
+    severity: NORMAL
+    step:
+      - byName: 关闭相同场景内任务去重
+      - byName: 发送消息给商家
+      - byName: 模拟pulsar订单消息
+      - byName: 获取到2条催单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='SendToClient')].length(): 2
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除测试催单任务
+    - byName: 删除催单任务
+      dataProvider:
+        - task_id: ${task_id_2}
