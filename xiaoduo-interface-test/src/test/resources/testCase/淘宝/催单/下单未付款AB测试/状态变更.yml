@@ -80,7 +80,7 @@ testMethod:
       - byName: 查看trace详情-订单状态变更
   - name: 状态变更为-${new_type_name}
     links:
-    【下单未付款AB测试】订单状态变更为未知的订单状态、物流状态后，无法获取催单消息: https://jira.xiaoduoai.com/browse/REMINDER-529
+      【下单未付款AB测试】订单状态变更为未知的订单状态、物流状态后，无法获取催单消息: 'https://jira.xiaoduoai.com/browse/REMINDER-529'
     dataProvider:
       - new_order_state: unknown
         new_type_name: 未知订单状态
@@ -113,7 +113,7 @@ testMethod:
       - byName: 查看trace详情-订单状态变更
   - name: 状态变更为-${new_action_name}-${action}
     links:
-    【下单未付款AB测试】订单状态变更为未知的订单状态、物流状态后，无法获取催单消息: https://jira.xiaoduoai.com/browse/REMINDER-529
+      【下单未付款AB测试】订单状态变更为未知的订单状态、物流状态后，无法获取催单消息: 'https://jira.xiaoduoai.com/browse/REMINDER-529'
     dataProvider:
       - new_action_name: 未知的物流状态
         dataProvider:
