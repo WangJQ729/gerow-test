@@ -46,7 +46,6 @@ testMethod:
       - byName: 获取任务触发时间
       - byName: 校验AB测试TaskSetTimer正确
       - byName: 获取AB测试催单消息-发送时间
-        sleep: 50
 afterMethod:
   name: 测试结束后查看订单trace
   step:
