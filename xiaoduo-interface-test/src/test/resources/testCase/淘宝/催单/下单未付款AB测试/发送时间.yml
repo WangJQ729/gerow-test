@@ -37,7 +37,6 @@ beforeClass:
             - {type: chat_after_triggered_filter,args: {enable: true}}
             - {type: specify_send_seller,args: {seller_ids: [],recently_seller_priority: true,sub_users_info_id: "",asked_seller: false,transfer_after_asked: false,transfer_seller_ids: [],transfer_sub_silence_users_info_id: "",sub_silence_users_info_id: "",transfer_asked_seller: false,transfer_sub_users_info_id: "",transfer_silence_seller: false,status: 2}}
             - {type: send_limit,args: {enable: false,second: 3600}}
-            - {type: state_delay,args: {delay: 15}}
             - {type: send_message,args: {ageing_id: "",images: [],state_delay: 180,receive_message_filter: false,message: "${message}"}}
           $.compare_field: ${compare_field}
           $.params:
@@ -85,7 +84,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-afterClass:
-  name: 测试结束后删除任务
-  step:
-    - byName: 删除测试催单任务
+#afterClass:
+#  name: 测试结束后删除任务
+#  step:
+#    - byName: 删除测试催单任务
