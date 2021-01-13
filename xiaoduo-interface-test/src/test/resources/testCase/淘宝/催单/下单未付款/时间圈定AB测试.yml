@@ -1,5 +1,4 @@
 name: 时间圈定AB测试
-enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: created
@@ -44,13 +43,13 @@ beforeClass:
             - {type: send_limit,args: {enable: false,second: 3600}}
             - {type: state_delay,args: {delay: 0}}
             - {type: send_message,args: {ageing_id: "",images: [],state_delay: 180,receive_message_filter: false,message: "亲，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~查看订单 {订单链接}"}}
-
     - byName: 获取测试任务ID
     - byName: 获取AB测试任务详情
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
     - byName: 拉一下催单消息
+    - byName: 清除AB测试任务缓存
 testMethod:
   - name: 满足圈定时间
     severity: NORMAL

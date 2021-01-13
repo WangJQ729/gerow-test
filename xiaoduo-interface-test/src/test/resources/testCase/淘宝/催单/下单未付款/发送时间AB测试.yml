@@ -1,5 +1,4 @@
 name: 发送时间AB测试
-enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: created
@@ -51,6 +50,10 @@ beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
     - byName: 拉一下催单消息
+    - name: 清除AB测试任务缓存
+      url: /api/client/reminder/v2/test/cache_clean/abtest
+      method: GET
+      assertion: [json: {$.code: 0}]
 testMethod:
   - name: AB测试催单任务
     severity: NORMAL
