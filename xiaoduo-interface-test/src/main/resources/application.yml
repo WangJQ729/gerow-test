@@ -12,3 +12,4 @@ client:
 data:
   test:
     answer_time: 0
+    question: 你好

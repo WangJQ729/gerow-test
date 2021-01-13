@@ -6,7 +6,6 @@ dataProvider:
     message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
     text_with_vars: ${message}
     reminder_type: 已签收
-    question: 你好
     action: SIGNED
 beforeClass:
   name: 获取taskID和模板

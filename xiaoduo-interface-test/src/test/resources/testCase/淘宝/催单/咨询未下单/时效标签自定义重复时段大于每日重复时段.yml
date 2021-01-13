@@ -4,7 +4,6 @@ story: ${reminder_type}
 dataProvider:
   - node_state: asked
     reminder_type: 咨询未下单
-    question: 你好
 beforeClass:
   name: 获取taskID和模版
   step:

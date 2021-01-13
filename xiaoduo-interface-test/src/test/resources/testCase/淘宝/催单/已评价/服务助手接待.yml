@@ -2,15 +2,13 @@ name: 服务助手接待
 platform: 融合版
 story: ${reminder_type}
 dataProvider:
-  - question: 你好
-    dataProvider:
-      - node_state: rated
-        message: 对不起，可能有一些原因给您的这次购物带来了一些不愉快，我是售后客服，希望真诚和您沟通一下，看我能不能帮到您，让您消消气。
-        text_with_vars: ${message}
-        reminder_type: 已评价
-        order_state: succeeded
-        rate_result: bad
-        rate_code: -1
+  - node_state: rated
+    message: 对不起，可能有一些原因给您的这次购物带来了一些不愉快，我是售后客服，希望真诚和您沟通一下，看我能不能帮到您，让您消消气。
+    text_with_vars: ${message}
+    reminder_type: 已评价
+    order_state: succeeded
+    rate_result: bad
+    rate_code: -1
 beforeClass:
   name: 获取taskID和模板
   step:

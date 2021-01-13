@@ -3,7 +3,6 @@ story: ${reminder_type}
 dataProvider:
   - node_state: asked
     reminder_type: 咨询未下单
-    question: 你好
     text_with_vars1: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
     text_with_vars2: 您好，还没有收到您的订单，有什么顾虑吗，可以给我说下的呢，非常乐意帮您解决的哈～
     text_with_vars3: 感谢您的咨询，可以点击收藏下店铺或者喜欢的宝贝哦，后期有活动会第一时间通知您，期待您的光临，祝您生活愉快

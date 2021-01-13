@@ -6,7 +6,6 @@ dataProvider:
     message: 小店收到飞鸽传书，得知您的宝贝已经安全抵达。有任何疑问欢迎咨询我们。如果您对这次购物体验满意，期待得到您的评价鼓励，一路相知，伴随左右~
     text_with_vars: ${message}
     reminder_type: 交易成功
-    question: 你好
 beforeClass:
   name: 获取taskID和模板
   step:

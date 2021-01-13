@@ -2,14 +2,12 @@ name: 催单状态
 platform: 淘宝,融合版
 story: ${reminder_type}
 dataProvider:
-  - question: 你好
-    dataProvider:
-      - node_state: signed
-        order_state: signed
-        message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
-        text_with_vars: ${message}
-        reminder_type: 已签收
-        action: SIGNED
+  - node_state: signed
+    order_state: signed
+    message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
+    text_with_vars: ${message}
+    reminder_type: 已签收
+    action: SIGNED
 beforeClass:
   name: 获取taskID和模板
   step:

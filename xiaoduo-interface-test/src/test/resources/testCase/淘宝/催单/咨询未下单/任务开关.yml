@@ -3,7 +3,6 @@ story: ${reminder_type}
 dataProvider:
   - node_state: asked
     reminder_type: 咨询未下单
-    question: 你好
     message: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
     text_with_vars: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
 beforeClass:

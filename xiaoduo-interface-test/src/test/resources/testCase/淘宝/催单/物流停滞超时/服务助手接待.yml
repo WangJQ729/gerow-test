@@ -2,14 +2,12 @@ name: 服务助手接待
 platform: 融合版
 story: ${reminder_type}
 dataProvider:
-  - question: 你好
-    dataProvider:
-      - node_state: logistics_stagnate_delay
-        order_state: arrival
-        message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
-        text_with_vars: ${message}
-        reminder_type: 物流停滞超时
-        action: ARRIVAL
+  - node_state: logistics_stagnate_delay
+    order_state: arrival
+    message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
+    text_with_vars: ${message}
+    reminder_type: 物流停滞超时
+    action: ARRIVAL
 beforeClass:
   name: 获取taskID和模板
   step:

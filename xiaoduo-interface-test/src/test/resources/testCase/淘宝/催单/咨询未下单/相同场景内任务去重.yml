@@ -3,7 +3,6 @@ story: ${reminder_type}
 dataProvider:
   - node_state: asked
     reminder_type: 咨询未下单
-    question: 在吗
     message: 第一个任务哦!
     text_with_vars: ${message}
     message2: 第二个任务哦!
