@@ -7,8 +7,8 @@ dataProvider:
     reminder_type: 下单未付款AB测试
     compare_field: send_delay_time
     dataProvider:
-      - state_delay1: 60
-        state_delay2: 120
+      - state_delay1: 10
+        state_delay2: 15
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -74,7 +74,6 @@ testMethod:
       - byName: 获取催单消息
         name: 获取AB测试催单消息-发送时间
         untilWait: 120
-        sleep: 50
         assertion:
           - json:
               $.data.messages[?(@.buyer_id=='${buyer_id}')].text_with_vars:
@@ -84,7 +83,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
-#afterClass:
-#  name: 测试结束后删除任务
-#  step:
-#    - byName: 删除测试催单任务
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除测试催单任务

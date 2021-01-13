@@ -6,8 +6,8 @@ dataProvider:
     message: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
     text_with_vars: ${message}
     compare_field: send_delay_time
-    state_delay1: 60
-    state_delay2: 120
+    state_delay1: 10
+    state_delay2: 15
 beforeClass:
   name: 获取taskID和模板
   step:
