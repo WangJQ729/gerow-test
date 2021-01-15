@@ -43,6 +43,7 @@ testMethod:
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-任务关闭
   - name: 修改order运行时状态可以触发催单任务
+    enable: false
     dataProvider:
       - order_state: created
     severity: NORMAL
