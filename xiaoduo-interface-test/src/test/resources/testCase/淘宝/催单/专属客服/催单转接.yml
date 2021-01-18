@@ -215,6 +215,7 @@ afterMethod:
   step:
     - byName: 根据订单查询trace
     - byName: 查看trace详情
+    - byName: 清除转接列表缓存
 afterClass:
   name: 测试结束后删除任务
   step:
