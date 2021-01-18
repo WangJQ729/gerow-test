@@ -80,6 +80,7 @@ testMethod:
       - byName: 获取任务触发时间
       - byName: 校验TaskSetTimer正确
       - byName: 获取催单消息
+        name: 获取催单消息-5秒拉一次
         untilWait: 120
         intervals: 5000
         sleep: 15

@@ -1,0 +1,62 @@
+name: 消息发送延时设置
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+    message: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
+    text_with_vars: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 拉一下催单消息
+testMethod:
+  - name: 设置${state_delay}秒后发送催单消息
+    dataProvider:
+      - state_delay: 20
+#      - state_delay: 60
+#      - state_delay: 120
+    step:
+      - byName: 修改咨询未下单内容
+        name: 开启咨询未下单任务-设置消息发送延时
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='state_delay')].args.delay: ${__BeanShell(${state_delay},)}
+            $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].replies:
+              - ageing_id: ""
+                message: ${message}
+                images: []
+        assertion: [json: {$.code: 0}]
+      - name: 模拟pulsar聊天消息
+        url: /api/client/reminder/v2/test/send?is_test=false&queue_type=2
+        method: POST
+        body: >-
+          {"_id":"${__RandomString(24,abcdef1234567890,)}","act":"recv_msg","answer_explain":"开始语（你好等）","create_time":"2021-01-18 14:12:46.741552","employee_name":"kfa","employee_role":"20","intent":[[3,0.9999101161956787],[0,0.00008643833280075341],[170001,0.0000018750564549918636]],"is_compare_replies ":0,"is_enter_shop_card":false,"mode":"SEND","mp_category":"nvz","mp_version":5,"ms_msg_time":0,"msg":"你好","msg_time":1610950369,"msgid":"${__time()}${__RandomString(3,1234567890,)}","no_reply_reason":1,"no_reply_sub_reason":2,"pic_url":"","plat_msg_id":"","qa_id":"600526de101b5a0001b23b45","question_b":{"proba":0.9999101161956787,"qid":3,"standard_q":"开始语（你好等）"},"question_type":9,"remind_answer":"美女 , 我{分行发送↓}1111","send_msg_from":2}
+        bodyEditor:
+          json:
+            $.shop_id: ${shop_id}
+            $.platform: ${platform}
+            $.snick: ${seller_name}
+            $.cnick: ${__RandomName(buyer_id)}
+            $.msg_time: ${__BeanShell(${__time(/1000)},task_created_at)}
+      - byName: 根据聊天记录查询trace
+      - byName: 校验TaskSetTimer正确
+      - byName: 获取催单消息-5秒拉一次
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据聊天记录查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

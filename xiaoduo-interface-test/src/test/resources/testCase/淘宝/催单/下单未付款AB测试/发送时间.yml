@@ -74,6 +74,8 @@ testMethod:
       - byName: 获取催单消息
         name: 获取AB测试催单消息-发送时间
         untilWait: 120
+        intervals: 5000
+        sleep: 15
         assertion:
           - json:
               $.data.messages[?(@.buyer_id=='${buyer_id}')].text_with_vars:

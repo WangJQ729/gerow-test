@@ -54,7 +54,7 @@ beforeMethod:
     - byName: 拉一下催单消息
     - byName: 清除AB测试任务缓存
 testMethod:
-  - name: AB测试催单任务
+  - name: AB测试跟单话术对比测试
     severity: NORMAL
     invocationCount: 1
     step:

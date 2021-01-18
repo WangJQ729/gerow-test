@@ -62,10 +62,7 @@ testMethod:
           - json:
               $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired: ["${__BeanShell(${task_created_at}+${state_delay},)}"]
             valueType: BIGDECIMAL
-      - byName: 获取催单消息
-        untilWait: 120
-        intervals: 5000
-        sleep: 15
+      - byName: 获取催单消息-5秒拉一次
 afterMethod:
   name: 测试结束后查看订单trace
   step:

@@ -6,8 +6,8 @@ dataProvider:
     message: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
     text_with_vars: ${message}
     compare_field: send_delay_time
-    state_delay1: 10
-    state_delay2: 15
+    state_delay1: 30
+    state_delay2: 25
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -37,13 +37,11 @@ beforeMethod:
     - byName: 拉一下催单消息
     - byName: 清除AB测试任务缓存
 testMethod:
-  - name: AB测试催单任务
+  - name: AB测试发送时间对比测试
     severity: NORMAL
-    invocationCount: 1
     step:
-      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 模拟pulsar聊天消息
       - byName: 根据聊天记录查询trace
-      - byName: 获取任务触发时间
       - byName: 校验AB测试TaskSetTimer正确
       - byName: 获取AB测试催单消息-发送时间
 afterMethod:
