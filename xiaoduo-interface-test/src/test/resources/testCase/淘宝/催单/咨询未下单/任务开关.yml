@@ -33,7 +33,34 @@ testMethod:
                 message: ${message}
                 images: []
         assertion: [json: {$.code: 0}]
-      - byName: 发送消息给商家
+      - name: 发送消息给商家
+        untilWait: 5
+        url: /robot/answer
+        sleep: 2
+        body: |
+          {
+            "version_num": "3.1.1.2T",
+            "msgid": "${__RandomString(32,1234567890abcdef,)}",
+            "state": "2",
+            "q": "${__DES3Cipher(${question},,)}",
+            "msg_time": "${__BeanShell(${__time(/1000,)}-24*60*60*${answer_time},)}",
+            "qianniu_version_num": "7.12.02N",
+            "service_status": "7",
+            "usr_shut": "0",
+            "spin": "cntaobao${seller_name}",
+            "platform": "${platform}",
+            "employee_name": "kfa",
+            "employee_role": "20"
+          }
+        bodyEditor:
+          json:
+            $.pin: cntaobao${__RandomName(buyer_id)}
+        method: POST
+        responseType: DEFAULT
+        extractor:
+          - json:
+              qstr: $.answer
+            need_decode: true
       - byName: 获取催单消息
   - name: 关闭任务
     severity: CRITICAL
