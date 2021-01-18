@@ -79,3 +79,4 @@ afterClass:
         platform: ${platform}
         plan_id: ${plan_id}
       assertion: [json: {$.code: 0}]
+    - byName: 清除AB测试任务缓存
