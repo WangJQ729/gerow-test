@@ -19,6 +19,7 @@ beforeClass:
         plan_id: ${plan_ids}
     - byName: 获取测试催单任务模板
     - byName: 新建测试催单任务
+      name: 新建咨询未下单催单测试任务
       bodyEditor:
         json:
           $.name: 测试
