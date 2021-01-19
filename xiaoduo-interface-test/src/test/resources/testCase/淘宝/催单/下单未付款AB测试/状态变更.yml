@@ -92,7 +92,7 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 模拟pulsar订单消息-状态变更
-      - byName: 获取催单消息
+      - byName: 获取AB测试催单消息
   - name: 状态变更为-${new_action_name}-${action}
     dataProvider:
       - new_action_name: 物流状态
@@ -126,7 +126,7 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 发送物流消息
-      - byName: 获取催单消息
+      - byName: 获取AB测试催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:

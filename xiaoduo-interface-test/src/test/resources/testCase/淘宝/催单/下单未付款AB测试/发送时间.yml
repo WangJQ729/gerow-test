@@ -52,7 +52,7 @@ beforeMethod:
     - name: 清除AB测试任务缓存
       url: /api/client/reminder/v2/test/cache_clean/abtest
       method: GET
-      assertion: [json: {$.code: 0}]
+#      assertion: [json: {$.code: 0}]
 testMethod:
   - name: AB测试催单任务
     severity: NORMAL
