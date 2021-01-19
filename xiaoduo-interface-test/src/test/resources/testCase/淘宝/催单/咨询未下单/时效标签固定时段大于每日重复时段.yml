@@ -1,5 +1,4 @@
 name: 时效标签固定时段大于每日重复时段
-enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: asked
@@ -66,6 +65,8 @@ testMethod:
               - ageing_id: ${ageing_id}
                 images: []
                 message: ${text_with_vars1}
+      - byName: 清除时效标签缓存
+      - byName: 清除时效标签缓存id1
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 发送消息给商家
@@ -94,6 +95,8 @@ testMethod:
       - byName: 添加时效标签
       - byName: 添加时效标签(每日重复)1
       - byName: 修改咨询未下单内容-设置两个时效标签
+      - byName: 清除时效标签缓存
+      - byName: 清除时效标签缓存id1
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
         assertion:
@@ -134,6 +137,8 @@ testMethod:
       - byName: 添加时效标签
       - byName: 添加时效标签(每日重复)1
       - byName: 修改咨询未下单内容-设置两个时效标签
+      - byName: 清除时效标签缓存
+      - byName: 清除时效标签缓存id1
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 发送消息给商家
@@ -149,6 +154,16 @@ afterMethod:
         id: ${ageing_id1}
     - byName: 根据聊天记录查询trace
     - byName: 查看trace详情
+    - name: 清除时效标签缓存
+      url: /api/admin/reminder/v2/test/cache_clean/ageing
+      variables:
+        shop_id: ${shop_id}
+        ageing_id: ${ageing_id}
+      method: GET
+    - byName: 清除时效标签缓存
+      name: 清除时效标签缓存id1
+      variables:
+        ageing_id: ${ageing_id1}
 afterClass:
   name: 测试结束后删除任务
   step:

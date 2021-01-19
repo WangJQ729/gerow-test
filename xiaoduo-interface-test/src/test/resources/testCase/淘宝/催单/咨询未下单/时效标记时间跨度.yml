@@ -52,6 +52,8 @@ testMethod:
           - json:
               ageing_id1: $.ageing.id
       - byName: 修改咨询未下单内容-设置两个时效标签
+      - byName: 清除时效标签缓存
+      - byName: 清除时效标签缓存id1
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 发送消息给商家
@@ -87,6 +89,8 @@ testMethod:
           - json:
               ageing_id1: $.ageing.id
       - byName: 修改咨询未下单内容-设置两个时效标签
+      - byName: 清除时效标签缓存
+      - byName: 清除时效标签缓存id1
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 发送消息给商家
@@ -126,6 +130,8 @@ testMethod:
           - json:
               ageing_id1: $.ageing.id
       - byName: 修改咨询未下单内容-设置两个时效标签
+      - byName: 清除时效标签缓存
+      - byName: 清除时效标签缓存id1
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 发送消息给商家
@@ -143,6 +149,8 @@ afterMethod:
         id: ${ageing_id1}
     - byName: 根据聊天记录查询trace
     - byName: 查看trace详情
+    - byName: 清除时效标签缓存
+    - byName: 清除时效标签缓存id1
 afterClass:
   name: 测试结束后删除任务
   step:
