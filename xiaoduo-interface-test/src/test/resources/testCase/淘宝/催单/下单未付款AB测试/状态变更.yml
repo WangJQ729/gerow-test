@@ -37,6 +37,7 @@ beforeClass:
             - {type: customer_type_limit,args: {enable: false,type: ""}}
             - {type: order_goods_limit,args: {enable: false,goods_ids:[]}}
             - {type: pay_amount_limit,args: {enable: false,min: 0,max: 0}}
+            - {type: goods_num_limit,args: {enable: false,min: 1,max: 999}}
             - {type: order_address_limit,args: {enable: false,cities: []}}
             - {type: state_triggered_time_limit,args: {enable: false,from: 0,to: 0}}
             - {type: order_remark_keyword_filter,args: {enable: false,keywords: [],is_include: false}}
