@@ -67,7 +67,7 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 获取催单消息
-  - name: ${refund_name}后-不触发${reminder_type}催单消息
+  - name: ${refund_name}-${reminder_type}不触发催单消息
     dataProvider:
       - refund_name: 申请售后
         refund_state: taobao_refund_RefundCreated
