@@ -26,11 +26,6 @@ dataProvider:
     message: 您的快递已经派件了！收货时，请检查快递的外包装是否完整，当场验货确认无误后，再签收哦！
     text_with_vars: ${message}
     reminder_type: 验收提醒
-  - node_state: closed
-    order_state: closed
-    message: 亲，您对宝贝有什么不满意的吗？
-    text_with_vars: ${message}
-    reminder_type: 交易取消
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -93,7 +88,7 @@ testMethod:
       - byName: 开启催单任务-10秒后触发
       - byName: 随机顾客推送下单未付款订单消息
       - byName: 推送退款消息
-      - byName: 指定顾客指定订单推送已付款订单消息
+      - byName: 指定顾客指定订单推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 获取催单消息
