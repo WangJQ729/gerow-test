@@ -24,9 +24,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
-    - byName: 获取老的task配置
+    - byName: 获取所有的task_id
     - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
 testMethod:
   - name: 开启任务
     description: |
@@ -93,4 +94,4 @@ afterMethod:
 afterClass:
   name: 测试结束后还原task
   step:
-    - byName: 还原催单任务
+    - byName: 删除催单任务
