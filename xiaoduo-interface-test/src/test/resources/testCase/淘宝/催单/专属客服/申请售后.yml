@@ -24,7 +24,7 @@ beforeMethod:
   step:
     - byName: 拉一下催单消息
 testMethod:
-  - name: 售后状态-${refund_name}-不催单
+  - name: ${refund_name}-timer到期后不发送${reminder_type}催单消息
     dataProvider:
       - refund_name: 申请售后
         refund_state: taobao_refund_RefundCreated
