@@ -34,7 +34,7 @@ testMethod:
           - json:
               trace_id: $.data.traces[?(@.order_state=='${new_order_state}')].trace_id
       - byName: 查看trace详情
-        name: 查看trace详情-交易成功后不催交易取消
+        name: 查看trace详情-退款成功后不催交易取消
         assertion:
           - json:
               $.data.traces[?(@.phase=='EventFilter')].info: [filter event after handle]
