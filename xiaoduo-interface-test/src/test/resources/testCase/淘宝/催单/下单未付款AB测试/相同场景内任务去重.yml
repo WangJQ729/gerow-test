@@ -1,4 +1,5 @@
 name: 相同场景内任务去重
+platform: 融合版,淘宝
 story: ${reminder_type}
 dataProvider:
   - message3: 第二个任务哦!

@@ -1,4 +1,5 @@
 name: 下单顾客不催单
+platform: 融合版,淘宝
 story: ${reminder_type}
 dataProvider:
   - node_state: asked

@@ -1,4 +1,5 @@
 name: 订单金额圈定
+platform: 融合版,淘宝
 story: ${reminder_type}
 dataProvider:
   - node_state: created

@@ -1,4 +1,5 @@
 name: 跟单话术
+platform: 融合版,淘宝
 story: ${reminder_type}
 dataProvider:
   - node_state: asked
