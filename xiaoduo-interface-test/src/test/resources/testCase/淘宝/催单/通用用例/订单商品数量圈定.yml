@@ -1,5 +1,6 @@
 name: 订单商品数量圈定
 story: ${reminder_type}
+platform: 融合版
 dataProvider:
   - node_state: created
     order_state: created

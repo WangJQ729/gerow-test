@@ -1,5 +1,6 @@
 name: 申请售后
 story: ${reminder_type}
+platform: 融合版
 dataProvider:
   - node_state: checkaddr
     order_state: created

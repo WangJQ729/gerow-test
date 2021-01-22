@@ -1,5 +1,6 @@
 name: 申请售后
 story: ${reminder_type}
+platform: 淘宝,融合版
 dataProvider:
   - node_state: shipped
     order_state: shipped
