@@ -1,5 +1,6 @@
 name: 发送时间
 platform: 融合版,淘宝
+enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: created
