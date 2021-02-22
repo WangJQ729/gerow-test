@@ -81,10 +81,7 @@ testMethod:
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
-      - byName: 客户端设置-开启催单转接
-        name: 客户端设置-关闭催单转接
-        form:
-          is_reminder_transfer: false
+      - byName: 客户端设置-关闭催单转接
       - byName: 获取催单消息-转接关闭
   - name: 开启转接-子账号在线-回复前关闭转接
     links:

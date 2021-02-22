@@ -2,12 +2,11 @@ name: 催单转接
 platform: 融合版
 story: ${reminder_type}
 dataProvider:
-  - node_state: logistics_stagnate_delay
-    order_state: arrival
-    message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
+  - node_state: got_delay
+    order_state: shipped
+    message: 由于近期订单量过大，快递小哥没能及时揽件，实在抱歉。请您耐心等待，小妹会尽快联系快递小哥安排给您优先处理呢！
     text_with_vars: ${message}
-    reminder_type: 物流停滞超时
-    action: ARRIVAL
+    reminder_type: 揽件超时
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -15,7 +14,7 @@ beforeClass:
     - byName: 获取task模板
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
-    - byName: 开启物流停滞超时催单任务
+    - byName: 开启催单任务
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
@@ -28,7 +27,7 @@ testMethod:
       - byName: 新建催单转接分组
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
       - byName: 子账号发送心跳检测
@@ -42,7 +41,7 @@ testMethod:
         form:
           settings_is_begin_words_filter: false
       - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
       - byName: 子账号发送心跳检测
@@ -54,7 +53,7 @@ testMethod:
       - byName: 新建催单转接分组
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
       - byName: 子账号发送心跳检测
@@ -66,7 +65,7 @@ testMethod:
       - byName: 新建催单转接分组
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 客户端设置-关闭催单转接
       - byName: 获取催单消息-转接关闭
   - name: 开启转接-子账号在线-回复前关闭转接
@@ -78,7 +77,7 @@ testMethod:
       - byName: 新建催单转接分组
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
       - byName: 子账号发送心跳检测
@@ -100,7 +99,7 @@ testMethod:
             $.sub_user_name_list: ${child_seller2}
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 获取催单消息-回复后转接
       - byName: 发送消息给商家-转接列表为空
         assertion:
@@ -120,7 +119,7 @@ testMethod:
             $.sub_user_name_list: ${child_seller},${seller_name}
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 子账号发送心跳检测
       - byName: 主账号发送心跳检测
       - byName: 获取催单消息-回复后转接
@@ -147,7 +146,7 @@ testMethod:
             $.sub_user_name_list: ${child_seller},${child_seller2}
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
       - byName: 子账号发送心跳检测
@@ -163,7 +162,7 @@ testMethod:
             $.sub_user_name_list: ${child_seller},${child_seller3}
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
       - byName: 获取催单消息-回复后转接
@@ -180,7 +179,7 @@ testMethod:
             $.sub_user_name_list: ${child_seller},${child_seller2},${child_seller3}
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
+      - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 子账号发送心跳检测
       - byName: 子账号3发送心跳检测
       - byName: 获取催单消息-回复后转接
