@@ -70,6 +70,7 @@ beforeSuite:
         service_names: reminder
         accept: tb/subscribe_card
       method: GET
+      assertion: [json: {$.code: 0}]
     - name: 获取所有催单节点的task_id
       url: /api/admin/reminder/v2/manage/task/list
       variables:
