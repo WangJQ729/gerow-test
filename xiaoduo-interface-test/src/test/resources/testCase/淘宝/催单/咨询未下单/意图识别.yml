@@ -124,7 +124,6 @@ testMethod:
       - byName: 发送消息给商家
       - name: 获取催单消息
         #copy test步骤名称为“拉一下催单消息”的所有内容,此步骤重写的字段会自动替换
-        sleep: 200
         byName: 拉一下催单消息
         assertion:
           - json:
