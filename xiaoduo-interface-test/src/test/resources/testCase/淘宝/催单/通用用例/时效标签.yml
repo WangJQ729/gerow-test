@@ -86,7 +86,7 @@ testMethod:
           - json:
               ageing_id: $.ageing.id
       - byName: 开启催单任务
-        sleep: 2
+        sleep: 1
         name: 设置时效标签
         bodyEditor:
           json:
