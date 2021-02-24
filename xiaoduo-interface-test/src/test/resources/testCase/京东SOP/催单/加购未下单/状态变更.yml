@@ -47,7 +47,7 @@ testMethod:
     step:
       - byName: 通过pulsar推送加购消息
       - byName: 通过pulsar推送订单消息
-        sleep: 5
+        sleep: 5000
         bodyEditor:
           json:
             $.platform: ${platform}

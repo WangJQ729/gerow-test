@@ -54,7 +54,7 @@ testMethod:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${text_with_vars1}
       - byName: 获取催单消息
-        sleep: 58
+        sleep: 58000
         name: 获取第三轮催单消息
         assertion:
           - json:
@@ -91,7 +91,7 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 获取催单消息
-        sleep: 58
+        sleep: 58000
         name: 获取第二轮催单消息
         assertion:
           - json:
@@ -128,14 +128,14 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 获取催单消息
-        sleep: 58
+        sleep: 58000
         name: 获取第二轮催单消息
         assertion:
           - json:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${text_with_vars2}
       - byName: 获取催单消息
-        sleep: 58
+        sleep: 58000
         name: 获取第三轮催单消息
         assertion:
           - json:

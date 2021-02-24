@@ -59,7 +59,7 @@ testMethod:
       - byName: 清除任务缓存
       - byName: 通过pulsar推送订单消息
       - byName: 获取催单消息
-        sleep: 5
+        sleep: 5000
   - name: 关闭任务
     severity: CRITICAL
     step:

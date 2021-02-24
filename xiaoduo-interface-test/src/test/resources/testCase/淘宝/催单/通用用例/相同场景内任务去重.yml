@@ -128,7 +128,7 @@ testMethod:
           json:
             $.task_remove_duplicates: true
       - name: 设置第一个任务在前
-        sleep: 2
+        sleep: 2000
         url: /api/admin/reminder/v2/manage/task/update_weight
         method: POST
         body: |
@@ -142,7 +142,7 @@ testMethod:
       - byName: 获取所有的task_id
         name: 断言修改后的顺序是否正确
         untilWait: 5
-        sleep: 2
+        sleep: 2000
         assertion:
           - json:
               $.data.tasks[0].id: ${task_id_1}

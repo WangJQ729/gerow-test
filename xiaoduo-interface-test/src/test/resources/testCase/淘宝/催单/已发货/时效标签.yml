@@ -36,7 +36,7 @@ testMethod:
       - byName: 添加时效标签
       - byName: 开启催单任务
         name: 开启已发货催单任务-设置时效标签
-        sleep: 1
+        sleep: 1000
         bodyEditor:
           json:
             $.id: ${task_id}

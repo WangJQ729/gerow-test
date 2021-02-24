@@ -30,7 +30,7 @@ testMethod:
     step:
       - byName: 添加时效标签
       - byName: 开启催单任务
-        sleep: 1
+        sleep: 1000
         name: 设置时效标签-已签收
         bodyEditor:
           json:

@@ -36,7 +36,7 @@ testMethod:
       - name: 发送消息给商家
         untilWait: 5
         url: /robot/answer
-        sleep: 1
+        sleep: 1000
         body: |
           {
             "version_num": "3.1.1.2T",

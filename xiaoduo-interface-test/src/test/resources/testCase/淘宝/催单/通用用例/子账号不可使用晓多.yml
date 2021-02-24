@@ -78,7 +78,7 @@ testMethod:
       - byName: 模拟pulsar订单消息-随机顾客
       - byName: 获取消息-不能使用晓多账号拉取
         invocationCount: 5
-        sleep: 2
+        sleep: 2000
       - byName: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace

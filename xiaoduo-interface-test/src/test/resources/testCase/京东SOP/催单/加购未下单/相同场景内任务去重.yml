@@ -85,7 +85,7 @@ testMethod:
             $.node_type: ${node_state}
         assertion: [json: {$.code: 0}]
       - name: 设置第一个任务在前
-        sleep: 5
+        sleep: 5000
         url: /api/admin/reminder/v2/manage/task/update_weight
         method: POST
         body: |

@@ -59,7 +59,7 @@ testMethod:
           status: 1
           group_status: 0
       - byName: 获取催单消息
-        sleep: 5
+        sleep: 5000
         name: 获取催单消息-消息为空
         assertion:
           - json:

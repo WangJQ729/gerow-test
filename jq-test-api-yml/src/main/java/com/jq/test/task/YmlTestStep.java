@@ -110,7 +110,7 @@ public class YmlTestStep implements ITestStep {
         if (step.getIter().isEmpty()) {
             if (Integer.parseInt(replace(step.getSleep())) != 0) {
                 try {
-                    Thread.sleep(Integer.parseInt(replace(step.getSleep())) * 1000);
+                    Thread.sleep(Integer.parseInt(replace(step.getSleep())));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

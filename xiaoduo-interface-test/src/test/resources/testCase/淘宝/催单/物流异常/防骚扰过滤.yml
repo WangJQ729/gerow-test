@@ -62,7 +62,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-        sleep: 35
+        sleep: 35000
       - byName: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace

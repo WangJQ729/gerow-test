@@ -54,7 +54,7 @@ testMethod:
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
       - byName: 通过pulsar推送订单消息
-        sleep: 5
+        sleep: 5000
         name: 修改订单状态
         bodyEditor:
           json:

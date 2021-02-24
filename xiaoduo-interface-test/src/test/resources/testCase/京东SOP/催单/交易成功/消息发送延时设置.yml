@@ -37,7 +37,7 @@ testMethod:
       - byName: 获取催单消息
         untilWait: 120
         intervals: 5000
-        sleep: 15
+        sleep: 15000
 afterMethod:
   name: 测试结束后查看订单trace
   step:

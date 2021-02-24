@@ -67,7 +67,7 @@ testMethod:
               trace_id: $.data.traces[?(@.event_type=='Chat-Message')].trace_id
       - byName: 查看trace详情-TaskSetTimer
       - byName: 通过pulsar推送订单消息
-        sleep: 5
+        sleep: 5000
         bodyEditor:
           json:
             $.buyer_id: ${buyer_id}
@@ -77,7 +77,7 @@ testMethod:
             $.shop_id: ${shop_id}
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-订单状态变更
-        sleep: 5
+        sleep: 5000
 afterMethod:
   name: 测试结束后查看订单trace
   step:

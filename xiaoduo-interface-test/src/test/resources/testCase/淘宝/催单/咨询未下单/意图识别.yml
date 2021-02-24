@@ -6,21 +6,21 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-#    - name: 随机获取一个类目
-#      url: /api/admin/category/list
-#      method: GET
-#      extractor:
-#        - json:
-#            categories: $.categories[*]
-##            categories: $.categories[${invocationCount}]
-#        - json:
-#            category_id: $.id
-#            category_name: $.name
-#          data: ${categories}
-#    - name: 切换类目-指定类目id
-#      byName: 切换类目
-#      form:
-#        category_id: ${category_id}
+    #    - name: 随机获取一个类目
+    #      url: /api/admin/category/list
+    #      method: GET
+    #      extractor:
+    #        - json:
+    #            categories: $.categories[*]
+    ##            categories: $.categories[${invocationCount}]
+    #        - json:
+    #            category_id: $.id
+    #            category_name: $.name
+    #          data: ${categories}
+    #    - name: 切换类目-指定类目id
+    #      byName: 切换类目
+    #      form:
+    #        category_id: ${category_id}
     - name: 获取所有的task_id
       url: /api/admin/reminder/v2/manage/task/list
       variables:
@@ -124,6 +124,7 @@ testMethod:
       - byName: 发送消息给商家
       - name: 获取催单消息
         #copy test步骤名称为“拉一下催单消息”的所有内容,此步骤重写的字段会自动替换
+        sleep: 200
         byName: 拉一下催单消息
         assertion:
           - json:
@@ -156,14 +157,14 @@ afterMethod:
 afterClass:
   name: 测试结束后删除任务
   step:
-#    - name: 切换类目
-#      url: /api/admin/guide/shop_setup
-#      headers:
-#        Content-Type: multipart/form-data
-#      method: POST
-#      form:
-#        express_name: express_name
-#        other_express_name: other_express_name
-#        category_id: ${shop_category_id}
-#      assertion: [json: {$.code: 0}]
+    #    - name: 切换类目
+    #      url: /api/admin/guide/shop_setup
+    #      headers:
+    #        Content-Type: multipart/form-data
+    #      method: POST
+    #      form:
+    #        express_name: express_name
+    #        other_express_name: other_express_name
+    #        category_id: ${shop_category_id}
+    #      assertion: [json: {$.code: 0}]
     - byName: 删除催单任务
