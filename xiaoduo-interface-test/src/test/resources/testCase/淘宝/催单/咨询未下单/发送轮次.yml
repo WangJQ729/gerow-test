@@ -34,13 +34,9 @@ testMethod:
         name: 打开咨询未下单第一、三轮开关
         bodyEditor:
           json:
-            #id为beforeClass中提取到的task_id
             $.id: ${task_id}
-            #开启任务
             $.enable: true
-            #设置shop_id(配置文件中设置的)
             $.shop_id: ${shop_id}
-            #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: false
             $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
@@ -54,7 +50,8 @@ testMethod:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${text_with_vars1}
       - byName: 获取催单消息
-        sleep: 58000
+        untilWait: 80
+        intervals: 5000
         name: 获取第三轮催单消息
         assertion:
           - json:
@@ -76,13 +73,9 @@ testMethod:
         name: 打开咨询未下单第一、二轮开关
         bodyEditor:
           json:
-            #id为beforeClass中提取到的task_id
             $.id: ${task_id}
-            #开启任务
             $.enable: true
-            #设置shop_id(配置文件中设置的)
             $.shop_id: ${shop_id}
-            #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: true
             $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
@@ -91,7 +84,8 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 获取催单消息
-        sleep: 58000
+        untilWait: 80
+        intervals: 5000
         name: 获取第二轮催单消息
         assertion:
           - json:
@@ -113,13 +107,9 @@ testMethod:
         name: 打开咨询未下单所有三轮开关
         bodyEditor:
           json:
-            #id为beforeClass中提取到的task_id
             $.id: ${task_id}
-            #开启任务
             $.enable: true
-            #设置shop_id(配置文件中设置的)
             $.shop_id: ${shop_id}
-            #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: true
             $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
@@ -128,14 +118,16 @@ testMethod:
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 获取催单消息
-        sleep: 58000
+        untilWait: 80
+        intervals: 5000
         name: 获取第二轮催单消息
         assertion:
           - json:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${text_with_vars2}
       - byName: 获取催单消息
-        sleep: 58000
+        untilWait: 80
+        intervals: 5000
         name: 获取第三轮催单消息
         assertion:
           - json:
@@ -157,13 +149,9 @@ testMethod:
         name: 打开咨询未下单第二、三轮开关
         bodyEditor:
           json:
-            #id为beforeClass中提取到的task_id
             $.id: ${task_id}
-            #开启任务
             $.enable: false
-            #设置shop_id(配置文件中设置的)
             $.shop_id: ${shop_id}
-            #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: true
             $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
@@ -193,13 +181,9 @@ testMethod:
         name: 打开咨询未下单第一轮开关
         bodyEditor:
           json:
-            #id为beforeClass中提取到的task_id
             $.id: ${task_id}
-            #开启任务
             $.enable: true
-            #设置shop_id(配置文件中设置的)
             $.shop_id: ${shop_id}
-            #设置消息发送时间为0,马上触发
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: false
             $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
