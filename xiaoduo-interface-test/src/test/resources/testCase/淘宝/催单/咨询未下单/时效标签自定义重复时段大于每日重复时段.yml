@@ -1,5 +1,4 @@
 name: 时效标签自定义重复时段大于每日重复时段
-enable: false
 story: ${reminder_type}
 dataProvider:
   - node_state: asked
