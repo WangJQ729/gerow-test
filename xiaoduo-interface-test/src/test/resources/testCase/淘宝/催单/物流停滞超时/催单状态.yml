@@ -1,5 +1,5 @@
 name: 催单状态
-platform: 淘宝,融合版
+platform: 融合版
 story: ${reminder_type}
 dataProvider:
   - node_state: logistics_stagnate_delay
