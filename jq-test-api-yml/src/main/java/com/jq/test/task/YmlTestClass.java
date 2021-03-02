@@ -1,8 +1,13 @@
 package com.jq.test.task;
 
 import com.jq.test.utils.TestUtils;
+import io.qameta.allure.SeverityLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -34,10 +39,14 @@ public class YmlTestClass extends AbstractTestClass {
         if (!component) {
             return false;
         }
-        return !TestUtils.isSkip(this.
-
-                getName(), System.
-
-                getProperty("skipComponent"));
+        boolean isSeverityRun = true;
+        String severity = System.getProperty("test.severity");
+        if (StringUtils.isNotBlank(severity)) {
+            List<SeverityLevel> collect = this.getTestMethods().stream().map(ITestMethod::getSeverityLevel).collect(Collectors.toList());
+            if (!StringUtils.equalsIgnoreCase(severity, "ALL")) {
+                isSeverityRun = StringUtils.containsIgnoreCase(collect.toString(), severity);
+            }
+        }
+        return !TestUtils.isSkip(this.getName(), System.getProperty("skipComponent")) && isSeverityRun;
     }
 }

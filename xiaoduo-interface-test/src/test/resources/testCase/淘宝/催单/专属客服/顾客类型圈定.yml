@@ -26,7 +26,6 @@ testMethod:
       - byName: 模拟pulsar订单消息
       - byName: 获取专属客服催单消息
   - name: 顾客类型圈定全部-静默顾客
-    severity: CRITICAL
     step:
       - byName: 开启催单任务-设置顾客类型圈定全部
       - byName: 模拟pulsar订单消息-随机顾客
