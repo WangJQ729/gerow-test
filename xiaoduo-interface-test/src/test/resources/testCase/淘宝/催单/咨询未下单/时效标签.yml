@@ -45,6 +45,7 @@ testMethod:
               - ageing_id: ${ageing_id}
                 images: []
                 message: ${text_with_vars1}
+      - byName: 清除时效标签缓存
       - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
@@ -66,6 +67,7 @@ testMethod:
     step:
       - byName: 添加时效标签
       - byName: 修改咨询未下单内容-设置时效标签
+      - byName: 清除时效标签缓存
       - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取催单消息-咨询未下单消息为空
@@ -109,6 +111,7 @@ testMethod:
               - ageing_id: ~
                 images: []
                 message: ${text_with_vars2}
+      - byName: 清除时效标签缓存
       - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取催单消息-满足时效
@@ -123,6 +126,7 @@ testMethod:
     step:
       - byName: 添加时效标签(每日重复)
       - byName: 修改咨询未下单内容-设置时效标签
+      - byName: 清除时效标签缓存
       - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
@@ -144,6 +148,7 @@ testMethod:
     step:
       - byName: 添加时效标签(每日重复)
       - byName: 修改咨询未下单内容-设置时效标签
+      - byName: 清除时效标签缓存
       - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取催单消息-咨询未下单消息为空
@@ -172,6 +177,7 @@ testMethod:
     step:
       - byName: 添加时效标签(每日重复)
       - byName: 修改咨询未下单内容-设置时效标签+无时效标签话术
+      - byName: 清除时效标签缓存
       - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取催单消息-满足时效
@@ -221,6 +227,7 @@ testMethod:
           start_time: ~
           end_time: ~
       - byName: 修改咨询未下单内容-设置时效标签
+      - byName: 清除时效标签缓存
       - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取催单消息-咨询未下单消息为空
@@ -271,6 +278,7 @@ testMethod:
     step:
       - byName: 添加时效标签(自定义重复时段)
       - byName: 修改咨询未下单内容-设置时效标签+无时效标签话术
+      - byName: 清除时效标签缓存
       - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取催单消息-满足时效
@@ -288,6 +296,7 @@ testMethod:
     step:
       - byName: 添加时效标签(自定义重复时段)
       - byName: 修改咨询未下单内容-设置时效标签
+      - byName: 清除时效标签缓存
       - byName: 获取催单任务时效标签状态
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
