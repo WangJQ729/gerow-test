@@ -64,6 +64,7 @@ testMethod:
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情
         name: 查看trace详情-有售后状态不催单
+        untilWait: 20
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_reject_reason: ["has refund,refund state:${refund_type},sub_order:"]
