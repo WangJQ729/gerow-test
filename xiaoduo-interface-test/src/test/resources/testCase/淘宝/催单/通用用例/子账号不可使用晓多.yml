@@ -58,6 +58,7 @@ beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
     - byName: 主账号发送心跳检测
+    - byName: 主账号发送心跳检测
       name: 不可使用晓多账号发送心跳检测
       variables:
         spin: cntaobao${disable_seller_name}
