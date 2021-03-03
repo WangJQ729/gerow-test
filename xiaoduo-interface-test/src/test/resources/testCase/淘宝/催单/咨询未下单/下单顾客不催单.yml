@@ -7,7 +7,7 @@ dataProvider:
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
-    - byName: 拉一下催单消息
+    - byName: 主账号发送心跳检测
 beforeClass:
   name: 获取taskID和模板
   step:

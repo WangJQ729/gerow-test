@@ -18,7 +18,7 @@ beforeClass:
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
-    - byName: 拉一下催单消息
+    - byName: 主账号发送心跳检测
 testMethod:
   - name: 有退款交易取消
     severity: NORMAL

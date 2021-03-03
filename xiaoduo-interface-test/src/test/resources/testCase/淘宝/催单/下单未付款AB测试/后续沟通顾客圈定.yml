@@ -22,7 +22,7 @@ beforeClass:
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
-    - byName: 拉一下催单消息
+    - byName: 主账号发送心跳检测
     - byName: 清除AB测试任务缓存
 testMethod:
   - name: 勾选后续沟通过的顾客-有沟通的顾客

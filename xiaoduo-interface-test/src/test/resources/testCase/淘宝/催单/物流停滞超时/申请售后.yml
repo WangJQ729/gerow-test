@@ -19,7 +19,7 @@ beforeClass:
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
-    - byName: 拉一下催单消息
+    - byName: 主账号发送心跳检测
 testMethod:
   - name: ${refund_name}-timer到期后不发送${reminder_type}催单消息
     dataProvider:

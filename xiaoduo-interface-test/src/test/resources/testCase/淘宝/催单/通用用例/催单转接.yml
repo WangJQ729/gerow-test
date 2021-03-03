@@ -61,7 +61,7 @@ beforeClass:
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
-    - byName: 拉一下催单消息
+    - byName: 主账号发送心跳检测
 testMethod:
   - name: 开启转接-子账号在线
     severity: NORMAL
@@ -98,8 +98,12 @@ testMethod:
         url: /log/hb
         variables:
           spin: cntaobao${child_seller}
+          platid: tb
+          hangup: false
+          platstatus: 1
+          shopid: ${shop_id}
+          version: 4.33.0
           sign: ${__HmacMD5(spin=cntaobao${child_seller})}
-        untilWait: 30
         method: GET
         assertion: [json: {$.code: 0}]
       - byName: 获取催单消息
@@ -240,6 +244,11 @@ testMethod:
         name: 主账号发送心跳检测
         variables:
           spin: cntaobao${seller_name}
+          platid: tb
+          hangup: false
+          platstatus: 1
+          shopid: ${shop_id}
+          version: 4.33.0
           sign: ${__HmacMD5(spin=cntaobao${seller_name})}
       - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接

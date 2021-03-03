@@ -16,7 +16,7 @@ beforeClass:
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
-    - byName: 拉一下催单消息
+    - byName: 主账号发送心跳检测
 testMethod:
   - name: 任意时候-符合圈定-已签收
     severity: NORMAL

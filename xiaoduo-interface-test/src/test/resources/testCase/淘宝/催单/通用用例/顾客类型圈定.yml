@@ -32,7 +32,7 @@ beforeClass:
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
-    - byName: 拉一下催单消息
+    - byName: 主账号发送心跳检测
 testMethod:
   - name: 顾客类型圈定全部-咨询顾客
     step:

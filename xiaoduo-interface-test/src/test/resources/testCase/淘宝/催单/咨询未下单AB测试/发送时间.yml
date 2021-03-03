@@ -37,6 +37,7 @@ beforeMethod:
   step:
     - byName: 拉一下催单消息
     - byName: 清除AB测试任务缓存
+    - byName: 主账号发送心跳检测
 testMethod:
   - name: AB测试发送时间对比测试
     severity: NORMAL

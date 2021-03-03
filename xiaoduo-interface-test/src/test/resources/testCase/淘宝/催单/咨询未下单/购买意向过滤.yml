@@ -14,7 +14,7 @@ beforeClass:
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
-    - byName: 拉一下催单消息
+    - byName: 主账号发送心跳检测
 testMethod:
   - name: 购买意向过滤-设置${intention_name}-买家${intention_name}-咨询前设置购买意向
     dataProvider:
