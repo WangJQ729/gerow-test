@@ -28,6 +28,8 @@ beforeClass:
           $.rules[?(@.type=='send_message')].args.state_delay: 0
           $.rules[?(@.type=='send_message')].args.message: ${message}
           $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+    - byName: 催单设置-子账号不催单
+    - byName: 催单设置-子账号3不催单
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
