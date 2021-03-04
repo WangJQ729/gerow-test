@@ -112,6 +112,13 @@ testMethod:
               $.data.traces[?(@.phase=='TaskSetTimer' && @.msg_retry_time==4)].node_type: ["${node_state}"]
       - byName: 获取timer
       - byName: 设置2秒timer
+      - byName: 查看trace详情-TaskSetTimer
+        name: 查看trace详情-第五次重试
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskSetTimer' && @.msg_retry_time==5)].node_type: ["${node_state}"]
+      - byName: 获取timer
+      - byName: 设置2秒timer
         bodyEditor:
           json:
             $.expired_at: ${__BeanShell(${__time(/1000)}+2,)}
