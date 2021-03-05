@@ -133,7 +133,7 @@ testMethod:
         name: 重新设置第20次timer
         bodyEditor:
           json:
-            $.expired_at: ${__BeanShell(${__time(/1000)}+2,timer_expired_at)}
+            $.expired_at: ${__BeanShell(${__time(/1000)}+5,timer_expired_at)}
             $.msg_retry_time: 20
       - byName: 查看trace详情-TaskSetTimer
         name: 查看trace详情-第20次重试
@@ -146,7 +146,7 @@ testMethod:
         name: 重新设置第27次timer
         bodyEditor:
           json:
-            $.expired_at: ${__BeanShell(${__time(/1000)}+2,timer_expired_at)}
+            $.expired_at: ${__BeanShell(${__time(/1000)}+5,timer_expired_at)}
             $.msg_retry_time: 27
       - byName: 查看trace详情-TaskSetTimer
         name: 查看trace详情-第27次重试
