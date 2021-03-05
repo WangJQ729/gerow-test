@@ -52,11 +52,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 推送退款消息
       - byName: 根据订单查询退款trace
-      - byName: 查看trace详情
-        name: 查看trace详情-TaskSetTimer
-        assertion:
-          - json:
-              $.data.traces[?(@.phase=='TaskSetTimer')].node_type: ["${node_state}"]
+      - byName: 查看trace详情-TaskSetTimer
       - byName: 获取任务触发时间
       - byName: 校验TaskSetTimer正确
       - byName: 获取催单消息-5秒拉一次

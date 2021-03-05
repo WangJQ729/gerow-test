@@ -1,0 +1,96 @@
+name: 任务补发
+platform: 融合版
+story: ${reminder_type}
+dataProvider:
+  - node_state: logistics_stagnate_delay
+    order_state: arrival
+    message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
+    text_with_vars: ${message}
+    reminder_type: 物流停滞超时
+    action: ARRIVAL
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+    - byName: 开启物流停滞超时催单任务
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 主账号发送心跳检测
+testMethod:
+  - name: 开启任务补发
+    severity: NORMAL
+    step:
+      - byName: 开启任务补发
+      - byName: 随机顾客发送消息给服务助手
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 指定顾客指定订单推送已发货订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-第一次重试
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-第二次重试
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-第三次重试
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-第四次重试
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-第五次重试
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-第六次重试
+      - byName: 获取timer
+      - byName: 重新设置第20次timer
+      - byName: 查看trace详情-第20次重试
+      - byName: 获取timer
+      - byName: 重新设置第27次timer
+      - byName: 查看trace详情-第27次重试
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-超过重试次数
+  - name: 关闭任务补发
+    severity: NORMAL
+    step:
+      - byName: 关闭任务补发
+      - byName: 随机顾客发送消息给服务助手
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 指定顾客指定订单推送已发货订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-第一次重试
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-第二次重试
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-第三次重试
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-第四次重试
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-超过重试次数
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
