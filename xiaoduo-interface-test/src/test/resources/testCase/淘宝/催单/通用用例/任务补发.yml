@@ -132,6 +132,19 @@ testMethod:
               $.data.traces[?(@.phase=='TaskSetTimer' && @.msg_retry_time==6)].timer_expired: ["${__BeanShell(${timer_expired_at}+3600,)}"]
       - byName: 获取timer
       - byName: 重新设置timer
+        name: 重新设置第20次timer
+        bodyEditor:
+          json:
+            $.expired_at: ${__BeanShell(${__time(/1000)}+2,timer_expired_at)}
+            $.msg_retry_time: 20
+      - byName: 查看trace详情-TaskSetTimer
+        name: 查看trace详情-第20次重试
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskSetTimer' && @.msg_retry_time==20)].node_type: ["${node_state}"]
+              $.data.traces[?(@.phase=='TaskSetTimer' && @.msg_retry_time==20)].timer_expired: ["${__BeanShell(${timer_expired_at}+3600,)}"]
+      - byName: 获取timer
+      - byName: 重新设置timer
         name: 重新设置第27次timer
         bodyEditor:
           json:
