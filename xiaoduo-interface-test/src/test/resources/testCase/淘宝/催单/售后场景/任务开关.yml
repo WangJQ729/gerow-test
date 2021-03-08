@@ -16,6 +16,11 @@ dataProvider:
     text_with_vars: ${message}
     reminder_type: 退款成功
     refund_state: taobao_refund_RefundSuccess
+  - node_state: refund_reject
+    message: 您好，您的售后申请已经被拒绝，请及时查看拒绝理由，并联系客服做进一步处理
+    text_with_vars: ${message}
+    reminder_type: 拒绝退款
+    refund_state: taobao_refund_RefundSellerRefuseAgreement
 beforeClass:
   name: 获取taskID和模板
   step:

@@ -10,6 +10,9 @@ dataProvider:
   - node_state: refund_success
     reminder_type: 退款成功
     refund_state: taobao_refund_RefundSuccess
+  - node_state: refund_reject
+    reminder_type: 拒绝退款
+    refund_state: taobao_refund_RefundSellerRefuseAgreement
 beforeClass:
   name: 获取taskID和模板
   step:
