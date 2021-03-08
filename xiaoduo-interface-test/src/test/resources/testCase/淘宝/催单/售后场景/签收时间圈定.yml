@@ -28,7 +28,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息
   - name: 物流签收7天内-符合圈定
     severity: NORMAL
@@ -53,7 +53,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息
   - name: 物流签收7天后-不符合圈定
     severity: NORMAL
@@ -78,7 +78,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情

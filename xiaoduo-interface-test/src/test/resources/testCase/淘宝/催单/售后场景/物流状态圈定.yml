@@ -28,7 +28,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息
   - name: 不符合圈定-设置未签收-实际已签收
     severity: NORMAL
@@ -40,7 +40,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情
@@ -70,7 +70,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息
   - name: 不符合圈定-设置已签收-实际未签收
     severity: NORMAL
@@ -82,7 +82,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情-物流签收状态过滤
@@ -104,7 +104,7 @@ testMethod:
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
       - byName: 随机顾客发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
         name: 推送仅退款消息
         bodyEditor:
           json:
@@ -232,7 +232,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情-物流签收状态过滤
@@ -260,7 +260,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情-物流签收状态过滤
@@ -300,7 +300,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息
   - name: 符合圈定-已发货未签收退货退款-实际已发货退货退款
     severity: NORMAL
@@ -309,7 +309,7 @@ testMethod:
       - byName: 随机顾客发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息
   - name: 不符合圈定-已发货未签收退货退款-实际已发货已签收
     severity: NORMAL
@@ -321,7 +321,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情-物流签收状态过滤
@@ -347,7 +347,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息
   - name: 不符合圈定-已签收退货退款-实际${new_action_name}退货退款
     severity: NORMAL
@@ -373,7 +373,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情-物流签收状态过滤

@@ -40,7 +40,7 @@ testMethod:
       - byName: 开启任务补发
       - byName: 随机顾客发送消息给服务助手
       - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情-TaskSetTimer
@@ -77,7 +77,7 @@ testMethod:
       - byName: 关闭任务补发
       - byName: 随机顾客发送消息给服务助手
       - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情-TaskSetTimer

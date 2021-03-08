@@ -53,7 +53,7 @@ testMethod:
             $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1605772288}]
       - byName: 发送消息给商家-指定买家
       - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情-导入名单过滤
@@ -62,7 +62,7 @@ testMethod:
       - byName: 开启售后场景催单任务-设置名单过滤
       - byName: 发送消息给商家
       - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息
   - name: 名单过滤-买家在过滤名单内，但过滤条件未勾选
     step:
@@ -83,7 +83,7 @@ testMethod:
             $.rules[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1605772288}]
       - byName: 发送消息给商家-指定买家
       - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退款消息
+      - byName: 推送退货退款消息
       - byName: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace
