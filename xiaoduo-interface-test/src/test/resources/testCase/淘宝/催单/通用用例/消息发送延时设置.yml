@@ -77,9 +77,9 @@ testMethod:
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskSetTimer')].node_type: ["${node_state}"]
-        extractor:
-          - json:
-              timer_id: $.data.traces[?(@.phase=='TaskSetTimer')].timer_id[-1]
+#        extractor:
+#          - json:
+#              timer_id: $.data.traces[?(@.phase=='TaskSetTimer')].timer_id[-1]
       - byName: 获取任务触发时间
       - byName: 校验TaskSetTimer正确
       - byName: 获取催单消息
