@@ -30,6 +30,7 @@ testMethod:
   - name: 开启任务补发
     severity: NORMAL
     step:
+      - byName: 获取设置结果
       - byName: 开启任务补发
       - byName: 随机顾客发送消息给服务助手
       - byName: 指定顾客推送已付款订单消息
@@ -68,6 +69,7 @@ testMethod:
   - name: 关闭任务补发
     severity: NORMAL
     step:
+      - byName: 获取设置结果
       - byName: 关闭任务补发
       - byName: 随机顾客发送消息给服务助手
       - byName: 指定顾客推送已付款订单消息

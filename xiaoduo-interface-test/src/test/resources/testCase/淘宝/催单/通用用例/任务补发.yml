@@ -52,8 +52,15 @@ testMethod:
   - name: 开启任务补发
     severity: NORMAL
     step:
+      - byName: 查看设置结果
+        name: 获取设置结果
+        extractor:
+          - json:
+              node_setting: $.data
       - byName: 开启多订单去重
         name: 开启任务补发
+        body: |
+          ${node_setting}
         bodyEditor:
           json:
             $.node_type: ${node_state}
@@ -164,7 +171,8 @@ testMethod:
   - name: 关闭任务补发
     severity: NORMAL
     step:
-      - byName: 开启多订单去重
+      - byName: 获取设置结果
+      - byName: 开启任务补发
         name: 关闭任务补发
         bodyEditor:
           json:
