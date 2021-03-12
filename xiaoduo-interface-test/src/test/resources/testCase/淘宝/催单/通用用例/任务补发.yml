@@ -129,6 +129,16 @@ testMethod:
               $.data.traces[?(@.phase=='TaskSetTimer' && @.msg_retry_time==5)].timer_expired: ["${__BeanShell(${timer_expired_at}+3600,)}"]
       - byName: 获取timer
       - byName: 重新设置timer
+      - byName: 获取运行时状态
+        name: 获取taskState运行时状态
+        variables:
+          task_id: ${task_id}
+          order_id: ${order_id}
+      - byName: 修改运行时状态
+        name: 修改运行时状态-订单创建时间大于1小时
+        bodyEditor:
+          json:
+            $.task.created_at: ${__BeanShell(${__time(/1000)}-7200,)}
       - byName: 查看trace详情-TaskSetTimer
         name: 查看trace详情-第六次重试
         assertion:
