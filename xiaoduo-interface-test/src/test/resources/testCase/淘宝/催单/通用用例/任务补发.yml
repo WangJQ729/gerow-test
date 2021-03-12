@@ -82,6 +82,7 @@ testMethod:
               timer_setting_body: $
       - name: 重新设置timer
         url: /api/client/reminder/v2/test/timer
+        untilWait: 5
         method: POST
         body: |
           ${timer_setting_body}
