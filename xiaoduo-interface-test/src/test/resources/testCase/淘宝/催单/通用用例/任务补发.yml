@@ -209,6 +209,26 @@ testMethod:
       - byName: 获取timer
       - byName: 重新设置timer
       - byName: 查看trace详情-超过重试次数
+  - name: 任务超时时直接结束
+    step:
+      - byName: 随机顾客发送消息给服务助手
+      - byName: 模拟pulsar订单消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 获取taskState运行时状态
+      - byName: 修改运行时状态
+        name: 修改运行时状态-订单创建时间大于28小时
+        bodyEditor:
+          json:
+            $.task.created_at: ${__BeanShell(${__time(/1000)}-28*60*60,)}
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情
+        name: 查看trace详情-超时
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskPass')].task_pass_info: [send timeout]
 afterMethod:
   name: 测试结束后查看订单trace
   step:
