@@ -6,6 +6,7 @@ dataProvider:
     text_with_vars: ${message}
     reminder_type: 售后理由修改
     refund_state: taobao_refund_RefundCreated
+    bill_type: return_bill
 beforeClass:
   name: 获取taskID和模板
   step:

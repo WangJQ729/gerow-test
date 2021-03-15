@@ -6,6 +6,7 @@ dataProvider:
     text_with_vars: ${message}
     reminder_type: 拒绝退款
     refund_state: taobao_refund_RefundSellerRefuseAgreement
+    bill_type: return_bill
 beforeClass:
   name: 获取taskID和模板
   step:
