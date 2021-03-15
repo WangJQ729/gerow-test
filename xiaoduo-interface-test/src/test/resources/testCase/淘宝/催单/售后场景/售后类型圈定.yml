@@ -6,11 +6,13 @@ dataProvider:
     text_with_vars: ${message}
     reminder_type: 同意退货
     refund_state: taobao_refund_RefundSellerAgreeAgreement
+    bill_type: return_bill
   - node_state: refund_success
     message: 您好，您的退款申请已通过，请注意查收哦！感谢您的耐心等待，欢迎下次再来光顾小店。
     text_with_vars: ${message}
     reminder_type: 退款成功
     refund_state: taobao_refund_RefundSuccess
+    bill_type: return_bill
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -33,7 +35,7 @@ testMethod:
       - byName: 开启售后场景催单任务
       - byName: 随机顾客发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退货退款消息
+      - byName: 推送退款消息-指定退款类型
       - byName: 获取催单消息
   - name: 售后类型圈定仅退款-实际仅退款
     severity: NORMAL
@@ -75,7 +77,7 @@ testMethod:
             $.rules[?(@.type=='refund_type_limit')].args.types: [return]
       - byName: 随机顾客发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退货退款消息
+      - byName: 推送退款消息-指定退款类型
       - byName: 获取催单消息
   - name: 售后类型圈定仅退款-实际退货退款
     severity: NORMAL
@@ -83,7 +85,7 @@ testMethod:
       - byName: 开启售后场景催单任务-设置售后类型圈定仅退款
       - byName: 随机顾客发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退货退款消息
+      - byName: 推送退款消息-指定退款类型
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情

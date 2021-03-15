@@ -40,7 +40,7 @@ testMethod:
       - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 推送退货退款消息
+      - byName: 推送退款消息-指定退款类型
       - byName: 获取催单消息-消息为空
       - byName: 查看trace详情-有售后状态不催单
   - name: 取消退款-仍然发催单消息
@@ -53,7 +53,7 @@ testMethod:
       - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
-      - byName: 推送退货退款消息
+      - byName: 推送退款消息-指定退款类型
       - byName: 获取催单消息
   - name: 取消退款-仍然触发催单任务
     dataProvider:
@@ -62,7 +62,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 随机顾客推送下单未付款订单消息
-      - byName: 推送退货退款消息
+      - byName: 推送退款消息-指定退款类型
       - byName: 指定顾客指定订单推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-TaskSetTimer
@@ -84,7 +84,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 随机顾客推送下单未付款订单消息
-      - byName: 推送退货退款消息
+      - byName: 推送退款消息-指定退款类型
       - byName: 指定顾客指定订单推送订单消息
       - byName: 根据订单查询trace
       - byName: 查看trace详情-有售后状态不催单

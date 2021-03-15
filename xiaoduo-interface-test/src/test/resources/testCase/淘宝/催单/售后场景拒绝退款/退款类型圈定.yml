@@ -28,17 +28,7 @@ testMethod:
       - byName: 开启售后场景催单任务
       - byName: 随机顾客发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
-      - byName: 推送仅退款消息
-        name: 推送退款消息-指定退款类型
-        bodyEditor:
-          json:
-            $.buyer_nick: ${buyer_id}
-            $.tid: ${__BeanShell(${order_id}l,)}
-            $.oid: ${__BeanShell(${order_id}l,)}
-            $.refund_id: ${__BeanShell(${__RandomOrderId(refund_id)}l,)}
-            $.channel: ${refund_state}
-            $.reason: 多拍/错拍/不想要
-            $.bill_type: ${bill_type}
+      - byName: 推送退款消息-指定退款类型
       - byName: 获取催单消息
   - name: 开启任务-退款类型${bill_type_name}
     dataProvider:
