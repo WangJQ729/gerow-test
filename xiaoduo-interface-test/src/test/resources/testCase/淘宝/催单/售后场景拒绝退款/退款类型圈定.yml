@@ -1,0 +1,66 @@
+name: 退款类型圈定
+story: ${reminder_type}
+dataProvider:
+  - node_state: refund_reject
+    message: 您好，您的售后申请已经被拒绝，请及时查看拒绝理由，并联系客服做进一步处理
+    text_with_vars: ${message}
+    reminder_type: 拒绝退款
+    refund_state: taobao_refund_RefundSellerRefuseAgreement
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 主账号发送心跳检测
+testMethod:
+  - name: 开启任务-退款类型${bill_type_name}
+    dataProvider:
+      - bill_type: refund_bill
+        bill_type_name: 仅退款
+      - bill_type: return_bill
+        bill_type_name: 退货退款
+    step:
+      - byName: 开启售后场景催单任务
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 推送仅退款消息
+        name: 推送退款消息-指定退款类型
+        bodyEditor:
+          json:
+            $.buyer_nick: ${buyer_id}
+            $.tid: ${__BeanShell(${order_id}l,)}
+            $.oid: ${__BeanShell(${order_id}l,)}
+            $.refund_id: ${__BeanShell(${__RandomOrderId(refund_id)}l,)}
+            $.channel: ${refund_state}
+            $.reason: 多拍/错拍/不想要
+            $.bill_type: ${bill_type}
+      - byName: 获取催单消息
+  - name: 开启任务-退款类型${bill_type_name}
+    dataProvider:
+      - bill_type: replace_bill
+        bill_type_name: 退换货
+    step:
+      - byName: 开启售后场景催单任务
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 推送退款消息-指定退款类型
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询退款trace
+      - byName: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [refund_bill_type_limit]
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询退款trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务

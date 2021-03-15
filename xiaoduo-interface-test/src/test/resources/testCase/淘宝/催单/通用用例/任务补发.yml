@@ -218,6 +218,15 @@ testMethod:
       - byName: 查看trace详情-TaskSetTimer
       - byName: 获取taskState运行时状态
       - byName: 修改运行时状态
+        name: 修改运行时状态-订单创建时间小于28小时
+        bodyEditor:
+          json:
+            $.task.created_at: ${__BeanShell(${__time(/1000)}-28*60*60+60,)}
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 查看trace详情-第一次重试
+      - byName: 获取taskState运行时状态
+      - byName: 修改运行时状态
         name: 修改运行时状态-订单创建时间大于28小时
         bodyEditor:
           json:
