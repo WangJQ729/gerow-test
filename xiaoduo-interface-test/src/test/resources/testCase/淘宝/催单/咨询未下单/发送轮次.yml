@@ -118,14 +118,7 @@ testMethod:
           - json:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${text_with_vars2}
-      - byName: 获取催单消息
-        untilWait: 80
-        intervals: 5000
-        name: 获取第三轮催单消息
-        assertion:
-          - json:
-              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
-                - ${text_with_vars3}
+      - byName: 获取第三轮催单消息
   - name: 咨询未下单发送轮次-第一轮不打开，二、三轮打开
     description: |
       """</br>

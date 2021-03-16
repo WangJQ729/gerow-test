@@ -1,0 +1,115 @@
+name: 回复后重新计时
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+    text_with_vars1: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
+    text_with_vars2: 您好，还没有收到您的订单，有什么顾虑吗，可以给我说下的呢，非常乐意帮您解决的哈～
+    text_with_vars3: 感谢您的咨询，可以点击收藏下店铺或者喜欢的宝贝哦，后期有活动会第一时间通知您，期待您的光临，祝您生活愉快
+beforeClass:
+  name: 获取taskID和模版
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 主账号发送心跳检测
+testMethod:
+  - name: 跨天消息正常发送
+    step:
+      - byName: 修改咨询未下单内容
+        name: 设置第二轮第三轮均跨天发送
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='stage_2_send_message')].args.enable: true
+            $.rules[?(@.type=='stage_2_send_message')].args.push_by_day: 1
+            $.rules[?(@.type=='chat_end_send_message')].args.enable: true
+            $.rules[?(@.type=='chat_end_send_message')].args.push_by_day: 1
+      - byName: 发送消息给商家
+      - byName: 获取第一轮催单消息
+      - byName: 根据聊天记录查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 获取运行时状态
+        name: 获取运行时状态-咨询未下单买家
+        variables:
+          shop_id: ${shop_id}
+          buyer_id: ${buyer_id}
+          task_id: ${task_id}
+      - byName: 修改运行时状态
+        name: 修改运行时状态-咨询未下单买家
+        bodyEditor:
+          json:
+            $.user.last_receive_msg_at: ${__BeanShell(${__time(/1000,)}-24*60*60,)}
+            $.task.created_at: ${__BeanShell(${__time(/1000,)}-24*60*60,)}
+      - byName: 获取timer
+      - byName: 重新设置timer
+        bodyEditor:
+          json:
+            $.expired_at: ${__BeanShell(${__time(/1000)}+60,timer_expired_at)}
+      - byName: 发送消息给商家-指定买家
+      - byName: 根据聊天记录查询trace
+        extractor:
+          - json:
+              trace_id: $.data.traces[?(@.event_type=='Chat-Message')].trace_id[1]
+      - byName: 查看trace详情-TaskSetTimer
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired[-1]: ${__EndOfDay()}
+            assertionType: GREATEROREQUALTO
+      - byName: 获取运行时状态-咨询未下单买家
+      - byName: 修改运行时状态-咨询未下单买家
+        bodyEditor:
+          json:
+            $.task.created_at: ${__BeanShell(${__time(/1000,)}-24*60*60*2,)}
+            $.user.last_receive_msg_at: ${__BeanShell(${__time(/1000,)}-24*60*60,)}
+            $.task.stage_changed_at: ${__BeanShell(${__time(/1000,)}-24*60*60,)}
+            $.user.seller_changed_at: ${__BeanShell(${__time(/1000,)}-24*60*60,)}
+            $.user.last_send_rmd_at: ${__BeanShell(${__time(/1000,)}-24*60*60,)}
+            $.user.chat_start_at: ${__BeanShell(${__time(/1000,)}-24*60*60*2,)}
+      - byName: 获取运行时状态-咨询未下单买家
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 获取第二轮催单消息
+        untilWait: 10
+        intervals: 1000
+      - byName: 根据聊天记录查询trace
+        extractor:
+          - json:
+              trace_id: $.data.traces[?(@.event_type=='Chat-Message')].trace_id[0]
+      - byName: 查看trace详情-TaskSetTimer
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired[1]: ${__EndOfDay()}
+            assertionType: GREATEROREQUALTO
+      - byName: 获取运行时状态-咨询未下单买家
+      - byName: 修改运行时状态-咨询未下单买家
+        bodyEditor:
+          json:
+            $.task.created_at: ${__BeanShell(${__time(/1000,)}-24*60*60*3,)}
+            $.user.last_receive_msg_at: ${__BeanShell(${__time(/1000,)}-24*60*60,)}
+            $.task.stage_changed_at: ${__BeanShell(${__time(/1000,)}-24*60*60,)}
+            $.user.seller_changed_at: ${__BeanShell(${__time(/1000,)}-24*60*60,)}
+            $.user.last_send_rmd_at: ${__BeanShell(${__time(/1000,)}-24*60*60,)}
+            $.user.chat_start_at: ${__BeanShell(${__time(/1000,)}-24*60*60*2,)}
+      - byName: 获取运行时状态-咨询未下单买家
+      - byName: 获取timer
+      - byName: 重新设置timer
+      - byName: 获取第三轮催单消息
+        untilWait: 10
+        intervals: 1000
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据聊天记录查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
