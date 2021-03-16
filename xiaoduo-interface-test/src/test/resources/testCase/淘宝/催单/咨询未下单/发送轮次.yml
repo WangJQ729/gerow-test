@@ -83,14 +83,7 @@ testMethod:
             $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
-      - byName: 获取催单消息
-        untilWait: 80
-        intervals: 5000
-        name: 获取第二轮催单消息
-        assertion:
-          - json:
-              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
-                - ${text_with_vars2}
+      - byName: 获取第二轮催单消息
   - name: 咨询未下单发送轮次-三轮全部打开
     description: |
       """</br>

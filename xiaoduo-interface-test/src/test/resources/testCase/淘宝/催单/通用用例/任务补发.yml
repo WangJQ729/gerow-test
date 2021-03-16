@@ -72,6 +72,7 @@ testMethod:
       - byName: 查看trace详情-TaskSetTimer
       - name: 获取timer
         url: /api/client/reminder/v2/test/timer
+        untilWait: 5
         variables:
           platform: ${platform}
           shop_id: ${shop_id}
@@ -80,6 +81,9 @@ testMethod:
         extractor:
           - json:
               timer_setting_body: $
+        assertion:
+          - json:
+              $.id: ${timer_id}
       - name: 重新设置timer
         url: /api/client/reminder/v2/test/timer
         untilWait: 5
