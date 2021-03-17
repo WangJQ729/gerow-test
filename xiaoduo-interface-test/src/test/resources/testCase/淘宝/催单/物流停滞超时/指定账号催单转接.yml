@@ -43,7 +43,6 @@ testMethod:
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-提取转接信息
-      - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
         assertion:
           - json:
@@ -72,12 +71,9 @@ testMethod:
             $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
-      - byName: 子账号发送心跳检测
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
-      - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
-      - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-转接关闭
   - name: 开启转接-子账号在线-非静默客户-关闭非静默顾客转接
     severity: NORMAL
@@ -105,7 +101,6 @@ testMethod:
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-提取转接信息
-      - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-转接关闭
   - name: 开启转接-子账号在线-非静默客户-开启非静默顾客转接
     severity: NORMAL
@@ -118,7 +113,6 @@ testMethod:
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 发送物流消息
       - byName: 获取催单消息-提取转接信息
-      - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
         assertion:
           - json:
@@ -134,9 +128,7 @@ testMethod:
       - byName: 开启物流停滞超时催单任务-开启催单转接
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
-      - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
-      - byName: 子账号发送心跳检测
       - byName: 开启催单任务-关闭催单转接
       - byName: 发送消息给商家-转接列表为空
         assertion:
@@ -152,7 +144,6 @@ testMethod:
       - byName: 开启物流停滞超时催单任务-开启催单转接
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
-      - byName: 子账号发送心跳检测
       - byName: 开启催单任务-关闭催单转接
       - byName: 获取催单消息-转接关闭
   - name: 开启转接-子账号不在线
@@ -177,9 +168,7 @@ testMethod:
       - byName: 开启物流停滞超时催单任务-开启催单转接
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
-      - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
-      - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
   - name: 开启转接-转接列表含自己
     severity: NORMAL
@@ -191,9 +180,7 @@ testMethod:
       - byName: 开启物流停滞超时催单任务-开启催单转接
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
-      - byName: 子账号发送心跳检测
       - byName: 获取催单消息-提取转接信息
-      - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
         assertion:
           - json:
@@ -216,11 +203,7 @@ testMethod:
       - byName: 开启物流停滞超时催单任务-开启催单转接
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
-      - byName: 子账号发送心跳检测
-      - byName: 子账号3发送心跳检测
       - byName: 获取催单消息-提取转接信息
-      - byName: 子账号发送心跳检测
-      - byName: 子账号3发送心跳检测
       - byName: 发送消息给商家-转接给在线的子账号
   - name: 开启转接-多个子账号转接-部分在线
     severity: NORMAL
@@ -232,11 +215,7 @@ testMethod:
       - byName: 开启物流停滞超时催单任务-开启催单转接
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
-      - byName: 子账号发送心跳检测
-      - byName: 子账号3发送心跳检测
       - byName: 获取催单消息-提取转接信息
-      - byName: 子账号发送心跳检测
-      - byName: 子账号3发送心跳检测
       - byName: 发送消息给商家-转接给在线的子账号
 afterMethod:
   name: 测试结束后查看订单trace

@@ -27,9 +27,7 @@ testMethod:
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
-      - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
-      - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
   - name: 开启转接-子账号在线-顾客回复“对的、好的”等表示肯定的消息时不转接-关闭
     severity: NORMAL
@@ -41,9 +39,7 @@ testMethod:
           settings_is_begin_words_filter: false
       - byName: 随机顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
-      - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
-      - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-固定问题-含转接内容
   - name: 开启转接-子账号在线-顾客回复“对的、好的”等表示肯定的消息时不转接-开启
     severity: NORMAL
@@ -53,9 +49,7 @@ testMethod:
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
-      - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
-      - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-固定问题-含转接内容-不转接
   - name: 开启转接-子账号在线-催单前关闭转接
     severity: NORMAL
@@ -77,9 +71,7 @@ testMethod:
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
-      - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
-      - byName: 子账号发送心跳检测
       - byName: 客户端设置-关闭催单转接
       - byName: 发送消息给商家-转接列表为空
         assertion:
@@ -119,9 +111,7 @@ testMethod:
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
-      - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
-      - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
         assertion:
           - json:
@@ -144,9 +134,7 @@ testMethod:
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
-      - byName: 子账号发送心跳检测
       - byName: 获取催单消息-回复后转接
-      - byName: 子账号发送心跳检测
       - byName: 发送消息给商家-含转接内容
   - name: 开启转接-多个子账号转接-都在线
     enable: false
@@ -160,11 +148,7 @@ testMethod:
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
-      - byName: 子账号发送心跳检测
-      - byName: 子账号3发送心跳检测
       - byName: 获取催单消息-回复后转接
-      - byName: 子账号发送心跳检测
-      - byName: 子账号3发送心跳检测
       - byName: 发送消息给商家-转接给在线的子账号
   - name: 开启转接-多个子账号转接-部分在线
     enable: false
@@ -177,11 +161,7 @@ testMethod:
       - byName: 更新转接列表
       - byName: 随机顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
-      - byName: 子账号发送心跳检测
-      - byName: 子账号3发送心跳检测
       - byName: 获取催单消息-回复后转接
-      - byName: 子账号发送心跳检测
-      - byName: 子账号3发送心跳检测
       - byName: 发送消息给商家-转接给在线的子账号
 afterMethod:
   name: 测试结束后查看订单trace

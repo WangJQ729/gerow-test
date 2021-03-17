@@ -241,19 +241,8 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 子账号发送心跳检测
-      - byName: 子账号发送心跳检测
-        name: 子账号3发送心跳检测
-        variables:
-          spin: cntaobao${child_seller3}
-          platid: tb
-          hangup: false
-          platstatus: 1
-          shopid: ${shop_id}
-          version: 4.33.0
-          sign: ${__HmacMD5(spin=cntaobao${child_seller3})}
       - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
-      - byName: 子账号3发送心跳检测
       - byName: 发送消息给商家-含转接内容
         name: 发送消息给商家-转接给在线的子账号
         assertion:
@@ -279,10 +268,8 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 子账号发送心跳检测
-      - byName: 子账号3发送心跳检测
       - byName: 获取催单消息-提取转接信息
       - byName: 子账号发送心跳检测
-      - byName: 子账号3发送心跳检测
       - byName: 发送消息给商家-转接给在线的子账号
 afterMethod:
   name: 测试结束后查看订单trace
