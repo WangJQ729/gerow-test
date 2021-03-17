@@ -240,6 +240,7 @@ public class YmlTestStep implements ITestStep {
                     testMethods.addAll(testClass.getAfter());
                     testMethods.addAll(testClass.getTestSuite().getBeforeSuite());
                     testMethods.addAll(testClass.getTestSuite().getAfterSuite());
+                    testMethods.addAll(testClass.getTestSuite().getAsync());
                     return testMethods.stream();
                 })
                 .flatMap(method -> method.getTestSteps().stream())

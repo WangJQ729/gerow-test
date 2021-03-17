@@ -43,16 +43,13 @@ public abstract class AbstractTestSuite implements ITestSuite {
                 TestUtils.isRun(iTestMethod.getTestClass().getFeature(), System.getProperty("features")) &&
                         TestUtils.isRun(System.getProperty("platform"), iTestMethod.getTestClass().getPlatform()))
                 .forEach(ITestMethod::doing);
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        async.get(0).doing();
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        executor.submit((Runnable) () -> {
+            while (true) {
+                try {
+                    async.get(0).doing();
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         });
