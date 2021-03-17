@@ -17,10 +17,6 @@ beforeClass:
     - byName: 开启催单任务
     - byName: 拉一下催单消息
     - byName: 子账号设置为自己和静默
-beforeMethod:
-  name: 测试前拉一下消息表示在线
-  step:
-    - byName: 主账号发送心跳检测
 testMethod:
   - name: ${reminder_type}-不催单-自己的客户
     severity: NORMAL

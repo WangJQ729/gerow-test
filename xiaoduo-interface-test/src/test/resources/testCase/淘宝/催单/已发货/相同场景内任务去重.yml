@@ -40,10 +40,7 @@ beforeClass:
       extractor:
         - json:
             task_id_2: $.data.id
-beforeMethod:
-  name: 测试前拉一下消息表示在线
-  step:
-    - byName: 主账号发送心跳检测
+
 testMethod:
   - name: 关闭相同场景内任务去重
     severity: NORMAL

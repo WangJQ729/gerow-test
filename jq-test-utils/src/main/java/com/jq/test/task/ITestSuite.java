@@ -2,7 +2,6 @@ package com.jq.test.task;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 public interface ITestSuite extends ITest {
     /**
@@ -39,6 +38,7 @@ public interface ITestSuite extends ITest {
      */
     void addAfterSuite(ITestMethod testMethod);
 
+
     /**
      * @return 测试套件执行前的方法
      */
@@ -49,8 +49,12 @@ public interface ITestSuite extends ITest {
      */
     List<ITestMethod> getAfterSuite();
 
+    List<ITestMethod> getAsync();
+
     /**
      * @return 测试套件文件
      */
     File getFile();
+
+    void addAsync(ITestMethod testMethod);
 }

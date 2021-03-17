@@ -19,10 +19,7 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建第一个task
     - byName: 使用模板新建第二个task
-beforeMethod:
-  name: 测试前拉一下消息表示在线
-  step:
-    - byName: 主账号发送心跳检测
+
 testMethod:
   - name: 关闭相同场景内任务去重
     severity: NORMAL

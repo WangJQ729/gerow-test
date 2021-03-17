@@ -26,10 +26,6 @@ beforeClass:
         id: ${ageing_id}
     - byName: 使用模板新建第二个task
     - byName: 设置时效不满足的任务在前
-beforeMethod:
-  name: 测试前拉一下消息表示在线
-  step:
-    - byName: 主账号发送心跳检测
 testMethod:
   - name: 时效标签(固定时段-失效)-${ageing_name}-时效标签不生效应该催第二个任务
     dataProvider:

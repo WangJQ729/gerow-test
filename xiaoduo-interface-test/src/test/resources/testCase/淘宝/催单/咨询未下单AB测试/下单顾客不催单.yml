@@ -8,10 +8,7 @@ dataProvider:
     message2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈~2
     text_with_vars: ${message}
     compare_field: message_with_intent
-beforeMethod:
-  name: 测试前拉一下消息表示在线
-  step:
-    - byName: 主账号发送心跳检测
+
 beforeClass:
   name: 获取taskID和模板
   step:

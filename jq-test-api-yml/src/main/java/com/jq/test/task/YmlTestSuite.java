@@ -6,6 +6,7 @@ import com.jq.test.entity.YmlTestClassEntity;
 import com.jq.test.utils.TestUtils;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,4 +36,8 @@ public class YmlTestSuite extends AbstractTestSuite {
         return true;
     }
 
+    @Override
+    public void addAsync(ITestMethod testMethod) {
+        this.setAsync(Collections.singletonList(testMethod));
+    }
 }

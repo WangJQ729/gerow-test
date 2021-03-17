@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Data
 public abstract class AbstractTestSuite implements ITestSuite {
@@ -18,6 +20,8 @@ public abstract class AbstractTestSuite implements ITestSuite {
     private Map<String, String> params = new HashMap<>();
     private List<ITestMethod> beforeSuite = new ArrayList<>();
     private List<ITestMethod> afterSuite = new ArrayList<>();
+    private List<ITestMethod> async = new ArrayList<>();
+
 
     @Override
     public void addBeforeSuite(ITestMethod testMethod) {
@@ -29,6 +33,8 @@ public abstract class AbstractTestSuite implements ITestSuite {
         this.afterSuite.add(testMethod);
     }
 
+    private ExecutorService executor = Executors.newFixedThreadPool(1);
+
     @Override
     public synchronized void setUp() {
         this.params.putAll(ConfigManager.getProperties());
@@ -37,7 +43,21 @@ public abstract class AbstractTestSuite implements ITestSuite {
                 TestUtils.isRun(iTestMethod.getTestClass().getFeature(), System.getProperty("features")) &&
                         TestUtils.isRun(System.getProperty("platform"), iTestMethod.getTestClass().getPlatform()))
                 .forEach(ITestMethod::doing);
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        async.get(0).doing();
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
+
 
     @Override
     public synchronized void tearDown() {
@@ -45,6 +65,7 @@ public abstract class AbstractTestSuite implements ITestSuite {
         afterSuite.stream().filter(iTestMethod ->
                 TestUtils.isRun(iTestMethod.getTestClass().getFeature(), System.getProperty("features")))
                 .forEach(ITestMethod::doing);
+        executor.shutdown();
     }
 
     @Override

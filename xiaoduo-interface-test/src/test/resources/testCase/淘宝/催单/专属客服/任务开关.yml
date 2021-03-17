@@ -32,10 +32,7 @@ beforeClass:
         node_type: ${order_state}
         template_key: 2
     - byName: 使用模板新建一个task
-beforeMethod:
-  name: 测试前拉一下消息表示在线
-  step:
-    - byName: 主账号发送心跳检测
+
 testMethod:
   - name: 开启任务
     severity: CRITICAL

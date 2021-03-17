@@ -32,7 +32,6 @@ beforeClass:
 beforeMethod:
   name: 测试前拉一下消息表示在线
   step:
-    - byName: 主账号发送心跳检测
     - byName: 清除AB测试任务缓存
 testMethod:
   - name: 顾客类型圈定-全部-咨询顾客

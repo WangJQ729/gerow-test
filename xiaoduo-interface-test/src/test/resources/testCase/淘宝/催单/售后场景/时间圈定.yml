@@ -87,10 +87,7 @@ testMethod:
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询退款trace
       - byName: 查看trace详情-不满足时间圈定
-beforeMethod:
-  name: 测试前拉一下消息表示在线
-  step:
-    - byName: 主账号发送心跳检测
+
 afterMethod:
   name: 测试结束后查看订单trace
   step:

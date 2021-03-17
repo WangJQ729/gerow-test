@@ -13,10 +13,7 @@ beforeClass:
     - byName: 获取task模板
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
-beforeMethod:
-  name: 测试前拉一下消息表示在线
-  step:
-    - byName: 主账号发送心跳检测
+
 testMethod:
   - name: 咨询未下单发送轮次-只打开第一、三轮开关
     description: |
@@ -39,9 +36,9 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: false
-            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
+            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 10
             $.rules[?(@.type=='chat_end_send_message')].args.enable: true
-            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
+            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 10
       - byName: 发送消息给商家
       - byName: 获取催单消息
         name: 获取第一轮催单消息
@@ -50,7 +47,7 @@ testMethod:
               $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
                 - ${text_with_vars1}
       - byName: 获取催单消息
-        untilWait: 80
+        untilWait: 20
         intervals: 5000
         name: 获取第三轮催单消息
         assertion:
@@ -78,9 +75,9 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: true
-            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
+            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 10
             $.rules[?(@.type=='chat_end_send_message')].args.enable: false
-            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
+            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 10
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 获取第二轮催单消息
@@ -105,13 +102,13 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: true
-            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
+            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 10
             $.rules[?(@.type=='chat_end_send_message')].args.enable: true
-            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
+            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 10
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 获取催单消息
-        untilWait: 80
+        untilWait: 20
         intervals: 5000
         name: 获取第二轮催单消息
         assertion:
@@ -140,9 +137,9 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: true
-            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
+            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 10
             $.rules[?(@.type=='chat_end_send_message')].args.enable: true
-            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
+            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 10
       - byName: 发送消息给商家
       - byName: 获取催单消息-消息为空
         name: 获取咨询未下单催单消息-消息为空
@@ -172,9 +169,9 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='state_delay')].args.delay: 0
             $.rules[?(@.type=='stage_2_send_message')].args.enable: false
-            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 60
+            $.rules[?(@.type=='stage_2_send_message')].args.stage_delay: 10
             $.rules[?(@.type=='chat_end_send_message')].args.enable: false
-            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 60
+            $.rules[?(@.type=='chat_end_send_message')].args.chat_end_delay: 10
       - byName: 发送消息给商家
       - byName: 获取第一轮催单消息
       - byName: 根据聊天记录查询trace

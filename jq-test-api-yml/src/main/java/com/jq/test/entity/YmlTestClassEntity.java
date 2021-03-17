@@ -3,8 +3,8 @@ package com.jq.test.entity;
 import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestSuite;
 import com.jq.test.task.YmlTestClass;
-import com.jq.test.utils.data.DataProviderUtils;
 import com.jq.test.utils.TestUtils;
+import com.jq.test.utils.data.DataProviderUtils;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,6 +32,7 @@ public class YmlTestClassEntity {
      * suite前执行的测试方法
      */
     private YmlTestMethodEntity beforeSuite;
+    private YmlTestMethodEntity async;
     /**
      * class前执行的测试方法
      */
@@ -83,6 +84,9 @@ public class YmlTestClassEntity {
             testSuite.addBeforeSuite(beforeSuite.build(result.get(0)).get(0));
         if (afterSuite != null)
             testSuite.addAfterSuite(afterSuite.build(result.get(0)).get(0));
+        if (async != null) {
+            testSuite.addAsync(async.build(result.get(0)).get(0));
+        }
         return result;
     }
 
