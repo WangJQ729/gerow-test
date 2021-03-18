@@ -26,7 +26,6 @@ testMethod:
         text_with_vars: ${seller_name}
       - message: "1{↓1秒后分行发送↓}2"
         text_with_vars: "1{↓1秒后分行发送↓}2"
-    severity: CRITICAL
     step:
       - byName: 开启物流停滞超时催单任务
       - byName: 随机顾客发送消息给商家-固定问题
@@ -47,7 +46,6 @@ testMethod:
       - new_action_name: 物流拒签
         dataProvider:
           - new_action: FAILED
-    severity: CRITICAL
     step:
       - byName: 开启物流停滞超时催单任务-10秒后触发
       - byName: 随机顾客发送消息给商家-固定问题
@@ -74,7 +72,6 @@ testMethod:
       - new_action_name: 物流拒签
         dataProvider:
           - new_action: FAILED
-    severity: CRITICAL
     step:
       - byName: 开启物流停滞超时催单任务-10秒后触发
       - byName: 随机顾客发送消息给商家-固定问题
@@ -102,7 +99,6 @@ testMethod:
       - new_action_name: 物流拒签
         dataProvider:
           - new_action: FAILED
-    severity: CRITICAL
     step:
       - byName: 开启物流停滞超时催单任务-10秒后触发
       - byName: 随机顾客发送消息给商家-固定问题

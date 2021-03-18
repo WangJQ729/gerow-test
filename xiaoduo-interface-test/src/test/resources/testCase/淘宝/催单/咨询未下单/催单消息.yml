@@ -27,7 +27,6 @@ testMethod:
       - question: 在吗
         message: "1{↓1秒后分行发送↓}2"
         text_with_vars: "1{↓1秒后分行发送↓}2"
-    severity: CRITICAL
     step:
       - byName: 开启咨询未下单任务
       - byName: 发送消息给商家
