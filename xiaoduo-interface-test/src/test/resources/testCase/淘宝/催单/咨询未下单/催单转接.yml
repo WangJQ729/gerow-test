@@ -16,7 +16,6 @@ beforeClass:
     - byName: 开启咨询未下单任务
     - byName: 催单设置-子账号不催单
     - byName: 催单设置-子账号3不催单
-
 testMethod:
   - name: 开启转接-子账号在线
     severity: NORMAL

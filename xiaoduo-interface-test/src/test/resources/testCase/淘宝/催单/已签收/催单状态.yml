@@ -16,9 +16,8 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
     - byName: 开启已签收催单任务
-    - byName: 拉一下催单消息
-    - byName: 子账号设置为自己和静默
-
+    - byName: 催单设置-子账号不催单
+    - byName: 催单设置-子账号3不催单
 testMethod:
   - name: ${reminder_type}-不催单-自己的客户
     severity: NORMAL
@@ -38,7 +37,7 @@ testMethod:
       - byName: 随机顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 根据订单查询trace
-      - byName: 查看trace详情-没有催单的子账号设置等待时间
+      - byName: 查看trace详情-客户端不发送消息
       - byName: 获取催单消息-消息为空
   - name: ${reminder_type}-不催单-别人的顾客
     severity: NORMAL
@@ -48,7 +47,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 根据订单查询trace
-      - byName: 查看trace详情-没有催单的子账号设置等待时间
+      - byName: 查看trace详情-客户端不发送消息
       - byName: 获取催单消息-消息为空
   - name: ${reminder_type}-仅自己-自己的客户
     severity: NORMAL
@@ -66,7 +65,7 @@ testMethod:
       - byName: 发送物流消息
       - byName: 获取催单消息-消息为空
       - byName: 根据订单查询trace
-      - byName: 查看trace详情-没有催单的子账号设置等待时间
+      - byName: 查看trace详情-客户端不发送消息
   - name: ${reminder_type}-仅自己-别人的客户
     severity: NORMAL
     step:
@@ -75,7 +74,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 根据订单查询trace
-      - byName: 查看trace详情-没有催单的子账号设置等待时间
+      - byName: 查看trace详情-客户端不发送消息
       - byName: 获取催单消息-消息为空
   - name: ${reminder_type}-仅静默-自己的客户
     severity: NORMAL
@@ -103,7 +102,7 @@ testMethod:
       - byName: 指定顾客推送已付款订单消息
       - byName: 发送物流消息
       - byName: 根据订单查询trace
-      - byName: 查看trace详情-没有催单的子账号设置等待时间
+      - byName: 查看trace详情-客户端不发送消息
       - byName: 获取催单消息-消息为空
   - name: ${reminder_type}-自己和静默-自己的客户
     severity: NORMAL
