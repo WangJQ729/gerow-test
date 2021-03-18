@@ -68,6 +68,7 @@ beforeClass:
       form:
         sub_nick: ${child_seller3}
         reminder_type: close
+
 testMethod:
   - name: 开启转接-子账号在线
     severity: NORMAL

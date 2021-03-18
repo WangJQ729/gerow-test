@@ -32,6 +32,7 @@ beforeClass:
           $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
     - byName: 催单设置-子账号不催单
     - byName: 催单设置-子账号3不催单
+
 testMethod:
   - name: 开启转接-子账号在线
     severity: NORMAL
