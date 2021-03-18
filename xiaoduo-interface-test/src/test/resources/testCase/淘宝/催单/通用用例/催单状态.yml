@@ -46,12 +46,16 @@ beforeClass:
     - byName: 使用模板新建一个task
     - byName: 拉一下催单消息
     - byName: 催单设置为自己和静默
-      name: 子账号设置为自己和静默
+      name: 子账号4设置为自己和静默
+      form:
+        sub_nick: ${child_seller4}
+        reminder_type: mine,silence
+    - byName: 催单设置为自己和静默
+      name: 子账号设置为不催单
       form:
         sub_nick: ${child_seller}
-        reminder_type: mine,silence
+        reminder_type: close
     - byName: 开启催单任务
-
 testMethod:
   - name: ${reminder_type}-不催单-自己的客户
     description: |
@@ -136,11 +140,11 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 发送消息给商家
-        name: 发送消息给子账号
+        name: 发送消息给子账号4
         bodyEditor:
           json:
             $.pin: cntaobao${__RandomName(buyer_id)}
-            $.spin: cntaobao${child_seller}
+            $.spin: cntaobao${child_seller4}
       - byName: 催单设置-不催单
       - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace
@@ -207,7 +211,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给子账号
+      - byName: 发送消息给子账号4
       - byName: 催单设置-仅自己
       - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace
@@ -269,7 +273,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给子账号
+      - byName: 发送消息给子账号4
       - byName: 催单设置-仅静默
       - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace
@@ -325,7 +329,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给子账号
+      - byName: 发送消息给子账号4
       - byName: 催单设置为自己和静默
       - byName: 模拟pulsar订单消息
       - byName: 根据订单查询trace

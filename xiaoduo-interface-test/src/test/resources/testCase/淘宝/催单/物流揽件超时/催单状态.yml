@@ -16,7 +16,7 @@ beforeClass:
     - byName: 使用模板新建一个task
     - byName: 开启催单任务
     - byName: 拉一下催单消息
-    - byName: 子账号设置为自己和静默
+    - byName: 子账号4设置为自己和静默
 testMethod:
   - name: ${reminder_type}-不催单-自己的客户
     severity: NORMAL
@@ -42,7 +42,7 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 催单设置-不催单
-      - byName: 发送消息给子账号
+      - byName: 发送消息给子账号4
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
       - byName: 根据订单查询trace
@@ -68,7 +68,7 @@ testMethod:
   - name: ${reminder_type}-仅自己-别人的客户
     severity: NORMAL
     step:
-      - byName: 发送消息给子账号
+      - byName: 发送消息给子账号4
       - byName: 催单设置-仅自己
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
@@ -96,7 +96,7 @@ testMethod:
   - name: ${reminder_type}-仅静默-别人的顾客
     severity: NORMAL
     step:
-      - byName: 发送消息给子账号
+      - byName: 发送消息给子账号4
       - byName: 催单设置-仅静默
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
@@ -121,7 +121,7 @@ testMethod:
   - name: ${reminder_type}-自己和静默-别人的客户
     severity: NORMAL
     step:
-      - byName: 发送消息给子账号
+      - byName: 发送消息给子账号4
       - byName: 催单设置为自己和静默
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
