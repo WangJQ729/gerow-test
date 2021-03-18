@@ -26,6 +26,12 @@ dataProvider:
     reminder_type: 换货引导
     refund_state: taobao_refund_RefundCreated
     bill_type: replace_bill
+  - node_state: replace_agree
+    message: 您好，您的换货申请已通过，麻烦您把货发给我们，我们也好尽快给您办理换货呢！
+    text_with_vars: ${message}
+    reminder_type: 同意换货
+    refund_state: taobao_refund_RefundSellerAgreeAgreement
+    bill_type: replace_bill
   - node_state: refund_reject
     message: 您好，您的售后申请已经被拒绝，请及时查看拒绝理由，并联系客服做进一步处理
     text_with_vars: ${message}
