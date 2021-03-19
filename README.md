@@ -2,8 +2,7 @@
 
 ##### 1、jq-test-utils相关工具类
 ##### 2、jq-test-api-yml测试框架实现代码
-##### 3、jq-test-api-yml-testcase测试用例
-##### 4、ipa-interface-test小程序测试用例
+##### 3、ipa-interface-test小程序测试用例
 
 
 # 二、环境配置
@@ -36,16 +35,20 @@
 
 ### 2、单独用例执行
     
-    1、根据测试类名称 -Dtest.file.name=xxx1,xxx2  
+    1、根据催单场景选择  -Dstory=xxx,xxx
     
-    2、根据测试名称 -Dtest.name=xxx 
+        example:    -Dstory=下单未付款,已付款
+    
+    2、根据组件选择     -Dcomponent=xxx,xxx
+    
+        example:    -Dcomponent=任务开关,催单消息
                 
 ### example
        
-    执行“测试环境”下file名称为“GET请求”下的所有测试用例
+    执行催单场景“下单未付款”、“已付款”场景下“任务开关”和“催单消息”组件
     
-    mvn clean test -Dspring.profiles.active=uat -Dtest.file.name=GET请求
-            
+    -ea -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wangjq_1990 -Dstory=下单未付款,已付款 -Dcomponent=任务开关,催单消息 -Dtest.name=
+                
     执行完成后会在ipa-interface-test\target\allure-results生成allure测试结果
     
     注：powershell会将“.”拆分，用cmd执行，在powershell先执行命令cmd即可。
