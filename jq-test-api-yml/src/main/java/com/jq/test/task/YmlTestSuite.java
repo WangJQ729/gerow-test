@@ -37,7 +37,7 @@ public class YmlTestSuite extends AbstractTestSuite {
     }
 
     @Override
-    public void addAsync(ITestMethod testMethod) {
-        this.setAsync(Collections.singletonList(testMethod));
+    public void addHeartbeat(ITestMethod testMethod) {
+        this.setHeartbeat(Collections.singletonList(testMethod));
     }
 }

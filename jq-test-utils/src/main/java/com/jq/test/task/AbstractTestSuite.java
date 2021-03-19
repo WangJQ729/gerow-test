@@ -20,7 +20,7 @@ public abstract class AbstractTestSuite implements ITestSuite {
     private Map<String, String> params = new HashMap<>();
     private List<ITestMethod> beforeSuite = new ArrayList<>();
     private List<ITestMethod> afterSuite = new ArrayList<>();
-    private List<ITestMethod> async = new ArrayList<>();
+    private List<ITestMethod> heartbeat = new ArrayList<>();
 
 
     @Override
@@ -46,7 +46,7 @@ public abstract class AbstractTestSuite implements ITestSuite {
         executor.submit((Runnable) () -> {
             while (true) {
                 try {
-                    async.get(0).doing();
+                    heartbeat.get(0).doing();
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

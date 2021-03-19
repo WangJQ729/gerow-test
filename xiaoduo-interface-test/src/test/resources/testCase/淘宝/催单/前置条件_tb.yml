@@ -86,7 +86,7 @@ beforeSuite:
     - byName: 删除其他催单任务
     - byName: 获取所有的测试任务
     - byName: 删除所有测试催单任务
-async:
+heartbeat:
   name: 心跳检测表示客服在线
   step:
     - byName: 子账号发送心跳检测

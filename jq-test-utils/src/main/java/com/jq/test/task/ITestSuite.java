@@ -49,12 +49,12 @@ public interface ITestSuite extends ITest {
      */
     List<ITestMethod> getAfterSuite();
 
-    List<ITestMethod> getAsync();
+    List<ITestMethod> getHeartbeat();
 
     /**
      * @return 测试套件文件
      */
     File getFile();
 
-    void addAsync(ITestMethod testMethod);
+    void addHeartbeat(ITestMethod testMethod);
 }

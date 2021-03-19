@@ -32,7 +32,7 @@ public class YmlTestClassEntity {
      * suite前执行的测试方法
      */
     private YmlTestMethodEntity beforeSuite;
-    private YmlTestMethodEntity async;
+    private YmlTestMethodEntity heartbeat;
     /**
      * class前执行的测试方法
      */
@@ -84,8 +84,8 @@ public class YmlTestClassEntity {
             testSuite.addBeforeSuite(beforeSuite.build(result.get(0)).get(0));
         if (afterSuite != null)
             testSuite.addAfterSuite(afterSuite.build(result.get(0)).get(0));
-        if (async != null) {
-            testSuite.addAsync(async.build(result.get(0)).get(0));
+        if (heartbeat != null) {
+            testSuite.addHeartbeat(heartbeat.build(result.get(0)).get(0));
         }
         return result;
     }

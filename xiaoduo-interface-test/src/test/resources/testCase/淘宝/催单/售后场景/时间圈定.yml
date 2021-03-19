@@ -19,30 +19,6 @@ dataProvider:
     reminder_type: 退款成功
     refund_state: taobao_refund_RefundSuccess
     bill_type: return_bill
-  - node_state: replace_create
-    message: 您好，您的换货申请已收到，我们会尽快处理您的申请，请耐心等待。
-    text_with_vars: ${message}
-    reminder_type: 换货引导
-    refund_state: taobao_refund_RefundCreated
-    bill_type: replace_bill
-  - node_state: replace_agree
-    message: 您好，您的换货申请已通过，麻烦您把货发给我们，我们也好尽快给您办理换货呢！
-    text_with_vars: ${message}
-    reminder_type: 同意换货
-    refund_state: taobao_refund_RefundSellerAgreeAgreement
-    bill_type: replace_bill
-  - node_state: refund_reject
-    message: 您好，您的售后申请已经被拒绝，请及时查看拒绝理由，并联系客服做进一步处理
-    text_with_vars: ${message}
-    reminder_type: 拒绝退款
-    refund_state: taobao_refund_RefundSellerRefuseAgreement
-    bill_type: return_bill
-  - node_state: replace_reject
-    message: 您好，很抱歉通知您，我们拒绝了您的换货申请，如有疑问，请及时与我们联系。
-    text_with_vars: ${message}
-    reminder_type: 拒绝换货
-    refund_state: taobao_refund_RefundSellerRefuseAgreement
-    bill_type: replace_bill
 beforeClass:
   name: 获取taskID和模板
   step:
