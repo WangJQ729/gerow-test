@@ -183,3 +183,5 @@ public class RandomDate extends AbstractFunction {
 # 七、测试用例编写
 
     详见xiaoduo-interface-test下的
+    
+    [Cache](xiaoduo-interface-test "直接跳转") 直接跳转.
