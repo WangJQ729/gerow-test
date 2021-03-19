@@ -285,6 +285,18 @@
             sign: ${__HmacMD5(spin=cntaobao${child_seller})}
           method: GET
           assertion: [json: {$.code: 0}]
+
+### idea中运行
+
+    1、运行一次XiaoduoAIInterfaceTest
+    2、编辑XiaoduoAIInterfaceTest, 加入运行参数
+     
+     -ea -Dspring.profiles.active=ipa-test -Dplatform=my -Dfeatures=test -Dtest.severity=ALL -Denv=mini-test -DshopName=wangjq_1990 -Dstory= -Dcomponent= -Dtest.name=
+     运行/xiaoduo-interface-test/src/test/resources/my目录下的test模块测试用例
+    
+    
+    -ea -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wangjq_1990 -Dstory=下单未付款,已付款 -Dcomponent=任务开关,催单消息 -Dtest.name=
+    运行/xiaoduo-interface-test/src/test/resources/淘宝目录下的催单模块测试用例
     
 #### 相关参考资料
 
