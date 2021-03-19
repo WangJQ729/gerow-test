@@ -6,8 +6,24 @@
         可选参数：
             -Dspring.profiles.active={环境} 
             -Dtest.file.name={className}
-            -Dtest.name={methodName}       
+            -Dtest.name={methodName} 
+        
+       example：
+       
+       -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dfeatures=催单 -Dplatform=融合版 -Dtest.severity=ALL -Denv=mini-test -DshopName=wangjq_1990 -Dstory=下单未付款,已付款 -Dcomponent=任务开关,催单消息 -Dtest.name=  
 
+       -Dspring.profiles.active=ipa-test 被测服务环境 ipa-test
+       
+       -Dfeatures=催单                    测的功能点为催单
+       
+       -Dplatform=融合版                  平台为融合版
+       
+       -Dtest.severity=ALL 执行的用例等级为所有等级，可选参数：   BLOCKER
+                                                               CRITICAL
+                                                               NORMAL
+                                                               MINOR
+                                                               TRIVIAL
+       
 #   测试用例编写
 
 ##  定义
@@ -31,6 +47,7 @@
 |afterSuite|所有测试运行后运行|TestMethod
 |afterClass|此class下所有测试运行后运行|TestMethod
 |afterMethod|此class每个测试后运行|TestMethod
+|heartbeat|测试过程中每间隔5s执行一次的请求|TestMethod
 
 ####    testMethod
 
