@@ -6,21 +6,6 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    #    - name: 随机获取一个类目
-    #      url: /api/admin/category/list
-    #      method: GET
-    #      extractor:
-    #        - json:
-    #            categories: $.categories[*]
-    ##            categories: $.categories[${invocationCount}]
-    #        - json:
-    #            category_id: $.id
-    #            category_name: $.name
-    #          data: ${categories}
-    #    - name: 切换类目-指定类目id
-    #      byName: 切换类目
-    #      form:
-    #        category_id: ${category_id}
     - name: 获取所有的task_id
       url: /api/admin/reminder/v2/manage/task/list
       variables:
@@ -33,6 +18,10 @@ beforeClass:
             task_list: $.data.tasks[*].id
           size: 100
           options: [DEFAULT_PATH_LEAF_TO_NULL]
+    - byName: 删除催单任务
+      name: 删除其他催单任务
+      iter:
+        task_id: ${task_list}
     - name: 获取task模板
       url: /api/admin/reminder/v2/manage/task/template
       variables:
@@ -45,10 +34,6 @@ beforeClass:
         - json:
             #提取响应体中的task模板内容,保存为参数task_info
             task_info: $.data
-    - byName: 删除催单任务
-      name: 删除其他催单任务
-      iter:
-        task_id: ${task_list}
     - name: 使用模板新建一个task
       url: /api/admin/reminder/v2/manage/task/create
       method: POST

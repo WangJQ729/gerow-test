@@ -105,13 +105,23 @@
 
 ###### example
 
-    assertion:
-      - key: $.code
-        value: 10000
-      - key: $.msg
-        value: 操作成功
-
-####    Extractor
+      - byName: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_limit]             
+              
+       调用查看trace详情的方法，并判断拒绝原因为“send_limit”
+       
+       - name: 查看trace详情
+         #获取trace详情，会在测试报告中体现，用于定位任务为什么失败
+         untilWait: 10
+         url: /api/client/reminder/v2/trace/info
+         variables:
+           trace_id: ${trace_id}
+           shop_id: ${shop_id}
+         method: GET
+         
+####    Extractor 参数提取器
 
 |字段名称|描述|数据类型
 |---|---|---|
@@ -123,19 +133,113 @@
 
 ###### example
 
+    - name: 获取shop_id
+      url: /api/admin/user/logined
+      method: GET
       extractor:
         - json:
-            auth_url: $.url
+            shop_id: $.user.shop_id
+            shop_category_id: $.default_shop.category_id
+          site: TESTSUIT
+      assertion: [json: {$.code: 0}]
+      
+     
+    获取shop_id和类目，并保存再测试套件中
+  
+####    dataProvider
+
+    测试数据，List<Map>数组，list长度即为测试运行的次数
+    在class下定义，会实例化多个class
+    在testMethod下定义，会实例化多个testMethod
+    在testStep下定义，会实例化多个testStep
+    
+    dataProvider:
+      - node_state: asked
+        reminder_type: 咨询未下单
+        
+    调用格式：见beforeClass里的${node_state}
 
 ####    beforeSuite
 
     所有测试之前运行，只运行1次
     格式同testMethod
-
+    
 ####    beforeClass
 
     当前yml文件下的所有测试之前运行
     格式同testMethod
+    
+        example:
+        
+        beforeClass:
+          name: 获取taskID和模板
+          step:
+            - name: 获取所有的task_id
+              url: /api/admin/reminder/v2/manage/task/list
+              variables:
+                template_keys: 0
+                node_type: ${node_state}
+              method: GET
+              assertion: [json: {$.code: 0}]
+              extractor:
+                - json:
+                    task_list: $.data.tasks[*].id
+                  size: 100
+                  options: [DEFAULT_PATH_LEAF_TO_NULL]
+            - byName: 删除催单任务
+              name: 删除其他催单任务
+              iter:
+                task_id: ${task_list}
+            - name: 获取task模板
+              url: /api/admin/reminder/v2/manage/task/template
+              variables:
+                node_type: ${node_state}
+                template_key: 0
+              method: GET
+              #断言响应体中jsonPath为$.code的值为0
+              assertion: [json: {$.code: 0}]
+              extractor:
+                - json:
+                    #提取响应体中的task模板内容,保存为参数task_info
+                    task_info: $.data
+            - name: 使用模板新建一个task
+              url: /api/admin/reminder/v2/manage/task/create
+              method: POST
+              body: ${task_info}
+              assertion: [json: {$.code: 0}]
+              extractor:
+                - json:
+                    task_id: $.data.id
+            - name: 修改咨询未下单内容
+              url: /api/admin/reminder/v2/manage/task/update
+              method: POST
+              #task_info为测试开始前获取到的任务模板
+              body: ${task_info}
+              #bodyEditor根据设置的jsonPath修改对应的参数
+              bodyEditor:
+                json:
+                  #id为beforeClass中提取到的task_id
+                  $.id: ${task_id}
+                  #开启任务
+                  $.enable: true
+                  #设置shop_id(配置文件中设置的)
+                  $.shop_id: ${shop_id}
+                  #设置消息发送时间为0,马上触发
+                  $.rules[?(@.type=='state_delay')].args.delay: 0
+                  $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].enable: true
+                  $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要优惠')].enable: true
+                  $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要快点发货')].enable: true
+                  $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要快点发货')].replies:
+                    - ageing_id: ""
+                      message: 你好~喜欢就不要犹豫啦，下午6点前拍下并付款，快递当天就能来拿货，您的包裹将以最快的速度投奔到您的怀里
+                  $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='关注商品质量')].enable: true
+                  $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要包邮')].enable: true
+                  $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要赠品')].enable: true
+                  $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='关注快递类型')].enable: true
+                  $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='关注快递类型')].replies:
+                    - ageing_id: ""
+                      message: 您好～喜欢就不要犹豫啦，我们会给您安排尽快发货，让你早点收到宝贝哦～
+              assertion: [json: {$.code: 0}]
     
 ####    AfterSuite
 
@@ -147,22 +251,18 @@
     当前yml文件下的所有测试运行完成之后运行
     格式同testMethod
     
-####    dataProvider
-
-    测试数据，List<Map>数组，list长度即为测试运行的次数
-    在class下定义，会实例化多个class
-    在testMethod下定义，会实例化多个testMethod
-    在testStep下定义，会实例化多个testStep
+    example:
     
-    dataProvider:
-      - message: 纯文字催单消息
-        text_with_vars: 纯文字催单消息
-      - message: "#E-s20#E-s20#E-s20#E-s20#E-s20"
-        text_with_vars: "#E-s20#E-s20#E-s20#E-s20#E-s20"
-      - message: "{{子账号名称}}"
-        text_with_vars: ${seller_name}
-      - message: "1{↓1秒后分行发送↓}2"
-        text_with_vars: "1{↓1秒后分行发送↓}2"
+    afterClass:
+      name: 测试结束后删除任务
+      step:
+        - name: 删除催单任务
+          url: /api/admin/reminder/v2/manage/task/delete
+          method: POST
+          body: |
+            {"id":"${task_id}"}
+            
+    测试结束后删除催单任务
     
 #### 相关参考资料
 
