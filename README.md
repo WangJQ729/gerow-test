@@ -181,8 +181,6 @@ public class RandomDate extends AbstractFunction {
         调用${__RandomDay(yyyy-MM-dd,180,endDate)}：取当前时间开始往后180天随机的某一天，并赋值给endDate
 
 # 七、测试用例编写
-
-    详见xiaoduo-interface-test下的
     
    [脚本编写介绍](xiaoduo-interface-test "介绍")
 
