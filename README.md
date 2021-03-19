@@ -184,5 +184,5 @@ public class RandomDate extends AbstractFunction {
 
     详见xiaoduo-interface-test下的
     
-   [脚本编写介绍](xiaoduo-interface-test "介绍") 介绍.
+   [脚本编写介绍](xiaoduo-interface-test "介绍")
 
