@@ -9,7 +9,8 @@
 
 ### 1、maven、java 
 
-    参考：https://www.cnblogs.com/yangyxd/p/5950007.html
+    参考：https://www.runoob.com/maven/maven-setup.html maven
+          https://www.runoob.com/java/java-environment-setup.html
     
 ### 2、allure安装
 
