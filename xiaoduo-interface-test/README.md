@@ -263,9 +263,31 @@
             {"id":"${task_id}"}
             
     测试结束后删除催单任务
+
+#### heartbeat
+
+    整个测试过程中，每5秒运行一次
+    
+    example:
+    heartbeat:
+      name: 心跳检测表示客服在线
+      step:
+        - name: 子账号发送心跳检测
+          host: ${api_host}
+          url: /log/hb
+          variables:
+            spin: cntaobao${child_seller}
+            platid: tb
+            hangup: false
+            platstatus: 1
+            shopid: ${shop_id}
+            version: 4.33.0
+            sign: ${__HmacMD5(spin=cntaobao${child_seller})}
+          method: GET
+          assertion: [json: {$.code: 0}]
     
 #### 相关参考资料
 
-    JSONPath: https://www.cnblogs.com/aoyihuashao/p/8665873.html
+    JSONPath: https://blog.csdn.net/lwg_1540652358/article/details/84111339
     
-    Ymal：https://www.cnblogs.com/sddai/p/9626392.html
+    Ymal：https://www.runoob.com/w3cnote/yaml-intro.html
