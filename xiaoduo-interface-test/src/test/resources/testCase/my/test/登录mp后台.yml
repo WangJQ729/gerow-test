@@ -10,9 +10,11 @@ testMethod:
         assertion:
           - json:
               $.code: 0
+              #断言返回的code为0
         extractor:
           - json:
               auth_url: $.url
+              #获取跳转url
       - name: 进入主页
         host: ""
         url: ${auth_url}
@@ -24,12 +26,17 @@ testMethod:
         extractor:
           - json:
               shop_id: $.user.shop_id
+              #提取shop_id
               shop_category_id: $.default_shop.category_id
+              #提取当前类目
             site: TESTSUIT
+            #保存地址为整个测试套件
         assertion: [json: {$.code: 0}]
+        #断言响应的code为0
       - name: 获取子账号
         url: /api/admin/platform/search_client_configs_v3
         variables:
+          #参数设置
           limit: 20
           skip: 0
           only_supplier: false
@@ -42,4 +49,3 @@ testMethod:
               child_seller3: $.subusers[?(@.auth_status==1)].sub_nick[2]
               child_seller4: $.subusers[?(@.auth_status==1)].sub_nick[3]
         assertion: [json: {$.code: 0}]
-      - byName: 获取子账号
