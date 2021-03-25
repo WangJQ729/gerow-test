@@ -31,6 +31,7 @@ beforeSuite:
       assertion: [json: {$.code: 0}]
     - name: 获取子账号
       url: /api/admin/platform/search_client_configs_v3
+      untilWait: 15
       variables:
         limit: 20
         skip: 0
