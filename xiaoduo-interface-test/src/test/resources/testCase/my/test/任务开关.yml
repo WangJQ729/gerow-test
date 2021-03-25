@@ -6,56 +6,6 @@ dataProvider:
     message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
     text_with_vars: ${message}
     reminder_type: 下单未付款
-beforeSuite:
-  name: 登录mp后台
-  step:
-    - name: 获取MP后台地址
-      url: /api/auth/mp_switcher
-      variables:
-        subnick: ${shopName}
-      method: GET
-      assertion:
-        - json:
-            $.code: 0
-            #断言返回的code为0
-      extractor:
-        - json:
-            auth_url: $.url
-            #获取跳转url
-    - name: 进入主页
-      host: ""
-      url: ${auth_url}
-      method: GET
-      responseType: DEFAULT
-    - name: 获取shop_id
-      url: /api/admin/user/logined
-      method: GET
-      extractor:
-        - json:
-            shop_id: $.user.shop_id
-            #提取shop_id
-            shop_category_id: $.default_shop.category_id
-            #提取当前类目
-          site: TESTSUIT
-          #保存地址为整个测试套件
-      assertion: [json: {$.code: 0}]
-      #断言响应的code为0
-    - name: 获取子账号
-      url: /api/admin/platform/search_client_configs_v3
-      variables:
-        #参数设置
-        limit: 20
-        skip: 0
-        only_supplier: false
-      method: GET
-      extractor:
-        - json:
-            seller_name: $.subusers[?(@.auth_status==0)].sub_nick[0]
-            child_seller: $.subusers[?(@.auth_status==1)].sub_nick[0]
-            child_seller2: $.subusers[?(@.auth_status==1)].sub_nick[1]
-            child_seller3: $.subusers[?(@.auth_status==1)].sub_nick[2]
-            child_seller4: $.subusers[?(@.auth_status==1)].sub_nick[3]
-      assertion: [json: {$.code: 0}]
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -140,7 +90,7 @@ testMethod:
         method: POST
         body: |
           {"platform":"${platform}","shop_id":"${shop_id}","payment":20,"created_at":${__time(/1000,)},"updated_at":${__time(/1000,)},"address":"四川省桂溪街道天府软件园A5-8","item_ids":["604423906694"],"tbext":{"items":[{"item_id":"604423906694","item_name":"二手铅笔","count":1}],"receiver":{"name":"王健强","zip":"000000"}}}
-        sleep: 1000 #等待oplog服务
+        sleep: 200 #等待oplog服务
         bodyEditor:
           json:
             $.order_id: ${__RandomOrderId(order_id)}
@@ -221,23 +171,3 @@ afterClass:
       method: POST
       body: |
         {"id":"${task_id}"}
-heartbeat:
-  name: 心跳检测表示客服在线
-  step:
-    - byName: 子账号发送心跳检测
-      name: 主账号发送心跳检测
-      variables:
-        spin: cntaobao${seller_name}
-        sign: ${__HmacMD5(spin=cntaobao${seller_name})}
-    - name: 子账号发送心跳检测
-      url: /log/hb
-      variables:
-        spin: cntaobao${child_seller}
-        platid: tb
-        hangup: false
-        platstatus: 1
-        shopid: ${shop_id}
-        version: 4.33.0
-        sign: ${__HmacMD5(spin=cntaobao${child_seller})}
-      method: GET
-      assertion: [json: {$.code: 0}]
