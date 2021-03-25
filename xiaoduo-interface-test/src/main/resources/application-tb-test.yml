@@ -2,7 +2,6 @@ data:
   test:
     platform: tb
     host: wangcai-${env}.xiaoduoai.com
-    api_host: https://api-${env}.xiaoduoai.com
 
     shopName: ${shopName}
 

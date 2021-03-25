@@ -24,7 +24,13 @@
 
     1、在根目录下运行命令：mvn clean install -DskipTests将代码编译到本地的maven仓库
     
-    2、进入ipa-interface-test直接运行mvn test。
+    2、进入ipa-interface-test直接运行
+    融合版参数：
+    -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wangjq_1990 -Dstory= -Dcomponent= -Dtest.name=
+    老淘宝参数：
+    -Dspring.profiles.active=tb-test -Dplatform=淘宝 -Dfeatures=催单 -Dtest.severity= -Denv=test-znkf -DshopName=wangjq_1990 -Dstory= -Dcomponent= -Dtest.name=
+    淘动力参数：
+    -Dspring.profiles.active=tdl -DtestDir=淘宝 -Dplatform=淘动力 -Dfeatures=催单 -Denv=test-znkf -DshopName= -Dstory= -Dcomponent= -Dtest.name=
     
 ## 可选参数
     

@@ -214,7 +214,6 @@ heartbeat:
         spin: cntaobao${seller_name}
         sign: ${__HmacMD5(spin=cntaobao${seller_name})}
     - name: 子账号发送心跳检测
-      host: ${api_host}
       url: /log/hb
       variables:
         spin: cntaobao${child_seller}

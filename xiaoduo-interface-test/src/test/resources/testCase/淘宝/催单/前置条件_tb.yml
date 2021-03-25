@@ -96,7 +96,6 @@ heartbeat:
         spin: cntaobao${seller_name}
         sign: ${__HmacMD5(spin=cntaobao${seller_name})}
     - name: 子账号发送心跳检测
-      host: ${api_host}
       url: /log/hb
       variables:
         spin: cntaobao${child_seller}
@@ -109,7 +108,6 @@ heartbeat:
       method: GET
       assertion: [json: {$.code: 0}]
     - byName: 子账号发送心跳检测
-      name: 子账号3发送心跳检测
       variables:
         spin: cntaobao${child_seller3}
         sign: ${__HmacMD5(spin=cntaobao${child_seller3})}
