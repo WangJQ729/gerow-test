@@ -14,11 +14,7 @@
     
 ### 2、allure安装
 
-    1、安装powershell（win10自带，任意位置shift+鼠标右键，选择在此处打开powershell窗口）
-
-    2、安装scoop方法 ：运行 powershell 输入 ： iex (new-object net.webclient).downloadstring('https://get.scoop.sh') 然后根据提示安装即可
-
-    3、安装allure ：scoop install allure
+    https://www.jianshu.com/p/5735d388faa2
 
 # 三、测试执行
 
