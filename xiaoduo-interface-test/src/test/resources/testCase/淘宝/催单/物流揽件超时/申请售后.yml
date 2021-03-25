@@ -7,6 +7,7 @@ dataProvider:
     message: 由于近期订单量过大，快递小哥没能及时揽件，实在抱歉。请您耐心等待，小妹会尽快联系快递小哥安排给您优先处理呢!
     text_with_vars: ${message}
     reminder_type: 揽件超时
+    bill_type: return_bill
 beforeClass:
   name: 获取taskID和模板
   step:

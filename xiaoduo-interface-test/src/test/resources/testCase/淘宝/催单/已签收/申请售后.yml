@@ -8,6 +8,7 @@ dataProvider:
     text_with_vars: ${message}
     reminder_type: 已签收
     action: SIGNED
+    bill_type: return_bill
 beforeClass:
   name: 获取taskID和模板
   step:

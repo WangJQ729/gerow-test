@@ -7,11 +7,13 @@ dataProvider:
     message: 对我们的服务满意吗？让我成为你的专属客服吧，以后有事儿您找我！
     text_with_vars: ${message}
     reminder_type: 专属客服已付款
+    bill_type: return_bill
   - node_state: succeeded
     order_state: succeeded
     message: 对我们的服务满意吗？让我成为你的专属客服吧，以后有事儿您找我！
     text_with_vars: ${message}
     reminder_type: 专属客服交易成功
+    bill_type: return_bill
 beforeClass:
   name: 获取taskID和模板
   step:

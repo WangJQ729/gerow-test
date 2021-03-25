@@ -7,6 +7,7 @@ dataProvider:
     message: 亲，您订购的宝贝已经启程了，请注意物流查收哦，记得好评哦！
     text_with_vars: ${message}
     reminder_type: 已发货
+    bill_type: return_bill
 beforeClass:
   name: 获取taskID和模板
   step:
