@@ -264,25 +264,24 @@
             
     测试结束后删除催单任务
 
-#### heartbeat
+#### classHeartbeat
 
-    整个测试过程中，每5秒运行一次
+    整个测试类运行过程中，每5秒运行一次
     
     example:
-    heartbeat:
+    classHeartbeat:
       name: 心跳检测表示客服在线
       step:
-        - name: 子账号发送心跳检测
-          host: ${api_host}
+        - name: 主账号发送心跳检测
           url: /log/hb
           variables:
-            spin: cntaobao${child_seller}
+            spin: cntaobao${seller_name}
             platid: tb
             hangup: false
             platstatus: 1
             shopid: ${shop_id}
             version: 4.33.0
-            sign: ${__HmacMD5(spin=cntaobao${child_seller})}
+            sign: ${__HmacMD5(spin=cntaobao${seller_name})}
           method: GET
           assertion: [json: {$.code: 0}]
 
