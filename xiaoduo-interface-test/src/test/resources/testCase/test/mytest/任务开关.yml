@@ -13,6 +13,7 @@ beforeClass:
       url: /api/admin/reminder/v2/manage/task/list
       variables:
         template_keys: 0
+        #        node_type: created
         node_type: ${node_state}
       method: GET
       assertion: [json: {$.code: 0}]
@@ -31,6 +32,7 @@ beforeClass:
     - name: 获取task模板
       url: /api/admin/reminder/v2/manage/task/template
       variables:
+        #        node_type: created
         node_type: ${node_state}
         template_key: 0
       method: GET
@@ -83,18 +85,21 @@ testMethod:
             "spin": "cntaobao${seller_name}",
             "platform": "${platform}",
             "employee_name": "kfa",
-            "employee_role": "20"
+            "employee_role": "20",
           }
+        bodyEditor:
+          json:
+            $.pin: cntaobao${__RandomName(buyer_id)}
       - name: 模拟pulsar订单消息
         url: /api/client/reminder/v2/test/send?is_test=false&queue_type=0
         method: POST
         body: |
           {"platform":"${platform}","shop_id":"${shop_id}","payment":20,"created_at":${__time(/1000,)},"updated_at":${__time(/1000,)},"address":"四川省桂溪街道天府软件园A5-8","item_ids":["604423906694"],"tbext":{"items":[{"item_id":"604423906694","item_name":"二手铅笔","count":1}],"receiver":{"name":"王健强","zip":"000000"}}}
-        sleep: 200 #等待oplog服务
+        sleep: 2000 #等待oplog服务
         bodyEditor:
           json:
             $.order_id: ${__RandomOrderId(order_id)}
-            $.buyer_id: cntaobao${__RandomName(buyer_id)}
+            $.buyer_id: ${buyer_id}
             $.status: ${order_state}
             $.tbext.buyer_nick: ${buyer_id}
             $.tbext.original_order: >-
@@ -173,6 +178,7 @@ afterClass:
         {"id":"${task_id}"}
 classHeartbeat:
   name: 心跳检测表示客服在线
+  enable: false
   step:
     - name: 主账号发送心跳检测
       url: /log/hb
