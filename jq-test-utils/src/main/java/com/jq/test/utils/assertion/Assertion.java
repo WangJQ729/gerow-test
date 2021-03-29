@@ -215,7 +215,7 @@ public class Assertion {
                         if (need_decode) {
                             String platform = System.getProperty("platform");
                             String json;
-                            if (StringUtils.equals(platform, "融合版")) {
+                            if (StringUtils.equals(platform, "x融x合x版x")) {
                                 json = entity.getBody().toString();
                                 actual = JsonPathUtils.read(json, key.replace("$", "$.answer"), options);
                             } else {
