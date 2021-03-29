@@ -168,3 +168,7 @@ afterClass:
       dataProvider:
         - task_id: ${task_id_1}
         - task_id: ${task_id_2}
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

@@ -89,3 +89,7 @@ afterClass:
       dataProvider:
         - task_id: ${task_id_2}
     - byName: 清除AB测试任务缓存
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

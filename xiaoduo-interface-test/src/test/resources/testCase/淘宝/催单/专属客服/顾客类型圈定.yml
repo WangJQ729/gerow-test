@@ -63,3 +63,7 @@ afterClass:
   step:
     - byName: 获取专属客服task_id
     - byName: 删除其他催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

@@ -9,6 +9,8 @@ import org.apache.jmeter.threads.JMeterVariables;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Data
 public abstract class AbstractTestClass implements ITestClass {
@@ -23,8 +25,10 @@ public abstract class AbstractTestClass implements ITestClass {
     private boolean enable;
     private List<ITestMethod> beforeClass = new ArrayList<>();
     private List<ITestMethod> afterClass = new ArrayList<>();
+    private List<ITestMethod> classHeartbeat = new ArrayList<>();
     private List<ITestMethod> before = new ArrayList<>();
     private List<ITestMethod> after = new ArrayList<>();
+
 
     @Override
     public void setUp() {
@@ -32,6 +36,8 @@ public abstract class AbstractTestClass implements ITestClass {
             testMethod.doing();
         }
     }
+
+    private ExecutorService executor = Executors.newFixedThreadPool(1);
 
     @Override
     public synchronized void setUpBeforeClass() {
@@ -42,6 +48,16 @@ public abstract class AbstractTestClass implements ITestClass {
             params.put(entry.getKey(), new CompoundVariable(replace(entry.getValue())).execute());
             addParams(JMeterContextService.getContext().getVariables());
         }
+        executor.submit((Runnable) () -> {
+            while (true) {
+                try {
+                    classHeartbeat.get(0).doing();
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         for (ITestMethod testMethod : beforeClass) {
             testMethod.doing();
         }
@@ -59,6 +75,7 @@ public abstract class AbstractTestClass implements ITestClass {
         for (ITestMethod testMethod : afterClass) {
             testMethod.doing();
         }
+        executor.shutdown();
     }
 
     @Override

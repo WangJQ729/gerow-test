@@ -110,3 +110,7 @@ afterClass:
   name: 测试结束后删除任务
   step:
     - byName: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测
