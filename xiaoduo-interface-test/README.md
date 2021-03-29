@@ -290,7 +290,7 @@
     1、运行一次XiaoduoAIInterfaceTest
     2、编辑XiaoduoAIInterfaceTest, 加入运行参数
      
-     -ea -Dspring.profiles.active=ipa-test -Dplatform=my -Dfeatures=test -Dtest.severity=ALL -Denv=mini-test -DshopName=wangjq_1990 -Dstory= -Dcomponent= -Dtest.name=
+     -ea -Dspring.profiles.active=ipa-test -Dplatform=test -Dfeatures=mytest -Dtest.severity=ALL -Denv=mini-test -DshopName=wangjq_1990 -Dstory= -Dcomponent= -Dtest.name=
      运行/xiaoduo-interface-test/src/test/resources/my目录下的test模块测试用例
     
     
