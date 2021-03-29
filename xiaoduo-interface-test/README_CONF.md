@@ -25,7 +25,7 @@
         kubectl -n test-tygj edit cm conf-reminder-tb （添加trace信息（有就修改，没有就添加））
 #####   reminder.conf
         加上：
-     ·   1、
+        1、
             "run_mode":"test"
         2、
             "reminder_trace": {
