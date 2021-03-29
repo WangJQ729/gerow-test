@@ -178,7 +178,6 @@ afterClass:
         {"id":"${task_id}"}
 classHeartbeat:
   name: 心跳检测表示客服在线
-  enable: false
   step:
     - name: 主账号发送心跳检测
       url: /log/hb
