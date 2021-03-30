@@ -14,7 +14,7 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
 testMethod:
-  - name: 催单消息校验-${message}
+  - name: 设置定时发送
     severity: NORMAL
     step:
       - name: 设置催单定时发送
