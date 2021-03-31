@@ -47,6 +47,7 @@ public class YmlTestClassEntity {
     private YmlTestMethodEntity afterSuite;
 
     private YmlTestMethodEntity classHeartbeat;
+    private YmlTestMethodEntity keyWord;
     /**
      * class后执行的测试方法
      */
@@ -128,6 +129,9 @@ public class YmlTestClassEntity {
         }
         if (classHeartbeat != null) {
             testClass.setClassHeartbeat(classHeartbeat.build(testClass));
+        }
+        if (keyWord != null) {
+            testClass.setKeyWord(keyWord.build(testClass));
         }
         if (beforeMethod != null) {
             testClass.setBefore(beforeMethod.build(testClass));

@@ -239,6 +239,7 @@ public class YmlTestStep implements ITestStep {
                     testMethods.addAll(testClass.getBefore());
                     testMethods.addAll(testClass.getAfter());
                     testMethods.addAll(testClass.getClassHeartbeat());
+                    testMethods.addAll(testClass.getKeyWord());
                     testMethods.addAll(testClass.getTestSuite().getBeforeSuite());
                     testMethods.addAll(testClass.getTestSuite().getAfterSuite());
                     testMethods.addAll(testClass.getTestSuite().getHeartbeat());

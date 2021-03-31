@@ -69,6 +69,8 @@ public interface ITestClass extends ITest {
 
     List<ITestMethod> getClassHeartbeat();
 
+    List<ITestMethod> getKeyWord();
+
     File getFile();
 
     String getStory();

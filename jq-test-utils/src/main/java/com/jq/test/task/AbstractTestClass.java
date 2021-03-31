@@ -26,6 +26,7 @@ public abstract class AbstractTestClass implements ITestClass {
     private List<ITestMethod> beforeClass = new ArrayList<>();
     private List<ITestMethod> afterClass = new ArrayList<>();
     private List<ITestMethod> classHeartbeat = new ArrayList<>();
+    private List<ITestMethod> keyWord = new ArrayList<>();
     private List<ITestMethod> before = new ArrayList<>();
     private List<ITestMethod> after = new ArrayList<>();
 
@@ -130,4 +131,5 @@ public abstract class AbstractTestClass implements ITestClass {
             result = this.file.getParentFile().getName();
         return result;
     }
+
 }
