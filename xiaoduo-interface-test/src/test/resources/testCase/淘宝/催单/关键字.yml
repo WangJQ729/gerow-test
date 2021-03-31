@@ -1,5 +1,4 @@
 name: 关键字
-#所有测试执行前执行
 platform: 淘宝,融合版
 keyWord:
   name: 关键字
