@@ -25,7 +25,6 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 关闭相同场景内任务去重
-      - byName: 拉一下催单消息
       - byName: 随机顾客发送消息给商家-固定问题
       - byName: 指定顾客推送已付款订单消息
       - byName: 指定顾客指定订单推送已发货订单消息
@@ -39,7 +38,6 @@ testMethod:
   - name: 开启相同场景内任务去重-全部任务都满足-只催第一个
     severity: NORMAL
     step:
-      - byName: 拉一下催单消息
       - byName: 开启相同场景内任务去重
       - byName: 设置第一个任务在前
       - byName: 断言修改后的顺序是否正确
@@ -59,7 +57,6 @@ testMethod:
   - name: 开启相同场景内任务去重-全部任务都满足-调整顺序
     severity: NORMAL
     step:
-      - byName: 拉一下催单消息
       - byName: 开启相同场景内任务去重
       - byName: 设置第二个任务在前
       - byName: 断言修改后的顺序是否正确
@@ -80,7 +77,6 @@ testMethod:
     severity: NORMAL
     step:
       - byName: 修改第一个催单任务为金额圈定0-0.01元
-      - byName: 拉一下催单消息
       - byName: 开启相同场景内任务去重
       - byName: 设置第一个任务在前
       - byName: 断言修改后的顺序是否正确

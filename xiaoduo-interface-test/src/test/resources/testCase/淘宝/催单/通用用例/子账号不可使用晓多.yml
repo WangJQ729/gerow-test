@@ -71,7 +71,7 @@ testMethod:
   - name: 使用不可使用晓多账号拉取催单消息
     severity: NORMAL
     step:
-      - byName: 拉一下催单消息
+      - byName: 获取催单消息
         name: 获取消息-不能使用晓多账号拉取
         untilWait: 0
         variables:

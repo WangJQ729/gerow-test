@@ -54,6 +54,5 @@ beforeSuite:
           site: TESTSUIT
     - byName: 催单设置-仅自己
     - byName: 设置单个顾客单日最高催单数
-    - byName: 拉一下催单消息
     - byName: 获取所有催单节点的task_id
     - byName: 删除其他催单任务

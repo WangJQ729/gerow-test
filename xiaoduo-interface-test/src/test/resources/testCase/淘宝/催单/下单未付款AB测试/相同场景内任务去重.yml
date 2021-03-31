@@ -44,9 +44,8 @@ testMethod:
       - byName: 模拟pulsar订单消息
       - byName: 获取AB测试催单消息
       - byName: 根据订单查询trace
-      - byName: 拉一下催单消息
-        invocationCount: 5
       - byName: 查看trace详情
+        sleep: 5
         assertion:
           - json:
               $.data.traces[?(@.phase=='SendToClient')].length(): 1

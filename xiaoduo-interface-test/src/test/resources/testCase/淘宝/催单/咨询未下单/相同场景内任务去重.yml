@@ -57,7 +57,6 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 拉一下催单消息
       - byName: 关闭相同场景内任务去重
         name: 关闭咨询未下单相同场景内任务去重
         bodyEditor:
@@ -89,7 +88,6 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 拉一下催单消息
       - byName: 关闭相同场景内任务去重
         name: 开启咨询未下单相同场景内任务去重
         bodyEditor:
@@ -127,7 +125,6 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 拉一下催单消息
       - byName: 开启咨询未下单相同场景内任务去重
       - byName: 设置第二个任务在前
       - byName: 断言修改后的顺序是否正确
@@ -172,7 +169,6 @@ testMethod:
                 images: []
             $.rules[?(@.type=='user_intention_filter')].args.enable: true
             $.rules[?(@.type=='user_intention_filter')].args.intentions: [normal]
-      - byName: 拉一下催单消息
       - byName: 开启咨询未下单相同场景内任务去重
       - byName: 设置第一个任务在前
       - byName: 断言修改后的顺序是否正确

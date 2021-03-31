@@ -10,7 +10,6 @@ beforeSuite:
     - byName: 获取子账号
     - byName: 催单设置为自己和静默
     - byName: 设置单个顾客单日最高催单数
-    - byName: 拉一下催单消息
     - byName: 获取所有催单节点的task_id
     - byName: 删除其他催单任务
     - byName: 获取所有的测试任务

@@ -33,7 +33,7 @@ beforeClass:
               value: ${state_delay2}
     - byName: 获取测试任务ID
 beforeMethod:
-  name: 拉一下催单消息
+  name: 清除任务缓存
   step:
     - byName: 清除AB测试任务缓存
 testMethod:

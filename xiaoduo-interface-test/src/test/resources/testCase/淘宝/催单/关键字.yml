@@ -61,17 +61,6 @@ keyWord:
       body: |
         {"user_daily_limit":10000,"no_answer_filter":false,"task_remove_duplicates":false,"no_reception_silence_day":12,"user_list_trigger_enable":false,"basic_advanced":false}
       assertion: [json: {$.code: 0}]
-    - name: 拉一下催单消息
-      url: /api/client/reminder/v2/client/reminder/messages
-      untilWait: 15
-      variables:
-        shop_id: ${shop_id}
-        seller_id: ${seller_name}
-        platform: ${platform}
-        service_names: reminder
-        accept: tb/subscribe_card
-      method: GET
-      assertion: [json: {$.code: 0}]
     - name: 获取所有催单节点的task_id
       url: /api/admin/reminder/v2/manage/task/list
       variables:
@@ -83,3 +72,117 @@ keyWord:
             task_list: $.data.tasks[*].id
           size: 100
           options: [DEFAULT_PATH_LEAF_TO_NULL]
+    - name: 子账号发送心跳检测
+      url: /log/hb
+      variables:
+        spin: cntaobao${child_seller}
+        platid: tb
+        hangup: false
+        platstatus: 1
+        shopid: ${shop_id}
+        version: 4.33.0
+        sign: ${__HmacMD5(spin=cntaobao${child_seller})}
+      method: GET
+      assertion: [ json: { $.code: 0 } ]
+    - name: 子账号3发送心跳检测
+      byName: 子账号发送心跳检测
+      variables:
+        spin: cntaobao${child_seller3}
+        sign: ${__HmacMD5(spin=cntaobao${child_seller3})}
+    - name: 主账号发送心跳检测
+      byName: 子账号发送心跳检测
+      variables:
+        spin: cntaobao${seller_name}
+        sign: ${__HmacMD5(spin=cntaobao${seller_name})}
+    - name: 修改咨询未下单内容
+      url: /api/admin/reminder/v2/manage/task/update
+      method: POST
+      #task_info为测试开始前获取到的任务模板
+      body: ${task_info}
+      #bodyEditor根据设置的jsonPath修改对应的参数
+      bodyEditor:
+        json:
+          #id为beforeClass中提取到的task_id
+          $.id: ${task_id}
+          #开启任务
+          $.enable: true
+          #设置shop_id(配置文件中设置的)
+          $.shop_id: ${shop_id}
+          #设置消息发送时间为0,马上触发
+          $.rules[?(@.type=='state_delay')].args.delay: 0
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要优惠')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要快点发货')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要快点发货')].replies:
+            - ageing_id: ""
+              message: 你好~喜欢就不要犹豫啦，下午6点前拍下并付款，快递当天就能来拿货，您的包裹将以最快的速度投奔到您的怀里
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='关注商品质量')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要包邮')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='想要赠品')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='关注快递类型')].enable: true
+          $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='关注快递类型')].replies:
+            - ageing_id: ""
+              message: 您好～喜欢就不要犹豫啦，我们会给您安排尽快发货，让你早点收到宝贝哦～
+      assertion: [ json: { $.code: 0 } ]
+    - name: 开启催单任务
+      byName: 修改咨询未下单内容
+      bodyEditor:
+        json:
+          $.id: ${task_id}
+          $.enable: true
+          $.shop_id: ${shop_id}
+          $.rules[?(@.type=='send_message')].args.state_delay: 0
+          $.rules[?(@.type=='send_message')].args.message: ${message}
+    - name: 关闭催单任务
+      byName: 开启催单任务
+      bodyEditor:
+        json:
+          $.id: ${task_id}
+          $.enable: false
+          $.shop_id: ${shop_id}
+    - name: 获取催单消息
+      url: /api/client/reminder/v2/client/reminder/messages
+      untilWait: 15
+      variables:
+        shop_id: ${shop_id}
+        seller_id: ${seller_name}
+        platform: ${platform}
+        service_names: reminder
+        accept: tb/subscribe_card
+      method: GET
+      assertion:
+        - json:
+            $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
+              - ${text_with_vars}
+    - name: 获取催单消息-消息为空
+      byName: 获取催单消息
+      sleep: 200
+      assertion:
+        - json:
+            $.data.messages[?(@.order_id=='${order_id}')].text_with_vars: []
+    - name: 根据聊天记录查询trace
+      url: /api/client/reminder/v2/trace/search
+      variables:
+        platform: ${platform}
+        shop_id: ${shop_id}
+        buyer_id: ${buyer_id}
+        event_type: Chat-Message
+        date: ${__time(yyyy-MM-dd,)}
+      method: GET
+      untilWait: 5
+      extractor:
+        - json:
+            trace_id: $.data.traces[?(@.event_type=='Chat-Message')].trace_id[-1]
+    - name: 查看trace详情
+      #获取trace详情，会在测试报告中体现，用于定位任务为什么失败
+      untilWait: 10
+      url: /api/client/reminder/v2/trace/info
+      variables:
+        trace_id: ${trace_id}
+        shop_id: ${shop_id}
+      method: GET
+    - name: 查看trace详情-任务关闭
+      byName: 查看trace详情
+      assertion:
+        - json:
+            $.data.traces.length(): 1

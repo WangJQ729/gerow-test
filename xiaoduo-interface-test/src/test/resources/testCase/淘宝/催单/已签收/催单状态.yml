@@ -16,7 +16,6 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
     - byName: 开启已签收催单任务
-    - byName: 拉一下催单消息
     - byName: 子账号4设置为自己和静默
 
 testMethod:
