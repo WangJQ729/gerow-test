@@ -55,6 +55,16 @@ keyWord:
         sub_nick: ${seller_name}
         reminder_type: mine,silence
       assertion: [json: {$.code: 0}]
+    - byName: 催单设置为自己和静默
+      name: 催单设置-子账号不催单
+      form:
+        sub_nick: ${child_seller}
+        reminder_type: close
+    - byName: 催单设置为自己和静默
+      name: 催单设置-子账号3不催单
+      form:
+        sub_nick: ${child_seller3}
+        reminder_type: close
     - name: 设置单个顾客单日最高催单数
       url: /api/admin/reminder/v2/manage/shop/setting
       method: POST
