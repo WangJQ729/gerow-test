@@ -40,7 +40,6 @@ beforeClass:
     - byName: 删除其他催单任务
     - byName: 使用模板新建一个task
     - byName: 开启催单任务-10秒后触发
-
 testMethod:
   - name: ${refund_name}-timer到期后不发送${reminder_type}催单消息
     dataProvider:
