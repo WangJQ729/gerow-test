@@ -1,6 +1,5 @@
-package com.xiaoduo.test;
+package com.jq.test;
 
-import com.jq.test.JQAbstractApiTest;
 import com.jq.test.task.ITestClass;
 import com.jq.test.task.ITestSuite;
 import com.jq.test.task.YmlTestSuite;
@@ -17,9 +16,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
+public class JQAIInterfaceTest extends JQAbstractApiTest {
 
-    public XiaoduoAIInterfaceTest(ITestClass testClass) {
+    public JQAIInterfaceTest(ITestClass testClass) {
         super(testClass);
     }
 
@@ -29,7 +28,7 @@ public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
             String testDir = System.getProperty("testDir");
             testDir = StringUtils.isBlank(testDir) ? System.getProperty("platform") : testDir;
             testDir = StringUtils.isBlank(testDir) ? "testCase" : "testCase" + "/" + testDir;
-            String testDirPath = Objects.requireNonNull(XiaoduoAIInterfaceTest.class.getClassLoader().getResource(testDir)).getFile();
+            String testDirPath = Objects.requireNonNull(JQAIInterfaceTest.class.getClassLoader().getResource(testDir)).getFile();
             ITestSuite testSuite = YmlTestSuite.getInstance(URLDecoder.decode(testDirPath, "UTF-8"));
             System.out.println(testSuite.getTestClass().stream()
                     .filter(iTestClass -> StringUtils.equals(iTestClass.getFeature(), System.getProperty("features")))
@@ -59,14 +58,14 @@ public class XiaoduoAIInterfaceTest extends JQAbstractApiTest {
             CtClass ct = pool.makeClass(className);//创建类
             try {
                 //生成构造方法并实例化
-                JavassistUtils.setConstructor(pool, className, ct, XiaoduoAIInterfaceTest.class);
+                JavassistUtils.setConstructor(pool, className, ct, JQAIInterfaceTest.class);
                 ct.writeFile("target/test-classes");
                 Class<?> aClass = ct.toClass();
                 Constructor<?> method = aClass.getConstructor(ITestClass.class);
                 return method.newInstance(testClass);
             } catch (Throwable ignored) {
             }
-            return new XiaoduoAIInterfaceTest(testClass);
+            return new JQAIInterfaceTest(testClass);
         }
     }
 }
