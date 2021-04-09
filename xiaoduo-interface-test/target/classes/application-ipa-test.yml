@@ -1,0 +1,8 @@
+data:
+  test:
+    platform: tb
+    host: wangwang-${env}.1yangai.com
+
+    shopName: ${shopName}
+
+    seller_name: ${shopName}

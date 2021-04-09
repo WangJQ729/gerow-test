@@ -1,4 +1,7 @@
+name: 关键字
+platform: 淘宝,融合版
 keyWord:
+  name: 关键字
   step:
     - name: 获取MP后台地址
       url: /api/auth/mp_switcher
