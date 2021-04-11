@@ -1,0 +1,88 @@
+name: 避免骚扰
+story: ${reminder_type}
+dataProvider:
+  - order_state: group
+    pdd_order_type: pdd_trade_TradeConfirmed
+    reminder_type: 拼团成功
+    message: 'this is message!'
+    text_with_vars: ${message}
+  - order_state: shipped
+    pdd_order_type: pdd_trade_TradeSellerShip
+    reminder_type: 已发货
+    message: 'this is message!'
+    text_with_vars: ${message}
+  - order_state: succeeded
+    pdd_order_type: pdd_trade_TradeSuccess
+    reminder_type: 交易成功
+    message: 'this is message!'
+    text_with_vars: ${message}
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取老的task配置
+    - byName: 获取task模板
+testMethod:
+  - name: 避免骚扰
+    description: |
+      """</br>
+      用例描述：</br>
+      1、1小时内只触发一次。</br>
+      </br>
+      测试步骤</br>
+      1、开启避免骚扰</br>
+      2、创建第一个订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      5、创建第二个订单</br>
+      6、校验催单信息</br>
+      7、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启避免骚扰
+      - byName: 指定随机顾客同步订单消息
+      - byName: 拼多多推送订单状态变更消息
+      - byName: 客户端获取订单状态变更列表
+      - byName: 获取催单消息
+      - byName: 同步订单消息指定之前的随机顾客
+      - byName: 拼多多推送订单状态变更消息
+      - byName: 客户端获取订单状态变更列表
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_limit]
+  - name: 避免骚扰-关闭
+    description: |
+      """</br>
+      用例描述：</br>
+      1、1小时内只触发一次。</br>
+      </br>
+      测试步骤</br>
+      1、开启避免骚扰</br>
+      2、创建第一个订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      5、创建第二个订单</br>
+      6、校验催单信息</br>
+      7、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 关闭避免骚扰
+      - byName: 指定随机顾客同步订单消息
+      - byName: 拼多多推送订单状态变更消息
+      - byName: 客户端获取订单状态变更列表
+      - byName: 获取催单消息
+      - byName: 同步订单消息指定之前的随机顾客
+      - byName: 拼多多推送订单状态变更消息
+      - byName: 客户端获取订单状态变更列表
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 还原催单任务
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情

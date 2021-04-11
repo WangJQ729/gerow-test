@@ -1,0 +1,97 @@
+name: 状态变更
+story: ${reminder_type}
+dataProvider:
+  - node_state: closed
+    order_state: closed
+    message: 亲，您对宝贝有什么不满意的吗？
+    text_with_vars: ${message}
+    reminder_type: 交易取消
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+
+testMethod:
+  - name: 状态变更为-${new_type_name}
+    dataProvider:
+      - new_order_state: succeeded
+        new_type_name: 交易成功
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务
+        name: 开启催单任务-10秒后触发
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 10
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 模拟pulsar订单消息-状态变更
+      - byName: 获取催单消息-消息为空
+      - byName: 查看trace详情-订单状态变更
+  - name: 状态变更为-${new_type_name}
+    dataProvider:
+      - new_order_state: unknown
+        new_type_name: 未知订单状态
+      - new_order_state: created
+        new_type_name: 下单未付款
+      - new_order_state: deposited
+        new_type_name: 已付定金未付尾款
+      - new_order_state: paid
+        new_type_name: 已付款
+      - new_order_state: signed
+        new_type_name: 已签收
+      - new_order_state: part_shipped
+        new_type_name: 拆单发货
+      - new_order_state: shipped
+        new_type_name: 已发货
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务-10秒后触发
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 模拟pulsar订单消息-状态变更
+      - byName: 获取催单消息
+  - name: 状态变更为-${new_action_name}-${action}
+    dataProvider:
+      - new_action_name: 物流状态
+        dataProvider:
+          - action: SENT_SCAN
+          - action: SIGNED
+          - action: GOT
+          - action: ARRIVAL
+          - action: DEPARTURE
+          - action: STA_BUYER_REJECT
+          - action: ERROR
+    severity: NORMAL
+    step:
+      - byName: 开启催单任务-10秒后触发
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 发送物流消息
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

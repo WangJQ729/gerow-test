@@ -1,0 +1,100 @@
+name: 意图识别
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - name: 获取所有的task_id
+      url: /api/admin/reminder/v2/manage/task/list
+      variables:
+        template_keys: 0
+        node_type: ${node_state}
+      method: GET
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            task_list: $.data.tasks[*].id
+          size: 100
+          options: [DEFAULT_PATH_LEAF_TO_NULL]
+    - byName: 删除催单任务
+      name: 删除其他催单任务
+      iter:
+        task_id: ${task_list}
+    - name: 获取task模板
+      url: /api/admin/reminder/v2/manage/task/template
+      variables:
+        node_type: ${node_state}
+        template_key: 0
+      method: GET
+      #断言响应体中jsonPath为$.code的值为0
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            #提取响应体中的task模板内容,保存为参数task_info
+            task_info: $.data
+    - name: 使用模板新建一个task
+      url: /api/admin/reminder/v2/manage/task/create
+      method: POST
+      body: ${task_info}
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            task_id: $.data.id
+    - byName: 修改咨询未下单内容
+testMethod:
+  - name: 第一轮催拍消息-${question}
+    links:
+      TAPD_BUG: https://www.tapd.cn/33335504/bugtrace/bugs/view?bug_id=1133335504001020537
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、发送消息给商家</br>
+      2、校验催单信息</br>
+      """
+    dataProvider:
+      - question: 在吗
+        text_with_vars: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
+      - question: 有优惠吗
+        text_with_vars: 你好，我们这个商品是自产自销，一分钱一分货，中间没有其他的成本，价格已经是最实惠的呢~` 不要错过我们店铺优惠券哦，我还可以帮你申请小礼品呢~
+      - question: 可以快点发货吗
+        text_with_vars: 你好~喜欢就不要犹豫啦，下午6点前拍下并付款，快递当天就能来拿货，您的包裹将以最快的速度投奔到您的怀里
+      - question: 质量好不好
+        text_with_vars: 你好~我们家宝贝质量都是有保障的哦，收到不满意支持7天无理由退换呢，您可以放心购买的~
+      - question: 可以包邮吗
+        text_with_vars: 您好，价格已经是品牌最优惠价格了哦，运费是快递公司收取的哦，我们是薄利润冲量，实在是不能包邮了哦，但是我们会有小礼品送你，喜欢就下单吧~
+      - question: 有赠品吗？
+        text_with_vars: 您好～真的很抱歉没礼品呢，我们是薄利多销，大多数顾客都是冲着我们商品本身的质量和款式来的呢，性价比已经很好的哦～另外您可以关注下我们店铺的优惠卷活动呢～
+      - question: 发的什么快递
+        text_with_vars: 您好～喜欢就不要犹豫啦，我们会给您安排尽快发货，让你早点收到宝贝哦～
+    severity: NORMAL
+    step:
+      - byName: 发送消息给商家
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据聊天记录查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    #    - name: 切换类目
+    #      url: /api/admin/guide/shop_setup
+    #      headers:
+    #        Content-Type: multipart/form-data
+    #      method: POST
+    #      form:
+    #        express_name: express_name
+    #        other_express_name: other_express_name
+    #        category_id: ${shop_category_id}
+    #      assertion: [json: {$.code: 0}]
+    - byName: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

@@ -1,0 +1,17 @@
+data:
+  test:
+    host: pdd-test-cm.xiaoduoai.com
+    mock_host: http://mock-server-pdd.xiaoduoai.com
+    shopName: JQ铅笔:pdd78335301079
+    mall_id: 783353010
+    seller_name: pdd78335301079
+    shop: JQ铅笔
+    sign: ca61da42f143ef040fc22afee498a622
+    buyer: 5083583826
+    platform: pdd
+    child_seller: JQ铅笔:xiaoduo_auto_test
+client:
+  protocol: http
+  timeOut: 30
+  headers:
+    Content-Type: "application/json;charset=UTF-8"

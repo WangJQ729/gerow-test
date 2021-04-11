@@ -1,0 +1,47 @@
+name: 任务开关
+beforeSuite:
+  name: 登录mp后台
+  step:
+    - name: 获取MP后台地址
+      url: /api/auth/mp_switcher
+      variables:
+        subnick: ${shopName}
+      method: GET
+      assertion:
+        - json:
+            $.code: 0
+            #断言返回的code为0
+      extractor:
+        - json:
+            auth_url: $.url
+            #获取跳转url
+    - name: 进入主页
+      host: ""
+      url: ${auth_url}
+      method: GET
+      responseType: DEFAULT
+    - name: 获取shop_id
+      url: /api/admin/user/logined
+      method: GET
+      extractor:
+        - json:
+            shop_id: $.user.shop_id
+            #提取shop_id
+            shop_category_id: $.default_shop.category_id
+            #提取当前类目
+          site: TESTSUIT
+          #保存地址为整个测试套件
+      assertion: [json: {$.code: 0}]
+      #断言响应的code为0
+    - name: 获取子账号
+      url: /api/admin/platform/search_client_configs_v3
+      variables:
+        #参数设置
+        limit: 20
+        skip: 0
+        only_supplier: false
+      method: GET
+      extractor:
+        - json:
+            seller_name: $.subusers[?(@.auth_status==0)].sub_nick[0]
+      assertion: [json: {$.code: 0}]

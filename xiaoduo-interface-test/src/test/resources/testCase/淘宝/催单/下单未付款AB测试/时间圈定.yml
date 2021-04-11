@@ -1,0 +1,96 @@
+name: 时间圈定
+platform: 融合版,淘宝
+story: ${reminder_type}
+dataProvider:
+  - node_state: created
+    order_state: created
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+    message2: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~2
+    reminder_type: 下单未付款AB测试
+    compare_field: message
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 删除其他催单任务
+    - byName: 获取所有的测试任务
+    - byName: 删除所有测试催单任务
+    - byName: 获取测试催单任务模板
+    - byName: 新建测试催单任务
+      bodyEditor:
+        json:
+          $.name: 测试
+          $.type: ${node_state}
+          $.start_time: ${__BeanShell(${__StartOfDay()}*1000l,)}
+          $.end_time: ${__BeanShell(${__EndOfDay()}*1000l,)}
+          $.shop_ids: ["${shop_id}"]
+          $.compare_field: ${compare_field}
+          $.params:
+            - name: 测试1
+              value_obj: {images: [],message: "${message}"}
+            - name: 测试2
+              value_obj: {images: [],message: "${message2}"}
+          $.config:
+            - {type: customer_type_limit,args: {enable: false,type: ""}}
+            - {type: order_goods_limit,args: {enable: false,goods_ids:[]}}
+            - {type: pay_amount_limit,args: {enable: false,min: 0,max: 0}}
+            - {type: goods_num_limit,args: {enable: false,min: 1,max: 999}}
+            - {type: order_address_limit,args: {enable: false,cities: []}}
+            - {type: state_triggered_time_limit,args: {enable: false,from: 0,to: 0}}
+            - {type: order_remark_keyword_filter,args: {enable: false,keywords: [],is_include: false}}
+            - {type: order_flag_filter,args: {enable: false,flag: []}}
+            - {type: exclude_buyers,args: {enable: false,buyers: []}}
+            - {type: chat_after_triggered_filter,args: {enable: false}}
+            - {type: specify_send_seller,args: {seller_ids: [],recently_seller_priority: true,sub_users_info_id: "",asked_seller: false,transfer_after_asked: false,transfer_seller_ids: [],transfer_sub_silence_users_info_id: "",sub_silence_users_info_id: "",transfer_asked_seller: false,transfer_sub_users_info_id: "",transfer_silence_seller: false,status: 2}}
+            - {type: send_limit,args: {enable: false,second: 3600}}
+            - {type: state_delay,args: {delay: 0}}
+            - {type: send_message,args: {ageing_id: "",images: [],state_delay: 180,receive_message_filter: false,message: "亲，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~查看订单 {订单链接}"}}
+    - byName: 获取测试任务ID
+    - byName: 获取AB测试任务详情
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 清除AB测试任务缓存
+testMethod:
+  - name: 满足圈定时间
+    severity: NORMAL
+    step:
+      - byName: 编辑测试催单任务-开启顾客类型圈定
+        name: 编辑测试催单任务-设置时间圈定
+        bodyEditor:
+          json:
+            $.plan.config[?(@.type=='state_triggered_time_limit')].args.enable: true
+            $.plan.config[?(@.type=='state_triggered_time_limit')].args.from: ${__BeanShell(${__time(/1000)}-3600,)}
+            $.plan.config[?(@.type=='state_triggered_time_limit')].args.to: ${__BeanShell(${__time(/1000)}+3600,)}
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 模拟pulsar订单消息
+      - byName: 获取AB测试催单消息
+  - name: 不满足圈定时间
+    severity: NORMAL
+    step:
+      - byName: 编辑测试催单任务-开启顾客类型圈定
+        name: 编辑测试催单任务-设置不满足的时间圈定
+        bodyEditor:
+          json:
+            $.plan.config[?(@.type=='state_triggered_time_limit')].args.enable: true
+            $.plan.config[?(@.type=='state_triggered_time_limit')].args.from: ${__BeanShell(${__time(/1000)}-7200,)}
+            $.plan.config[?(@.type=='state_triggered_time_limit')].args.to: ${__BeanShell(${__time(/1000)}-3600,)}
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 模拟pulsar订单消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-不满足时间圈定
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除测试催单任务
+    - byName: 清除AB测试任务缓存
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

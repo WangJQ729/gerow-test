@@ -1,0 +1,97 @@
+name: 任务开关
+story: ${reminder_type}
+dataProvider:
+  - node_state: created
+    order_state: NOT_PAY
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+    text_with_vars: ${message}
+    reminder_type: 下单未付款
+  - node_state: canceled
+    order_state: CANCEL
+    message: 非常遗憾您的订单被取消，如果您对我们的商品和服务有任何疑问，请随时联系我们，帮助我们更好改善。
+    text_with_vars: ${message}
+    reminder_type: 订单取消
+  - node_state: finished
+    order_state: FINISH
+    message: 小店收到飞鸽传书，得知您的宝贝已经安全抵达。有任何疑问欢迎咨询我们。如果您对这次购物体验满意，期待得到您的评价鼓励，一路相知，伴随左右~
+    text_with_vars: ${message}
+    reminder_type: 交易成功
+  - node_state: paid
+    order_state: WAIT_DELIVERY
+    message: 您好，我们已收到你的订单啦~~我们会尽快为您发货，请您耐心等待。
+    text_with_vars: ${message}
+    reminder_type: 等待出库
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+testMethod:
+  - name: 开启任务
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务</br>
+      2、创建订单</br>
+      3、校验催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改task内容
+        name: 开启催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息
+  - name: 关闭任务
+    description: |
+      """</br>
+      用例描述：</br>
+      1、关闭后不会触发。</br>
+      </br>
+      测试步骤</br>
+      1、关闭任务</br>
+      2、创建订单</br>
+      3、校验催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改task内容
+        name: 关闭催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: false
+      - byName: 通过pulsar推送订单消息
+      - byName: 获取催单消息
+        sleep: 5000
+        name: 获取催单消息-消息为空
+        assertion:
+          - json:
+              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars: []
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        name: 查看trace详情-任务关闭
+        assertion:
+          - json:
+              $.data.traces.length(): 1
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后还原task
+  step:
+    - byName: 删除催单任务

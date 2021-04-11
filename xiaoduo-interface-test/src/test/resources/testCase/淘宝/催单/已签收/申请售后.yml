@@ -1,0 +1,102 @@
+name: 申请售后
+story: ${reminder_type}
+platform: 淘宝,融合版
+dataProvider:
+  - node_state: signed
+    order_state: signed
+    message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
+    text_with_vars: ${message}
+    reminder_type: 已签收
+    action: SIGNED
+    bill_type: return_bill
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+    - byName: 开启已签收催单任务-10s后发送
+
+testMethod:
+  - name: ${refund_name}-timer到期后不发送${reminder_type}催单消息
+    dataProvider:
+      - refund_name: 申请售后
+        refund_state: taobao_refund_RefundCreated
+        refund_type: created
+      - refund_state: taobao_refund_RefundSellerAgreeAgreement
+        refund_name: 同意退货
+        refund_type: agreed
+      - refund_state: taobao_refund_RefundSuccess
+        refund_name: 退款成功
+        refund_type: succeeded
+      - refund_state: taobao_refund_RefundBuyerReturnGoods
+        refund_name: 买家发货
+        refund_type: return_goods
+    severity: NORMAL
+    step:
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 推送退款消息-指定退款类型
+      - byName: 获取催单消息-消息为空
+      - byName: 查看trace详情-有售后状态不催单
+  - name: 取消退款-仍然发催单消息
+    dataProvider:
+      - refund_state: taobao_refund_RefundClosed
+        refund_name: 退款关闭
+    severity: NORMAL
+    step:
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 推送退款消息-指定退款类型
+      - byName: 获取催单消息
+  - name: 取消退款-仍然触发催单任务
+    dataProvider:
+      - refund_state: taobao_refund_RefundClosed
+        refund_name: 退款关闭
+    severity: NORMAL
+    step:
+      - byName: 随机顾客推送下单未付款订单消息
+      - byName: 推送退款消息-指定退款类型
+      - byName: 指定顾客指定订单推送订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 获取催单消息
+  - name: ${refund_name}-${reminder_type}不触发催单消息
+    dataProvider:
+      - refund_name: 申请售后
+        refund_state: taobao_refund_RefundCreated
+        refund_type: created
+      - refund_state: taobao_refund_RefundSellerAgreeAgreement
+        refund_name: 同意退货
+        refund_type: agreed
+      - refund_state: taobao_refund_RefundSuccess
+        refund_name: 退款成功
+        refund_type: succeeded
+      - refund_state: taobao_refund_RefundBuyerReturnGoods
+        refund_name: 买家发货
+        refund_type: return_goods
+    severity: NORMAL
+    step:
+      - byName: 随机顾客推送下单未付款订单消息
+      - byName: 推送退款消息-指定退款类型
+      - byName: 指定顾客指定订单推送订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-有售后状态不催单
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

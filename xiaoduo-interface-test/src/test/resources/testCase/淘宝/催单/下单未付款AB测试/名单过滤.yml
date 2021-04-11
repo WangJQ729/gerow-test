@@ -1,0 +1,86 @@
+name: 名单过滤
+platform: 融合版,淘宝
+story: ${reminder_type}
+dataProvider:
+  - node_state: created
+    order_state: created
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+    message2: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~2
+    reminder_type: 下单未付款AB测试
+    compare_field: message
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 删除其他催单任务
+    - byName: 获取所有的测试任务
+    - byName: 删除所有测试催单任务
+    - byName: 获取测试催单任务模板
+    - byName: 新建测试催单任务
+    - byName: 获取测试任务ID
+    - byName: 获取AB测试任务详情
+beforeMethod:
+  name: 测试前拉一下消息表示在线
+  step:
+    - byName: 清除AB测试任务缓存
+testMethod:
+  - name: 名单过滤-在过滤名单内
+    severity: NORMAL
+    step:
+      - byName: 编辑测试催单任务-开启顾客类型圈定
+        name: 编辑测试催单任务-开启按名单过滤
+        bodyEditor:
+          json:
+            $.plan.config[?(@.type=='exclude_buyers')].args.enable: true
+            $.plan.config[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1605772288}]
+      - byName: 发送消息给商家-指定买家
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-导入名单过滤
+  - name: 名单过滤-不在过滤名单内
+    severity: NORMAL
+    step:
+      - byName: 编辑测试催单任务-开启按名单过滤
+      - byName: 发送消息给商家
+      - byName: 模拟pulsar订单消息
+      - byName: 获取AB测试催单消息
+  - name: 名单过滤-在过滤名单内-开关关闭
+    severity: NORMAL
+    step:
+      - byName: 编辑测试催单任务-开启顾客类型圈定
+        name: 编辑测试催单任务-关闭按名单过滤
+        bodyEditor:
+          json:
+            $.plan.config[?(@.type=='exclude_buyers')].args.enable: false
+            $.plan.config[?(@.type=='exclude_buyers')].args.buyers: [{"buyer_id": "${__RandomName(buyer_id)}", "updated_at": 1605772288}]
+      - byName: 发送消息给商家-指定买家
+      - byName: 模拟pulsar订单消息
+      - byName: 获取AB测试催单消息
+  - name: 名单过滤-不在过滤名单内-开关关闭
+    severity: NORMAL
+    step:
+      - byName: 编辑测试催单任务-关闭按名单过滤
+      - byName: 发送消息给商家
+      - byName: 模拟pulsar订单消息
+      - byName: 获取AB测试催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - name: 删除测试催单任务
+      url: /api/abtest/manage/plan/delete
+      method: GET
+      variables:
+        service_name: reminder
+        platform: ${platform}
+        plan_id: ${plan_id}
+      assertion: [json: {$.code: 0}]
+    - byName: 清除AB测试任务缓存
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

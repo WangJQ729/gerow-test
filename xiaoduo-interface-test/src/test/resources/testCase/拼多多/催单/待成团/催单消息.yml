@@ -1,0 +1,93 @@
+name: 催单消息
+dataProvider:
+  - order_state: ungroup
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取老的task配置
+    - byName: 获取task模板
+testMethod:
+  - name: 催单消息校验-${message}
+    dataProvider:
+      - message: 您好，您的订单未成团，邀请好友一起助力
+        text_with_vars: 您好，您的订单未成团，邀请好友一起助力
+      - message: "{{子账号名称}}"
+        text_with_vars: ${seller_name}
+      - message: '商品总数：{商品总数}'
+        text_with_vars: "商品总数：1"
+      - message: '订单商品明细：{订单商品明细}'
+        text_with_vars: "订单商品明细：元老古董炫酷SAP防弹短袖-4: 1"
+      - message: '应付金额：{应付金额}'
+        text_with_vars: "应付金额：20.00"
+      - message: '{姓名}'
+        text_with_vars: 晓多AI
+      - message: '电话：{电话}'
+        text_with_vars: "电话：17721883949"
+      - message: '{地址}'
+        text_with_vars: 四川省成都市高新区软件园A5-8
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、修改reminder</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改task内容
+      - byName: 同步待成团订单消息
+      - byName: 获取催单消息
+  - name: 催单消息校验-查看订单 {订单链接}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、修改reminder</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改task为订单链接
+      - byName: 同步待成团订单消息
+      - byName: 催单消息订单链接
+  - name: 催单消息校验-查看订单 {分享链接}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、催单消息的内容正确。</br>
+      </br>
+      测试步骤</br>
+      1、修改reminder</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改task内容
+        name: 修改task为分享链接
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: '{{分享链接}}'
+      - byName: 同步待成团订单消息
+      - byName: 获取催单消息
+        assertion:
+          - json:
+              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
+                - 'https://mobile.yangkeduo.com/group500.html?group_order_id=${group_order_id}'
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 还原催单任务
+    - byName: 根据待成团订单查询trace
+    - byName: 查看trace详情

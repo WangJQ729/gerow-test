@@ -1,0 +1,190 @@
+name: 时效标签
+story: ${reminder_type}
+dataProvider:
+  - node_state: signed
+    order_state: signed
+    message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
+    text_with_vars: ${message}
+    reminder_type: 已签收
+    action: SIGNED
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+
+testMethod:
+  - name: 时效标签(固定时段-生效)-今天生效
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,0,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,0,end_time)}
+        task_status: starting
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签
+      - byName: 开启催单任务
+        sleep: 1000
+        name: 设置时效标签-已签收
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='send_message')].args.ageing_id: ${ageing_id}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 获取催单任务时效标签状态
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息
+  - name: 时效标签(固定时段-失效)-${ageing_name}
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,-1,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,-1,end_time)}
+        ageing_name: 1天前
+        task_status: ended
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,1,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,1,end_time)}
+        ageing_name: 1天后
+        task_status: unstart
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签
+      - byName: 设置时效标签-已签收
+      - byName: 获取催单任务时效标签状态
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-时效标签不生效
+  - name: 时效标签(每日重复-生效)-2小时前到2小时后
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 2
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,everyday_start_time)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,everyday_end_time)}
+        task_status: starting
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签(每日重复)
+      - byName: 设置时效标签-已签收
+      - byName: 获取催单任务时效标签状态
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息
+  - name: 时效标签(每日重复-失效)-${ageing_name}
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 2
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,everyday_start_time)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,everyday_end_time)}
+        ageing_name: 2小时前到1小时前
+        task_status: unstart
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 2
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,everyday_start_time)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,everyday_end_time)}
+        ageing_name: 1小时后到2小时后
+        task_status: unstart
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签(每日重复)
+      - byName: 设置时效标签-已签收
+      - byName: 获取催单任务时效标签状态
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-时效标签不生效
+  - name: 时效标签(自定义重复时段-生效)-${ageing_name}
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 3
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
+        repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
+        repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
+        ageing_name: 2小时前到2小时后
+        task_status: starting
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签(自定义重复时段)
+      - byName: 设置时效标签-已签收
+      - byName: 获取催单任务时效标签状态
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息
+  - name: 时效标签(自定义重复时段-失效)-${ageing_name}
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 3
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,)}
+        repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
+        repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
+        ageing_name: 2小时前到1小时前
+        task_status: unstart
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 3
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
+        repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
+        repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
+        ageing_name: 1小时后到2小时后
+        task_status: unstart
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 3
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
+        repeat_start_date: ${__PlusDay(yyyy-MM-dd,-2,)}
+        repeat_end_date: ${__PlusDay(yyyy-MM-dd,-1,)}
+        ageing_name: 2天前到1天前
+        task_status: ended
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 3
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
+        repeat_start_date: ${__PlusDay(yyyy-MM-dd,1,)}
+        repeat_end_date: ${__PlusDay(yyyy-MM-dd,2,)}
+        ageing_name: 1天后到2天后
+        task_status: unstart
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签(自定义重复时段)
+      - byName: 设置时效标签-已签收
+      - byName: 获取催单任务时效标签状态
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-时效标签不生效
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+    - byName: 删除时效标签
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

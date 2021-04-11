@@ -1,0 +1,169 @@
+name: 时效标签
+story: ${reminder_type}
+dataProvider:
+  - order_state: group
+    pdd_order_type: pdd_trade_TradeConfirmed
+    reminder_type: 拼团成功
+    message: 'this is message!'
+    text_with_vars: ${message}
+  - order_state: shipped
+    pdd_order_type: pdd_trade_TradeSellerShip
+    reminder_type: 已发货
+    message: 'this is message!'
+    text_with_vars: ${message}
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取老的task配置
+    - byName: 获取task模板
+    - name: 获取时效标签列表
+      url: /api/admin/config2/ageing/list
+      method: GET
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            ageing_ids: $.ageings[?(@.activity_name == '')].id
+          size: 100
+          options: [DEFAULT_PATH_LEAF_TO_NULL]
+    - byName: 删除时效标签
+      iter:
+        ageing_id: ${ageing_ids}
+      form:
+        id: ${ageing_id}
+testMethod:
+  - name: 时效标签(固定时段-生效)-今日生效
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,0,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,0,end_time)}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、在时效标签内应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置时效标签</br>
+        开始时间：${start_time}</br>
+        结束时间：${end_time}</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签
+      - byName: 设置时效标签
+      - byName: 同步订单消息
+      - byName: 拼多多推送订单状态变更消息
+      - byName: 客户端获取订单状态变更列表
+      - byName: 获取催单消息
+  - name: 时效标签(固定时段-失效)-${ageing_name}
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,-1,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,-1,end_time)}
+        ageing_name: 1天前
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,1,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,1,end_time)}
+        ageing_name: 1天后
+    description: |
+      """</br>
+      用例描述：</br>
+      1、在时效标签内应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置时效标签</br>
+        开始时间：${start_time}</br>
+        结束时间：${end_time}</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签
+      - byName: 设置时效标签
+      - byName: 同步订单消息
+      - byName: 拼多多推送订单状态变更消息
+      - byName: 客户端获取订单状态变更列表
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
+  - name: 时效标签(每日重复-生效)-2小时前到2小时后
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 2
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,everyday_start_time)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,everyday_end_time)}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、在时效标签内应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置时效标签</br>
+        开始时间：${everyday_start_time}</br>
+        结束时间：${everyday_end_time}</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签(每日重复)
+      - byName: 设置时效标签
+      - byName: 同步订单消息
+      - byName: 拼多多推送订单状态变更消息
+      - byName: 客户端获取订单状态变更列表
+      - byName: 获取催单消息
+  - name: 时效标签(每日重复-失效)-${ageing_name}
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 2
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,everyday_start_time)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,everyday_end_time)}
+        ageing_name: 2小时前到1小时前
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 2
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,everyday_start_time)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,everyday_end_time)}
+        ageing_name: 1小时后到2小时后
+    description: |
+      """</br>
+      用例描述：</br>
+      1、在时效标签内应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置时效标签</br>
+        开始时间：${everyday_start_time}</br>
+        结束时间：${everyday_end_time}</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 添加时效标签(每日重复)
+      - byName: 设置时效标签
+      - byName: 同步订单消息
+      - byName: 拼多多推送订单状态变更消息
+      - byName: 客户端获取订单状态变更列表
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 还原催单任务
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+    - byName: 删除时效标签

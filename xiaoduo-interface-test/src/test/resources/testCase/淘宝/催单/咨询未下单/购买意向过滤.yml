@@ -1,0 +1,259 @@
+name: 购买意向过滤
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+    text_with_vars: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+
+testMethod:
+  - name: 购买意向过滤-设置${intention_name}-买家${intention_name}-咨询前设置购买意向
+    dataProvider:
+      - intentions: "no"
+        intention: "no"
+        intention_name: 暂不拍
+      - intentions: "normal"
+        intention: "normal"
+        intention_name: 正常咨询
+      - intentions: "high"
+        intention: "high"
+        intention_name: 高意向
+    description: |
+      """</br>
+      用例描述：</br>
+      1、测试购买意向组件，筛选是否正确。</br>
+      </br>
+      测试步骤</br>
+      1、设置任务，开启购买意向过滤，勾选${intention_name}</br>
+      2、标记买家购买意向${intention_name}</br>
+      3、买家发送消息给商家</br>
+      4、根据聊天记录查询trace</br>
+      5、检验trace详情是否为购买意向过滤</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改咨询未下单内容
+        name: 设置购买意向过滤
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='state_delay')].args.delay: 10
+            $.rules[?(@.type=='user_intention_filter')].args.enable: true
+            $.rules[?(@.type=='user_intention_filter')].args.intentions: ["${intentions}"]
+      - name: 标记买家购买意向-随机顾客
+        url: /api/client/reminder/v2/client/buyer/setting
+        method: POST
+        body: |
+          {
+          	"platform":"${platform}",
+          	"shop_id":"${shop_id}",
+          	"buyer_id":"${__RandomName(buyer_id)}",
+          	"intention":"${intention}"
+          }
+      - byName: 发送消息给商家
+        name: 发送消息给商家-指定买家
+        bodyEditor:
+          json:
+            $.pin: cntaobao${buyer_id}
+      - byName: 根据聊天记录查询trace
+      - byName: 查看trace详情
+        untilWait: 20
+        intervals: 2500
+        name: 查看trace详情-购买意向过滤
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [user_intention_filter]
+  - name: 购买意向过滤-设置${intention_name}-买家${intention_name}-咨询后设置购买意向
+    dataProvider:
+      - intentions: "no"
+        intention: "no"
+        intention_name: 暂不拍
+      - intentions: "high"
+        intention: "high"
+        intention_name: 高意向
+    description: |
+      """</br>
+      用例描述：</br>
+      1、测试购买意向组件，筛选是否正确。</br>
+      </br>
+      测试步骤</br>
+      1、设置任务，开启购买意向过滤，勾选${intention_name}</br>
+      2、买家发送消息给商家</br>
+      3、根据聊天记录查询trace</br>
+      4、检验trace详情是否为设置timer</br>
+      5、标记买家购买意向${intention_name}</br>
+      6、检验trace详情是否为购买意向过滤</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 设置购买意向过滤
+      - byName: 发送消息给商家
+      - byName: 根据聊天记录查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 标记买家购买意向-随机顾客
+        name: 标记买家购买意向-指定买家
+        body: |
+          {
+          	"platform":"${platform}",
+          	"shop_id":"${shop_id}",
+          	"buyer_id":"${buyer_id}",
+          	"intention":"${intention}"
+          }
+      - byName: 查看trace详情-购买意向过滤
+  - name: 购买意向过滤-设置${intentions_name}-买家${intention_name}-多选
+    dataProvider:
+      - intention1: "no"
+        intention2: "normal"
+        intention: "no"
+        intentions_name: 暂不拍、正常咨询
+        intention_name: 暂不拍
+      - intention1: "no"
+        intention2: "normal"
+        intention: "normal"
+        intentions_name: 暂不拍、正常咨询
+        intention_name: 正常咨询
+      - intention1: "no"
+        intention2: "high"
+        intention: "no"
+        intentions_name: 暂不拍、高意向
+        intention_name: 暂不拍
+      - intention1: "no"
+        intention2: "high"
+        intention: "high"
+        intentions_name: 暂不拍、高意向
+        intention_name: 高意向
+      - intention1: "normal"
+        intention2: "high"
+        intention: "normal"
+        intentions_name: 正常咨询、高意向
+        intention_name: 正常咨询
+      - intention1: "normal"
+        intention2: "high"
+        intention: "high"
+        intentions_name: 正常咨询、高意向
+        intention_name: 高意向
+    description: |
+      """</br>
+      用例描述：</br>
+      1、测试购买意向组件，筛选是否正确。</br>
+      </br>
+      测试步骤</br>
+      1、设置任务，开启购买意向过滤，勾选${intentions_name}</br>
+      2、标记买家购买意向${intention_name}</br>
+      3、买家发送消息给商家</br>
+      4、根据聊天记录查询trace</br>
+      5、检验trace详情是否为购买意向过滤</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 设置购买意向过滤
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='user_intention_filter')].args.enable: true
+            $.rules[?(@.type=='user_intention_filter')].args.intentions:
+              - ${intention1}
+              - ${intention2}
+      - byName: 标记买家购买意向-随机顾客
+      - byName: 发送消息给商家-指定买家
+      - byName: 根据聊天记录查询trace
+      - byName: 查看trace详情-购买意向过滤
+  - name: 购买意向过滤-设置${intentions_name}-买家${intention_name}-符合条件
+    dataProvider:
+      - intention1: "no"
+        intention2: "normal"
+        intention: "high"
+        intentions_name: 暂不拍、正常咨询
+        intention_name: 高意向
+      - intention1: "no"
+        intention2: "high"
+        intention: "normal"
+        intentions_name: 暂不拍、高意向
+        intention_name: 正常咨询
+      - intention1: "normal"
+        intention2: "high"
+        intention: "no"
+        intentions_name: 正常咨询、高意向
+        intention_name: 暂不排
+      - intention1: "no"
+        intention2: ""
+        intention: "high"
+        intentions_name: 暂不拍
+        intention_name: 高意向
+      - intention1: "no"
+        intention2: ""
+        intention: "normal"
+        intentions_name: 暂不拍
+        intention_name: 正常咨询
+      - intention1: "normal"
+        intention2: ""
+        intention: "no"
+        intentions_name: 正常咨询
+        intention_name: 暂不拍
+      - intention1: "normal"
+        intention2: ""
+        intention: "high"
+        intentions_name: 正常咨询
+        intention_name: 高意向
+      - intention1: "high"
+        intention2: ""
+        intention: "no"
+        intentions_name: 高意向
+        intention_name: 暂不拍
+      - intention1: "high"
+        intention2: ""
+        intention: "normal"
+        intentions_name: 高意向
+        intention_name: 正常咨询
+    description: |
+      """</br>
+      用例描述：</br>
+      1、测试购买意向组件，筛选是否正确。</br>
+      </br>
+      测试步骤</br>
+      1、设置任务，开启购买意向过滤，勾选${intentions_name}</br>
+      2、标记买家购买意向${intention_name}</br>
+      3、买家发送消息给商家</br>
+      4、根据聊天记录查询trace</br>
+      5、检验trace详情是否为购买意向过滤</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 设置购买意向过滤
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='state_delay')].args.delay: 0
+            $.rules[?(@.type=='user_intention_filter')].args.enable: true
+            $.rules[?(@.type=='user_intention_filter')].args.intentions:
+              - ${intention1}
+              - ${intention2}
+      - byName: 标记买家购买意向-随机顾客
+      - byName: 发送消息给商家-指定买家
+      - byName: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据聊天记录查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

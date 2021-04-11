@@ -1,0 +1,64 @@
+name: 消息发送延时设置
+story: ${reminder_type}
+dataProvider:
+  - node_state: succeeded
+    order_state: succeeded
+    message: 小店收到飞鸽传书，得知您的宝贝已经安全抵达。有任何疑问欢迎咨询我们。如果您对这次购物体验满意，期待得到您的评价鼓励，一路相知，伴随左右~
+    text_with_vars: ${message}
+    reminder_type: 交易成功
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+
+testMethod:
+  - name: 设置${state_delay}秒后发送催单消息
+    dataProvider:
+      - state_delay: 20
+#      - state_delay: 60
+#      - state_delay: 120
+    description: |
+      """</br>
+      用例描述：</br>
+      1、测试消息发送延时是否正确。</br>
+      </br>
+      测试步骤</br>
+      1、设置${state_delay}秒后发送催单消息</br>
+      2、创建订单</br>
+      3、获取催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 开启交易成功催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: ${__BeanShell(${state_delay},)}
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+      - byName: 获取任务触发时间
+      - byName: 校验TaskSetTimer正确
+      - byName: 获取催单消息-5秒拉一次
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

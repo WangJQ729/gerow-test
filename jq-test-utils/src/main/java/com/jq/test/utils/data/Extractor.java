@@ -112,11 +112,17 @@ public class Extractor {
                 switch (type) {
                     case JSON:
                         if (need_decode) {
+                            String platform = System.getProperty("platform");
                             String json;
-                            json = TestUtils.des3Cipher("828d1bc65eefc6c88ca1a5d4", "828d1bc6", 2,
-                                    Objects.requireNonNull(entity.getBody()).toString());
-                            Allure.addAttachment("解密结果：", json);
-                            saveJsonPath(save, JsonPathUtils.read(json, value, options));
+                            if (StringUtils.equals(platform, "融合版")) {
+                                json = Objects.requireNonNull(entity.getBody()).toString();
+                                saveJsonPath(save, JsonPathUtils.read(json, value.replace("$", "$.answer"), options));
+                            } else {
+                                json = TestUtils.des3Cipher("828d1bc65eefc6c88ca1a5d4", "828d1bc6", 2,
+                                        Objects.requireNonNull(entity.getBody()).toString());
+                                Allure.addAttachment("解密结果：", json);
+                                saveJsonPath(save, JsonPathUtils.read(json, value, options));
+                            }
                         } else
                             saveJsonPath(save, JsonPathUtils.read(entity.getBody(), value, options));
                         break;

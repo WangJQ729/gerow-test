@@ -1,0 +1,138 @@
+name: 催单状态
+platform: 淘宝,融合版
+story: ${reminder_type}
+dataProvider:
+  - node_state: paid
+    order_state: paid
+    message: 对我们的服务满意吗？让我成为你的专属客服吧，以后有事儿您找我！
+    text_with_vars: ${message}
+    reminder_type: 专属客服已付款
+  - node_state: succeeded
+    order_state: succeeded
+    message: 对我们的服务满意吗？让我成为你的专属客服吧，以后有事儿您找我！
+    text_with_vars: ${message}
+    reminder_type: 专属客服交易成功
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取专属客服task_id
+    - byName: 删除其他催单任务
+    - byName: 获取专属客服task模板
+    - byName: 使用模板新建一个task
+    - byName: 获取子账号4
+    - byName: 子账号4设置为自己和静默
+    - byName: 开启催单任务
+testMethod:
+  - name: ${reminder_type}-不催单-自己的客户
+    severity: NORMAL
+    step:
+      - byName: 发送消息给商家
+      - byName: 催单设置-不催单
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-客户端不发送消息
+      - byName: 获取催单消息-消息为空
+  - name: ${reminder_type}-不催单-静默顾客
+    severity: NORMAL
+    step:
+      - byName: 催单设置-不催单
+      - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-没有催单的子账号设置等待时间
+      - byName: 获取催单消息-消息为空
+  - name: ${reminder_type}-不催单-别人的顾客
+    severity: NORMAL
+    step:
+      - byName: 发送消息给子账号4
+      - byName: 催单设置-不催单
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-没有催单的子账号设置等待时间
+      - byName: 获取催单消息-消息为空
+  - name: ${reminder_type}-仅自己-自己的客户
+    severity: NORMAL
+    step:
+      - byName: 发送消息给商家
+      - byName: 催单设置-仅自己
+      - byName: 模拟pulsar订单消息
+      - byName: 获取专属客服催单消息
+  - name: ${reminder_type}-仅自己-静默客户
+    severity: NORMAL
+    step:
+      - byName: 催单设置-仅自己
+      - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-没有催单的子账号设置等待时间
+  - name: ${reminder_type}-仅自己-别人的客户
+    severity: NORMAL
+    step:
+      - byName: 发送消息给子账号4
+      - byName: 催单设置-仅自己
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-没有催单的子账号设置等待时间
+      - byName: 获取催单消息-消息为空
+  - name: ${reminder_type}-仅静默-自己的客户
+    severity: NORMAL
+    step:
+      - byName: 发送消息给商家
+      - byName: 催单设置-仅静默
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-客户端不发送消息
+      - byName: 获取催单消息-消息为空
+  - name: ${reminder_type}-仅静默-静默顾客
+    severity: NORMAL
+    step:
+      - byName: 发送消息给商家
+      - byName: 催单设置-仅静默
+      - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 获取专属客服催单消息
+  - name: ${reminder_type}-仅静默-别人的顾客
+    severity: NORMAL
+    step:
+      - byName: 发送消息给子账号4
+      - byName: 催单设置-仅静默
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-没有催单的子账号设置等待时间
+      - byName: 获取催单消息-消息为空
+  - name: ${reminder_type}-自己和静默-自己的客户
+    severity: NORMAL
+    step:
+      - byName: 发送消息给商家
+      - byName: 催单设置为自己和静默
+      - byName: 模拟pulsar订单消息
+      - byName: 获取专属客服催单消息
+  - name: ${reminder_type}-自己和静默-静默顾客
+    severity: NORMAL
+    step:
+      - byName: 催单设置为自己和静默
+      - byName: 模拟pulsar订单消息-随机顾客
+      - byName: 获取专属客服催单消息
+  - name: ${reminder_type}-自己和静默-别人的客户
+    severity: NORMAL
+    step:
+      - byName: 发送消息给子账号4
+      - byName: 催单设置为自己和静默
+      - byName: 模拟pulsar订单消息
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-没有催单的子账号设置等待时间
+      - byName: 获取催单消息-消息为空
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 催单设置为自己和静默
+    - byName: 获取专属客服task_id
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 催单设置为自己和静默
+    - byName: 删除其他催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测

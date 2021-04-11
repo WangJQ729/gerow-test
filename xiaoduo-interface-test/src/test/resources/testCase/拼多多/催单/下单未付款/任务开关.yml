@@ -1,0 +1,69 @@
+name: 任务开关
+dataProvider:
+  - order_state: created
+    message: 您好，您有未支付订单，请尽快支付哦
+    text_with_vars: ${message}
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取task_id
+    - byName: 获取老的task配置
+    - byName: 获取task模板
+testMethod:
+  - name: 开启任务
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务</br>
+      2、创建订单</br>
+      3、校验催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 修改task内容
+        name: 开启催单任务
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+      - byName: 同步订单消息
+      - byName: 获取催单消息
+  - name: 关闭任务
+    description: |
+      """</br>
+      用例描述：</br>
+      1、关闭后不会触发。</br>
+      </br>
+      测试步骤</br>
+      1、关闭任务</br>
+      2、创建订单</br>
+      3、校验催单消息</br>
+      """
+    severity: NORMAL
+    step:
+      - byName: 关闭催单任务
+      - byName: 同步订单消息
+      - byName: 获取催单消息
+        sleep: 5000
+        name: 获取催单消息-消息为空
+        assertion:
+          - json:
+              $.data.messages[?(@.order_id=='${order_id}')].text_with_vars: []
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情
+        name: 查看trace详情-任务关闭
+        assertion:
+          - json:
+              $.data.traces.length(): 1
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 还原催单任务
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情

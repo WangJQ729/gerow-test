@@ -1,0 +1,126 @@
+name: 服务助手接待
+platform: 融合版
+story: ${reminder_type}
+dataProvider:
+  - node_state: logistics_stagnate_delay
+    order_state: arrival
+    message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
+    text_with_vars: ${message}
+    reminder_type: 物流停滞超时
+    action: ARRIVAL
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - byName: 获取所有的task_id
+    - byName: 获取task模板
+    - byName: 删除其他催单任务
+    - byName: 使用模板新建一个task
+
+testMethod:
+  - name: 服务助手接待买家-客服不在线SetTimer
+    severity: NORMAL
+    step:
+      - byName: 开启物流停滞超时催单任务
+      - byName: 随机顾客发送消息给服务助手
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+  - name: 服务助手接待买家-指定账号发送
+    severity: NORMAL
+    step:
+      - byName: 新建分组-只有主账号
+      - byName: 开启物流停滞超时催单任务
+        name: 开启物流停滞超时催单任务-设置发送服务助手接待的账号在线
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_seller')].args.status: 1
+            $.rules[?(@.type=='specify_send_seller')].args.asked_seller: true
+            $.rules[?(@.type=='specify_send_seller')].args.sub_users_info_id: ${sub_silence_users_info_id}
+      - byName: 随机顾客发送消息给服务助手
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息
+  - name: 服务助手接待买家-指定账号(不在线)发送
+    severity: NORMAL
+    step:
+      - byName: 新建催单转接分组
+      - byName: 开启物流停滞超时催单任务
+        name: 开启物流停滞超时催单任务-设置发送服务助手接待的账号不在线
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_seller')].args.status: 1
+            $.rules[?(@.type=='specify_send_seller')].args.asked_seller: true
+            $.rules[?(@.type=='specify_send_seller')].args.sub_users_info_id: ${reminder_transfer_sub_users_info_id}
+      - byName: 随机顾客发送消息给服务助手
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息-消息为空
+      - byName: 根据订单查询trace
+      - byName: 查看trace详情-TaskSetTimer
+  - name: 服务助手接待买家-指定账号发送-开启最近接待客服发送消息时不转接
+    severity: NORMAL
+    step:
+      - byName: 新建分组-只有主账号
+      - byName: 新建催单转接分组
+      - byName: 开启物流停滞超时催单任务
+        name: 物流停滞超时设置发送服务助手接待的账号在线-开启转接
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_seller')].args.status: 1
+            $.rules[?(@.type=='specify_send_seller')].args.recently_seller_priority: true
+            $.rules[?(@.type=='specify_send_seller')].args.asked_seller: true
+            $.rules[?(@.type=='specify_send_seller')].args.sub_users_info_id: ${sub_silence_users_info_id}
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_asked_seller: true
+            $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
+            $.rules[?(@.type=='specify_send_seller')].args.recently_seller_transfer_switch: true
+      - byName: 随机顾客发送消息给服务助手
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息-提取转接信息
+      - byName: 发送消息给商家-含转接内容
+  - name: 催单子账号接待-最近接待客服发送消息时不转接
+    severity: NORMAL
+    step:
+      - byName: 新建分组-只有主账号
+      - byName: 新建催单转接分组
+      - byName: 物流停滞超时设置发送服务助手接待的账号在线-开启转接
+      - byName: 随机顾客发送消息给商家-固定问题
+      - byName: 指定顾客推送已付款订单消息
+      - byName: 发送物流消息
+      - byName: 获取催单消息-提取转接信息
+      - byName: 发送消息给商家-含转接内容
+        assertion:
+          - json:
+              $.custom_transfer.transfer_type: ""
+              $.custom_transfer.is_transfer: false
+            need_decode: true
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - byName: 根据订单查询trace
+    - byName: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - byName: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - byName: 主账号发送心跳检测
