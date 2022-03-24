@@ -1,0 +1,10 @@
+data:
+  test:
+    platform: kucoin
+    host: 10.232.8.77:10240
+    elastic_host: http://10.4.0.41:8899
+client:
+  protocol: http
+  timeOut: 10
+  headers:
+    Content-Type: "application/json;charset=UTF-8"
