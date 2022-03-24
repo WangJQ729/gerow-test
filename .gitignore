@@ -5,14 +5,14 @@
 # IntelliJ project files
 .idea
 *.iml
-jq-test-api-yml/target/
-jq-test-utils/target/
+gerow-test-api-yml/target/
+gerow-test-utils/target/
 ipa-interface-test/src/test/resources/testCase/淘宝/行业场景/
 ipa-interface-test/allure-results/
-ipa-interface-test/src/test/java/com/jq/test/MyTest.java
+ipa-interface-test/src/test/java/com/gerow/test/MyTest.java
 ipa-interface-test/target/
-xiaoduo-interface-test/src/test/resources/testCase/淘宝/行业场景/
-xiaoduo-interface-test/allure-results/
-xiaoduo-interface-test/src/test/java/com/jq/test/MyTest.java
-xiaoduo-interface-test/target/
+gerow-interface-test/src/test/resources/testCase/淘宝/行业场景/
+gerow-interface-test/allure-results
+gerow-interface-test/src/test/java/com/gerow/test/MyTest.java
+gerow-interface-test/target/
 

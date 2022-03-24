@@ -1,7 +1,7 @@
 # 一、项目结构
 
-##### 1、jq-test-utils相关工具类
-##### 2、jq-test-api-yml测试框架实现代码
+##### 1、gerow-test-utils相关工具类
+##### 2、gerow-test-api-yml测试框架实现代码
 ##### 3、ipa-interface-test小程序测试用例
 
 
@@ -22,9 +22,9 @@
     
     2、进入ipa-interface-test直接运行
     融合版参数：
-    -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wangjq_1990 -Dstory= -Dcomponent= -Dtest.name=
+    -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wanggerow_1990 -Dstory= -Dcomponent= -Dtest.name=
     老淘宝参数：
-    -Dspring.profiles.active=tb-test -Dplatform=淘宝 -Dfeatures=催单 -Dtest.severity= -Denv=test-znkf -DshopName=wangjq_1990 -Dstory= -Dcomponent= -Dtest.name=
+    -Dspring.profiles.active=tb-test -Dplatform=淘宝 -Dfeatures=催单 -Dtest.severity= -Denv=test-znkf -DshopName=wanggerow_1990 -Dstory= -Dcomponent= -Dtest.name=
     淘动力参数：
     -Dspring.profiles.active=tdl -DtestDir=淘宝 -Dplatform=淘动力 -Dfeatures=催单 -Denv=test-znkf -DshopName= -Dstory= -Dcomponent= -Dtest.name=
     
@@ -50,7 +50,7 @@
        
     执行催单场景“下单未付款”、“已付款”场景下“任务开关”和“催单消息”组件
     
-    -ea -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wangjq_1990 -Dstory=下单未付款,已付款 -Dcomponent=任务开关,催单消息 -Dtest.name=
+    -ea -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wanggerow_1990 -Dstory=下单未付款,已付款 -Dcomponent=任务开关,催单消息 -Dtest.name=
                 
     执行完成后会在ipa-interface-test\target\allure-results生成allure测试结果
     
@@ -122,9 +122,9 @@
         
 ### 2、自定义function
         
-        Module：jq-test-utils
+        Module：gerow-test-utils
         
-        package：com.jq.test.jmeter.functions
+        package：com.gerow.test.jmeter.functions
 
     
 #### RandomDate代码示例如下：
@@ -184,5 +184,5 @@ public class RandomDate extends AbstractFunction {
 
 # 七、测试用例编写
     
-   [脚本编写介绍](xiaoduo-interface-test "介绍")
-   [催单脚本环境搭建](xiaoduo-interface-test/README_CONF.md "环境搭建")
+   [脚本编写介绍](gerow-interface-test "介绍")
+   [催单脚本环境搭建](gerow-interface-test/README_CONF.md "环境搭建")
