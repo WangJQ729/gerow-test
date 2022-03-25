@@ -36,13 +36,14 @@ public class KafkaSampleClient implements JavaSamplerClient {
         SampleResult result = new SampleResult();
         String topic_name = javaSamplerContext.getParameter("topic_name");
         String data = javaSamplerContext.getParameter("data");
+        result.setRequestHeaders("send kafka data:\n" + data);
         result.sampleStart();
         try {
             sendOrder(topic_name, data);
             result.sampleEnd();
             result.setSuccessful(true);
             result.setResponseCodeOK();
-            result.setResponseData("send kafka data:" + data, "UTF-8");
+            result.setResponseData("send kafka success", "UTF-8");
         } catch (Exception e) {
             result.sampleEnd();
             result.setSuccessful(false);
