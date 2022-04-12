@@ -1,8 +1,7 @@
 data:
   test:
     platform: kucoin
-    host: 10.232.8.77:10240
-    elastic_host: http://10.4.0.41:8899
+    host: 10.232.66.178:10240
 client:
   protocol: http
   timeOut: 10

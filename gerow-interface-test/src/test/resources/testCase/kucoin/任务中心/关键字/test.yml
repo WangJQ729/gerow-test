@@ -1,0 +1,12 @@
+keyWord:
+  step:
+    - name: 发送任务中心交易任务到kafka
+      url: /test/sendQuestCenterData
+      method: POST
+      body: |
+        [{"amount":${amount},"createdat":${__time()},"currency":"${currency}","type":"${type}","userid":"${userId}","dth":"${dtH}","symbol":"${symbol}"}]
+      assertion: [ json: { $.code: "200" } ]
+    - name: 发送任务中心入金任务到kafka
+      byName: 发送任务中心交易任务到kafka
+      body: |
+        [{"amount":${amount},"createdat":${__time()},"currency":"${currency}","type":"DEPOSIT","userid":"${userId}"}]

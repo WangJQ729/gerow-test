@@ -6,9 +6,12 @@ import com.gerow.test.task.ITestSuite;
 import com.gerow.test.utils.JavassistUtils;
 import javassist.ClassPool;
 import javassist.CtClass;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.Factory;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.net.URLDecoder;
@@ -25,6 +28,11 @@ public class GerowAIInterfaceTest extends GerowAbstractApiTest {
     public static class GerowApiTestFactory {
         @Factory
         public static Object[] dataFactory() throws UnsupportedEncodingException {
+            try {
+                FileUtils.deleteDirectory(new File("allure-results"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             String testDir = System.getProperty("testDir");
             testDir = StringUtils.isBlank(testDir) ? System.getProperty("platform") : testDir;
             testDir = StringUtils.isBlank(testDir) ? "testCase" : "testCase" + "/" + testDir;

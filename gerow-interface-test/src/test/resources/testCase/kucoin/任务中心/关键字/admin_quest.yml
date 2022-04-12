@@ -1,16 +1,5 @@
 keyWord:
   step:
-    - name: 发送任务中心交易任务到kafka
-      url: /test/sendQuestCenterData
-      method: POST
-      body: |
-        [{"amount":${amount},"createdat":${__time()},"currency":"${currency}","type":"${type}","userid":"${userId}","dth":"${dtH}","symbol":"${symbol}"}]
-      assertion: [ json: { $.code: "200" } ]
-    - name: 发送任务中心入金任务到kafka
-      byName: 发送任务中心交易任务到kafka
-      body: |
-        [{"amount":${amount},"createdat":${__time()},"currency":"${currency}","type":"DEPOSIT","userid":"${userId}"}]
-
     - name: 新建交易任务
       url: /admin/quest/create
       method: POST
@@ -38,19 +27,6 @@ keyWord:
           $.titles[?(@.lang=='zh_CN')].value: [ '多级交易任务_${__time()}' ]
           $.startTime: ${__timeShift(yyyy-MM-dd HH:mm:ss,,PT-2H,zh_CN,startTime)}
           $.endTime: ${__timeShift(yyyy-MM-dd HH:mm:ss,,PT+2H,zh_CN,endTime)}
-    - name: 进阶挑战用户报名
-      url: /quest/signUp
-      headers:
-        X-USER-ID: ${userId}
-        lang: zh_CN
-      method: POST
-      body: |
-        {}
-      bodyEditor:
-        json:
-          $.questId: ${questId}
-          $.source: 1
-      assertion: [ json: { $.code: "200" } ]
     - name: 添加标签
       url: /admin/quest/add/questLabel
       method: POST
