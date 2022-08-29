@@ -1,0 +1,82 @@
+name: ETH预言家活动
+dataProvider:
+  - subject: prophet_changeRate_01
+    activityId: prophet_changeRate_01_05
+    voteContent: ETH-USDT
+testMethod:
+  - name: 用户报名
+    dataProvider:
+      - userId: 61289d4f0c0ddc0001f2796f
+      - userId: 62df93082821e10001775e6f
+      - userId: 62dfa72fdf62160001428faf
+      - userId: 62dfb2fbdf62160001429390
+      - userId: 62e0a9e9f9d356000110dcd0
+      - userId: 62e0b2cd30652e0001c4bd3f
+      - userId: 62e0b33030652e0001c4bd6b
+      - userId: 62e0b38d30652e0001c4bdf6
+      - userId: 62e0c64d346b140001f4f4c4
+      - userId: 62e0ce31346b140001f4f556
+      - userId: 62e0daeb346b140001f4f632
+      - userId: 62e0e353435f2a0001a97297
+      - userId: 62e0ea5e1ec4c50001febe7f
+      - userId: 62e0f009a14b47000183e2a6
+      - userId: 62e0f019a14b47000183e2b7
+      - userId: 62e0f036a14b47000183e2d7
+      - userId: 62e0f045a14b47000183e2de
+      - userId: 62e0f051a14b47000183e2e6
+      - userId: 62e0f069a14b47000183e2f4
+      - userId: 62e0f075a14b47000183e2fe
+      - userId: 62e0f082a14b47000183e30a
+      - userId: 62e0f41ca14b47000183e60c
+      - userId: 62e0ffbd62ec320001609086
+      - userId: 62e11d168511e100018032e5
+      - userId: 62e1219157c4640001261573
+      - userId: 62e13e2d2a0f51000107bf14
+      - userId: 62e1411807b6110001f1ff62
+      - userId: 62e1489607b6110001f2048d
+      - userId: 62e14bfb07b6110001f205f8
+      - userId: 62e17663d962e20001fa86e3
+      - userId: 62e17671d962e20001fa86ea
+      - userId: 62e17681d962e20001fa86f1
+      - userId: 62e1768fd962e20001fa86f8
+      - userId: 62e1769ed962e20001fa86ff
+      - userId: 62e176cbd962e20001fa8709
+      - userId: 62e176f8d962e20001fa8713
+      - userId: 62e17718d962e20001fa871d
+      - userId: 62e17756d962e20001fa8727
+      - userId: 62e1777ed962e20001fa8731
+      - userId: 62e1d8a5d962e20001fa898c
+      - userId: 62e1f831800dfd00019b9664
+      - userId: 62e1f91e800dfd00019b975f
+      - userId: 62e1fa99800dfd00019b98a3
+      - userId: 62e1fdbd800dfd00019b9a86
+      - userId: 62e20171800dfd00019b9ca1
+      - userId: 62e2017e800dfd00019b9cb2
+      - userId: 62e2018c800dfd00019b9cc5
+      - userId: 62e2019a800dfd00019b9ccf
+      - userId: 62e201a7800dfd00019b9ce0
+      - userId: 62e201b4800dfd00019b9ce8
+      - userId: 62e201c0800dfd00019b9cf0
+      - userId: 62e201cb800dfd00019b9cff
+      - userId: 62e201d6800dfd00019b9d0b
+      - userId: 62e201e1800dfd00019b9d2f
+      - userId: 62e20ada800dfd00019ba150
+      - userId: 62e20c2e800dfd00019ba158
+      - userId: 62e214b8800dfd00019ba226
+      - userId: 62e23e2df4869f00017a2adf
+      - userId: 62e23e3bf4869f00017a2aef
+      - userId: 62e23e49f4869f00017a2af6
+      - userId: 62e23e58f4869f00017a2afd
+      - userId: 62e23e66f4869f00017a2b04
+      - userId: 62e23e91f4869f00017a2b0e
+      - userId: 62e23ebaf4869f00017a2b19
+      - userId: 62e23edcf4869f00017a2b29
+      - userId: 62e23f1bf4869f00017a2b3e
+      - userId: 62e23f3ff4869f00017a2b4d
+      - userId: 62e24b6df4869f00017a2e32
+    step:
+      - byName: 用户报名
+      - name: 测试${__kafkaMessage(${userId})}
+      - byName: 获取用户可投票数
+      - byName: 用户投票
+        sleep: 100

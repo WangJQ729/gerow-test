@@ -1,7 +1,8 @@
 data:
   test:
     platform: kucoin
-    host: 10.232.66.178:10240
+    #    host: appapi-v2.kucoin.net
+    host: 10.232.8.28:10240
 client:
   protocol: http
   timeOut: 10
