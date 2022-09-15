@@ -26,5 +26,5 @@ keyWord:
       body: |
         { "subject":"${subject}",
           "activityId":"${activityId}",
-          "voteContent":"${voteContent}",
+          "voteContent":"${__RandomOneOfArray(KCS-USDT,BTC-USDT)}",
           "voteCount":${voteCount} }

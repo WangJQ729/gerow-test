@@ -19,12 +19,15 @@ public class PlatformGuessTest {
 
     @DataProvider
     public Object[][] data() {
-        return new Object[][]{{"62e2017e800dfd00019b9cb2"}};
+        return new Object[][]{
+//                {"6257bc3c56d5f5000135e5a0"},
+                {"61837b619057910001bbd1a7", "SPOT", "1005"},
+                {"61837b619057910001bbd1a7", "CONTRACT", "502"},
+        };
     }
 
     @Test(dataProvider = "data")
-    public void testCommonEvent(String user_Id) throws ExecutionException, InterruptedException {
-
+    public void testCommonEvent(String user_Id, String trade_type, String usdt_amount) throws ExecutionException, InterruptedException {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", "kafka1.kucoin:9092");
         properties.put("key.serializer", StringSerializer.class.getName());
@@ -35,11 +38,11 @@ public class PlatformGuessTest {
 
         String s = "{\"subject\":\"prophet_changeRate_01\",\"data\":{\"biz_no\":\"2022061708\",\"user_Id\":\"6007f18a092e40000a97d245\",\"usdt_amount\":\"1234\",\"trade_type\":\"SPOT\",\"created_at\":\"2022-06-01 11:12:00\"}}\n";
 
-        s = JsonPathUtils.put(s, "$.subject", "prophet_changeRate_04");
-        s = JsonPathUtils.put(s, "$.data.biz_no", String.valueOf(System.currentTimeMillis()));
+        s = JsonPathUtils.put(s, "$.subject", "prophet_changeRate_01");
+        s = JsonPathUtils.put(s, "$.data.biz_no", "2022_09_03");
         s = JsonPathUtils.put(s, "$.data.user_Id", user_Id);
-        s = JsonPathUtils.put(s, "$.data.usdt_amount", "16049.99");
-        s = JsonPathUtils.put(s, "$.data.trade_type", "SPOT");
+        s = JsonPathUtils.put(s, "$.data.usdt_amount", usdt_amount);
+        s = JsonPathUtils.put(s, "$.data.trade_type", trade_type);
 
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

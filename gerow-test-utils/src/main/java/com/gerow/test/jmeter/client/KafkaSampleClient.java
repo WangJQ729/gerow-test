@@ -26,7 +26,7 @@ public class KafkaSampleClient implements JavaSamplerClient {
         producer = new KafkaProducer<>(props);
     }
 
-    private void sendOrder(String topic_name, String data) {
+    private void sendMessage(String topic_name, String data) {
         ProducerRecord<String, String> msg = new ProducerRecord<>(topic_name, data);
         producer.send(msg);
     }
@@ -39,7 +39,7 @@ public class KafkaSampleClient implements JavaSamplerClient {
         result.setRequestHeaders("send kafka data:\n" + data);
         result.sampleStart();
         try {
-            sendOrder(topic_name, data);
+            sendMessage(topic_name, data);
             result.sampleEnd();
             result.setSuccessful(true);
             result.setResponseCodeOK();

@@ -29,13 +29,16 @@ public class kafkaMessage extends AbstractFunction {
         properties.put("bootstrap.servers", "kafka1.kucoin:9092");
         properties.put("key.serializer", StringSerializer.class.getName());
         properties.put("value.serializer", StringSerializer.class.getName());
-
+        Random random = new Random();
         String s = "{\"subject\":\"prophet_changeRate_01\",\"data\":{\"biz_no\":\"2022061708\",\"user_Id\":\"6007f18a092e40000a97d245\",\"usdt_amount\":\"1234\",\"trade_type\":\"SPOT\",\"created_at\":\"2022-06-01 11:12:00\"}}\n";
         s = JsonPathUtils.put(s, "$.subject", "prophet_changeRate_01");
-        s = JsonPathUtils.put(s, "$.data.biz_no", String.valueOf(System.currentTimeMillis()));
+        s = JsonPathUtils.put(s, "$.data.biz_no", "20220830020000");
         s = JsonPathUtils.put(s, "$.data.user_Id", userId.execute());
-        s = JsonPathUtils.put(s, "$.data.usdt_amount", String.valueOf(300 + new Random().nextInt(5000)));
+        s = JsonPathUtils.put(s, "$.data.usdt_amount", String.valueOf(300 + random.nextInt(5000)));
         s = JsonPathUtils.put(s, "$.data.trade_type", "SPOT");
+        if (random.nextBoolean()) {
+            s = JsonPathUtils.put(s, "$.data.trade_type", "CONTRACT");
+        }
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = dateFormat.format(now);

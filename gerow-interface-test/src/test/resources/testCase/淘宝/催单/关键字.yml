@@ -100,6 +100,26 @@ keyWord:
       variables:
         spin: cntaobao${seller_name}
         sign: ${__HmacMD5(spin=cntaobao${seller_name})}
+    - name: 获取task模板
+      url: /api/admin/reminder/v2/manage/task/template
+      variables:
+        node_type: ${node_state}
+        template_key: 0
+      method: GET
+      #断言响应体中jsonPath为$.code的值为0
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            #提取响应体中的task模板内容,保存为参数task_info
+            task_info: $.data
+    - name: 使用模板新建一个task
+      url: /api/admin/reminder/v2/manage/task/create
+      method: POST
+      body: ${task_info}
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            task_id: $.data.id
     - name: 修改咨询未下单内容
       url: /api/admin/reminder/v2/manage/task/update
       method: POST

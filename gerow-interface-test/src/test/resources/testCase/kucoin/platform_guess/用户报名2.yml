@@ -1,77 +1,14 @@
-name: ETH预言家活动2
+name: ETH预言家活动BTC
+enable: false
 dataProvider:
   - subject: prophet_changeRate_01
-    activityId: prophet_changeRate_01_05
-    voteContent: BTC-USDT
+    activityId: prophet_changeRate_01_06
+    voteContent: ${__RandomOneOfArray(KCS-USDT,BTC-USDT)}
 testMethod:
   - name: 用户报名2
-    dataProvider:
-      - userId: 630c3f04b0b7df00013bea59
-      - userId: 630c18e8a9126f000138bacb
-      - userId: 6309c1b1a9475d000108c9c5
-      - userId: 6308c739d5e86e00019d531a
-      - userId: 6308c72ed5e86e00019d5313
-      - userId: 63087a07d09199000163595e
-      - userId: 630875d8d091990001635913
-      - userId: 63085e38d091990001635734
-      - userId: 6308405ebd48120001f02fc0
-      - userId: 63083e6dbd48120001f02f78
-      - userId: 63083d8cbd48120001f02f61
-      - userId: 63083d20bd48120001f02f50
-      - userId: 63083d02bd48120001f02f40
-      - userId: 63082f99bd48120001f02df0
-      - userId: 63075cf1080fe100013410e2
-      - userId: 63075769080fe1000134105c
-      - userId: 630756f6080fe10001341042
-      - userId: 6307544e080fe10001341018
-      - userId: 6307395ee66aa60001f64ac3
-      - userId: 630738b1e66aa60001f64a9e
-      - userId: 6306d7ef0a86dc0001e05eb7
-      - userId: 6306c6ca0a86dc0001e05df0
-      - userId: 6306c33f0a86dc0001e05dd5
-      - userId: 630604980a86dc0001e05c94
-      - userId: 630601940a86dc0001e05c81
-      - userId: 6305f2e18fb35000019bd49b
-      - userId: 6305f22c8fb35000019bd492
-      - userId: 6305db69695f2400013c3696
-      - userId: 6305d57c695f2400013c3628
-      - userId: 6305d0f0695f2400013c35b5
-      - userId: 6305c5c4695f2400013c34d7
-      - userId: 6305c589695f2400013c34be
-      - userId: 6305a069695f2400013c33e6
-      - userId: 6304a900e2f489000187e31f
-      - userId: 63049923e2f489000187e1ec
-      - userId: 630493d1e2f489000187e199
-      - userId: 63047bb0e2f489000187df7e
-      - userId: 63046251e2f489000187de87
-      - userId: 630452f8e2f489000187de7a
-      - userId: 63042a4a379896000161f512
-      - userId: 630368dae750870001829c48
-      - userId: 63036015e750870001829c03
-      - userId: 63033ddae750870001829a4d
-      - userId: 63033d8ee750870001829a3d
-      - userId: 63032b21e7508700018298e1
-      - userId: 630325c6e75087000182985a
-      - userId: 63031f33e7508700018297b5
-      - userId: 6302ec7e956faa0001ab4456
-      - userId: 6302e9d8956faa0001ab4400
-      - userId: 63018b63a95e070001cffdee
-      - userId: 63018654a95e070001cffdd3
-      - userId: 63017ce5a95e070001cffdcc
-      - userId: 6300f045a95e070001cffd73
-      - userId: 63006287a95e070001cffbc3
-      - userId: 63002cbfa95e070001cff8ec
-      - userId: 62ffa03566677b000195bedf
-      - userId: 62ff79971d8f60000101f574
-      - userId: 62ff6456eec38300011ed9bc
-      - userId: 62ff6262eec38300011ed889
-      - userId: 62ff506ceec38300011ed400
-      - userId: 62ff074000fd110001b01374
-      - userId: 62ff05c000fd110001b01327
-      - userId: 62fe32c865efd30001bb4918
+
     step:
-      - byName: 用户报名
-      - name: 测试${__kafkaMessage(${userId})}
+      #            - byName: 用户报名
+#      - name: 测试${__kafkaMessage(${userId})}
       - byName: 获取用户可投票数
       - byName: 用户投票
-        sleep: 100

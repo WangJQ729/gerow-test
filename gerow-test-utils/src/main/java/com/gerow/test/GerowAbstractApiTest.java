@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 
 @Listeners({AllureListener.class,
 //        FeishuListener.class,
-        CaseListListener.class
+//        CaseListListener.class
 })
 public abstract class GerowAbstractApiTest extends AbstractTestBase implements GerowTest, org.testng.ITest {
 
