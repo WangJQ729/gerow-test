@@ -7,17 +7,17 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模版
   step:
-    - byName: 设置固定时段>自定义重复时段>每日重复
+    - keyWord: 设置固定时段>自定义重复时段>每日重复
       name: 允许同类型时效标签存在包含重叠关系
       form:
         settings_ageing_priority_mode: 0
         settings_minimum_ageing_span_highest_priority: true
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
-    - byName: 获取时效标签列表
-    - byName: 删除时效标签
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 获取时效标签列表
+    - keyWord: 删除时效标签
       iter:
         ageing_id: ${ageing_ids}
       form:
@@ -37,8 +37,8 @@ testMethod:
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(固定时段大)
     severity: NORMAL
     step:
-      - byName: 添加时效标签
-      - byName: 添加时效标签
+      - keyWord: 添加时效标签
+      - keyWord: 添加时效标签
         name: 添加时效标签-大跨度
         form:
           name: ${name1}
@@ -48,17 +48,17 @@ testMethod:
         extractor:
           - json:
               ageing_id1: $.ageing.id
-      - byName: 修改咨询未下单内容-设置两个时效标签
-      - byName: 清除时效标签缓存
-      - byName: 清除时效标签缓存id1
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
+      - keyWord: 修改咨询未下单内容-设置两个时效标签
+      - keyWord: 清除时效标签缓存
+      - keyWord: 清除时效标签缓存id1
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
   - name: 时效标签-每日重复-时间跨度小的优先触发
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -72,8 +72,8 @@ testMethod:
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(固定时段大)
     severity: NORMAL
     step:
-      - byName: 添加时效标签(每日重复)
-      - byName: 添加时效标签(每日重复)
+      - keyWord: 添加时效标签(每日重复)
+      - keyWord: 添加时效标签(每日重复)
         name: 添加时效标签(每日重复)-大跨度
         form:
           name: ${name1}
@@ -85,17 +85,17 @@ testMethod:
         extractor:
           - json:
               ageing_id1: $.ageing.id
-      - byName: 修改咨询未下单内容-设置两个时效标签
-      - byName: 清除时效标签缓存
-      - byName: 清除时效标签缓存id1
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
+      - keyWord: 修改咨询未下单内容-设置两个时效标签
+      - keyWord: 清除时效标签缓存
+      - keyWord: 清除时效标签缓存id1
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
   - name: 时效标签-自定义重复时段-时间跨度小的优先触发
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -113,8 +113,8 @@ testMethod:
         text_with_vars2: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈(固定时段小)
     severity: NORMAL
     step:
-      - byName: 添加时效标签(自定义重复时段)
-      - byName: 添加时效标签(自定义重复时段)
+      - keyWord: 添加时效标签(自定义重复时段)
+      - keyWord: 添加时效标签(自定义重复时段)
         form:
           name: ${name1}
           repeat_start_date: ${repeat_start_date}
@@ -126,33 +126,33 @@ testMethod:
         extractor:
           - json:
               ageing_id1: $.ageing.id
-      - byName: 修改咨询未下单内容-设置两个时效标签
-      - byName: 清除时效标签缓存
-      - byName: 清除时效标签缓存id1
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
+      - keyWord: 修改咨询未下单内容-设置两个时效标签
+      - keyWord: 清除时效标签缓存
+      - keyWord: 清除时效标签缓存id1
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 删除时效标签
-    - byName: 删除时效标签
+    - keyWord: 删除时效标签
+    - keyWord: 删除时效标签
       form:
         id: ${ageing_id1}
-    - byName: 根据聊天记录查询trace
-    - byName: 查看trace详情
-    - byName: 清除时效标签缓存
-    - byName: 清除时效标签缓存id1
+    - keyWord: 根据聊天记录查询trace
+    - keyWord: 查看trace详情
+    - keyWord: 清除时效标签缓存
+    - keyWord: 清除时效标签缓存id1
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

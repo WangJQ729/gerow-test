@@ -4,14 +4,14 @@ dataProvider:
 testMethod:
   - name: 保存用户记录
     step:
-      - byName: 保存用户记录
+      - keyWord: 保存用户记录
         variables:
           biz: COIN
           type: 1000
         assertion:
           - json:
               $.code: "200"
-      - byName: 保存用户记录
+      - keyWord: 保存用户记录
         variables:
           biz: COIN
         assertion:
@@ -19,23 +19,23 @@ testMethod:
               $.code: "400"
   - name: 新手任务-用户完成任务
     step:
-      - byName: 新手任务-用户完成任务
+      - keyWord: 新手任务-用户完成任务
         variables:
           id: 60e65c964dc5c797562a3668
-      - byName: 新手任务-用户完成任务
+      - keyWord: 新手任务-用户完成任务
         variables:
           id: 60e65c964dc5c797562a36681
         assertion:
           - json:
               $.code: "200000"
               $.msg: not found quest60e65c964dc5c797562a36681
-      - byName: 新手任务-用户完成任务
+      - keyWord: 新手任务-用户完成任务
         assertion:
           - json:
               $.code: "400"
   - name: 提现申请-余额不足
     step:
-      - byName: 提现申请
+      - keyWord: 提现申请
         dataProvider:
           - currency: USDT
           - currency: BTC
@@ -46,13 +46,13 @@ testMethod:
           - json:
               $.code: "200000"
               $.msg: 余额不足!
-      - byName: 提现申请
+      - keyWord: 提现申请
         assertion:
           - json:
               $.code: "200000"
   - name: 进阶挑战用户报名
     step:
-      - byName: 进阶挑战用户报名
+      - keyWord: 进阶挑战用户报名
         bodyEditor:
           json:
             $.questId: 123
@@ -63,21 +63,21 @@ testMethod:
               $.msg: 活動不存在
   - name: 我的记录查询
     step:
-      - byName: 我的记录查询接口
+      - keyWord: 我的记录查询接口
         variables:
           pageSize: 21
         assertion:
           - json:
               $.code: "4001"
               $.msg: null is not allowed!
-      - byName: 我的记录查询接口
+      - keyWord: 我的记录查询接口
         variables:
           pageNum: 1
         assertion:
           - json:
               $.code: "4001"
               $.msg: null is not allowed!
-      - byName: 我的记录查询接口
+      - keyWord: 我的记录查询接口
         variables:
           pageNum: 0
           pageSize: 101
@@ -87,7 +87,7 @@ testMethod:
               $.msg: must smaller than max value!
   - name: 获取用户任务信息
     step:
-      - byName: 获取用户任务信息
+      - keyWord: 获取用户任务信息
         dataProvider:
           - type: 1
           - type: 2
@@ -98,7 +98,7 @@ testMethod:
         assertion:
           - json:
               $.code: "200"
-      - byName: 获取用户任务信息
+      - keyWord: 获取用户任务信息
         variables:
           type: qwe
         assertion:
@@ -106,10 +106,10 @@ testMethod:
               $.code: "400"
   - name: 用户引导记录查询
     step:
-      - byName: 用户引导记录查询
+      - keyWord: 用户引导记录查询
   - name: 用户券列表查询
     step:
-      - byName: 用户券列表查询
+      - keyWord: 用户券列表查询
         variables:
           pageNum: 1
           pageSize: 101
@@ -117,8 +117,8 @@ testMethod:
           - json:
               $.code: "4001"
               $.msg: must smaller than max value!
-      - byName: 用户券列表查询
-      - byName: 用户券列表查询
+      - keyWord: 用户券列表查询
+      - keyWord: 用户券列表查询
         variables:
           pageNum: qq
           pageSize: 100
@@ -128,7 +128,7 @@ testMethod:
               $.msg: Bad Request
   - name: 新手任务完成情况
     step:
-      - byName: 新手任务完成情况
+      - keyWord: 新手任务完成情况
         dataProvider:
           - type: 1
           - type: 2
@@ -138,7 +138,7 @@ testMethod:
         assertion:
           - json:
               $.code: "200"
-      - byName: 新手任务完成情况
+      - keyWord: 新手任务完成情况
         variables:
           type: qwe
         assertion:
@@ -146,10 +146,10 @@ testMethod:
               $.code: "400"
   - name: 新手账户余额
     step:
-      - byName: 新手账户余额
+      - keyWord: 新手账户余额
   - name: 提现申请记录
     step:
-      - byName: 提现申请记录
+      - keyWord: 提现申请记录
         variables:
           pageNum: 1
           pageSize: 101
@@ -157,7 +157,7 @@ testMethod:
           - json:
               $.code: "4001"
               $.msg: must smaller than max value!
-      - byName: 提现申请记录
+      - keyWord: 提现申请记录
         variables:
           pageNum: qq
           pageSize: 100
@@ -165,7 +165,7 @@ testMethod:
           - json:
               $.code: "400"
               $.msg: Bad Request
-      - byName: 提现申请记录
+      - keyWord: 提现申请记录
         variables:
           pageNum: 1
           pageSize: 100
@@ -174,7 +174,7 @@ testMethod:
           - json:
               $.code: "400"
               $.msg: Bad Request
-      - byName: 提现申请记录
+      - keyWord: 提现申请记录
         variables:
           pageNum: 1
           pageSize: -1
@@ -184,7 +184,7 @@ testMethod:
               $.msg: must bigger than min value!
   - name: 进阶挑战任务列表查询
     step:
-      - byName: 进阶挑战任务列表查询
+      - keyWord: 进阶挑战任务列表查询
         variables:
           pageNum: 1
           pageSize: 101
@@ -192,7 +192,7 @@ testMethod:
           - json:
               $.code: "4001"
               $.msg: must smaller than max value!
-      - byName: 进阶挑战任务列表查询
+      - keyWord: 进阶挑战任务列表查询
         variables:
           pageNum: 1
           pageSize: -1

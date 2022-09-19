@@ -6,10 +6,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
 testMethod:
   - name: 购买意向 - 暂不拍
     description: |
@@ -26,7 +26,7 @@ testMethod:
         text_with_vars: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
     severity: NORMAL
     step:
-      - byName: 开启所有首轮催拍
+      - keyWord: 开启所有首轮催拍
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -36,15 +36,15 @@ testMethod:
             $.rules[?(@.type=='send_message_by_intent')].args[?(@.intent=='')].enable: true
             $.rules[?(@.type=='user_intention_filter')].args.intentions: ["no","high"]
             $.rules[?(@.type=='user_intention_filter')].args.enable: true
-      - byName: 发送消息给商家
-      - byName: 获取对应task的催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取对应task的催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 清除任务缓存
-    - byName: 根据聊天记录查询trace
-    - byName: 查看trace详情
+    - keyWord: 清除任务缓存
+    - keyWord: 根据聊天记录查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除催单任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务

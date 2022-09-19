@@ -14,13 +14,13 @@ testMethod:
     dataProvider:
       - questId: 625ead018cbcbe00014b7583
     step:
-      - byName: 进阶挑战用户报名
+      - keyWord: 进阶挑战用户报名
         sleep: 100
   - name: 发送任务中心交易任务到kafka
     severity: CRITICAL
     step:
-      - byName: 发送任务中心交易任务到kafka
+      - keyWord: 发送任务中心交易任务到kafka
         sleep: 200
-      - byName: 发送任务中心入金任务到kafka
+      - keyWord: 发送任务中心入金任务到kafka
         sleep: 200
-#      - byName: 添加标签
+#      - keyWord: 添加标签

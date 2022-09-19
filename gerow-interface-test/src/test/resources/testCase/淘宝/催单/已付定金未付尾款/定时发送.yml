@@ -9,16 +9,16 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
 testMethod:
   - name: 设置定时发送
     severity: NORMAL
     step:
       - name: 设置催单定时发送
-        byName: 修改咨询未下单内容
+        keyWord: 修改咨询未下单内容
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -28,21 +28,21 @@ testMethod:
             $.rules[?(@.type=='deposite_send_time')].args.mode: 1
             $.rules[?(@.type=='deposite_send_time')].args.time_range_from: ${__BeanShell(${__time(/1000)}+15,)}
             $.rules[?(@.type=='deposite_send_time')].args.time_range_to: ${__BeanShell(${__time(/1000)}+3600,)}
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 模拟pulsar订单消息
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-TaskSetTimer
-      - byName: 获取催单消息
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 模拟pulsar订单消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-TaskSetTimer
+      - keyWord: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

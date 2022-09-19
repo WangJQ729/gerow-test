@@ -6,9 +6,9 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
-    - byName: 获取老的task配置
-    - byName: 获取task模板
+    - keyWord: 获取task_id
+    - keyWord: 获取老的task配置
+    - keyWord: 获取task模板
 testMethod:
   - name: 时效标签(固定时段-生效)-今天生效
     dataProvider:
@@ -44,7 +44,7 @@ testMethod:
         extractor:
           - json:
               ageing_id: $.ageing.id
-      - byName: 修改task内容
+      - keyWord: 修改task内容
         name: 设置时效标签
         bodyEditor:
           json:
@@ -55,8 +55,8 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='send_message')].args.ageing_id: ${ageing_id}
             $.rules[?(@.type=='send_message')].args.disabled: false
-      - byName: 同步订单消息
-      - byName: 获取催单消息
+      - keyWord: 同步订单消息
+      - keyWord: 获取催单消息
   - name: 时效标签(固定时段-失效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -84,12 +84,12 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签
-      - byName: 设置时效标签
-      - byName: 同步订单消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 添加时效标签
+      - keyWord: 设置时效标签
+      - keyWord: 同步订单消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
@@ -113,14 +113,14 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签
+      - keyWord: 添加时效标签
         name: 添加时效标签(每日重复)
         form:
           everyday_start_time: ${everyday_start_time}
           everyday_end_time: ${everyday_end_time}
-      - byName: 设置时效标签
-      - byName: 同步订单消息
-      - byName: 获取催单消息
+      - keyWord: 设置时效标签
+      - keyWord: 同步订单消息
+      - keyWord: 获取催单消息
   - name: 时效标签(每日重复-失效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -148,21 +148,21 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签(每日重复)
-      - byName: 设置时效标签
-      - byName: 同步订单消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 添加时效标签(每日重复)
+      - keyWord: 设置时效标签
+      - keyWord: 同步订单消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 还原催单任务
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 还原催单任务
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
     - name: 删除时效标签
       url: /api/admin/config2/ageing/delete
       headers:

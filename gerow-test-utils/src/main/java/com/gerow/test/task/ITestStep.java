@@ -34,11 +34,11 @@ public interface ITestStep extends ITest {
 
 
     /**
-     * 获取byName
+     * 获取keyWord
      *
      * @return 所需复制的测试名称
      */
-    String getByName();
+    String getKeyWord();
 
 
     Map<String, Integer> getAssertionLength();

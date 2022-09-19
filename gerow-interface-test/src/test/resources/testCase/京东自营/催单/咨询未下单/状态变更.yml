@@ -6,11 +6,11 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
-    - byName: 开启所有首轮催拍
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 开启所有首轮催拍
       bodyEditor:
         json:
           $.id: ${task_id}
@@ -49,7 +49,7 @@ testMethod:
         new_order_state_name: 订单取消
     severity: NORMAL
     step:
-      - byName: 发送消息给商家
+      - keyWord: 发送消息给商家
         variables:
           q: ${__DES3Cipher(在吗,,)}
       - name: 根据聊天记录查询trace
@@ -65,8 +65,8 @@ testMethod:
         extractor:
           - json:
               trace_id: $.data.traces[?(@.event_type=='Chat-Message')].trace_id
-      - byName: 查看trace详情-TaskSetTimer
-      - byName: 通过pulsar推送订单消息
+      - keyWord: 查看trace详情-TaskSetTimer
+      - keyWord: 通过pulsar推送订单消息
         sleep: 5000
         bodyEditor:
           json:
@@ -75,15 +75,15 @@ testMethod:
             $.platform: ${platform}
             $.order_id: ${__RandomOrderId(order_id)}
             $.shop_id: ${shop_id}
-      - byName: 获取催单消息-消息为空
-      - byName: 查看trace详情-订单状态变更
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 查看trace详情-订单状态变更
         sleep: 5000
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据聊天记录查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据聊天记录查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后还原task
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务

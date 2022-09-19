@@ -9,10 +9,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
 testMethod:
   - name: 状态变更为-${new_order_state_name}
     description: |
@@ -42,7 +42,7 @@ testMethod:
       - new_order_state: CANCEL
         new_order_state_name: 订单取消
     step:
-      - byName: 开启催单任务
+      - keyWord: 开启催单任务
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -50,10 +50,10 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_message')].args.state_delay: 10
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 通过pulsar推送订单消息
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-TaskSetTimer
-      - byName: 通过pulsar推送订单消息
+      - keyWord: 通过pulsar推送订单消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-TaskSetTimer
+      - keyWord: 通过pulsar推送订单消息
         sleep: 5000
         name: 修改订单状态
         bodyEditor:
@@ -63,13 +63,13 @@ testMethod:
             $.shop_id: ${shop_id}
             $.buyer_id: ${__RandomName(buyer_id)}
             $.status: ${order_state}
-      - byName: 获取催单消息-消息为空
-      - byName: 查看trace详情-订单状态变更
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 查看trace详情-订单状态变更
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:

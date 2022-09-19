@@ -9,11 +9,11 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
-    - byName: 开启加购未下单催单任务
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 开启加购未下单催单任务
       name: 开启加购未下单催单任务-10秒后发送消息
       bodyEditor:
         json:
@@ -25,7 +25,7 @@ beforeClass:
           $.rules[?(@.type=='send_message')].args.message: ${message}
           $.rules[?(@.type=='shopping_cart_goods_limit')].args.goods_ids:
             - ${goods_id}
-    - byName: 清除任务缓存
+    - keyWord: 清除任务缓存
 testMethod:
   - name: 状态变更为-${new_order_state_name}
     dataProvider:
@@ -45,8 +45,8 @@ testMethod:
         new_order_state_name: 订单取消
     severity: CRITICAL
     step:
-      - byName: 通过pulsar推送加购消息
-      - byName: 通过pulsar推送订单消息
+      - keyWord: 通过pulsar推送加购消息
+      - keyWord: 通过pulsar推送订单消息
         sleep: 5000
         bodyEditor:
           json:
@@ -55,22 +55,22 @@ testMethod:
             $.shop_id: ${shop_id}
             $.buyer_id: ${buyer_id}
             $.status: ${new_order_state}
-      - byName: 获取催单消息-消息为空
-      - byName: 根据加购消息查询trace
-      - byName: 查看trace详情-订单状态变更
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据加购消息查询trace
+      - keyWord: 查看trace详情-订单状态变更
   - name: 任务触发后，买家有咨询
     severity: NORMAL
     step:
-      - byName: 通过pulsar推送加购消息
-      - byName: 买家主动发送消息给商家
-      - byName: 获取加购催单消息
+      - keyWord: 通过pulsar推送加购消息
+      - keyWord: 买家主动发送消息给商家
+      - keyWord: 获取加购催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据加购消息查询trace
-    - byName: 查看trace详情
-    - byName: 清除任务缓存
+    - keyWord: 根据加购消息查询trace
+    - keyWord: 查看trace详情
+    - keyWord: 清除任务缓存
 afterClass:
   name: 测试结束后删除催单任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务

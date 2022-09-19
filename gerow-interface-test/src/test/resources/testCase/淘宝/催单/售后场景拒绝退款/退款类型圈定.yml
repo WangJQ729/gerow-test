@@ -9,10 +9,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
 
 testMethod:
   - name: 开启任务-退款类型${bill_type_name}
@@ -22,23 +22,23 @@ testMethod:
       - bill_type: return_bill
         bill_type_name: 退货退款
     step:
-      - byName: 开启售后场景催单任务
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退款消息-指定退款类型
-      - byName: 获取催单消息
+      - keyWord: 开启售后场景催单任务
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送退款消息-指定退款类型
+      - keyWord: 获取催单消息
   - name: 开启任务-退款类型${bill_type_name}
     dataProvider:
       - bill_type: replace_bill
         bill_type_name: 退换货
     step:
-      - byName: 开启售后场景催单任务
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退款消息-指定退款类型
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询退款trace
-      - byName: 查看trace详情
+      - keyWord: 开启售后场景催单任务
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送退款消息-指定退款类型
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询退款trace
+      - keyWord: 查看trace详情
         name: 查看trace详情-不满足退款类型圈定
         assertion:
           - json:
@@ -46,13 +46,13 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询退款trace
-    - byName: 查看trace详情
+    - keyWord: 根据订单查询退款trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

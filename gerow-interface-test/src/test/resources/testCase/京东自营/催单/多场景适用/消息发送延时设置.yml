@@ -24,10 +24,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
 testMethod:
   - name: 设置20秒后发送催单消息
     description: |
@@ -42,7 +42,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改task内容
+      - keyWord: 修改task内容
         name: 设置指定时间发送催单消息
         bodyEditor:
           json:
@@ -52,21 +52,21 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 20
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 通过pulsar推送订单消息
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 通过pulsar推送订单消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
         name: 查看trace详情-TaskSetTimer
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskSetTimer')].node_type: ["${node_state}"]
-      - byName: 获取催单消息
+      - keyWord: 获取催单消息
         sleep: 15000
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后还原task
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务

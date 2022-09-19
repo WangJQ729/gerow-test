@@ -9,9 +9,9 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
-    - byName: 获取老的task配置
-    - byName: 获取task模板
+    - keyWord: 获取task_id
+    - keyWord: 获取老的task配置
+    - keyWord: 获取task模板
 testMethod:
   - name: 与客服会话-开启-任务触发后与客服会话
     description: |
@@ -27,7 +27,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改task内容
+      - keyWord: 修改task内容
         name: 开启与客服会话过滤
         bodyEditor:
           json:
@@ -37,11 +37,11 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 10
             $.rules[?(@.type=='send_message')].args.receive_message_filter: true
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 同步订单消息
-      - byName: 拼多多推送订单状态变更消息
-      - byName: 客户端获取订单状态变更列表
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 同步订单消息
+      - keyWord: 拼多多推送订单状态变更消息
+      - keyWord: 客户端获取订单状态变更列表
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.phase=='TriggerTask')].node_type: ["${order_state}"]
@@ -64,12 +64,12 @@ testMethod:
           - json:
               qstr: $.answer
             need_decode: true
-      - byName: 查看trace详情
+      - keyWord: 查看trace详情
         sleep: 8000
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
-      - byName: 获取催单消息-消息为空
+      - keyWord: 获取催单消息-消息为空
   - name: 与客服会话-开启-任务触发前与客服会话
     description: |
       """</br>
@@ -84,18 +84,18 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启与客服会话过滤
-      - byName: 发送消息给商家
-      - byName: 同步订单消息
-      - byName: 拼多多推送订单状态变更消息
-      - byName: 客户端获取订单状态变更列表
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情
-      - byName: 获取催单消息
+      - keyWord: 开启与客服会话过滤
+      - keyWord: 发送消息给商家
+      - keyWord: 同步订单消息
+      - keyWord: 拼多多推送订单状态变更消息
+      - keyWord: 客户端获取订单状态变更列表
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
+      - keyWord: 获取催单消息
         untilWait: 15
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 还原催单任务
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 还原催单任务
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情

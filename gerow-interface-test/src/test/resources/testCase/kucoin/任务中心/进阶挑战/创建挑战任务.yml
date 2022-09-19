@@ -10,5 +10,5 @@ testMethod:
   - name: 新建交易任务
     severity: CRITICAL
     step:
-      - byName: 新建交易任务
-      - byName: 新建多级交易任务
+      - keyWord: 新建交易任务
+      - keyWord: 新建多级交易任务

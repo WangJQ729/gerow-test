@@ -41,18 +41,18 @@ beforeSuite:
       extractor:
         - json:
             auth_url: $.url
-    - byName: 进入主页
+    - keyWord: 进入主页
       host: ""
       url: ${auth_url}
       method: GET
       responseType: DEFAULT
-    - byName: 获取子账号
+    - keyWord: 获取子账号
       extractor:
         - json:
             seller_name: $.subusers[?(@.auth_status==0)].sub_nick[0]
             child_seller: $.subusers[?(@.auth_status==1)].sub_nick[0]
           site: TESTSUIT
-    - byName: 催单设置-仅自己
-    - byName: 设置单个顾客单日最高催单数
-    - byName: 获取所有催单节点的task_id
-    - byName: 删除其他催单任务
+    - keyWord: 催单设置-仅自己
+    - keyWord: 设置单个顾客单日最高催单数
+    - keyWord: 获取所有催单节点的task_id
+    - keyWord: 删除其他催单任务

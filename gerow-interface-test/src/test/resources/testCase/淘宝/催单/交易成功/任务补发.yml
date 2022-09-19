@@ -9,85 +9,85 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
-    - byName: 开启交易成功催单任务
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 开启交易成功催单任务
 
 testMethod:
   - name: 开启任务补发
     severity: NORMAL
     step:
-      - byName: 获取设置结果
-      - byName: 开启任务补发
-      - byName: 随机顾客发送消息给服务助手
-      - byName: 模拟pulsar订单消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-TaskSetTimer
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-第一次重试
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-第二次重试
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-第三次重试
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-第四次重试
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-第五次重试
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-第六次重试
-      - byName: 获取timer
-      - byName: 重新设置第20次timer
-      - byName: 查看trace详情-第20次重试
-      - byName: 获取timer
-      - byName: 重新设置第27次timer
-      - byName: 查看trace详情-第27次重试
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-超过重试次数
+      - keyWord: 获取设置结果
+      - keyWord: 开启任务补发
+      - keyWord: 随机顾客发送消息给服务助手
+      - keyWord: 模拟pulsar订单消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-TaskSetTimer
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-第一次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-第二次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-第三次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-第四次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-第五次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-第六次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置第20次timer
+      - keyWord: 查看trace详情-第20次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置第27次timer
+      - keyWord: 查看trace详情-第27次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-超过重试次数
   - name: 关闭任务补发
     severity: NORMAL
     step:
-      - byName: 获取设置结果
-      - byName: 关闭任务补发
-      - byName: 随机顾客发送消息给服务助手
-      - byName: 模拟pulsar订单消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-TaskSetTimer
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-第一次重试
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-第二次重试
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-第三次重试
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-第四次重试
-      - byName: 获取timer
-      - byName: 重新设置timer
-      - byName: 查看trace详情-超过重试次数
+      - keyWord: 获取设置结果
+      - keyWord: 关闭任务补发
+      - keyWord: 随机顾客发送消息给服务助手
+      - keyWord: 模拟pulsar订单消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-TaskSetTimer
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-第一次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-第二次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-第三次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-第四次重试
+      - keyWord: 获取timer
+      - keyWord: 重新设置timer
+      - keyWord: 查看trace详情-超过重试次数
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

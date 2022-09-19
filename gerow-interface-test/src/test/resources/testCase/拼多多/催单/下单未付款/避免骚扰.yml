@@ -6,9 +6,9 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
-    - byName: 获取老的task配置
-    - byName: 获取task模板
+    - keyWord: 获取task_id
+    - keyWord: 获取老的task配置
+    - keyWord: 获取task模板
 testMethod:
   - name: 避免骚扰
     description: |
@@ -27,7 +27,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改task内容
+      - keyWord: 修改task内容
         name: 开启避免骚扰
         bodyEditor:
           json:
@@ -37,17 +37,17 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: true
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 同步订单消息
+      - keyWord: 同步订单消息
         name: 指定随机顾客同步订单消息
         form:
           uid: ${__Random(10000000,99999999,uid)}
-      - byName: 获取催单消息
-      - byName: 同步订单消息
+      - keyWord: 获取催单消息
+      - keyWord: 同步订单消息
         form:
           uid: ${uid}
-      - byName: 根据订单查询trace
-      - byName: 获取催单消息-消息为空
-      - byName: 查看trace详情
+      - keyWord: 根据订单查询trace
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_limit]
@@ -68,7 +68,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改task内容
+      - keyWord: 修改task内容
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -77,16 +77,16 @@ testMethod:
             $.rules[?(@.type=='send_limit')].args.enable: false
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 指定随机顾客同步订单消息
-      - byName: 获取催单消息
-      - byName: 同步订单消息
+      - keyWord: 指定随机顾客同步订单消息
+      - keyWord: 获取催单消息
+      - keyWord: 同步订单消息
         form:
           uid: ${uid}
-      - byName: 根据订单查询trace
-      - byName: 获取催单消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 还原催单任务
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 还原催单任务
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情

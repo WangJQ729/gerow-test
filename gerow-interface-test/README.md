@@ -66,7 +66,7 @@
 |字段名称|描述|数据类型
 |---|---|---|
 |name|步骤名称|String
-|byName|通过step名称复制step|String
+|keyWord|通过step名称复制step|String
 |dataProvider|测试数据|List\<Map>
 |host|主机地址（配置文件中默认配置，可修改）|String
 |url|请求地址|String
@@ -105,7 +105,7 @@
 
 ###### example
 
-      - byName: 查看trace详情
+      - keyWord: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_limit]             
@@ -186,7 +186,7 @@
                     task_list: $.data.tasks[*].id
                   size: 100
                   options: [DEFAULT_PATH_LEAF_TO_NULL]
-            - byName: 删除催单任务
+            - keyWord: 删除催单任务
               name: 删除其他催单任务
               iter:
                 task_id: ${task_list}

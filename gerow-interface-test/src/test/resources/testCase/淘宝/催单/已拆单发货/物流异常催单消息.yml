@@ -17,10 +17,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
 testMethod:
   - name: 催单消息校验-${message}
     dataProvider:
@@ -33,40 +33,40 @@ testMethod:
       - message: "1{↓1秒后分行发送↓}2"
         text_with_vars: "1{↓1秒后分行发送↓}2"
     step:
-      - byName: 开启催单任务
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 推送部分发货消息-第一件
-      - byName: 推送部分发货消息-第二件
-      - byName: 推送部分发货消息-第三件
+      - keyWord: 开启催单任务
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送部分发货消息-第一件
+      - keyWord: 推送部分发货消息-第二件
+      - keyWord: 推送部分发货消息-第三件
       - name: 发送物流消息-子订单一状态变更
-        byName: 发送物流消息
+        keyWord: 发送物流消息
         bodyEditor:
           json:
             $.out_sid: ${out_sid_1}
-      - byName: 获取催单消息
+      - keyWord: 获取催单消息
       - name: 发送物流消息-子订单二状态变更
-        byName: 发送物流消息
+        keyWord: 发送物流消息
         bodyEditor:
           json:
             $.out_sid: ${out_sid_2}
-      - byName: 获取催单消息
+      - keyWord: 获取催单消息
       - name: 发送物流消息-子订单三状态变更
-        byName: 发送物流消息
+        keyWord: 发送物流消息
         bodyEditor:
           json:
             $.out_sid: ${out_sid_3}
-      - byName: 获取催单消息
+      - keyWord: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

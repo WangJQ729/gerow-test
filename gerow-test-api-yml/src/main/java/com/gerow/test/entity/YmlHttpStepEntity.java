@@ -22,7 +22,7 @@ public class YmlHttpStepEntity {
     /**
      * 所要的步骤的名称
      */
-    private String byName;
+    private String keyWord;
     /**
      * host 默认从配置文件中拿
      */

@@ -7,10 +7,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模版
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
     - name: 获取商品列表
       url: /api/goods_service/admin/platform/shop_goods_list
       variables:
@@ -37,7 +37,7 @@ testMethod:
     dataProvider:
       - question: ${plat_goods_url}
     step:
-      - byName: 修改咨询未下单内容
+      - keyWord: 修改咨询未下单内容
         name: 咨询未下单-设置商品圈定
         bodyEditor:
           json:
@@ -48,16 +48,16 @@ testMethod:
             $.rules[?(@.type=='asked_goods_limit')].args.enable: true
             $.rules[?(@.type=='asked_goods_limit')].args.goods_ids:
               - ${plat_goods_id}
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
   - name: 不满足咨询商品圈定
     dataProvider:
       - question: ${plat_goods_url2}
     step:
-      - byName: 咨询未下单-设置商品圈定
-      - byName: 发送消息给商家
-      - byName: 根据聊天记录查询trace
-      - byName: 查看trace详情
+      - keyWord: 咨询未下单-设置商品圈定
+      - keyWord: 发送消息给商家
+      - keyWord: 根据聊天记录查询trace
+      - keyWord: 查看trace详情
         name: 查看trace详情-咨询商品圈定
         assertion:
           - json:
@@ -69,7 +69,7 @@ testMethod:
       - question: ${plat_goods_url2}
         asked_goods_limit_name: 不满足的商品
     step:
-      - byName: 修改咨询未下单内容
+      - keyWord: 修改咨询未下单内容
         name: 咨询未下单-设置商品圈定(关闭开关)
         bodyEditor:
           json:
@@ -80,18 +80,18 @@ testMethod:
             $.rules[?(@.type=='asked_goods_limit')].args.enable: false
             $.rules[?(@.type=='asked_goods_limit')].args.goods_ids:
               - ${plat_goods_id}
-      - byName: 发送消息给商家
-      - byName: 获取第一轮催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 获取第一轮催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据聊天记录查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据聊天记录查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

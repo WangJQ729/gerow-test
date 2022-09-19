@@ -10,10 +10,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
 
 testMethod:
   - name: 催单消息校验-${message}
@@ -38,11 +38,11 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启已签收催单任务
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息
+      - keyWord: 开启已签收催单任务
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息
   - name: 催单消息校验-包含图片
     dataProvider:
       - message: 含图片的消息
@@ -59,7 +59,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启催单任务
+      - keyWord: 开启催单任务
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -72,10 +72,10 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.images:
               - id: 5dbbd61a9e3aad000d7de9fe
                 url: https://xdmp-new.oss-cn-hangzhou.aliyuncs.com/answer_pics/eb1ddc7854a747ba9cfb8424c151ae04.jpg
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息
         assertion:
           - json:
               $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
@@ -85,13 +85,13 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

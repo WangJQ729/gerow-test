@@ -11,12 +11,12 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
-    - byName: 获取时效标签列表
-    - byName: 删除时效标签
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 获取时效标签列表
+    - keyWord: 删除时效标签
       iter:
         ageing_id: ${ageing_ids}
       form:
@@ -32,8 +32,8 @@ testMethod:
         task_status: starting
     severity: NORMAL
     step:
-      - byName: 添加时效标签
-      - byName: 开启催单任务
+      - keyWord: 添加时效标签
+      - keyWord: 开启催单任务
         name: 物流停滞超时催单任务-设置时效标签
         bodyEditor:
           json:
@@ -43,10 +43,10 @@ testMethod:
             $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 0
             $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
             $.rules[?(@.type=='send_state_delay_message')].args.ageing_id: ${ageing_id}
-      - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息
+      - keyWord: 获取催单任务时效标签状态
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息
   - name: 时效标签(固定时段-失效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -63,14 +63,14 @@ testMethod:
         task_status: unstart
     severity: NORMAL
     step:
-      - byName: 添加时效标签
-      - byName: 物流停滞超时催单任务-设置时效标签
-      - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-时效标签不生效
+      - keyWord: 添加时效标签
+      - keyWord: 物流停滞超时催单任务-设置时效标签
+      - keyWord: 获取催单任务时效标签状态
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-时效标签不生效
   - name: 时效标签(每日重复-生效)-2小时前到2小时后
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -80,18 +80,18 @@ testMethod:
         task_status: starting
     severity: NORMAL
     step:
-      - byName: 添加时效标签
+      - keyWord: 添加时效标签
         name: 添加时效标签(每日重复)
         form:
           everyday_start_time: ${everyday_start_time}
           everyday_end_time: ${everyday_end_time}
           start_time: ~
           end_time: ~
-      - byName: 物流停滞超时催单任务-设置时效标签
-      - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息
+      - keyWord: 物流停滞超时催单任务-设置时效标签
+      - keyWord: 获取催单任务时效标签状态
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息
   - name: 时效标签(每日重复-失效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -108,14 +108,14 @@ testMethod:
         task_status: unstart
     severity: NORMAL
     step:
-      - byName: 添加时效标签(每日重复)
-      - byName: 物流停滞超时催单任务-设置时效标签
-      - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-时效标签不生效
+      - keyWord: 添加时效标签(每日重复)
+      - keyWord: 物流停滞超时催单任务-设置时效标签
+      - keyWord: 获取催单任务时效标签状态
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-时效标签不生效
   - name: 时效标签(自定义重复时段-生效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -128,12 +128,12 @@ testMethod:
         task_status: starting
     severity: NORMAL
     step:
-      - byName: 添加时效标签(自定义重复时段)
-      - byName: 物流停滞超时催单任务-设置时效标签
-      - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息
+      - keyWord: 添加时效标签(自定义重复时段)
+      - keyWord: 物流停滞超时催单任务-设置时效标签
+      - keyWord: 获取催单任务时效标签状态
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息
   - name: 时效标签(自定义重复时段-失效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -170,25 +170,25 @@ testMethod:
         task_status: unstart
     severity: NORMAL
     step:
-      - byName: 添加时效标签(自定义重复时段)
-      - byName: 物流停滞超时催单任务-设置时效标签
-      - byName: 获取催单任务时效标签状态
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-时效标签不生效
+      - keyWord: 添加时效标签(自定义重复时段)
+      - keyWord: 物流停滞超时催单任务-设置时效标签
+      - keyWord: 获取催单任务时效标签状态
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-时效标签不生效
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
-    - byName: 删除时效标签
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
+    - keyWord: 删除时效标签
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

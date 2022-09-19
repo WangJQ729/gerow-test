@@ -6,9 +6,9 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
-    - byName: 获取老的task配置
-    - byName: 获取task模板
+    - keyWord: 获取task_id
+    - keyWord: 获取老的task配置
+    - keyWord: 获取task模板
 testMethod:
   - name: 时效标签(固定时段-生效)-今天生效
     dataProvider:
@@ -30,10 +30,10 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签
-      - byName: 设置时效标签
-      - byName: 同步待成团订单消息
-      - byName: 获取催单消息
+      - keyWord: 添加时效标签
+      - keyWord: 设置时效标签
+      - keyWord: 同步待成团订单消息
+      - keyWord: 获取催单消息
   - name: 时效标签(固定时段-失效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -61,12 +61,12 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签
-      - byName: 设置时效标签
-      - byName: 同步待成团订单消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据待成团订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 添加时效标签
+      - keyWord: 设置时效标签
+      - keyWord: 同步待成团订单消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据待成团订单查询trace
+      - keyWord: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
@@ -90,10 +90,10 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签(每日重复)
-      - byName: 设置时效标签
-      - byName: 同步待成团订单消息
-      - byName: 获取催单消息
+      - keyWord: 添加时效标签(每日重复)
+      - keyWord: 设置时效标签
+      - keyWord: 同步待成团订单消息
+      - keyWord: 获取催单消息
   - name: 时效标签(每日重复-失效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -121,19 +121,19 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签(每日重复)
-      - byName: 设置时效标签
-      - byName: 同步待成团订单消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据待成团订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 添加时效标签(每日重复)
+      - keyWord: 设置时效标签
+      - keyWord: 同步待成团订单消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据待成团订单查询trace
+      - keyWord: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 还原催单任务
-    - byName: 根据待成团订单查询trace
-    - byName: 查看trace详情
-    - byName: 删除时效标签
+    - keyWord: 还原催单任务
+    - keyWord: 根据待成团订单查询trace
+    - keyWord: 查看trace详情
+    - keyWord: 删除时效标签

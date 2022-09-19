@@ -38,7 +38,7 @@ beforeClass:
       extractor:
         - json:
             task_info: $.data
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
       name: 删除其他催单任务
       iter:
         task_id: ${task_list}
@@ -99,7 +99,7 @@ testMethod:
             $.buyer_id: ${__RandomName(buyer_id)}
             $.status: ${order_state}
       - name: 获取催单消息
-        byName: 拉一下催单消息
+        keyWord: 拉一下催单消息
         assertion:
           - json:
               $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
@@ -120,7 +120,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改task内容
+      - keyWord: 修改task内容
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -132,8 +132,8 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.images:
               - id: 5dbbd61a9e3aad000d7de9fe
                 url: https://xdmp-new.oss-cn-hangzhou.aliyuncs.com/answer_pics/eb1ddc7854a747ba9cfb8424c151ae04.jpg
-      - byName: 通过pulsar推送订单消息
-      - byName: 获取催单消息
+      - keyWord: 通过pulsar推送订单消息
+      - keyWord: 获取催单消息
         assertion:
           - json:
               $.data.messages[?(@.order_id=='${order_id}')].text_with_vars:
@@ -166,4 +166,4 @@ afterMethod:
 afterClass:
   name: 测试结束后还原task
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务

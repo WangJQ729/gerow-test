@@ -93,7 +93,7 @@ public abstract class AbstractTestMethod implements ITestMethod {
             if (StringUtils.isNoneBlank(iTestStep.getName())) {
                 return iTestStep.getName();
             } else {
-                return iTestStep.getByName();
+                return iTestStep.getKeyWord();
             }
         }).collect(Collectors.joining("</br>"))+"</br>\"\"\"</br>";
     }

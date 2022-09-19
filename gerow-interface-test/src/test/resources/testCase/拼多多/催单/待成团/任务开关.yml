@@ -6,9 +6,9 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
-    - byName: 获取老的task配置
-    - byName: 获取task模板
+    - keyWord: 获取task_id
+    - keyWord: 获取老的task配置
+    - keyWord: 获取task模板
 testMethod:
   - name: 开启任务
     description: |
@@ -23,7 +23,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改task内容
+      - keyWord: 修改task内容
         name: 开启催单任务
         bodyEditor:
           json:
@@ -32,8 +32,8 @@ testMethod:
             $.shop_id: ${shop_id}
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
-      - byName: 同步待成团订单消息
-      - byName: 获取催单消息
+      - keyWord: 同步待成团订单消息
+      - keyWord: 获取催单消息
   - name: 关闭任务
     description: |
       """</br>
@@ -47,25 +47,25 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改task内容
+      - keyWord: 修改task内容
         name: 关闭催单任务
         bodyEditor:
           json:
             $.id: ${task_id}
             $.enable: false
-      - byName: 同步订单消息
+      - keyWord: 同步订单消息
         name: 同步待成团订单消息
         form:
           status: 1
           group_status: 0
-      - byName: 获取催单消息
+      - keyWord: 获取催单消息
         sleep: 5000
         name: 获取催单消息-消息为空
         assertion:
           - json:
               $.data.messages[?(@.order_id=='${order_id}')].text_with_vars: []
-      - byName: 根据待成团订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 根据待成团订单查询trace
+      - keyWord: 查看trace详情
         name: 查看trace详情-任务关闭
         assertion:
           - json:
@@ -73,10 +73,10 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 还原催单任务
-    - byName: 根据订单查询trace
+    - keyWord: 还原催单任务
+    - keyWord: 根据订单查询trace
       name: 根据待成团订单查询trace
       extractor:
         - json:
             trace_id: $.data.traces[?(@.order_state=='unGroup')].trace_id
-    - byName: 查看trace详情
+    - keyWord: 查看trace详情

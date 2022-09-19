@@ -12,11 +12,11 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
     - name: 使用模板新建第一个task
-      byName: 使用模板新建一个task
+      keyWord: 使用模板新建一个task
       bodyEditor:
         json:
           $.name: 第一个任务
@@ -31,7 +31,7 @@ beforeClass:
         - json:
             task_id_1: $.data.id
     - name: 使用模板新建第二个task
-      byName: 使用模板新建一个task
+      keyWord: 使用模板新建一个task
       bodyEditor:
         json:
           $.name: 第二个任务
@@ -60,15 +60,15 @@ testMethod:
             $.repeat_aging_day: 1
             $.node_type: ${node_state}
         assertion: [json: {$.code: 0}]
-      - byName: 清除任务缓存
+      - keyWord: 清除任务缓存
         variables:
           task_id: ${task_id_1}
-      - byName: 清除任务缓存
+      - keyWord: 清除任务缓存
         variables:
           task_id: ${task_id_2}
-      - byName: 清除店铺缓存
-      - byName: 通过pulsar推送加购消息
-      - byName: 拉一下催单消息
+      - keyWord: 清除店铺缓存
+      - keyWord: 通过pulsar推送加购消息
+      - keyWord: 拉一下催单消息
         name: 获取到2条催单消息
         assertion:
           - total:
@@ -76,7 +76,7 @@ testMethod:
   - name: 开启相同场景内任务去重-全部任务都满足-只催第一个
     severity: NORMAL
     step:
-      - byName: 规则设置-关闭多任务去重
+      - keyWord: 规则设置-关闭多任务去重
         name: 规则设置-开启场景内任务去重
         bodyEditor:
           json:
@@ -96,20 +96,20 @@ testMethod:
               ]
           }
         assertion: [json: {$.code: 0}]
-      - byName: 清除任务缓存
+      - keyWord: 清除任务缓存
         variables:
           task_id: ${task_id_1}
-      - byName: 清除任务缓存
+      - keyWord: 清除任务缓存
         variables:
           task_id: ${task_id_2}
-      - byName: 清除店铺缓存
-      - byName: 通过pulsar推送加购消息
-      - byName: 获取加购催单消息
+      - keyWord: 清除店铺缓存
+      - keyWord: 通过pulsar推送加购消息
+      - keyWord: 获取加购催单消息
   - name: 开启相同场景内任务去重-全部任务都满足-调整顺序
     severity: NORMAL
     step:
-      - byName: 规则设置-开启场景内任务去重
-      - byName: 设置第一个任务在前
+      - keyWord: 规则设置-开启场景内任务去重
+      - keyWord: 设置第一个任务在前
         body: |
           {
               "ids":[
@@ -118,15 +118,15 @@ testMethod:
               ]
           }
         assertion: [json: {$.code: 0}]
-      - byName: 清除任务缓存
+      - keyWord: 清除任务缓存
         variables:
           task_id: ${task_id_1}
-      - byName: 清除任务缓存
+      - keyWord: 清除任务缓存
         variables:
           task_id: ${task_id_2}
-      - byName: 清除店铺缓存
-      - byName: 通过pulsar推送加购消息
-      - byName: 获取加购催单消息
+      - keyWord: 清除店铺缓存
+      - keyWord: 通过pulsar推送加购消息
+      - keyWord: 获取加购催单消息
         assertion:
           - json:
               $.data.messages[?(@.buyer_id=='${buyer_id}')].text_with_vars:
@@ -134,8 +134,8 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据加购消息查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据加购消息查询trace
+    - keyWord: 查看trace详情
     - name: 清除店铺缓存
       url: /api/client/reminder/v2/test/cache_clean/shop_setting
       method: GET
@@ -144,9 +144,9 @@ afterMethod:
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
       body: |
         {"id":"${task_id_1}"}
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
       body: |
         {"id":"${task_id_2}"}

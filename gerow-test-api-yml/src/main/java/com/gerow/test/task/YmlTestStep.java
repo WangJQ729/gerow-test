@@ -117,7 +117,7 @@ public class YmlTestStep implements ITestStep {
             }
             String stepName =
                     replace(TestUtils.firstNonEmpty(factory.getName(),
-                            step.getName(), step.getByName()).orElse("testStep"));
+                            step.getName(), step.getKeyWord()).orElse("testStep"));
             Allure.step(stepName, () -> doWithWait(System.currentTimeMillis()));
         } else {
             Map<String, String[]> dataList = new HashMap<>();
@@ -218,19 +218,19 @@ public class YmlTestStep implements ITestStep {
      * @return 构建好的测步骤
      */
     private YmlHttpStepEntity buildStep(YmlHttpStepEntity step) {
-        if (StringUtils.isNoneBlank(step.getByName())) {
-            return copyStep(getStepEntity(step.getByName()), step);
+        if (StringUtils.isNoneBlank(step.getKeyWord())) {
+            return copyStep(getStepEntity(step.getKeyWord()), step);
         }
         return this.step;
     }
 
     /**
-     * 通过byName查找测试步骤
+     * 通过keyWord查找测试步骤
      *
-     * @param byName 所要查找的测试步骤名称
+     * @param keyWord 所要查找的测试步骤名称
      * @return 查找到的测试步骤
      */
-    private YmlHttpStepEntity getStepEntity(String byName) {
+    private YmlHttpStepEntity getStepEntity(String keyWord) {
         return testMethod.getTestClass().getTestSuite().getTestClass()
                 .stream().flatMap(testClass -> {
                     List<ITestMethod> testMethods = new ArrayList<>(testClass.getTestMethods());
@@ -246,9 +246,9 @@ public class YmlTestStep implements ITestStep {
                     return testMethods.stream();
                 })
                 .flatMap(method -> method.getTestSteps().stream())
-                .filter(testStep -> StringUtils.equals(testStep.getName(), byName))
+                .filter(testStep -> StringUtils.equals(testStep.getName(), keyWord))
                 .map(testStep -> ((YmlTestStep) testStep).getStep().copy()
-                ).findAny().orElseThrow(() -> new UnsupportedOperationException("未找到step：" + byName));
+                ).findAny().orElseThrow(() -> new UnsupportedOperationException("未找到step：" + keyWord));
     }
 
     /**
@@ -287,8 +287,8 @@ public class YmlTestStep implements ITestStep {
         if (oldStep.getBodyEditor() != null) newStep.setBodyEditor(oldStep.getBodyEditor());
 
         if (StringUtils.isNotBlank(oldStep.getName())) newStep.setName(oldStep.getName());
-        //如果copyStep也是byName查找，执行递归
-        if (StringUtils.isNotBlank(newStep.getByName())) newStep = buildStep(newStep);
+        //如果copyStep也是keyWord查找，执行递归
+        if (StringUtils.isNotBlank(newStep.getKeyWord())) newStep = buildStep(newStep);
 
         return newStep;
     }
@@ -394,8 +394,8 @@ public class YmlTestStep implements ITestStep {
     }
 
     @Override
-    public String getByName() {
-        return step.getByName();
+    public String getKeyWord() {
+        return step.getKeyWord();
     }
 
     @Override

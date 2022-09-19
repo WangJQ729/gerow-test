@@ -45,11 +45,11 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
-    - byName: 开启催单任务
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 开启催单任务
       bodyEditor:
         json:
           $.id: ${task_id}
@@ -58,13 +58,13 @@ beforeClass:
           $.rules[?(@.type=='send_message')].args.state_delay: 0
           $.rules[?(@.type=='send_message')].args.message: ${message}
           $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
-    - byName: 催单设置-子账号不催单
-    - byName: 催单设置-子账号3不催单
+    - keyWord: 催单设置-子账号不催单
+    - keyWord: 催单设置-子账号3不催单
 testMethod:
   - name: 开启转接-子账号在线
     severity: NORMAL
     step:
-      - byName: 催单设置为自己和静默
+      - keyWord: 催单设置为自己和静默
         name: 客户端设置-开启催单转接
         form:
           sub_nick: ${seller_name}
@@ -90,8 +90,8 @@ testMethod:
         headers:
           Content-Type: multipart/form-data
         assertion: [json: {$.code: 0}]
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 获取催单消息
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取催单消息
         name: 获取催单消息-回复后转接
         assertion:
           - json:
@@ -103,7 +103,7 @@ testMethod:
         extractor:
           - json:
               customer_data: $.data.messages[?(@.task_id=='${task_id}')].customer_data
-      - byName: 发送消息给商家
+      - keyWord: 发送消息给商家
         name: 发送消息给商家-含转接内容
         body: |
           {
@@ -131,14 +131,14 @@ testMethod:
   - name: 开启转接-子账号在线-顾客回复“对的、好的”等表示肯定的消息时不转接-关闭
     severity: NORMAL
     step:
-      - byName: 客户端设置-开启催单转接
-      - byName: 新建催单转接分组
-      - byName: 更新转接列表
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+      - keyWord: 更新转接列表
         form:
           settings_is_begin_words_filter: false
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 获取催单消息-回复后转接
-      - byName: 发送消息给商家-含转接内容
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-含转接内容
         name: 发送消息给商家-固定问题-含转接内容
         bodyEditor:
           json:
@@ -146,12 +146,12 @@ testMethod:
   - name: 开启转接-子账号在线-顾客回复“对的、好的”等表示肯定的消息时不转接-开启
     severity: NORMAL
     step:
-      - byName: 客户端设置-开启催单转接
-      - byName: 新建催单转接分组
-      - byName: 更新转接列表
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 获取催单消息-回复后转接
-      - byName: 发送消息给商家-固定问题-含转接内容
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+      - keyWord: 更新转接列表
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-固定问题-含转接内容
         name: 发送消息给商家-固定问题-含转接内容-不转接
         assertion:
           - json:
@@ -162,27 +162,27 @@ testMethod:
   - name: 开启转接-子账号在线-催单前关闭转接
     severity: NORMAL
     step:
-      - byName: 客户端设置-开启催单转接
-      - byName: 新建催单转接分组
-      - byName: 更新转接列表
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 客户端设置-开启催单转接
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+      - keyWord: 更新转接列表
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 客户端设置-开启催单转接
         name: 客户端设置-关闭催单转接
         form:
           is_reminder_transfer: false
-      - byName: 获取催单消息-转接关闭
+      - keyWord: 获取催单消息-转接关闭
   - name: 开启转接-子账号在线-回复前关闭转接
     links:
       TAPD_BUG: https://www.tapd.cn/52457521/bugtrace/bugs/view?bug_id=1152457521001030132
     severity: NORMAL
     step:
-      - byName: 客户端设置-开启催单转接
-      - byName: 新建催单转接分组
-      - byName: 更新转接列表
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 获取催单消息-回复后转接
-      - byName: 客户端设置-关闭催单转接
-      - byName: 发送消息给商家-转接列表为空
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+      - keyWord: 更新转接列表
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 客户端设置-关闭催单转接
+      - keyWord: 发送消息给商家-转接列表为空
         assertion:
           - json:
               $.custom_transfer.transfer_type: ""
@@ -192,15 +192,15 @@ testMethod:
   - name: 开启转接-子账号不在线
     severity: NORMAL
     step:
-      - byName: 客户端设置-开启催单转接
-      - byName: 新建催单转接分组
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
         bodyEditor:
           json:
             $.sub_user_name_list: ${child_seller2}
-      - byName: 更新转接列表
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 获取催单消息-回复后转接
-      - byName: 发送消息给商家-转接列表为空
+      - keyWord: 更新转接列表
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-转接列表为空
         assertion:
           - json:
               $.custom_transfer.transfer_type: "reminder_transfer"
@@ -211,15 +211,15 @@ testMethod:
     enable: false
     severity: NORMAL
     step:
-      - byName: 客户端设置-开启催单转接
-      - byName: 新建催单转接分组
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
         bodyEditor:
           json:
             $.sub_user_name_list: ${child_seller},${seller_name}
-      - byName: 更新转接列表
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 获取催单消息-回复后转接
-      - byName: 发送消息给商家-含转接内容
+      - keyWord: 更新转接列表
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-含转接内容
         assertion:
           - json:
               $.custom_transfer.transfer_type: "reminder_transfer"
@@ -233,45 +233,45 @@ testMethod:
             need_decode: true
   - name: 开启转接-多个子账号转接-只有一个在线
     step:
-      - byName: 客户端设置-开启催单转接
-      - byName: 新建催单转接分组
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
         bodyEditor:
           json:
             $.sub_user_name_list: ${child_seller},${child_seller2}
-      - byName: 更新转接列表
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 获取催单消息-回复后转接
-      - byName: 发送消息给商家-含转接内容
+      - keyWord: 更新转接列表
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-含转接内容
   - name: 开启转接-多个子账号转接-都在线
     enable: false
     severity: NORMAL
     step:
-      - byName: 客户端设置-开启催单转接
-      - byName: 新建催单转接分组
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
         bodyEditor:
           json:
             $.sub_user_name_list: ${child_seller},${child_seller3}
-      - byName: 更新转接列表
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 获取催单消息-回复后转接
-      - byName: 发送消息给商家-转接给在线的子账号
+      - keyWord: 更新转接列表
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-转接给在线的子账号
   - name: 开启转接-多个子账号转接-部分在线
     enable: false
     step:
-      - byName: 客户端设置-开启催单转接
-      - byName: 新建催单转接分组
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
         bodyEditor:
           json:
             $.sub_user_name_list: ${child_seller},${child_seller2},${child_seller3}
-      - byName: 更新转接列表
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 获取催单消息-回复后转接
-      - byName: 发送消息给商家-转接给在线的子账号
+      - keyWord: 更新转接列表
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-转接给在线的子账号
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
     - name: 清除转接列表缓存
       url: /api/admin/reminder/v2/test/cache_clean/sellers_info
       variables:
@@ -281,10 +281,10 @@ afterMethod:
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
-    - byName: 子账号发送心跳检测
-    - byName: 子账号3发送心跳检测
+    - keyWord: 主账号发送心跳检测
+    - keyWord: 子账号发送心跳检测
+    - keyWord: 子账号3发送心跳检测

@@ -14,9 +14,9 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
-    - byName: 获取老的task配置
-    - byName: 获取task模板
+    - keyWord: 获取task_id
+    - keyWord: 获取老的task配置
+    - keyWord: 获取task模板
     - name: 获取时效标签列表
       url: /api/admin/config2/ageing/list
       method: GET
@@ -26,7 +26,7 @@ beforeClass:
             ageing_ids: $.ageings[?(@.activity_name == '')].id
           size: 100
           options: [DEFAULT_PATH_LEAF_TO_NULL]
-    - byName: 删除时效标签
+    - keyWord: 删除时效标签
       iter:
         ageing_id: ${ageing_ids}
       form:
@@ -52,12 +52,12 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签
-      - byName: 设置时效标签
-      - byName: 同步订单消息
-      - byName: 拼多多推送订单状态变更消息
-      - byName: 客户端获取订单状态变更列表
-      - byName: 获取催单消息
+      - keyWord: 添加时效标签
+      - keyWord: 设置时效标签
+      - keyWord: 同步订单消息
+      - keyWord: 拼多多推送订单状态变更消息
+      - keyWord: 客户端获取订单状态变更列表
+      - keyWord: 获取催单消息
   - name: 时效标签(固定时段-失效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -85,14 +85,14 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签
-      - byName: 设置时效标签
-      - byName: 同步订单消息
-      - byName: 拼多多推送订单状态变更消息
-      - byName: 客户端获取订单状态变更列表
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 添加时效标签
+      - keyWord: 设置时效标签
+      - keyWord: 同步订单消息
+      - keyWord: 拼多多推送订单状态变更消息
+      - keyWord: 客户端获取订单状态变更列表
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
@@ -116,12 +116,12 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签(每日重复)
-      - byName: 设置时效标签
-      - byName: 同步订单消息
-      - byName: 拼多多推送订单状态变更消息
-      - byName: 客户端获取订单状态变更列表
-      - byName: 获取催单消息
+      - keyWord: 添加时效标签(每日重复)
+      - keyWord: 设置时效标签
+      - keyWord: 同步订单消息
+      - keyWord: 拼多多推送订单状态变更消息
+      - keyWord: 客户端获取订单状态变更列表
+      - keyWord: 获取催单消息
   - name: 时效标签(每日重复-失效)-${ageing_name}
     dataProvider:
       - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -149,21 +149,21 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 添加时效标签(每日重复)
-      - byName: 设置时效标签
-      - byName: 同步订单消息
-      - byName: 拼多多推送订单状态变更消息
-      - byName: 客户端获取订单状态变更列表
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 添加时效标签(每日重复)
+      - keyWord: 设置时效标签
+      - keyWord: 同步订单消息
+      - keyWord: 拼多多推送订单状态变更消息
+      - keyWord: 客户端获取订单状态变更列表
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 还原催单任务
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
-    - byName: 删除时效标签
+    - keyWord: 还原催单任务
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
+    - keyWord: 删除时效标签

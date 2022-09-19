@@ -12,13 +12,13 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 删除其他催单任务
-    - byName: 获取所有的测试任务
-    - byName: 删除所有测试催单任务
-    - byName: 获取测试催单任务模板
-    - byName: 新建咨询未下单催单测试任务
-    - byName: 获取测试任务ID
+    - keyWord: 获取所有的task_id
+    - keyWord: 删除其他催单任务
+    - keyWord: 获取所有的测试任务
+    - keyWord: 删除所有测试催单任务
+    - keyWord: 获取测试催单任务模板
+    - keyWord: 新建咨询未下单催单测试任务
+    - keyWord: 获取测试任务ID
 testMethod:
   - name: 已有订单不催单-${new_order_state_name}
     dataProvider:
@@ -40,22 +40,22 @@ testMethod:
         new_order_state_name: 交易成功
     severity: NORMAL
     step:
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 发送消息给商家-指定买家
-      - byName: 根据聊天记录查询trace
-      - byName: 获取催单消息-消息为空
-      - byName: 查看trace详情-任务关闭
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 发送消息给商家-指定买家
+      - keyWord: 根据聊天记录查询trace
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 查看trace详情-任务关闭
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据聊天记录查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据聊天记录查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除测试催单任务
-    - byName: 清除AB测试任务缓存
+    - keyWord: 删除测试催单任务
+    - keyWord: 清除AB测试任务缓存
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

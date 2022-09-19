@@ -9,27 +9,27 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
-    - byName: 清除任务缓存
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 清除任务缓存
 testMethod:
   - name: 不满足的商品不触发任务
     severity: NORMAL
     step:
-      - byName: 开启加购未下单催单任务
-      - byName: 清除任务缓存
-      - byName: 通过pulsar推送加购消息
+      - keyWord: 开启加购未下单催单任务
+      - keyWord: 清除任务缓存
+      - keyWord: 通过pulsar推送加购消息
         bodyEditor:
           json:
             $.platform: ${platform}
             $.shop_id: ${shop_id}
             $.buyer_id: ${__RandomName(buyer_id)}
             $.goods_id: '15456955465462324'
-      - byName: 获取加购催单消息-消息为空
-      - byName: 根据加购消息查询trace
-      - byName: 查看trace详情
+      - keyWord: 获取加购催单消息-消息为空
+      - keyWord: 根据加购消息查询trace
+      - keyWord: 查看trace详情
         name: 查看trace详情-不符合商品圈定
         assertion:
           - json:
@@ -37,10 +37,10 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 清除任务缓存
-    - byName: 根据加购消息查询trace
-    - byName: 查看trace详情
+    - keyWord: 清除任务缓存
+    - keyWord: 根据加购消息查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务

@@ -9,10 +9,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
 testMethod:
   - name: 设置任务过滤天数-${repeat_aging_day}天-实际再次加购的天数为${repeat_day}天后
     dataProvider:
@@ -21,18 +21,18 @@ testMethod:
       - repeat_aging_day: 3
         repeat_day: 4
     step:
-      - byName: 清除任务缓存
-      - byName: 清除店铺缓存
-      - byName: 规则设置-关闭多任务去重
+      - keyWord: 清除任务缓存
+      - keyWord: 清除店铺缓存
+      - keyWord: 规则设置-关闭多任务去重
         name: 规则设置-任务过滤天数设置
         bodyEditor:
           json:
             $.task_remove_duplicates: true
             $.repeat_aging_day: ${__BeanShell(${repeat_aging_day})}
             $.node_type: ${node_state}
-      - byName: 开启加购未下单催单任务
-      - byName: 通过pulsar推送加购消息
-      - byName: 获取加购催单消息
+      - keyWord: 开启加购未下单催单任务
+      - keyWord: 通过pulsar推送加购消息
+      - keyWord: 获取加购催单消息
       - name: 查看运行时状态
         url: /api/client/reminder/v2/test/runtime_state
         method: GET
@@ -53,8 +53,8 @@ testMethod:
           json:
             $.task.created_at: ${__BeanShell(${__time(/1000)}-${repeat_day}*24*60*60,)}
             $.task.shopping_cart_goods_add_at: ${__BeanShell(${__time(/1000)}-${repeat_day}*24*60*60,)}
-      - byName: 查看运行时状态
-      - byName: 通过pulsar推送加购消息
+      - keyWord: 查看运行时状态
+      - keyWord: 通过pulsar推送加购消息
         name: 通过pulsar推送加购消息-指定买家
         bodyEditor:
           json:
@@ -62,7 +62,7 @@ testMethod:
             $.shop_id: ${shop_id}
             $.buyer_id: ${buyer_id}
             $.goods_id: ${goods_id}
-      - byName: 获取加购催单消息
+      - keyWord: 获取加购催单消息
   - name: 设置任务过滤天数-${repeat_aging_day}天-实际再次加购的天数为${repeat_day}天后
     dataProvider:
       - repeat_aging_day: 2
@@ -70,22 +70,22 @@ testMethod:
       - repeat_aging_day: 3
         repeat_day: 2
     step:
-      - byName: 规则设置-任务过滤天数设置
-      - byName: 开启加购未下单催单任务
-      - byName: 清除任务缓存
-      - byName: 清除店铺缓存
-      - byName: 通过pulsar推送加购消息
-      - byName: 获取加购催单消息
-      - byName: 查看运行时状态
-      - byName: 修改运行时状态
-      - byName: 查看运行时状态
-      - byName: 通过pulsar推送加购消息-指定买家
-      - byName: 获取加购催单消息-消息为空
-      - byName: 根据加购消息查询trace
+      - keyWord: 规则设置-任务过滤天数设置
+      - keyWord: 开启加购未下单催单任务
+      - keyWord: 清除任务缓存
+      - keyWord: 清除店铺缓存
+      - keyWord: 通过pulsar推送加购消息
+      - keyWord: 获取加购催单消息
+      - keyWord: 查看运行时状态
+      - keyWord: 修改运行时状态
+      - keyWord: 查看运行时状态
+      - keyWord: 通过pulsar推送加购消息-指定买家
+      - keyWord: 获取加购催单消息-消息为空
+      - keyWord: 根据加购消息查询trace
         extractor:
           - json:
               trace_id: $.data.traces[?(@.event_type=='Shopping-Cart')].trace_id[-1]
-      - byName: 查看trace详情
+      - keyWord: 查看trace详情
         name: 查看trace详情-未到重复触发时效
         assertion:
           - json:
@@ -93,11 +93,11 @@ testMethod:
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 清除任务缓存
-    - byName: 清除店铺缓存
-    - byName: 根据加购消息查询trace
-    - byName: 查看trace详情
+    - keyWord: 清除任务缓存
+    - keyWord: 清除店铺缓存
+    - keyWord: 根据加购消息查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务

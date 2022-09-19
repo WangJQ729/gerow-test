@@ -9,10 +9,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
 
 testMethod:
   - name: ${new_action_name}-${action}-不触发已发货任务
@@ -26,26 +26,26 @@ testMethod:
           - action: TMS_ACCEPT
     severity: NORMAL
     step:
-      - byName: 开启已发货催单任务-10秒后触发
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
+      - keyWord: 开启已发货催单任务-10秒后触发
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
         extractor:
           - json:
               trace_id: $.data.traces[?(@.order_state=='got')].trace_id
-      - byName: 查看trace详情-got不触发已发货
+      - keyWord: 查看trace详情-got不触发已发货
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

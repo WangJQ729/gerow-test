@@ -9,10 +9,10 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
 testMethod:
   - name: 消息发送时间断内交易完成
     description: |
@@ -27,7 +27,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启催单任务
+      - keyWord: 开启催单任务
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -37,8 +37,8 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
-      - byName: 通过pulsar推送订单消息
-      - byName: 获取催单消息
+      - keyWord: 通过pulsar推送订单消息
+      - keyWord: 获取催单消息
   - name: 消息发送时间断外交易完成
     description: |
       """</br>
@@ -52,7 +52,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 开启催单任务
+      - keyWord: 开启催单任务
         bodyEditor:
           json:
             $.id: ${task_id}
@@ -63,19 +63,19 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='specify_send_time_range')].args.ranges[0].from: 0
             $.rules[?(@.type=='specify_send_time_range')].args.ranges[0].to: 60
-      - byName: 通过pulsar推送订单消息
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 通过pulsar推送订单消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskPass')].task_pass_info: [out of time range]
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 清除任务缓存
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 清除任务缓存
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除催单任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务

@@ -19,7 +19,7 @@ keyWord:
           $.startTime: ${__timeShift(yyyy-MM-dd HH:mm:ss,,PT-2H,zh_CN,startTime)}
           $.endTime: ${__timeShift(yyyy-MM-dd HH:mm:ss,,PT+12H,zh_CN,endTime)}
 
-    - byName: 新建交易任务
+    - keyWord: 新建交易任务
       name: 新建多级交易任务
       body: |
         {"enableValidity":false,"titles":[{"lang":"zh_HK","value":["交易任务统计"]},{"lang":"zh_CN","value":["交易任务统计"]},{"lang":"en_US","value":["交易任务统计"]}],"subtitles":[{"lang":"zh_HK","value":["副标题"]},{"lang":"zh_CN","value":["副标题"]},{"lang":"en_US","value":["副标题"]}],"questType":0,"questLevel":1,"properties":[{"level":1,"isAllCoin":true,"property":1,"currency":"","serviceLine":31,"completeAmount":"1000"},{"level":2,"isAllCoin":true,"property":1,"currency":"","serviceLine":31,"completeAmount":"3999"}],"userProperty":[{"type":"ALL"}],"startTime":"2022-01-22 15:37:54","endTime":"2022-01-23 15:38:08","activityRules":[{"lang":"zh_HK","value":["任务规则"]},{"lang":"zh_CN","value":["任务规则"]},{"lang":"en_US","value":["任务规则"]}],"links":[{"type":2,"value":["https://trade.kucoin.net/trade/BTC-USDT"],"lang":"zh_CN","level":1},{"type":2,"value":["https://trade.kucoin.net/trade/BTC-USDT"],"lang":"en_US","level":1},{"type":3,"value":["https://m.kucoin.net/trade/BTC-USDT\t"],"lang":"zh_CN","level":1},{"type":3,"value":["https://m.kucoin.net/trade/BTC-USDT\t"],"lang":"en_US","level":1},{"type":4,"value":["/trade"],"lang":"zh_CN","level":1},{"type":4,"value":["/trade"],"lang":"en_US","level":1},{"type":2,"value":["https://trade.kucoin.net/trade/BTC-USDT"],"lang":"zh_CN","level":2},{"type":2,"value":["https://trade.kucoin.net/trade/BTC-USDT"],"lang":"en_US","level":2},{"type":3,"value":["https://m.kucoin.net/trade/BTC-USDT\t"],"lang":"zh_CN","level":2},{"type":3,"value":["https://m.kucoin.net/trade/BTC-USDT\t"],"lang":"en_US","level":2},{"type":4,"value":["/trade"],"lang":"zh_CN","level":2},{"type":4,"value":["/trade"],"lang":"en_US","level":2}],"awardDetails":[{"type":0,"prizeCode":"usdt","prizeHandOutType":1,"level":1,"amount":1000},{"type":0,"prizeCode":"usdt","prizeHandOutType":0,"level":2,"amount":2}],"button":1}
@@ -40,7 +40,7 @@ keyWord:
         json:
           $.questLabels[?(@.lang=='en_US')].value[0]: ${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
           $.questLabels[?(@.lang=='zh_HK')].value[0]: ${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-    - byName: 新建交易任务
+    - keyWord: 新建交易任务
       name: 新建交易任务-机器人券
       bodyEditor:
         json:

@@ -11,20 +11,20 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
-    - byName: 催单设置-子账号不催单
-    - byName: 催单设置-子账号3不催单
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 催单设置-子账号不催单
+    - keyWord: 催单设置-子账号3不催单
 
 testMethod:
   - name: 开启转接-子账号在线
     severity: NORMAL
     step:
-      - byName: 新建催单转接分组
-      - byName: 新建分组-只有主账号
-      - byName: 开启物流停滞超时催单任务
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启物流停滞超时催单任务
         name: 开启物流停滞超时催单任务-开启催单转接
         bodyEditor:
           json:
@@ -40,10 +40,10 @@ testMethod:
             $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-提取转接信息
-      - byName: 发送消息给商家-含转接内容
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-提取转接信息
+      - keyWord: 发送消息给商家-含转接内容
         assertion:
           - json:
               $.custom_transfer.transfer_type: "reminder_transfer"
@@ -53,9 +53,9 @@ testMethod:
   - name: 子账号在线-关闭转接
     severity: NORMAL
     step:
-      - byName: 新建催单转接分组
-      - byName: 新建分组-只有主账号
-      - byName: 开启物流停滞超时催单任务
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启物流停滞超时催单任务
         name: 开启物流停滞超时催单任务-关闭催单转接
         bodyEditor:
           json:
@@ -71,16 +71,16 @@ testMethod:
             $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-提取转接信息
-      - byName: 发送消息给商家-转接关闭
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-提取转接信息
+      - keyWord: 发送消息给商家-转接关闭
   - name: 开启转接-子账号在线-非静默客户-关闭非静默顾客转接
     severity: NORMAL
     step:
-      - byName: 新建催单转接分组
-      - byName: 新建分组-只有主账号
-      - byName: 开启物流停滞超时催单任务-开启催单转接
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启物流停滞超时催单任务-开启催单转接
         name: 开启物流停滞超时催单任务-关闭非静默顾客转接
         bodyEditor:
           json:
@@ -96,24 +96,24 @@ testMethod:
             $.rules[?(@.type=='specify_send_seller')].args.sub_silence_users_info_id: ${sub_silence_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_users_info_id: ${reminder_transfer_sub_users_info_id}
             $.rules[?(@.type=='specify_send_seller')].args.transfer_sub_silence_users_info_id: ${reminder_transfer_sub_users_info_id}
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 指定顾客指定订单推送已发货订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-提取转接信息
-      - byName: 发送消息给商家-转接关闭
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 指定顾客指定订单推送已发货订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-提取转接信息
+      - keyWord: 发送消息给商家-转接关闭
   - name: 开启转接-子账号在线-非静默客户-开启非静默顾客转接
     severity: NORMAL
     step:
-      - byName: 新建催单转接分组
-      - byName: 新建分组-只有主账号
-      - byName: 开启物流停滞超时催单任务-开启催单转接
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 指定顾客指定订单推送已发货订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-提取转接信息
-      - byName: 发送消息给商家-含转接内容
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启物流停滞超时催单任务-开启催单转接
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 指定顾客指定订单推送已发货订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-提取转接信息
+      - keyWord: 发送消息给商家-含转接内容
         assertion:
           - json:
               $.custom_transfer.transfer_type: "reminder_transfer"
@@ -123,14 +123,14 @@ testMethod:
   - name: 子账号在线-回复前关闭转接
     severity: NORMAL
     step:
-      - byName: 新建催单转接分组
-      - byName: 新建分组-只有主账号
-      - byName: 开启物流停滞超时催单任务-开启催单转接
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-提取转接信息
-      - byName: 开启催单任务-关闭催单转接
-      - byName: 发送消息给商家-转接列表为空
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启物流停滞超时催单任务-开启催单转接
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-提取转接信息
+      - keyWord: 开启催单任务-关闭催单转接
+      - keyWord: 发送消息给商家-转接列表为空
         assertion:
           - json:
               $.custom_transfer.is_transfer: false
@@ -139,49 +139,49 @@ testMethod:
   - name: 子账号在线-催单前关闭转接
     severity: NORMAL
     step:
-      - byName: 新建催单转接分组
-      - byName: 新建分组-只有主账号
-      - byName: 开启物流停滞超时催单任务-开启催单转接
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 开启催单任务-关闭催单转接
-      - byName: 获取催单消息-转接关闭
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启物流停滞超时催单任务-开启催单转接
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 开启催单任务-关闭催单转接
+      - keyWord: 获取催单消息-转接关闭
   - name: 开启转接-子账号不在线
     severity: NORMAL
     step:
-      - byName: 新建催单转接分组
+      - keyWord: 新建催单转接分组
         body: |
           {"group_id_list":"","sub_user_name_list":"${child_seller2}"}
-      - byName: 新建分组-只有主账号
-      - byName: 开启物流停滞超时催单任务-开启催单转接
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-提取转接信息
-      - byName: 发送消息给商家-转接列表为空
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启物流停滞超时催单任务-开启催单转接
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-提取转接信息
+      - keyWord: 发送消息给商家-转接列表为空
   - name: 开启转接-多个子账号转接-只有一个在线
     severity: NORMAL
     step:
-      - byName: 新建催单转接分组
+      - keyWord: 新建催单转接分组
         body: |
           {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller2}"}
-      - byName: 新建分组-只有主账号
-      - byName: 开启物流停滞超时催单任务-开启催单转接
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-提取转接信息
-      - byName: 发送消息给商家-含转接内容
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启物流停滞超时催单任务-开启催单转接
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-提取转接信息
+      - keyWord: 发送消息给商家-含转接内容
   - name: 开启转接-转接列表含自己
     severity: NORMAL
     step:
-      - byName: 新建催单转接分组
+      - keyWord: 新建催单转接分组
         body: |
           {"group_id_list":"","sub_user_name_list":"${child_seller},${seller_name}"}
-      - byName: 新建分组-只有主账号
-      - byName: 开启物流停滞超时催单任务-开启催单转接
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-提取转接信息
-      - byName: 发送消息给商家-含转接内容
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启物流停滞超时催单任务-开启催单转接
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-提取转接信息
+      - keyWord: 发送消息给商家-含转接内容
         assertion:
           - json:
               $.custom_transfer.transfer_type: "reminder_transfer"
@@ -196,39 +196,39 @@ testMethod:
   - name: 开启转接-多个子账号转接-都在线
     severity: NORMAL
     step:
-      - byName: 新建催单转接分组
+      - keyWord: 新建催单转接分组
         body: |
           {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller3}"}
-      - byName: 新建分组-只有主账号
-      - byName: 开启物流停滞超时催单任务-开启催单转接
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-提取转接信息
-      - byName: 发送消息给商家-转接给在线的子账号
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启物流停滞超时催单任务-开启催单转接
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-提取转接信息
+      - keyWord: 发送消息给商家-转接给在线的子账号
   - name: 开启转接-多个子账号转接-部分在线
     severity: NORMAL
     step:
-      - byName: 新建催单转接分组
+      - keyWord: 新建催单转接分组
         body: |
           {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller2},${child_seller3}"}
-      - byName: 新建分组-只有主账号
-      - byName: 开启物流停滞超时催单任务-开启催单转接
-      - byName: 随机顾客推送已付款订单消息
-      - byName: 发送物流消息
-      - byName: 获取催单消息-提取转接信息
-      - byName: 发送消息给商家-转接给在线的子账号
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启物流停滞超时催单任务-开启催单转接
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-提取转接信息
+      - keyWord: 发送消息给商家-转接给在线的子账号
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
-    - byName: 子账号发送心跳检测
-    - byName: 子账号3发送心跳检测
+    - keyWord: 主账号发送心跳检测
+    - keyWord: 子账号发送心跳检测
+    - keyWord: 子账号3发送心跳检测

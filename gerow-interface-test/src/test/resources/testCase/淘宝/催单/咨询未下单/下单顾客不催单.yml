@@ -8,11 +8,11 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
-    - byName: 修改咨询未下单内容
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 修改咨询未下单内容
 testMethod:
   - name: 已有订单不催单-${new_order_state_name}
     dataProvider:
@@ -34,18 +34,18 @@ testMethod:
         new_order_state_name: 交易成功
     severity: NORMAL
     step:
-      - byName: 模拟pulsar订单消息-随机顾客
-      - byName: 发送消息给商家-指定买家
-      - byName: 根据聊天记录查询trace
-      - byName: 获取催单消息-消息为空
-      - byName: 查看trace详情-任务关闭
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 发送消息给商家-指定买家
+      - keyWord: 根据聊天记录查询trace
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 查看trace详情-任务关闭
   - name: 修改order运行时状态可以触发催单任务
     enable: false
     dataProvider:
       - order_state: created
     severity: NORMAL
     step:
-      - byName: 模拟pulsar订单消息-随机顾客
+      - keyWord: 模拟pulsar订单消息-随机顾客
       - name: 获取运行时状态
         url: /api/client/reminder/v2/test/runtime_state
         variables:
@@ -63,18 +63,18 @@ testMethod:
         bodyEditor:
           json:
             $.user.has_recent_order: false
-      - byName: 发送消息给商家-指定买家
-      - byName: 获取催单消息
+      - keyWord: 发送消息给商家-指定买家
+      - keyWord: 获取催单消息
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据聊天记录查询trace
-    - byName: 查看trace详情
+    - keyWord: 根据聊天记录查询trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

@@ -51,12 +51,12 @@ keyWord:
         sub_nick: ${seller_name}
         reminder_type: mine,silence
       assertion: [json: {$.code: 0}]
-    - byName: 催单设置为自己和静默
+    - keyWord: 催单设置为自己和静默
       name: 催单设置-子账号不催单
       form:
         sub_nick: ${child_seller}
         reminder_type: close
-    - byName: 催单设置为自己和静默
+    - keyWord: 催单设置为自己和静默
       name: 催单设置-子账号3不催单
       form:
         sub_nick: ${child_seller3}
@@ -91,12 +91,12 @@ keyWord:
       method: GET
       assertion: [ json: { $.code: 0 } ]
     - name: 子账号3发送心跳检测
-      byName: 子账号发送心跳检测
+      keyWord: 子账号发送心跳检测
       variables:
         spin: cntaobao${child_seller3}
         sign: ${__HmacMD5(spin=cntaobao${child_seller3})}
     - name: 主账号发送心跳检测
-      byName: 子账号发送心跳检测
+      keyWord: 子账号发送心跳检测
       variables:
         spin: cntaobao${seller_name}
         sign: ${__HmacMD5(spin=cntaobao${seller_name})}
@@ -151,7 +151,7 @@ keyWord:
               message: 您好～喜欢就不要犹豫啦，我们会给您安排尽快发货，让你早点收到宝贝哦～
       assertion: [ json: { $.code: 0 } ]
     - name: 开启催单任务
-      byName: 修改咨询未下单内容
+      keyWord: 修改咨询未下单内容
       bodyEditor:
         json:
           $.id: ${task_id}
@@ -160,7 +160,7 @@ keyWord:
           $.rules[?(@.type=='send_message')].args.state_delay: 0
           $.rules[?(@.type=='send_message')].args.message: ${message}
     - name: 关闭催单任务
-      byName: 开启催单任务
+      keyWord: 开启催单任务
       bodyEditor:
         json:
           $.id: ${task_id}
@@ -181,7 +181,7 @@ keyWord:
             $.data.messages[?(@.task_id=='${task_id}')].text_with_vars:
               - ${text_with_vars}
     - name: 获取催单消息-消息为空
-      byName: 获取催单消息
+      keyWord: 获取催单消息
       sleep: 200
       assertion:
         - json:
@@ -224,11 +224,11 @@ keyWord:
         shop_id: ${shop_id}
       method: GET
     - name: 查看trace详情-任务关闭
-      byName: 查看trace详情
+      keyWord: 查看trace详情
       assertion:
         - json:
             $.data.traces.length(): 1
-    - byName: 开启催单任务
+    - keyWord: 开启催单任务
       name: 开启催单任务-设置消息延迟
       bodyEditor:
         json:
@@ -237,7 +237,7 @@ keyWord:
           $.shop_id: ${shop_id}
           $.rules[?(@.type=='send_message')].args.state_delay: ${__BeanShell(${state_delay},)}
           $.rules[?(@.type=='send_message')].args.message: ${message}
-    - byName: 查看trace详情
+    - keyWord: 查看trace详情
       name: 查看trace详情-TaskSetTimer
       assertion:
         - json:
@@ -245,7 +245,7 @@ keyWord:
       extractor:
         - json:
             timer_id: $.data.traces[?(@.phase=='TaskSetTimer')].timer_id[-1]
-    - byName: 获取催单消息
+    - keyWord: 获取催单消息
       name: 获取催单消息-5秒拉一次
       untilWait: 120
       intervals: 5000
@@ -255,7 +255,7 @@ keyWord:
       method: POST
       body: |
         {"id":"${task_id}"}
-    - byName: 开启催单任务
+    - keyWord: 开启催单任务
       name: 开启催单任务-包含图片
       bodyEditor:
         json:
@@ -267,7 +267,7 @@ keyWord:
           $.rules[?(@.type=='send_message')].args.images:
             - id: 5dbbd61a9e3aad000d7de9fe
               url: https://xdmp-new.oss-cn-hangzhou.aliyuncs.com/answer_pics/eb1ddc7854a747ba9cfb8424c151ae04.jpg
-    - byName: 获取催单消息
+    - keyWord: 获取催单消息
       name: 获取催单消息-包含图片
       assertion:
         - json:
@@ -333,7 +333,7 @@ keyWord:
           $.channel: ${refund_state}
           $.reason: 多拍/错拍/不想要
           $.bill_type: ${bill_type}
-    - byName: 发送消息给商家
+    - keyWord: 发送消息给商家
       name: 随机顾客发送消息给商家-固定问题
       bodyEditor:
         json:

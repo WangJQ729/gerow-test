@@ -16,31 +16,31 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取所有的task_id
-    - byName: 获取task模板
-    - byName: 删除其他催单任务
-    - byName: 使用模板新建一个task
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
 testMethod:
   - name: 售后类型圈定全部-实际仅退款
     severity: NORMAL
     step:
-      - byName: 开启售后场景催单任务
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 推送仅退款消息
-      - byName: 获取催单消息
+      - keyWord: 开启售后场景催单任务
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送仅退款消息
+      - keyWord: 获取催单消息
   - name: 售后类型圈定全部-实际退货退款
     severity: NORMAL
     step:
-      - byName: 开启售后场景催单任务
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退款消息-指定退款类型
-      - byName: 获取催单消息
+      - keyWord: 开启售后场景催单任务
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送退款消息-指定退款类型
+      - keyWord: 获取催单消息
   - name: 售后类型圈定仅退款-实际仅退款
     severity: NORMAL
     step:
-      - byName: 开启催单任务
+      - keyWord: 开启催单任务
         name: 开启售后场景催单任务-设置售后类型圈定仅退款
         bodyEditor:
           json:
@@ -54,14 +54,14 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='refund_bill_type_limit')].args.refund_bill_type_group: [refund]
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 推送仅退款消息
-      - byName: 获取催单消息
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送仅退款消息
+      - keyWord: 获取催单消息
   - name: 售后类型圈定退货退款-实际退货退款
     severity: NORMAL
     step:
-      - byName: 开启催单任务
+      - keyWord: 开启催单任务
         name: 开启售后场景催单任务-设置售后类型圈定退货退款
         bodyEditor:
           json:
@@ -75,20 +75,20 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             $.rules[?(@.type=='send_message')].args.message: ${message}
             $.rules[?(@.type=='refund_bill_type_limit')].args.refund_bill_type_group: [return]
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退款消息-指定退款类型
-      - byName: 获取催单消息
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送退款消息-指定退款类型
+      - keyWord: 获取催单消息
   - name: 售后类型圈定仅退款-实际退货退款
     severity: NORMAL
     step:
-      - byName: 开启售后场景催单任务-设置售后类型圈定仅退款
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 推送退款消息-指定退款类型
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询退款trace
-      - byName: 查看trace详情
+      - keyWord: 开启售后场景催单任务-设置售后类型圈定仅退款
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送退款消息-指定退款类型
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询退款trace
+      - keyWord: 查看trace详情
         name: 查看trace详情-不满足售后类型圈定
         assertion:
           - json:
@@ -96,23 +96,23 @@ testMethod:
   - name: 售后类型圈定退货退款-实际仅退款
     severity: NORMAL
     step:
-      - byName: 开启售后场景催单任务-设置售后类型圈定退货退款
-      - byName: 随机顾客发送消息给商家-固定问题
-      - byName: 指定顾客推送已付款订单消息
-      - byName: 推送仅退款消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询退款trace
-      - byName: 查看trace详情-不满足售后类型圈定
+      - keyWord: 开启售后场景催单任务-设置售后类型圈定退货退款
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送仅退款消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询退款trace
+      - keyWord: 查看trace详情-不满足售后类型圈定
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 根据订单查询退款trace
-    - byName: 查看trace详情
+    - keyWord: 根据订单查询退款trace
+    - keyWord: 查看trace详情
 afterClass:
   name: 测试结束后删除任务
   step:
-    - byName: 删除催单任务
+    - keyWord: 删除催单任务
 classHeartbeat:
   name: 心跳检测表示客服在线
   step:
-    - byName: 主账号发送心跳检测
+    - keyWord: 主账号发送心跳检测

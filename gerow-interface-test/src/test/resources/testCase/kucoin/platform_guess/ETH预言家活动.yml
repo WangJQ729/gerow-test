@@ -162,7 +162,7 @@ testMethod:
           - 63033d8ee750870001829a3d
           - 630368dae750870001829c48
     step:
-      #      - byName: 用户报名
+      #      - keyWord: 用户报名
 #      - name: 测试${__kafkaMessage(${userId})}
-      - byName: 获取用户可投票数
-      - byName: 用户投票
+      - keyWord: 获取用户可投票数
+      - keyWord: 用户投票

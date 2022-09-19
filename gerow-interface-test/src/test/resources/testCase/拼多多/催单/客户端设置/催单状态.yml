@@ -6,9 +6,9 @@ dataProvider:
 beforeClass:
   name: 获取taskID和模板
   step:
-    - byName: 获取task_id
-    - byName: 获取老的task配置
-    - byName: 获取task模板
+    - keyWord: 获取task_id
+    - keyWord: 获取老的task配置
+    - keyWord: 获取task模板
 testMethod:
   - name: 不催单-自己的客户
     description: |
@@ -25,20 +25,20 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给商家
-      - byName: 催单设置为自己和静默
+      - keyWord: 发送消息给商家
+      - keyWord: 催单设置为自己和静默
         name: 催单设置-不催单
         form:
           reminder_type: close
-      - byName: 开启催单任务
-      - byName: 同步订单消息
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 开启催单任务
+      - keyWord: 同步订单消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
         name: 查看trace详情-客户端已关闭催单
         assertion:
           - json:
               $.data.traces[?(@.phase=='InQueueReject')].in_queue_reject_reason: ["reject, client disable sending message"]
-      - byName: 获取催单消息-消息为空
+      - keyWord: 获取催单消息-消息为空
   - name: 不催单-静默顾客
     description: |
       """</br>
@@ -54,17 +54,17 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 催单设置-不催单
-      - byName: 开启催单任务
-      - byName: 指定随机顾客同步订单消息
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情
+      - keyWord: 催单设置-不催单
+      - keyWord: 开启催单任务
+      - keyWord: 指定随机顾客同步订单消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
         name: 查看trace详情-没有催单的子账号设置等待时间
         assertion:
           - json:
               $.data.traces[?(@.phase=='TaskSetTimer')].timer_expired: ${__BeanShell(${__time(/1000,)}+840,)}
             assertionType: ALLGREATEROREQUALTO
-      - byName: 获取催单消息-消息为空
+      - keyWord: 获取催单消息-消息为空
   - name: 不催单-别人的顾客
     description: |
       """</br>
@@ -80,7 +80,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给商家
+      - keyWord: 发送消息给商家
         name: 随机顾客发送消息给子账号
         variables:
           version_num: 1.0.6P.6T
@@ -93,15 +93,15 @@ testMethod:
           service_status: 7
           usr_shut: 0
           spin: cnpdd${child_seller}
-      - byName: 催单设置-不催单
-      - byName: 开启催单任务
-      - byName: 同步订单消息
+      - keyWord: 催单设置-不催单
+      - keyWord: 开启催单任务
+      - keyWord: 同步订单消息
         name: 同步订单消息指定之前的随机顾客
         form:
           uid: ${uid}
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-没有催单的子账号设置等待时间
-      - byName: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
+      - keyWord: 获取催单消息-消息为空
   - name: 仅自己-自己的客户
     description: |
       """</br>
@@ -116,14 +116,14 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给商家
-      - byName: 催单设置为自己和静默
+      - keyWord: 发送消息给商家
+      - keyWord: 催单设置为自己和静默
         name: 催单设置-仅自己
         form:
           reminder_type: mine
-      - byName: 开启催单任务
-      - byName: 同步订单消息
-      - byName: 获取催单消息
+      - keyWord: 开启催单任务
+      - keyWord: 同步订单消息
+      - keyWord: 获取催单消息
   - name: 仅自己-静默客户
     description: |
       """</br>
@@ -139,12 +139,12 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 催单设置-仅自己
-      - byName: 开启催单任务
-      - byName: 指定随机顾客同步订单消息
-      - byName: 获取催单消息-消息为空
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-没有催单的子账号设置等待时间
+      - keyWord: 催单设置-仅自己
+      - keyWord: 开启催单任务
+      - keyWord: 指定随机顾客同步订单消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
   - name: 仅自己-别人的客户
     description: |
       """</br>
@@ -160,13 +160,13 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 随机顾客发送消息给子账号
-      - byName: 催单设置-仅自己
-      - byName: 开启催单任务
-      - byName: 同步订单消息指定之前的随机顾客
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-没有催单的子账号设置等待时间
-      - byName: 获取催单消息-消息为空
+      - keyWord: 随机顾客发送消息给子账号
+      - keyWord: 催单设置-仅自己
+      - keyWord: 开启催单任务
+      - keyWord: 同步订单消息指定之前的随机顾客
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
+      - keyWord: 获取催单消息-消息为空
   - name: 仅静默-自己的客户
     description: |
       """</br>
@@ -182,16 +182,16 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给商家
-      - byName: 催单设置为自己和静默
+      - keyWord: 发送消息给商家
+      - keyWord: 催单设置为自己和静默
         name: 催单设置-仅静默
         form:
           reminder_type: silence
-      - byName: 开启催单任务
-      - byName: 同步订单消息
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-没有催单的子账号设置等待时间
-      - byName: 获取催单消息-消息为空
+      - keyWord: 开启催单任务
+      - keyWord: 同步订单消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
+      - keyWord: 获取催单消息-消息为空
   - name: 仅静默-静默顾客
     description: |
       """</br>
@@ -206,11 +206,11 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给商家
-      - byName: 催单设置-仅静默
-      - byName: 开启催单任务
-      - byName: 指定随机顾客同步订单消息
-      - byName: 获取催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 催单设置-仅静默
+      - keyWord: 开启催单任务
+      - keyWord: 指定随机顾客同步订单消息
+      - keyWord: 获取催单消息
   - name: 仅静默-别人的顾客
     description: |
       """</br>
@@ -225,13 +225,13 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 随机顾客发送消息给子账号
-      - byName: 催单设置-仅静默
-      - byName: 开启催单任务
-      - byName: 同步订单消息指定之前的随机顾客
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-没有催单的子账号设置等待时间
-      - byName: 获取催单消息-消息为空
+      - keyWord: 随机顾客发送消息给子账号
+      - keyWord: 催单设置-仅静默
+      - keyWord: 开启催单任务
+      - keyWord: 同步订单消息指定之前的随机顾客
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
+      - keyWord: 获取催单消息-消息为空
   - name: 自己和静默-自己的客户
     description: |
       """</br>
@@ -246,11 +246,11 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 发送消息给商家
-      - byName: 催单设置为自己和静默
-      - byName: 开启催单任务
-      - byName: 同步订单消息
-      - byName: 获取催单消息
+      - keyWord: 发送消息给商家
+      - keyWord: 催单设置为自己和静默
+      - keyWord: 开启催单任务
+      - keyWord: 同步订单消息
+      - keyWord: 获取催单消息
   - name: 自己和静默-静默顾客
     description: |
       """</br>
@@ -265,10 +265,10 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 催单设置为自己和静默
-      - byName: 开启催单任务
-      - byName: 指定随机顾客同步订单消息
-      - byName: 获取催单消息
+      - keyWord: 催单设置为自己和静默
+      - keyWord: 开启催单任务
+      - keyWord: 指定随机顾客同步订单消息
+      - keyWord: 获取催单消息
   - name: 自己和静默-别人的客户
     description: |
       """</br>
@@ -284,17 +284,17 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 随机顾客发送消息给子账号
-      - byName: 催单设置为自己和静默
-      - byName: 开启催单任务
-      - byName: 同步订单消息指定之前的随机顾客
-      - byName: 根据订单查询trace
-      - byName: 查看trace详情-没有催单的子账号设置等待时间
-      - byName: 获取催单消息-消息为空
+      - keyWord: 随机顾客发送消息给子账号
+      - keyWord: 催单设置为自己和静默
+      - keyWord: 开启催单任务
+      - keyWord: 同步订单消息指定之前的随机顾客
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
+      - keyWord: 获取催单消息-消息为空
 afterMethod:
   name: 测试结束后查看订单trace
   step:
-    - byName: 还原催单任务
-    - byName: 催单设置为自己和静默
-    - byName: 根据订单查询trace
-    - byName: 查看trace详情
+    - keyWord: 还原催单任务
+    - keyWord: 催单设置为自己和静默
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情

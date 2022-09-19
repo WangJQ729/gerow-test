@@ -107,7 +107,7 @@ testMethod:
               group_order_id: $.data.group_order_id
       - name: 获取催单消息
         #copy test步骤名称为“拉一下催单消息”的所有内容,此步骤重写的字段会自动替换
-        byName: 拉一下催单消息
+        keyWord: 拉一下催单消息
         assertion:
           - json:
               #校验获取到的催单消息是参数设置中的text_with_vars
@@ -127,7 +127,7 @@ testMethod:
       """
     severity: NORMAL
     step:
-      - byName: 修改task内容
+      - keyWord: 修改task内容
         name: 修改task为订单链接
         bodyEditor:
           json:
@@ -137,9 +137,9 @@ testMethod:
             $.rules[?(@.type=='send_message')].args.state_delay: 0
             #设置催单消息为查看订单 {订单链接}
             $.rules[?(@.type=='send_message')].args.message: '查看订单 {订单链接}'
-      #上面已经定义了同步订单消息的步骤内容，只需要byName调用即可
-      - byName: 同步订单消息
-      - byName: 获取催单消息
+      #上面已经定义了同步订单消息的步骤内容，只需要keyWord调用即可
+      - keyWord: 同步订单消息
+      - keyWord: 获取催单消息
         name: 催单消息订单链接
         assertion:
           - json:
@@ -150,7 +150,7 @@ afterMethod:
   name: 测试结束后查看订单trace
   step:
     - name: 还原催单任务
-      byName: 修改task内容
+      keyWord: 修改task内容
       body: ${old_task_info}
       bodyEditor:
         json:
