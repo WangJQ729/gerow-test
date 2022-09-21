@@ -2,7 +2,7 @@
 
 ##### 1、gerow-test-utils相关工具类
 ##### 2、gerow-test-api-yml测试框架实现代码
-##### 3、ipa-interface-test小程序测试用例
+##### 3、gerow-interface-test 测试用例
 
 
 # 二、环境配置
@@ -20,7 +20,7 @@
 
     1、在根目录下运行命令：mvn clean install -DskipTests将代码编译到本地的maven仓库
     
-    2、进入ipa-interface-test直接运行
+    2、进入gerow-interface-test直接运行
     融合版参数：
     -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wanggerow_1990 -Dstory= -Dcomponent= -Dtest.name=
     老淘宝参数：
