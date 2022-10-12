@@ -6,6 +6,7 @@ dataProvider:
     message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
     text_with_vars: ${message}
     reminder_type: 下单未付款
+
 beforeClass:
   name: 获取taskID和模板
   step:
@@ -17,6 +18,15 @@ beforeClass:
 testMethod:
   - name: 状态变更为-${new_type_name}
     dataProvider:
+      - password: 1234567
+        name: gerowwang
+        username: gerowwang
+        result: 密码复杂度够
+      - password: 12345670000000000
+        name: gerowwang
+        username: gerowwang
+        result: 密码长度过长
+
       - new_order_state: deposited
         new_type_name: 已付定金未付尾款
       - new_order_state: paid

@@ -22,9 +22,9 @@
     
     2、进入gerow-interface-test直接运行
     融合版参数：
-    -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wanggerow_1990 -Dstory= -Dcomponent= -Dtest.name=
+    -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wangjq_1990 -Dstory= -Dcomponent= -Dtest.name=
     老淘宝参数：
-    -Dspring.profiles.active=tb-test -Dplatform=淘宝 -Dfeatures=催单 -Dtest.severity= -Denv=test-znkf -DshopName=wanggerow_1990 -Dstory= -Dcomponent= -Dtest.name=
+    -Dspring.profiles.active=tb-test -Dplatform=淘宝 -Dfeatures=催单 -Dtest.severity= -Denv=test-znkf -DshopName=wangjq_1990 -Dstory= -Dcomponent= -Dtest.name=
     淘动力参数：
     -Dspring.profiles.active=tdl -DtestDir=淘宝 -Dplatform=淘动力 -Dfeatures=催单 -Denv=test-znkf -DshopName= -Dstory= -Dcomponent= -Dtest.name=
     
@@ -186,3 +186,14 @@ public class RandomDate extends AbstractFunction {
     
    [脚本编写介绍](gerow-interface-test "介绍")
    [催单脚本环境搭建](gerow-interface-test/README_CONF.md "环境搭建")
+
+
+
+
+studentId\name\teacherId  s
+teacherid\teacherName\class t
+
+select t.class,count(*) from s
+left jion t on t.teacherid = s.teacherId
+group by class;
+
