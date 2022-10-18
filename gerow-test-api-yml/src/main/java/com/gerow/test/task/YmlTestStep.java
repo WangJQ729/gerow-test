@@ -1,6 +1,7 @@
 package com.gerow.test.task;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.gerow.test.client.HttpUtils;
 import com.gerow.test.entity.YmlHttpStepEntity;
 import com.gerow.test.utils.TestUtils;
@@ -10,7 +11,6 @@ import com.gerow.test.utils.data.Extractor;
 import com.gerow.test.utils.data.StepEditor;
 import io.qameta.allure.Allure;
 import lombok.Data;
-import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.springframework.core.io.FileSystemResource;
@@ -36,7 +36,7 @@ public class YmlTestStep implements ITestStep {
     /**
      * 测试方法
      */
-    @ToString.Exclude
+    @JSONField(serialize = false)
     private ITestMethod testMethod;
 
     /**
@@ -211,7 +211,7 @@ public class YmlTestStep implements ITestStep {
      * @param step 测试步骤
      * @return 构建好的测步骤
      */
-    private YmlHttpStepEntity buildStep(YmlHttpStepEntity step) {
+    public YmlHttpStepEntity buildStep(YmlHttpStepEntity step) {
         if (StringUtils.isNoneBlank(step.getKeyWord())) {
             return copyStep(getStepEntity(step.getKeyWord()), step);
         }
@@ -277,7 +277,6 @@ public class YmlTestStep implements ITestStep {
         if (StringUtils.isNotBlank(oldStep.getName())) newStep.setName(oldStep.getName());
         //如果copyStep也是keyWord查找，执行递归
         if (StringUtils.isNotBlank(newStep.getKeyWord())) newStep = buildStep(newStep);
-
         return newStep;
     }
 

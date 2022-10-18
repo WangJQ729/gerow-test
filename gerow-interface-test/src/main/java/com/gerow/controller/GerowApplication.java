@@ -1,5 +1,6 @@
 package com.gerow.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.gerow.enums.TestSuiteEnum;
 import com.gerow.test.task.ITestMethod;
 import com.gerow.test.task.ITestSuite;
@@ -51,7 +52,7 @@ public class GerowApplication {
     }
 
     @GetMapping("/getKeyWord/{enums}/{keyWord}")
-    public Object getKeyWordsInfo(@PathVariable TestSuiteEnum enums, @PathVariable String keyWord) {
+    public String getKeyWordsInfo(@PathVariable TestSuiteEnum enums, @PathVariable String keyWord) {
         ITestSuite testSuite = taobaoTestSuite;
         switch (enums) {
             case kucoin:
@@ -61,7 +62,7 @@ public class GerowApplication {
                 testSuite = jdsopTestSuite;
                 break;
         }
-        return testSuite.getTestClass().stream().flatMap(testClass -> {
+        YmlTestStep iTestStep = (YmlTestStep) testSuite.getTestClass().stream().flatMap(testClass -> {
                     List<ITestMethod> testMethods = new ArrayList<>(testClass.getTestMethods());
                     testMethods.addAll(testClass.getBeforeClass());
                     testMethods.addAll(testClass.getAfterClass());
@@ -77,7 +78,8 @@ public class GerowApplication {
                 .filter(testStep -> StringUtils.equals(testStep.getName(), keyWord))
                 .map(testStep -> ((YmlTestStep) testStep).getStep().build(((YmlTestStep) testStep).getTestMethod(), ((YmlTestStep) testStep).getFactory()).get(0))
                 .findFirst().get();
-
+        iTestStep.setStep(iTestStep.buildStep(iTestStep.getStep()));
+        return JSONObject.toJSONString(iTestStep);
     }
 
     private String initTestSuite(String testDir) throws UnsupportedEncodingException {
