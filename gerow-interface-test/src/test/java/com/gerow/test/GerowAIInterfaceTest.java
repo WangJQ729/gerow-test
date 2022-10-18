@@ -49,7 +49,7 @@ public class GerowAIInterfaceTest extends GerowAbstractApiTest {
                     .distinct()
                     .collect(Collectors.joining(",")));
             return testSuite.getTestClass().parallelStream()
-                    //根据sheetName过滤测试
+                    //根据yml文件名称过滤测试
                     .filter(ITestClass::enable)
                     .map(GerowApiTestFactory::buildTestClass).toArray();
         }

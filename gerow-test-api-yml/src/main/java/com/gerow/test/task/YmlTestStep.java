@@ -10,10 +10,9 @@ import com.gerow.test.utils.data.Extractor;
 import com.gerow.test.utils.data.StepEditor;
 import io.qameta.allure.Allure;
 import lombok.Data;
+import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.util.DigestUtils;
@@ -37,6 +36,7 @@ public class YmlTestStep implements ITestStep {
     /**
      * 测试方法
      */
+    @ToString.Exclude
     private ITestMethod testMethod;
 
     /**
@@ -53,8 +53,6 @@ public class YmlTestStep implements ITestStep {
      * 参数
      */
     private Map<String, String> params;
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private List<Assertion> assertions;
 
@@ -115,9 +113,7 @@ public class YmlTestStep implements ITestStep {
                     e.printStackTrace();
                 }
             }
-            String stepName =
-                    replace(TestUtils.firstNonEmpty(factory.getName(),
-                            step.getName(), step.getKeyWord()).orElse("testStep"));
+            String stepName = replace(TestUtils.firstNonEmpty(factory.getName(), step.getName(), step.getKeyWord()).orElse("testStep"));
             Allure.step(stepName, () -> doWithWait(System.currentTimeMillis()));
         } else {
             Map<String, String[]> dataList = new HashMap<>();
@@ -127,9 +123,7 @@ public class YmlTestStep implements ITestStep {
                 for (int i = 0; i < min.getAsInt(); i++) {
                     Map<String, String> newParams = new HashMap<>(params);
                     int finalI = i;
-                    dataList.forEach((k, v) ->
-                            newParams.put(k, v[finalI])
-                    );
+                    dataList.forEach((k, v) -> newParams.put(k, v[finalI]));
                     if (newParams.containsValue(StringUtils.EMPTY)) {
                         break;
                     }
@@ -231,24 +225,19 @@ public class YmlTestStep implements ITestStep {
      * @return 查找到的测试步骤
      */
     private YmlHttpStepEntity getStepEntity(String keyWord) {
-        return testMethod.getTestClass().getTestSuite().getTestClass()
-                .stream().flatMap(testClass -> {
-                    List<ITestMethod> testMethods = new ArrayList<>(testClass.getTestMethods());
-                    testMethods.addAll(testClass.getBeforeClass());
-                    testMethods.addAll(testClass.getAfterClass());
-                    testMethods.addAll(testClass.getBefore());
-                    testMethods.addAll(testClass.getAfter());
-                    testMethods.addAll(testClass.getClassHeartbeat());
-                    testMethods.addAll(testClass.getKeyWord());
-                    testMethods.addAll(testClass.getTestSuite().getBeforeSuite());
-                    testMethods.addAll(testClass.getTestSuite().getAfterSuite());
-                    testMethods.addAll(testClass.getTestSuite().getHeartbeat());
-                    return testMethods.stream();
-                })
-                .flatMap(method -> method.getTestSteps().stream())
-                .filter(testStep -> StringUtils.equals(testStep.getName(), keyWord))
-                .map(testStep -> ((YmlTestStep) testStep).getStep().copy()
-                ).findAny().orElseThrow(() -> new UnsupportedOperationException("未找到step：" + keyWord));
+        return testMethod.getTestClass().getTestSuite().getTestClass().stream().flatMap(testClass -> {
+            List<ITestMethod> testMethods = new ArrayList<>(testClass.getTestMethods());
+            testMethods.addAll(testClass.getBeforeClass());
+            testMethods.addAll(testClass.getAfterClass());
+            testMethods.addAll(testClass.getBefore());
+            testMethods.addAll(testClass.getAfter());
+            testMethods.addAll(testClass.getClassHeartbeat());
+            testMethods.addAll(testClass.getKeyWord());
+            testMethods.addAll(testClass.getTestSuite().getBeforeSuite());
+            testMethods.addAll(testClass.getTestSuite().getAfterSuite());
+            testMethods.addAll(testClass.getTestSuite().getHeartbeat());
+            return testMethods.stream();
+        }).flatMap(method -> method.getTestSteps().stream()).filter(testStep -> StringUtils.equals(testStep.getName(), keyWord)).map(testStep -> ((YmlTestStep) testStep).getStep().copy()).findAny().orElseThrow(() -> new UnsupportedOperationException("未找到step：" + keyWord));
     }
 
     /**
@@ -270,9 +259,8 @@ public class YmlTestStep implements ITestStep {
         if (!oldStep.getForm().isEmpty())
             for (String s : oldStep.getForm().keySet()) newStep.getForm().put(s, oldStep.getForm().get(s));
 
-        if (!oldStep.getVariables().isEmpty())
-            for (String s : oldStep.getVariables().keySet())
-                newStep.getVariables().put(s, oldStep.getVariables().get(s));
+        if (!oldStep.getVariables().isEmpty()) for (String s : oldStep.getVariables().keySet())
+            newStep.getVariables().put(s, oldStep.getVariables().get(s));
 
         if (StringUtils.isNotBlank(oldStep.getHost())) newStep.setHost(oldStep.getHost());
 
@@ -303,8 +291,7 @@ public class YmlTestStep implements ITestStep {
         if (step.getHost() != null) {
             host = replace(step.getHost());
         }
-        StringBuilder builder = new StringBuilder(host)
-                .append(replace(step.getUrl()));
+        StringBuilder builder = new StringBuilder(host).append(replace(step.getUrl()));
         Map<String, String> variables = step.getVariables();
         String result = variables.keySet().stream().map(key -> {
             String value = replace(variables.get(key));
@@ -353,7 +340,7 @@ public class YmlTestStep implements ITestStep {
         try {
             body = replace(body);
         } catch (Error e) {
-            logger.debug(e.getMessage());
+            System.out.println(e.getMessage());
         }
         if (step.getBodyEditor() != null) {
             //根据bodyBuilder构造请求体

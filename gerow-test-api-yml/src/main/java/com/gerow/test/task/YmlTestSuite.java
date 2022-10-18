@@ -12,14 +12,8 @@ import java.util.stream.Collectors;
 
 public class YmlTestSuite extends AbstractTestSuite {
 
-    private static YmlTestSuite testSuite;
-
     public static YmlTestSuite getInstance(String dirPath) {
-        if (testSuite == null) {
-            testSuite = new YmlTestSuite(dirPath);
-        }
-        return testSuite;
-
+        return new YmlTestSuite(dirPath);
     }
 
     private YmlTestSuite(String pathDir) {

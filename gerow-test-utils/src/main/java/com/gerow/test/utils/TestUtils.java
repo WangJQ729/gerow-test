@@ -84,7 +84,7 @@ public class TestUtils {
                     }
                 }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException
-                    | NoSuchMethodException | ExceptionInInitializerError | ClassCastException e) {
+                     | NoSuchMethodException | ExceptionInInitializerError | ClassCastException e) {
             }
         }
     }
@@ -102,15 +102,18 @@ public class TestUtils {
      * @return 替换后的参数
      */
     public static String replace(String content, ITest parentTest, ITest iTest, int times) {
-        JMeterContextService.getContext().setVariables(new JMeterVariables());
-        if (parentTest != null) {
-            content = parentTest.replace(TestUtils.replace(content, iTest));
-        }
-        if (times < 5) {
-            times++;
-            if (TestUtils.hasVariables(content)) return replace(content, parentTest, iTest, times);
-        } else {
-            Assertions.fail("参数未找到:" + content);
+        if (StringUtils.isNotBlank(System.getProperty("platform"))) {
+            JMeterContextService.getContext().setVariables(new JMeterVariables());
+            if (parentTest != null) {
+                content = parentTest.replace(TestUtils.replace(content, iTest));
+            }
+            if (times < 5) {
+                times++;
+                if (TestUtils.hasVariables(content)) return replace(content, parentTest, iTest, times);
+            } else {
+                Assertions.fail("参数未找到:" + content);
+            }
+            return content;
         }
         return content;
     }
