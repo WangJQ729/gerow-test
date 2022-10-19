@@ -21,7 +21,7 @@ public abstract class AbstractTestMethod implements ITestMethod {
     private ITestClass testClass;
     private Map<String, String> params = new HashMap<>();
 
-    @JSONField(deserializeUsing = ITestNameSerializer.class)
+    @JSONField(serializeUsing = ITestNameSerializer.class)
     private List<ITestStep> testSteps = new ArrayList<>();
     private Map<String, String> links = new HashMap<>();
     private boolean enable;

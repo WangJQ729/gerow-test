@@ -4,6 +4,8 @@ import com.alibaba.fastjson.serializer.JSONSerializer;
 import com.alibaba.fastjson.serializer.ObjectSerializer;
 import com.alibaba.fastjson.serializer.SerializeWriter;
 import com.gerow.test.task.ITest;
+import com.gerow.test.task.ITestStep;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -23,7 +25,14 @@ public class ITestNameSerializer implements ObjectSerializer {
             out.writeNull();
         } else {
             if (object instanceof ArrayList) {
-                List<String> collect = ((ArrayList<ITest>) object).stream().map(o -> o.getName()).collect(Collectors.toList());
+                List<String> collect = ((ArrayList<ITest>) object).stream().map(o -> {
+                            String name = o.getName();
+                            if (StringUtils.isBlank(name) && o instanceof ITestStep) {
+                                name = ((ITestStep) o).getKeyWord();
+                            }
+                            return name;
+                        }
+                ).collect(Collectors.toList());
                 out.write(collect);
             }
         }

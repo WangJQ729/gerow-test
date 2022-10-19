@@ -103,12 +103,11 @@ public class GerowApplication {
      * @return 测试方法列表
      */
     @GetMapping("/getTestMethod/{platform}/{testClass}")
-    public List<String> getTestMethod(@PathVariable TestPlatform platform, @PathVariable String testClass) throws UnsupportedEncodingException {
+    public List<ITestMethod> getTestMethod(@PathVariable TestPlatform platform, @PathVariable String testClass) throws UnsupportedEncodingException {
         ITestSuite testSuite = getTestSuite(platform);
         return testSuite.getTestClass().stream()
-                .filter(iTestClass -> StringUtils.equals(iTestClass.getName(), testClass))
+                .filter(iTestClass -> StringUtils.equals(testClass, iTestClass.getName()))
                 .flatMap(iTestClass -> iTestClass.getTestMethods().stream())
-                .map(ITest::getName)
                 .distinct()
                 .collect(Collectors.toList());
     }
@@ -124,16 +123,12 @@ public class GerowApplication {
     @GetMapping("/getTestMethod/{platform}/{testClass}/{testMethod}")
     public List<ITestMethod> getTestMethod(@PathVariable TestPlatform platform, @PathVariable String testClass, @PathVariable String testMethod) {
         ITestSuite testSuite = getTestSuite(platform);
-        List<ITestMethod> iTestMethods = testSuite.getTestClass().stream()
+        return testSuite.getTestClass().stream()
                 .filter(iTestClass -> StringUtils.equals(iTestClass.getName(), testClass))
                 .flatMap(iTestClass -> iTestClass.getTestMethods().stream())
                 .filter(iTestMethod -> StringUtils.equals(iTestMethod.getName(), testMethod))
                 .distinct()
                 .collect(Collectors.toList());
-        iTestMethods.forEach(iTestMethod ->
-                iTestMethod.getTestSteps().forEach(iTestStep ->
-                        ((YmlTestStep) iTestStep).setStep(((YmlTestStep) iTestStep).buildStep(((YmlTestStep) iTestStep).getStep()))));
-        return iTestMethods;
     }
 
     private ITestSuite getTestSuite(TestPlatform platform) {
