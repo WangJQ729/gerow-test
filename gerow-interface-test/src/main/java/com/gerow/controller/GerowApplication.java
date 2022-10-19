@@ -1,11 +1,7 @@
 package com.gerow.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.gerow.enums.TestSuiteEnum;
-import com.gerow.test.task.ITestMethod;
-import com.gerow.test.task.ITestSuite;
-import com.gerow.test.task.YmlTestStep;
-import com.gerow.test.task.YmlTestSuite;
+import com.gerow.enums.TestPlatform;
+import com.gerow.test.task.*;
 import net.minidev.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,9 +34,9 @@ public class GerowApplication {
         taobao = initTestSuite("淘宝");
     }
 
-    @GetMapping("/getKeyWord/{enums}")
-    public String getKeyWord(@PathVariable TestSuiteEnum enums) {
-        switch (enums) {
+    @GetMapping("/getKeyWord/{platform}")
+    public String getKeyWord(@PathVariable TestPlatform platform) {
+        switch (platform) {
             case taobao:
                 return taobao;
             case kucoin:
@@ -51,10 +47,10 @@ public class GerowApplication {
         return kucoin;
     }
 
-    @GetMapping("/getKeyWord/{enums}/{keyWord}")
-    public String getKeyWordsInfo(@PathVariable TestSuiteEnum enums, @PathVariable String keyWord) {
+    @GetMapping("/getKeyWord/{platform}/{keyWord}")
+    public ITestStep getKeyWordsInfo(@PathVariable TestPlatform platform, @PathVariable String keyWord) {
         ITestSuite testSuite = taobaoTestSuite;
-        switch (enums) {
+        switch (platform) {
             case kucoin:
                 testSuite = kucoinTestSuite;
                 break;
@@ -79,7 +75,7 @@ public class GerowApplication {
                 .map(testStep -> ((YmlTestStep) testStep).getStep().build(((YmlTestStep) testStep).getTestMethod(), ((YmlTestStep) testStep).getFactory()).get(0))
                 .findFirst().get();
         iTestStep.setStep(iTestStep.buildStep(iTestStep.getStep()));
-        return JSONObject.toJSONString(iTestStep);
+        return iTestStep;
     }
 
     private String initTestSuite(String testDir) throws UnsupportedEncodingException {
