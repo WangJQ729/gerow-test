@@ -1,6 +1,8 @@
 package com.gerow.test.task;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.gerow.test.utils.TestUtils;
+import com.gerow.test.utils.json.ITestNameSerializer;
 import io.qameta.allure.Allure;
 import io.qameta.allure.SeverityLevel;
 import lombok.Data;
@@ -15,9 +17,12 @@ public abstract class AbstractTestMethod implements ITestMethod {
     private String name;
     private String description;
     private String author;
+    @JSONField(serialize = false)
     private ITestClass testClass;
     private Map<String, String> params = new HashMap<>();
-    private List<ITestStep> testSteps;
+
+    @JSONField(deserializeUsing = ITestNameSerializer.class)
+    private List<ITestStep> testSteps = new ArrayList<>();
     private Map<String, String> links = new HashMap<>();
     private boolean enable;
 
@@ -89,12 +94,12 @@ public abstract class AbstractTestMethod implements ITestMethod {
         if (StringUtils.isNoneBlank(description)) {
             return replace(description);
         }
-        return "\"\"\"</br>"+getTestSteps().stream().map(iTestStep -> {
+        return "\"\"\"</br>" + getTestSteps().stream().map(iTestStep -> {
             if (StringUtils.isNoneBlank(iTestStep.getName())) {
                 return iTestStep.getName();
             } else {
                 return iTestStep.getKeyWord();
             }
-        }).collect(Collectors.joining("</br>"))+"</br>\"\"\"</br>";
+        }).collect(Collectors.joining("</br>")) + "</br>\"\"\"</br>";
     }
 }

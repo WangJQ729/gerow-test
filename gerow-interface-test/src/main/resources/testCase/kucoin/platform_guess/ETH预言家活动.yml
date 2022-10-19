@@ -163,6 +163,6 @@ testMethod:
           - 630368dae750870001829c48
     step:
       #      - keyWord: 用户报名
-#      - name: 测试${__kafkaMessage(${userId})}
+      - name: 测试${__kafkaMessage(${userId})}
       - keyWord: 获取用户可投票数
       - keyWord: 用户投票

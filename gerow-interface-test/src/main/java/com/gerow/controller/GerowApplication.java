@@ -2,7 +2,6 @@ package com.gerow.controller;
 
 import com.gerow.enums.TestPlatform;
 import com.gerow.test.task.*;
-import net.minidev.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,42 +21,33 @@ public class GerowApplication {
     private final ITestSuite taobaoTestSuite = getTestSuite("淘宝");
     private final ITestSuite jdsopTestSuite = getTestSuite("京东SOP");
     private final ITestSuite kucoinTestSuite = getTestSuite("kucoin");
-    ;
-
-    private final String kucoin;
-    private final String jdsop;
-    private final String taobao;
+    private final ITestSuite jdzyTestSuite = getTestSuite("京东自营");
 
     public GerowApplication() throws UnsupportedEncodingException {
-        kucoin = initTestSuite("kucoin");
-        jdsop = initTestSuite("京东SOP");
-        taobao = initTestSuite("淘宝");
     }
 
+    /**
+     * 获取所有关键字
+     *
+     * @param platform 脚本所属平台
+     * @return 关键字列表
+     */
     @GetMapping("/getKeyWord/{platform}")
-    public String getKeyWord(@PathVariable TestPlatform platform) {
-        switch (platform) {
-            case taobao:
-                return taobao;
-            case kucoin:
-                return kucoin;
-            case jdsop:
-                return jdsop;
-        }
-        return kucoin;
+    public List<String> getKeyWord(@PathVariable TestPlatform platform) throws UnsupportedEncodingException {
+        ITestSuite testSuite = getTestSuite(platform);
+        return initTestSuite(testSuite);
     }
 
+    /**
+     * 获取关键字详细信息
+     *
+     * @param platform 平台名称
+     * @param keyWord  关键字名称
+     * @return 关键字内容
+     */
     @GetMapping("/getKeyWord/{platform}/{keyWord}")
-    public ITestStep getKeyWordsInfo(@PathVariable TestPlatform platform, @PathVariable String keyWord) {
-        ITestSuite testSuite = taobaoTestSuite;
-        switch (platform) {
-            case kucoin:
-                testSuite = kucoinTestSuite;
-                break;
-            case jdsop:
-                testSuite = jdsopTestSuite;
-                break;
-        }
+    public ITestStep getKeyWords(@PathVariable TestPlatform platform, @PathVariable String keyWord) {
+        ITestSuite testSuite = getTestSuite(platform);
         YmlTestStep iTestStep = (YmlTestStep) testSuite.getTestClass().stream().flatMap(testClass -> {
                     List<ITestMethod> testMethods = new ArrayList<>(testClass.getTestMethods());
                     testMethods.addAll(testClass.getBeforeClass());
@@ -73,14 +63,97 @@ public class GerowApplication {
                 }).flatMap(method -> method.getTestSteps().stream())
                 .filter(testStep -> StringUtils.equals(testStep.getName(), keyWord))
                 .map(testStep -> ((YmlTestStep) testStep).getStep().build(((YmlTestStep) testStep).getTestMethod(), ((YmlTestStep) testStep).getFactory()).get(0))
-                .findFirst().get();
+                .findFirst().orElseGet(YmlTestStep::new);
         iTestStep.setStep(iTestStep.buildStep(iTestStep.getStep()));
         return iTestStep;
     }
 
-    private String initTestSuite(String testDir) throws UnsupportedEncodingException {
-        ITestSuite testSuite = getTestSuite(testDir);
-        return JSONArray.toJSONString(testSuite.getTestClass().stream()
+    /**
+     * 获取测试类列表
+     *
+     * @param platform 平台名称
+     * @return 所有测试类名称
+     */
+    @GetMapping("/getTestClass/{platform}")
+    public List<String> getTestClassList(@PathVariable TestPlatform platform) {
+        ITestSuite testSuite = getTestSuite(platform);
+        return testSuite.getTestClass().stream().map(ITestClass::getName).distinct().collect(Collectors.toList());
+    }
+
+    /**
+     * 根据名称获取测试类
+     *
+     * @param platform 平台名称
+     * @param name     类名称
+     * @return 类详细信息列表
+     */
+    @GetMapping("/getTestClass/{platform}/{name}")
+    public List<ITestClass> getTestClass(@PathVariable TestPlatform platform, @PathVariable String name) {
+        ITestSuite testSuite = getTestSuite(platform);
+        return testSuite.getTestClass().stream()
+                .filter(iTestClass -> StringUtils.equals(name, iTestClass.getName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 获取所有测试方案
+     *
+     * @param platform  平台名称
+     * @param testClass 测试类名称
+     * @return 测试方法列表
+     */
+    @GetMapping("/getTestMethod/{platform}/{testClass}")
+    public List<String> getTestMethod(@PathVariable TestPlatform platform, @PathVariable String testClass) throws UnsupportedEncodingException {
+        ITestSuite testSuite = getTestSuite(platform);
+        return testSuite.getTestClass().stream()
+                .filter(iTestClass -> StringUtils.equals(iTestClass.getName(), testClass))
+                .flatMap(iTestClass -> iTestClass.getTestMethods().stream())
+                .map(ITest::getName)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 获取测试方法
+     *
+     * @param platform   平台名称
+     * @param testClass  测试类名称
+     * @param testMethod 测试方法名称
+     * @return 测试方法列表
+     */
+    @GetMapping("/getTestMethod/{platform}/{testClass}/{testMethod}")
+    public List<ITestMethod> getTestMethod(@PathVariable TestPlatform platform, @PathVariable String testClass, @PathVariable String testMethod) {
+        ITestSuite testSuite = getTestSuite(platform);
+        List<ITestMethod> iTestMethods = testSuite.getTestClass().stream()
+                .filter(iTestClass -> StringUtils.equals(iTestClass.getName(), testClass))
+                .flatMap(iTestClass -> iTestClass.getTestMethods().stream())
+                .filter(iTestMethod -> StringUtils.equals(iTestMethod.getName(), testMethod))
+                .distinct()
+                .collect(Collectors.toList());
+        iTestMethods.forEach(iTestMethod ->
+                iTestMethod.getTestSteps().forEach(iTestStep ->
+                        ((YmlTestStep) iTestStep).setStep(((YmlTestStep) iTestStep).buildStep(((YmlTestStep) iTestStep).getStep()))));
+        return iTestMethods;
+    }
+
+    private ITestSuite getTestSuite(TestPlatform platform) {
+        ITestSuite testSuite = taobaoTestSuite;
+        switch (platform) {
+            case kucoin:
+                testSuite = kucoinTestSuite;
+                break;
+            case jdsop:
+                testSuite = jdsopTestSuite;
+                break;
+            case jdzy:
+                testSuite = jdzyTestSuite;
+                break;
+        }
+        return testSuite;
+    }
+
+    private List<String> initTestSuite(ITestSuite testSuite) throws UnsupportedEncodingException {
+        return testSuite.getTestClass().stream()
                 .flatMap(testClass -> {
                     List<ITestMethod> testMethods = new ArrayList<>(testClass.getTestMethods());
                     testMethods.addAll(testClass.getBeforeClass());
@@ -100,7 +173,7 @@ public class GerowApplication {
                 .map(iTestStep ->
                         ((YmlTestStep) iTestStep).getStep().getName())
                 .distinct()
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
     private static ITestSuite getTestSuite(String testDir) throws UnsupportedEncodingException {

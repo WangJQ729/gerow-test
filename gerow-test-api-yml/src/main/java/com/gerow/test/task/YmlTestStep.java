@@ -56,6 +56,10 @@ public class YmlTestStep implements ITestStep {
 
     private List<Assertion> assertions;
 
+    public YmlTestStep() {
+
+    }
+
     /**
      * 构造方法
      *

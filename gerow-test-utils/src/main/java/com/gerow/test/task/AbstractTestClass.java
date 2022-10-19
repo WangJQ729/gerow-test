@@ -1,6 +1,8 @@
 package com.gerow.test.task;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.gerow.test.utils.TestUtils;
+import com.gerow.test.utils.json.ITestNameSerializer;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jmeter.engine.util.CompoundVariable;
@@ -18,16 +20,25 @@ public abstract class AbstractTestClass implements ITestClass {
     private String story;
     private String platform;
     private String feature;
+    @JSONField(serializeUsing = ITestNameSerializer.class)
     private List<ITestMethod> testMethods = new ArrayList<>();
+
     public Map<String, String> params = new LinkedHashMap<>();
+    @JSONField(serialize = false)
     private ITestSuite testSuite;
     private File file;
     private boolean enable;
+    @JSONField(serializeUsing = ITestNameSerializer.class)
     private List<ITestMethod> beforeClass = new ArrayList<>();
+    @JSONField(serializeUsing = ITestNameSerializer.class)
     private List<ITestMethod> afterClass = new ArrayList<>();
+    @JSONField(serializeUsing = ITestNameSerializer.class)
     private List<ITestMethod> classHeartbeat = new ArrayList<>();
+    @JSONField(serializeUsing = ITestNameSerializer.class)
     private List<ITestMethod> keyWord = new ArrayList<>();
+    @JSONField(serializeUsing = ITestNameSerializer.class)
     private List<ITestMethod> before = new ArrayList<>();
+    @JSONField(serializeUsing = ITestNameSerializer.class)
     private List<ITestMethod> after = new ArrayList<>();
 
 
