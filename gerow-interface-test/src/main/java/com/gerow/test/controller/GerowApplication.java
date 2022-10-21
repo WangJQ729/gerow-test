@@ -1,6 +1,6 @@
-package com.gerow.controller;
+package com.gerow.test.controller;
 
-import com.gerow.enums.TestPlatform;
+import com.gerow.test.TestPlatform;
 import com.gerow.test.task.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -107,8 +107,21 @@ public class GerowApplication {
         ITestSuite testSuite = getTestSuite(platform);
         return testSuite.getTestClass().stream()
                 .filter(iTestClass -> StringUtils.equals(testClass, iTestClass.getName()))
-                .flatMap(iTestClass -> iTestClass.getTestMethods().stream())
-                .distinct()
+                .flatMap(iTestClass ->
+                        {
+                            List<ITestMethod> testMethods = new ArrayList<>(iTestClass.getTestMethods());
+                            testMethods.addAll(iTestClass.getBeforeClass());
+                            testMethods.addAll(iTestClass.getAfterClass());
+                            testMethods.addAll(iTestClass.getBefore());
+                            testMethods.addAll(iTestClass.getAfter());
+                            testMethods.addAll(iTestClass.getClassHeartbeat());
+                            testMethods.addAll(iTestClass.getKeyWord());
+                            testMethods.addAll(iTestClass.getTestSuite().getBeforeSuite());
+                            testMethods.addAll(iTestClass.getTestSuite().getAfterSuite());
+                            testMethods.addAll(iTestClass.getTestSuite().getHeartbeat());
+                            return testMethods.stream();
+                        }
+                ).distinct()
                 .collect(Collectors.toList());
     }
 
@@ -121,13 +134,37 @@ public class GerowApplication {
      * @return 测试方法列表
      */
     @GetMapping("/getTestMethod/{platform}/{testClass}/{testMethod}")
-    public List<ITestMethod> getTestMethod(@PathVariable TestPlatform platform, @PathVariable String testClass, @PathVariable String testMethod) {
+    public List<ITestMethod> getTestMethod(@PathVariable TestPlatform platform,
+                                           @PathVariable String testClass,
+                                           @PathVariable String testMethod) {
         ITestSuite testSuite = getTestSuite(platform);
         return testSuite.getTestClass().stream()
                 .filter(iTestClass -> StringUtils.equals(iTestClass.getName(), testClass))
-                .flatMap(iTestClass -> iTestClass.getTestMethods().stream())
+                .flatMap(iTestClass -> {
+                    List<ITestMethod> testMethods = new ArrayList<>(iTestClass.getTestMethods());
+                    testMethods.addAll(iTestClass.getBeforeClass());
+                    testMethods.addAll(iTestClass.getAfterClass());
+                    testMethods.addAll(iTestClass.getBefore());
+                    testMethods.addAll(iTestClass.getAfter());
+                    testMethods.addAll(iTestClass.getClassHeartbeat());
+                    testMethods.addAll(iTestClass.getKeyWord());
+                    testMethods.addAll(iTestClass.getTestSuite().getBeforeSuite());
+                    testMethods.addAll(iTestClass.getTestSuite().getAfterSuite());
+                    testMethods.addAll(iTestClass.getTestSuite().getHeartbeat());
+                    return testMethods.stream();
+                })
                 .filter(iTestMethod -> StringUtils.equals(iTestMethod.getName(), testMethod))
                 .distinct()
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/getTestMethod/{platform}/{testClass}/{testMethod}/{node_state}")
+    public List<ITestMethod> getTestMethod(@PathVariable TestPlatform platform,
+                                           @PathVariable String testClass,
+                                           @PathVariable String testMethod,
+                                           @PathVariable String node_state) {
+        return getTestMethod(platform, testClass, testMethod).stream()
+                .filter(iTestMethod -> StringUtils.equals(iTestMethod.getTestClass().getParams().get("node_state"), node_state))
                 .collect(Collectors.toList());
     }
 

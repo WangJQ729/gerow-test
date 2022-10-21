@@ -26,6 +26,7 @@ public abstract class AbstractTestClass implements ITestClass {
     public Map<String, String> params = new LinkedHashMap<>();
     @JSONField(serialize = false)
     private ITestSuite testSuite;
+    @JSONField(serialize = false)
     private File file;
     private boolean enable;
     @JSONField(serializeUsing = ITestNameSerializer.class)
