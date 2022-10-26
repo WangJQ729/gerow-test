@@ -2,6 +2,7 @@ package com.gerow.test.controller;
 
 import com.gerow.test.TestPlatform;
 import com.gerow.test.task.*;
+import com.gerow.test.utils.ResponseInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ public class GerowApplication {
     private final ITestSuite jdsopTestSuite = getTestSuite("京东SOP");
     private final ITestSuite kucoinTestSuite = getTestSuite("kucoin");
     private final ITestSuite jdzyTestSuite = getTestSuite("京东自营");
+    private final ITestSuite myTestSuite = getTestSuite("测试框架");
 
     public GerowApplication() throws UnsupportedEncodingException {
     }
@@ -33,9 +35,9 @@ public class GerowApplication {
      * @return 关键字列表
      */
     @GetMapping("/getKeyWord/{platform}")
-    public List<String> getKeyWord(@PathVariable TestPlatform platform) throws UnsupportedEncodingException {
+    public ResponseInfo<List<String>> getKeyWord(@PathVariable TestPlatform platform) throws UnsupportedEncodingException {
         ITestSuite testSuite = getTestSuite(platform);
-        return initTestSuite(testSuite);
+        return ResponseInfo.success(initTestSuite(testSuite));
     }
 
     /**
@@ -46,7 +48,7 @@ public class GerowApplication {
      * @return 关键字内容
      */
     @GetMapping("/getKeyWord/{platform}/{keyWord}")
-    public ITestStep getKeyWords(@PathVariable TestPlatform platform, @PathVariable String keyWord) {
+    public ResponseInfo<YmlTestStep> getKeyWords(@PathVariable TestPlatform platform, @PathVariable String keyWord) {
         ITestSuite testSuite = getTestSuite(platform);
         YmlTestStep iTestStep = (YmlTestStep) testSuite.getTestClass().stream().flatMap(testClass -> {
                     List<ITestMethod> testMethods = new ArrayList<>(testClass.getTestMethods());
@@ -65,7 +67,7 @@ public class GerowApplication {
                 .map(testStep -> ((YmlTestStep) testStep).getStep().build(((YmlTestStep) testStep).getTestMethod(), ((YmlTestStep) testStep).getFactory()).get(0))
                 .findFirst().orElseGet(YmlTestStep::new);
         iTestStep.setStep(iTestStep.buildStep(iTestStep.getStep()));
-        return iTestStep;
+        return ResponseInfo.success(iTestStep);
     }
 
     /**
@@ -75,9 +77,12 @@ public class GerowApplication {
      * @return 所有测试类名称
      */
     @GetMapping("/getTestClass/{platform}")
-    public List<String> getTestClassList(@PathVariable TestPlatform platform) {
+    public ResponseInfo<List<String>> getTestClassList(@PathVariable TestPlatform platform) {
         ITestSuite testSuite = getTestSuite(platform);
-        return testSuite.getTestClass().stream().map(ITestClass::getName).distinct().collect(Collectors.toList());
+        return ResponseInfo.success(testSuite.getTestClass().stream()
+                .map(ITestClass::getName)
+                .distinct()
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -88,41 +93,28 @@ public class GerowApplication {
      * @return 类详细信息列表
      */
     @GetMapping("/getTestClass/{platform}/{name}")
-    public List<ITestClass> getTestClass(@PathVariable TestPlatform platform, @PathVariable String name) {
+    public ResponseInfo<List<ITestClass>> getTestClass(@PathVariable TestPlatform platform, @PathVariable String name) {
         ITestSuite testSuite = getTestSuite(platform);
-        return testSuite.getTestClass().stream()
+        return ResponseInfo.success(testSuite.getTestClass().stream()
                 .filter(iTestClass -> StringUtils.equals(name, iTestClass.getName()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     /**
-     * 获取所有测试方案
+     * 根据名称获取测试类
      *
-     * @param platform  平台名称
-     * @param testClass 测试类名称
-     * @return 测试方法列表
+     * @param platform   平台名称
+     * @param name       类名称
+     * @param node_state 订单状态
+     * @return 类详细信息列表
      */
-    @GetMapping("/getTestMethod/{platform}/{testClass}")
-    public List<ITestMethod> getTestMethod(@PathVariable TestPlatform platform, @PathVariable String testClass) throws UnsupportedEncodingException {
+    @GetMapping("/getTestClass/{platform}/{name}/{node_state}")
+    public ResponseInfo<List<ITestClass>> getTestClass(@PathVariable TestPlatform platform, @PathVariable String name, @PathVariable String node_state) {
         ITestSuite testSuite = getTestSuite(platform);
-        return testSuite.getTestClass().stream()
-                .filter(iTestClass -> StringUtils.equals(testClass, iTestClass.getName()))
-                .flatMap(iTestClass ->
-                        {
-                            List<ITestMethod> testMethods = new ArrayList<>(iTestClass.getTestMethods());
-                            testMethods.addAll(iTestClass.getBeforeClass());
-                            testMethods.addAll(iTestClass.getAfterClass());
-                            testMethods.addAll(iTestClass.getBefore());
-                            testMethods.addAll(iTestClass.getAfter());
-                            testMethods.addAll(iTestClass.getClassHeartbeat());
-                            testMethods.addAll(iTestClass.getKeyWord());
-                            testMethods.addAll(iTestClass.getTestSuite().getBeforeSuite());
-                            testMethods.addAll(iTestClass.getTestSuite().getAfterSuite());
-                            testMethods.addAll(iTestClass.getTestSuite().getHeartbeat());
-                            return testMethods.stream();
-                        }
-                ).distinct()
-                .collect(Collectors.toList());
+        return ResponseInfo.success(testSuite.getTestClass().stream()
+                .filter(iTestClass -> StringUtils.equals(name, iTestClass.getName())
+                        && StringUtils.equals(iTestClass.getParams().get("node_state"), node_state))
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -134,11 +126,11 @@ public class GerowApplication {
      * @return 测试方法列表
      */
     @GetMapping("/getTestMethod/{platform}/{testClass}/{testMethod}")
-    public List<ITestMethod> getTestMethod(@PathVariable TestPlatform platform,
-                                           @PathVariable String testClass,
-                                           @PathVariable String testMethod) {
+    public ResponseInfo<List<ITestMethod>> getTestMethod(@PathVariable TestPlatform platform,
+                                                         @PathVariable String testClass,
+                                                         @PathVariable String testMethod) {
         ITestSuite testSuite = getTestSuite(platform);
-        return testSuite.getTestClass().stream()
+        return ResponseInfo.success(testSuite.getTestClass().stream()
                 .filter(iTestClass -> StringUtils.equals(iTestClass.getName(), testClass))
                 .flatMap(iTestClass -> {
                     List<ITestMethod> testMethods = new ArrayList<>(iTestClass.getTestMethods());
@@ -148,24 +140,45 @@ public class GerowApplication {
                     testMethods.addAll(iTestClass.getAfter());
                     testMethods.addAll(iTestClass.getClassHeartbeat());
                     testMethods.addAll(iTestClass.getKeyWord());
-                    testMethods.addAll(iTestClass.getTestSuite().getBeforeSuite());
-                    testMethods.addAll(iTestClass.getTestSuite().getAfterSuite());
-                    testMethods.addAll(iTestClass.getTestSuite().getHeartbeat());
                     return testMethods.stream();
                 })
                 .filter(iTestMethod -> StringUtils.equals(iTestMethod.getName(), testMethod))
                 .distinct()
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
+    /**
+     * 获取测试方法
+     *
+     * @param platform   平台名称
+     * @param testClass  测试类名称
+     * @param testMethod 测试方法名称
+     * @param node_state 订单状态
+     * @return 测试方法列表
+     */
     @GetMapping("/getTestMethod/{platform}/{testClass}/{testMethod}/{node_state}")
-    public List<ITestMethod> getTestMethod(@PathVariable TestPlatform platform,
-                                           @PathVariable String testClass,
-                                           @PathVariable String testMethod,
-                                           @PathVariable String node_state) {
-        return getTestMethod(platform, testClass, testMethod).stream()
-                .filter(iTestMethod -> StringUtils.equals(iTestMethod.getTestClass().getParams().get("node_state"), node_state))
-                .collect(Collectors.toList());
+    public ResponseInfo<List<ITestMethod>> getTestMethod(@PathVariable TestPlatform platform,
+                                                         @PathVariable String testClass,
+                                                         @PathVariable String testMethod,
+                                                         @PathVariable String node_state) {
+        ITestSuite testSuite = getTestSuite(platform);
+        return ResponseInfo.success(testSuite.getTestClass().stream()
+                .filter(iTestClass -> StringUtils.equals(iTestClass.getName(), testClass))
+                .flatMap(iTestClass -> {
+                    List<ITestMethod> testMethods = new ArrayList<>(iTestClass.getTestMethods());
+                    testMethods.addAll(iTestClass.getBeforeClass());
+                    testMethods.addAll(iTestClass.getAfterClass());
+                    testMethods.addAll(iTestClass.getBefore());
+                    testMethods.addAll(iTestClass.getAfter());
+                    testMethods.addAll(iTestClass.getClassHeartbeat());
+                    testMethods.addAll(iTestClass.getKeyWord());
+                    return testMethods.stream();
+                })
+                .filter(iTestMethod -> StringUtils.equals(iTestMethod.getName(), testMethod))
+                .distinct()
+                .filter(iTestMethod ->
+                        StringUtils.equals(iTestMethod.getTestClass().getParams().get("node_state"), node_state))
+                .collect(Collectors.toList()));
     }
 
     private ITestSuite getTestSuite(TestPlatform platform) {
@@ -179,6 +192,9 @@ public class GerowApplication {
                 break;
             case jdzy:
                 testSuite = jdzyTestSuite;
+                break;
+            case test:
+                testSuite = myTestSuite;
                 break;
         }
         return testSuite;

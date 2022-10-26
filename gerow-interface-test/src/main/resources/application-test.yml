@@ -1,0 +1,13 @@
+data:
+  test:
+    platform: tb
+    host: localhost:8080
+
+    shopName: ${shopName}
+
+    seller_name: ${shopName}
+client:
+  protocol: http
+  timeOut: 10
+  headers:
+    Content-Type: "application/json;charset=UTF-8"
