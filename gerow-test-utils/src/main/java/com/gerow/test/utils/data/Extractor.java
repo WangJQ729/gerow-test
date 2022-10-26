@@ -184,7 +184,7 @@ public class Extractor {
     private String buildListResult(Collection<?> result) {
         String value;
         ArrayList<?> list = new ArrayList<>(result);
-        Collections.shuffle(list);
+//        Collections.shuffle(list);
         value = list.stream().limit(size).map(o -> {
             if (o instanceof Map) {
                 return JSONObject.toJSONString(o);
