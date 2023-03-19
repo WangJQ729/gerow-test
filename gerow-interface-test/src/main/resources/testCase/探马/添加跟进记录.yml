@@ -1,0 +1,16 @@
+name: 添加跟进记录
+enable: false
+dataProvider:
+  - customerId: 529711170861376
+    content: 跟进记录${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+    followType: 1
+    salesId: 527247557904704
+testMethod:
+  - name: 添加跟进记录
+    severity: CRITICAL
+    step:
+      - keyWord: 用户跟进记录
+      - keyWord: 更新客户旅程
+#      - keyWord: 添加增加按钮菜单
+#      - keyWord: 添加个人客户
+#        invocationCount: 100
