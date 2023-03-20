@@ -24,11 +24,8 @@ testMethod:
         phoneNum: ${__RandomPhoneNum()}
         appId: wwd074f3968f56dcb0_MUVXzH
         appKey: OtfNkhTNnGC45aRL37y1m50R17dba9wG
-        timestamp: ${__time()}
-        body: |
-          {"customerName":"${buyer_id}","mobiles":["${phoneNum}"],"fields":[]}
-        str: ${appId}${timestamp}${body}${appKey}
-        sign: ${__REncryptSha256(${str},)}
+        timestamp: ${__time(/1000)}
+        sign: sign
     severity: CRITICAL
     step:
       - keyWord: api新增个人线索

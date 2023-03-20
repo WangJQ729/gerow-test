@@ -9,6 +9,7 @@ import com.gerow.test.utils.assertion.Assertion;
 import com.gerow.test.utils.data.ConfigManager;
 import com.gerow.test.utils.data.Extractor;
 import com.gerow.test.utils.data.StepEditor;
+import com.google.common.io.BaseEncoding;
 import io.qameta.allure.Allure;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,8 @@ import org.springframework.util.MultiValueMap;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -316,7 +319,25 @@ public class YmlTestStep implements ITestStep {
         HttpHeaders httpHeaders = new HttpHeaders();
         Map<String, String> header = step.getHeaders();
         for (String key : header.keySet()) {
-            httpHeaders.add(replace(key), replace(header.get(key)));
+            String replaceKey = replace(key);
+            String replaceHeader = replace(header.get(key));
+            if (StringUtils.equals(key, "sign")) {
+                MessageDigest sha256;
+                replaceHeader = header.get("appId") + header.get("timestamp") + replace(step.getBody()) + header.get("appKey");
+                replaceHeader = replace(replaceHeader.replaceAll("\n", ""));
+                System.out.println(replaceHeader);
+                try {
+                    sha256 = MessageDigest.getInstance("SHA-256");
+                } catch (NoSuchAlgorithmException e) {
+                    throw new IllegalStateException("当前环境不支持 SHA-256", e);
+                }
+                String result = BaseEncoding.base16().lowerCase().encode(sha256.digest(replaceHeader.getBytes()));
+                System.out.println(result);
+                httpHeaders.add(replaceKey, result);
+            } else {
+                httpHeaders.add(replaceKey, replaceHeader);
+            }
+
         }
         if (!step.getFile().isEmpty()) {
             MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();

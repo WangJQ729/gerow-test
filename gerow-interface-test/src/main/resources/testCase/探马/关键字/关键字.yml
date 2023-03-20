@@ -100,4 +100,4 @@ keyWord:
         timestamp: ${timestamp}
         sign: ${sign}
       body: |
-        ${body}
+        {"customerName":"${buyer_id}","mobiles":["${phoneNum}"],"fields":[]}
