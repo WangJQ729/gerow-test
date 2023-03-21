@@ -45,7 +45,10 @@ public class YmlHttpStepEntity {
      */
     private int untilWait = 0;
     private long intervals = 1000;
-
+    /**
+     * 请求头是否需要探马签名字段
+     */
+    private boolean needTanmaSign = false;
 
     private Map<String, String> iter = new HashMap<>();
     /**

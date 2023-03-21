@@ -177,7 +177,7 @@ public class YmlTestStep implements ITestStep {
     /**
      * 执行具体操作
      */
-    private void doExecute() throws UnsupportedEncodingException {
+    private void doExecute() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         if (StringUtils.isNotBlank(step.getMethod())) {
             String url = buildUrl();
             HttpEntity entity = buildHttpEntity();
@@ -315,29 +315,13 @@ public class YmlTestStep implements ITestStep {
      *
      * @return 请求对象
      */
-    private HttpEntity buildHttpEntity() {
+    private HttpEntity buildHttpEntity() throws NoSuchAlgorithmException {
         HttpHeaders httpHeaders = new HttpHeaders();
         Map<String, String> header = step.getHeaders();
         for (String key : header.keySet()) {
             String replaceKey = replace(key);
             String replaceHeader = replace(header.get(key));
-            if (StringUtils.equals(key, "sign")) {
-                MessageDigest sha256;
-                replaceHeader = header.get("appId") + header.get("timestamp") + replace(step.getBody()) + header.get("appKey");
-                replaceHeader = replace(replaceHeader.replaceAll("\n", ""));
-                System.out.println(replaceHeader);
-                try {
-                    sha256 = MessageDigest.getInstance("SHA-256");
-                } catch (NoSuchAlgorithmException e) {
-                    throw new IllegalStateException("当前环境不支持 SHA-256", e);
-                }
-                String result = BaseEncoding.base16().lowerCase().encode(sha256.digest(replaceHeader.getBytes()));
-                System.out.println(result);
-                httpHeaders.add(replaceKey, result);
-            } else {
-                httpHeaders.add(replaceKey, replaceHeader);
-            }
-
+            httpHeaders.add(replaceKey, replaceHeader);
         }
         if (!step.getFile().isEmpty()) {
             MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
@@ -384,6 +368,12 @@ public class YmlTestStep implements ITestStep {
             } catch (Exception e) {
                 Assertions.fail("JSON 格式错误:\n" + body);
             }
+        }
+        if (step.isNeedTanmaSign()) {
+            MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+            String needSignStr = replace(header.get("appId") + header.get("timestamp") + body + header.get("appKey"));
+            String sign = BaseEncoding.base16().encode(sha256.digest(needSignStr.getBytes()));
+            httpHeaders.add("sign", sign);
         }
         return new HttpEntity<>(parse, httpHeaders);
     }

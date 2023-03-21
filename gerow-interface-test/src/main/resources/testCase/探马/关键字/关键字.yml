@@ -34,7 +34,7 @@ keyWord:
             "salesStageEnd":"",
             "oldSalesStage":""
         }
-      assertion: [json: {$.code: 0}]
+      assertion: [ json: { $.code: 0 } ]
     - name: 添加增加按钮菜单
       url: /domainServer/sys_menu/addSysButton
       method: POST
@@ -45,22 +45,22 @@ keyWord:
                "proType": "[2, 3, 4]",
                "menuCode": 9910504
         }]
-      assertion: [json: {$.code: 0}]
+      assertion: [ json: { $.code: 0 } ]
     - name: 公海添加个人客户
       url: /domainServer/qwCrm/webCustomer/addOpenSeaCustomerByMobiles
       method: POST
       body: |
         {
-            "customerName":"${__RandomName(buyer_id)}",
+            "customerName":"${buyer_id}",
             "fields":[
             ],
             "addressList":[
             ],
-            "mobiles":[${__RandomPhoneNum(phoneNum)}
+            "mobiles":[${phoneNum}
             ],
             "openSeaId":${openSeaId}
         }
-      assertion: [json: {$.code: 0}]
+      assertion: [ json: { $.code: 0 } ]
     - name: 新增个人线索
       url: /domainServer/market-cloud/crm2/addClue
       method: POST
@@ -80,7 +80,7 @@ keyWord:
       method: POST
       body: |
         {"corpName":"GerowWang_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}_${__time(/1000,)}","corpNameShort":"GerowWang","business":null,"scale":null,"level":null,"address":null,"creditCode":"","corpDefineField":[]}
-      assertion: [json: {$.code: 0}]
+      assertion: [ json: { $.code: 0 } ]
       extractor:
         - json:
             corpId: $.data
@@ -91,13 +91,13 @@ keyWord:
         {"contacts":[],"clueInfo":{"salesStage":"","fields":[],"mobiles":["${__RandomPhoneNum(phoneNum)}"]},"companyId":${corpId},"modalType":1,"customerName":"","salesStage":"","fields":[],"address":""}
       assertion: [ json: { $.code: 0 } ]
     - name: api新增个人线索
-      host: https://blue.wechatsi.com
       url: /apiServer/api/v3/add-unassigned
+      needTanmaSign: true
       method: POST
       headers:
         appId: ${appId}
         appKey: ${appKey}
         timestamp: ${timestamp}
-        sign: ${sign}
       body: |
-        {"customerName":"${buyer_id}","mobiles":["${phoneNum}"],"fields":[]}
+        { "customerName": "${buyer_id}","mobiles": [ "${phoneNum}" ],"fields": [ ] }
+      assertion: [ json: { $.code: 0 } ]

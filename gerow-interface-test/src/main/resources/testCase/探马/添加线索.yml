@@ -1,19 +1,10 @@
-name: 添加客户
+name: 添加线索
 testMethod:
-  - name: 公海添加个人客户
-    enable: false
-    invocationCount: 1
-    severity: CRITICAL
-    step:
-      - keyWord: 公海添加个人客户
-      - keyWord: 新增个人线索
   - name: 新增个人线索
-    enable: false
     severity: CRITICAL
     step:
       - keyWord: 新增个人线索
   - name: 新增企业线索
-    enable: false
     severity: CRITICAL
     step:
       - keyWord: 添加企业
@@ -24,8 +15,7 @@ testMethod:
         phoneNum: ${__RandomPhoneNum()}
         appId: wwd074f3968f56dcb0_MUVXzH
         appKey: OtfNkhTNnGC45aRL37y1m50R17dba9wG
-        timestamp: ${__time(/1000)}
-        sign: sign
+        timestamp: ${__time()}
     severity: CRITICAL
     step:
       - keyWord: api新增个人线索
