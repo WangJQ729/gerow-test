@@ -2,12 +2,12 @@ package com.gerow.test.utils.assertion;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.gerow.test.task.ITestStep;
 import com.gerow.test.utils.TestUtils;
 import com.gerow.test.utils.data.DataSources;
 import com.gerow.test.utils.data.DataType;
 import com.gerow.test.utils.json.JsonPathUtils;
 import com.jayway.jsonpath.Option;
-import com.gerow.test.task.ITestStep;
 import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +21,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -147,46 +148,50 @@ public class Assertion {
         //根据值的类型转换类型
         switch (valueType) {
             case BIGDECIMAL:
-                value = buildBigDecimal(this.value);
+                value = buildBigDecimal(value);
                 break;
             case INTEGER:
-                value = buildInteger(this.value);
+                value = buildInteger(value);
                 break;
             case STRING:
-                value = this.value.toString();
+                value = value.toString();
                 break;
             case DEFAULT:
             default:
                 //默认状态下，类型与实际值保持一致
-                if (actual instanceof Double) {
-                    value = new BigDecimal(this.value.toString()).doubleValue();
-                } else if (actual instanceof Integer) {
-                    value = new BigDecimal(this.value.toString()).intValue();
-                } else if (actual instanceof Collection) {
-                    Optional any = ((Collection) actual).stream().findAny();
-                    if (any.isPresent()) {
-                        if (any.get() instanceof Double) {
-                            if (this.value instanceof Collection) {
-                                value = ((Collection) this.value).stream()
-                                        .map(v -> new BigDecimal(v.toString()).doubleValue())
-                                        .collect(Collectors.toList());
-                            } else {
-                                value = new BigDecimal(value.toString()).doubleValue();
-                            }
-                        } else if (any.get() instanceof Integer) {
-                            if (this.value instanceof Collection) {
-                                value = ((Collection) this.value).stream()
-                                        .map(v -> new BigDecimal(v.toString()).intValue())
-                                        .collect(Collectors.toList());
-                            } else {
-                                value = new BigDecimal(value.toString()).intValue();
-                            }
-                        }
-                    }
-                }
+                buildActualValue(actual);
                 break;
         }
         return value;
+    }
+
+    private void buildActualValue(Object actual) {
+        if (actual instanceof Double) {
+            value = new BigDecimal(this.value.toString()).doubleValue();
+        } else if (actual instanceof Integer) {
+            value = new BigDecimal(this.value.toString()).intValue();
+        } else if (actual instanceof Collection) {
+            Optional any = ((Collection) actual).stream().findAny();
+            if (any.isPresent()) {
+                if (any.get() instanceof Double) {
+                    if (this.value instanceof Collection) {
+                        value = ((Collection) this.value).stream()
+                                .map(v -> new BigDecimal(v.toString()).doubleValue())
+                                .collect(Collectors.toList());
+                    } else {
+                        value = new BigDecimal(value.toString()).doubleValue();
+                    }
+                } else if (any.get() instanceof Integer) {
+                    if (this.value instanceof Collection) {
+                        value = ((Collection) this.value).stream()
+                                .map(v -> new BigDecimal(v.toString()).intValue())
+                                .collect(Collectors.toList());
+                    } else {
+                        value = new BigDecimal(value.toString()).intValue();
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -197,38 +202,57 @@ public class Assertion {
      * @return 实际值
      */
     private <T> Object buildActual(ResponseEntity<T> entity) throws IOException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
-        Object actual = null;
-        //根据数据来源提取响应的实际值
+        Object actual = getActualValue(entity);
+        //根据值的类型转换类型
+        switch (valueType) {
+            case BIGDECIMAL:
+                assert actual != null;
+                actual = buildBigDecimal(actual);
+                break;
+            case INTEGER:
+                assert actual != null;
+                actual = buildInteger(actual);
+                break;
+            case STRING:
+            case DEFAULT:
+            default:
+                if (actual instanceof BigDecimal) {
+                    actual = ((BigDecimal) actual).doubleValue();
+                }
+                break;
+        }
+        return actual;
+    }
+
+    private <T> Object buildActual(ResponseEntity<T> entity, T body) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
+        Object actual;
+        switch (dataType) {
+            case EXCEL:
+                actual = getStringCellValue((byte[]) body);
+                break;
+            case JSON:
+            case DEFAULT:
+            default:
+                if (need_decode) actual = xiaoduoDecode(entity);
+                else actual = JsonPathUtils.read(body, key, options);
+                break;
+        }
+        return actual;
+    }
+
+    /**
+     * 获取响应实际的值
+     *
+     * @param entity 响应体
+     * @return 值
+     */
+    private <T> Object getActualValue(ResponseEntity<T> entity) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
+        Object actual;
         switch (type) {
             case BODY:
                 T body = entity.getBody();
                 assert body != null;
-                switch (dataType) {
-                    case EXCEL:
-                        String[] keys = StringUtils.split(key, "-");
-                        HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream((byte[]) body));
-                        actual = workbook.getSheetAt(Integer.valueOf(keys[0])).getRow(Integer.valueOf(keys[1])).getCell(Integer.valueOf(keys[2])).getStringCellValue();
-                        break;
-                    case JSON:
-                    case DEFAULT:
-                    default:
-                        if (need_decode) {
-                            String platform = System.getProperty("platform");
-                            String json;
-                            if (StringUtils.equals(platform, "融合版")) {
-                                json = entity.getBody().toString();
-                                actual = JsonPathUtils.read(json, key.replace("$", "$.answer"), options);
-                            } else {
-                                json = TestUtils.des3Cipher("828d1bc65eefc6c88ca1a5d4", "828d1bc6", 2,
-                                        Objects.requireNonNull(entity.getBody()).toString());
-                                Allure.addAttachment("解密结果：", json);
-                                actual = JsonPathUtils.read(json, key, options);
-                            }
-                        } else {
-                            actual = JsonPathUtils.read(body, key, options);
-                        }
-                        break;
-                }
+                actual = buildActual(entity, body);
                 break;
             case HEADER:
                 String[] split = value.toString().split(":");
@@ -247,23 +271,29 @@ public class Assertion {
                 actual = key;
                 break;
         }
-        //根据值的类型转换类型
-        switch (valueType) {
-            case BIGDECIMAL:
-                assert actual != null;
-                actual = buildBigDecimal(actual);
-                break;
-            case INTEGER:
-                assert actual != null;
-                actual = buildInteger(actual);
-                break;
-            case STRING:
-            case DEFAULT:
-            default:
-                if (actual instanceof BigDecimal) {
-                    actual = ((BigDecimal) actual).doubleValue();
-                }
-                break;
+        return actual;
+    }
+
+    private <T> Object getStringCellValue(byte[] body) throws IOException {
+        Object actual;
+        String[] keys = StringUtils.split(key, "-");
+        HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(body));
+        actual = workbook.getSheetAt(Integer.parseInt(keys[0])).getRow(Integer.parseInt(keys[1])).getCell(Integer.parseInt(keys[2])).getStringCellValue();
+        return actual;
+    }
+
+    private <T> Object xiaoduoDecode(ResponseEntity<T> entity) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException {
+        Object actual;
+        String platform = System.getProperty("platform");
+        String json;
+        if (StringUtils.equals(platform, "融合版")) {
+            json = entity.getBody().toString();
+            actual = JsonPathUtils.read(json, key.replace("$", "$.answer"), options);
+        } else {
+            json = TestUtils.des3Cipher("828d1bc65eefc6c88ca1a5d4", "828d1bc6", 2,
+                    Objects.requireNonNull(entity.getBody()).toString());
+            Allure.addAttachment("解密结果：", json);
+            actual = JsonPathUtils.read(json, key, options);
         }
         return actual;
     }
@@ -313,18 +343,10 @@ public class Assertion {
                 Assertions.assertThat(new BigDecimal(actual.toString())).isLessThanOrEqualTo(new BigDecimal(value.toString()));
                 break;
             case CONTAINS:
-                if (actual instanceof Collection) {
-                    Assertions.assertThat((Collection<Object>) actual).contains(value);
-                } else {
-                    Assertions.assertThat(actual.toString()).contains(value.toString());
-                }
+                containsAssertions(actual, value);
                 break;
             case AllCONTAINS:
-                if (actual instanceof JSONArray) {
-                    Assertions.assertThat(((JSONArray) actual).toArray()).containsAll((com.alibaba.fastjson.JSONArray) value);
-                } else {
-                    Assertions.assertThat(((net.minidev.json.JSONArray) actual).toArray()).containsAll((com.alibaba.fastjson.JSONArray) value);
-                }
+                allContainsAssertions(actual, (JSONArray) value);
                 break;
             case ALLIS:
                 Assertions.assertThat((Collection<Object>) actual).containsOnly(value);
@@ -339,11 +361,7 @@ public class Assertion {
                 Assertions.assertThat(this.step.getAssertionLength().get(key)).isEqualTo(value);
                 break;
             case ONEOF:
-                if (value instanceof Collection) {
-                    Assertions.assertThat((Collection) value).containsAnyElementsOf((Collection<Object>) actual);
-                } else {
-                    Assertions.assertThat((Object[]) value).containsAnyOf(((Object[]) actual)[0]);
-                }
+                oneOfAssertion(actual, value);
                 break;
             case EQ:
             default:
@@ -352,6 +370,30 @@ public class Assertion {
                         .as(key + "应该为：" + value)
                         .isEqualTo(value == null ? "" : value);
                 break;
+        }
+    }
+
+    private static void containsAssertions(Object actual, Object value) {
+        if (actual instanceof Collection) {
+            Assertions.assertThat((Collection<Object>) actual).contains(value);
+        } else {
+            Assertions.assertThat(actual.toString()).contains(value.toString());
+        }
+    }
+
+    private static void allContainsAssertions(Object actual, JSONArray value) {
+        if (actual instanceof JSONArray) {
+            Assertions.assertThat(((JSONArray) actual).toArray()).containsAll(value);
+        } else {
+            Assertions.assertThat(((net.minidev.json.JSONArray) actual).toArray()).containsAll(value);
+        }
+    }
+
+    private static void oneOfAssertion(Object actual, Object value) {
+        if (value instanceof Collection) {
+            Assertions.assertThat((Collection) value).containsAnyElementsOf((Collection<Object>) actual);
+        } else {
+            Assertions.assertThat((Object[]) value).containsAnyOf(((Object[]) actual)[0]);
         }
     }
 

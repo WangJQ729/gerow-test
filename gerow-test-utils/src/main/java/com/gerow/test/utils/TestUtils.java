@@ -81,11 +81,6 @@ public class TestUtils {
         }
     }
 
-    public static String randomName(int size) {
-        return RandomStringUtils.randomAlphabetic(size);
-    }
-
-
     /**
      * @param content    所要替换的对象
      * @param parentTest 测试对象的上级

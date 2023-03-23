@@ -42,7 +42,6 @@ public abstract class AbstractTestClass implements ITestClass {
     @JSONField(serializeUsing = ITestNameSerializer.class)
     private List<ITestMethod> after = new ArrayList<>();
 
-
     @Override
     public void setUp() {
         for (ITestMethod testMethod : before) {
@@ -134,7 +133,6 @@ public abstract class AbstractTestClass implements ITestClass {
     public String getName() {
         return replace(name);
     }
-
 
     @Override
     public String getStory() {

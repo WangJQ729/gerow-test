@@ -114,15 +114,7 @@ public class YmlTestStep implements ITestStep {
         this.buildParams();
         this.step = buildStep(step);
         if (step.getIter().isEmpty()) {
-            if (Integer.parseInt(replace(step.getSleep())) != 0) {
-                try {
-                    Thread.sleep(Integer.parseInt(replace(step.getSleep())));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            String stepName = replace(TestUtils.firstNonEmpty(factory.getName(), step.getName(), step.getKeyWord()).orElse("testStep"));
-            Allure.step(stepName, () -> doWithWait(System.currentTimeMillis()));
+            doWithWait();
         } else {
             Map<String, String[]> dataList = new HashMap<>();
             step.getIter().forEach((k, v) -> dataList.put(k, replace(v).split(",")));
@@ -144,6 +136,20 @@ public class YmlTestStep implements ITestStep {
         }
     }
 
+    /**
+     * 间隔执行
+     */
+    private void doWithWait() {
+        if (Integer.parseInt(replace(step.getSleep())) != 0) {
+            try {
+                Thread.sleep(Integer.parseInt(replace(step.getSleep())));
+            } catch (InterruptedException ignored) {
+            }
+        }
+        String stepName = replace(TestUtils.firstNonEmpty(factory.getName(), step.getName(), step.getKeyWord()).orElse("testStep"));
+        Allure.step(stepName, () -> doWithWait(System.currentTimeMillis()));
+    }
+
     private void buildParams() {
         params.replaceAll((k, v) -> replace(params.get(k)));
     }
@@ -156,17 +162,15 @@ public class YmlTestStep implements ITestStep {
      */
     private void doWithWait(long startTime) throws Exception {
         long nowTime = System.currentTimeMillis();
-
         if (step.getUntilWait() > 0) {
             try {
                 doExecute();
             } catch (Exception | Error e) {
                 //抛异常后重试
-                if (nowTime - startTime < step.getUntilWait() * 1000) {
+                if (nowTime - startTime < step.getUntilWait() * 1000L) {
                     Thread.sleep(step.getIntervals());
                     doWithWait(startTime);
                 } else {
-
                     throw e;
                 }
             }
@@ -255,33 +259,20 @@ public class YmlTestStep implements ITestStep {
      */
     private YmlHttpStepEntity copyStep(YmlHttpStepEntity newStep, YmlHttpStepEntity oldStep) {
         if (!oldStep.getHeaders().isEmpty()) newStep.setHeaders(oldStep.getHeaders());
-
         if (StringUtils.isNotBlank(oldStep.getBody())) newStep.setBody(oldStep.getBody());
-
         if (!oldStep.getAssertion().isEmpty()) newStep.setAssertion(oldStep.getAssertion());
-
         if (!oldStep.getExtractor().isEmpty()) newStep.setExtractor(oldStep.getExtractor());
-
         if (!oldStep.getFile().isEmpty()) newStep.setFile(oldStep.getFile());
-
         if (!oldStep.getForm().isEmpty())
             for (String s : oldStep.getForm().keySet()) newStep.getForm().put(s, oldStep.getForm().get(s));
-
         if (!oldStep.getVariables().isEmpty()) for (String s : oldStep.getVariables().keySet())
             newStep.getVariables().put(s, oldStep.getVariables().get(s));
-
         if (StringUtils.isNotBlank(oldStep.getHost())) newStep.setHost(oldStep.getHost());
-
         if (!oldStep.getIter().isEmpty()) newStep.setIter(oldStep.getIter());
-
         if (oldStep.getUntilWait() != 0) newStep.setUntilWait(oldStep.getUntilWait());
-
         if (!StringUtils.equals(oldStep.getSleep(), "0")) newStep.setSleep(oldStep.getSleep());
-
         if (oldStep.getIntervals() != 1000) newStep.setIntervals(oldStep.getIntervals());
-
         if (oldStep.getBodyEditor() != null) newStep.setBodyEditor(oldStep.getBodyEditor());
-
         if (StringUtils.isNotBlank(oldStep.getName())) newStep.setName(oldStep.getName());
         //如果copyStep也是keyWord查找，执行递归
         if (StringUtils.isNotBlank(newStep.getKeyWord())) newStep = buildStep(newStep);
