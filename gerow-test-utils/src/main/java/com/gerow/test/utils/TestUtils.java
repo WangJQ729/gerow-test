@@ -53,21 +53,13 @@ public class TestUtils {
             functions = CompoundVariable.class.getDeclaredField("functions");
             functions.setAccessible(true);
             myFunctions = functions.get(null);
-            resources = new PathMatchingResourcePatternResolver()
-                    .getResources("classpath*:*/**/jmeter/functions/**/*.class");
+            resources = new PathMatchingResourcePatternResolver().getResources("classpath*:*/**/jmeter/functions/**/*.class");
         } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
             e.printStackTrace();
         }
         for (Resource resource : resources) {
             try {
-                classes.add(
-                        ClassUtils.getClass(
-                                new CachingMetadataReaderFactory()
-                                        .getMetadataReader(resource)
-                                        .getClassMetadata()
-                                        .getClassName()
-                        )
-                );
+                classes.add(ClassUtils.getClass(new CachingMetadataReaderFactory().getMetadataReader(resource).getClassMetadata().getClassName()));
             } catch (ClassNotFoundException | IOException e) {
                 e.printStackTrace();
             }
@@ -83,8 +75,8 @@ public class TestUtils {
                         ((Map<String, Object>) myFunctions).put(referenceKey, tempFunc.getClass());
                     }
                 }
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException
-                     | NoSuchMethodException | ExceptionInInitializerError | ClassCastException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                     NoSuchMethodException | ExceptionInInitializerError | ClassCastException e) {
             }
         }
     }
@@ -102,18 +94,15 @@ public class TestUtils {
      * @return 替换后的参数
      */
     public static String replace(String content, ITest parentTest, ITest iTest, int times) {
-        if (StringUtils.isNotBlank(System.getProperty("platform"))) {
-            JMeterContextService.getContext().setVariables(new JMeterVariables());
-            if (parentTest != null) {
-                content = parentTest.replace(TestUtils.replace(content, iTest));
-            }
-            if (times < 5) {
-                times++;
-                if (TestUtils.hasVariables(content)) return replace(content, parentTest, iTest, times);
-            } else {
-                Assertions.fail("参数未找到:" + content);
-            }
-            return content;
+        JMeterContextService.getContext().setVariables(new JMeterVariables());
+        if (parentTest != null) {
+            content = parentTest.replace(TestUtils.replace(content, iTest));
+        }
+        if (times < 5) {
+            times++;
+            if (TestUtils.hasVariables(content)) return replace(content, parentTest, iTest, times);
+        } else {
+            Assertions.fail("参数未找到:" + content);
         }
         return content;
     }

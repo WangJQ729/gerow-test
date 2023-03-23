@@ -23,6 +23,7 @@ import org.springframework.util.MultiValueMap;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -319,45 +320,15 @@ public class YmlTestStep implements ITestStep {
         HttpHeaders httpHeaders = new HttpHeaders();
         Map<String, String> header = step.getHeaders();
         for (String key : header.keySet()) {
-            String replaceKey = replace(key);
-            String replaceHeader = replace(header.get(key));
-            httpHeaders.add(replaceKey, replaceHeader);
+            httpHeaders.add(replace(key), replace(header.get(key)));
         }
         if (!step.getFile().isEmpty()) {
-            MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
-            step.getFile().forEach((k, v) -> {
-                k = StringUtils.isBlank(k) ? "file" : k;
-                FileSystemResource fileSystemResource = new FileSystemResource(new File(v));
-                form.add(k, fileSystemResource);
-            });
-            Map<String, String> stepForm = step.getForm();
-            for (String key : stepForm.keySet()) {
-                form.add(replace(key), replace(stepForm.get(key)));
-            }
-            return new HttpEntity<>(form, httpHeaders);
+            return getMultiValueMapHttpEntity(httpHeaders);
         }
         if (!step.getForm().isEmpty()) {
-            MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
-            Map<String, String> stepForm = step.getForm();
-            for (String key : stepForm.keySet()) {
-                form.add(replace(key), replace(stepForm.get(key)));
-            }
-            return new HttpEntity<>(form, httpHeaders);
+            return getValueMapHttpEntity(httpHeaders);
         }
-        String body = step.getBody();
-        try {
-            body = replace(body);
-        } catch (Error e) {
-            System.out.println(e.getMessage());
-        }
-        if (step.getBodyEditor() != null) {
-            //根据bodyBuilder构造请求体
-            body = step.getBodyEditor().builderBody(body, this);
-        }
-        //根据fieldCheck构造请求体
-        body = factory.builderBody(body, this);
-        //替换请求体里边的参数
-        body = replace(body);
+        String body = buildBody();
         if (MediaType.APPLICATION_FORM_URLENCODED.equals(httpHeaders.getContentType())) {
             return new HttpEntity<>(body, httpHeaders);
         }
@@ -369,13 +340,63 @@ public class YmlTestStep implements ITestStep {
                 Assertions.fail("JSON 格式错误:\n" + body);
             }
         }
+        sign(httpHeaders, header, body);
+        return new HttpEntity<>(parse, httpHeaders);
+    }
+
+    private String buildBody() {
+        String body = step.getBody();
+        body = replace(body);
+        if (step.getBodyEditor() != null) {
+            //根据bodyBuilder构造请求体
+            body = step.getBodyEditor().builderBody(body, this);
+        }
+        //根据fieldCheck构造请求体
+        body = factory.builderBody(body, this);
+        //替换请求体里边的参数
+        body = replace(body);
+        return body;
+    }
+
+    /**
+     * form表单
+     */
+    private HttpEntity<MultiValueMap<String, Object>> getValueMapHttpEntity(HttpHeaders httpHeaders) {
+        MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
+        Map<String, String> stepForm = step.getForm();
+        for (String key : stepForm.keySet()) {
+            form.add(replace(key), replace(stepForm.get(key)));
+        }
+        return new HttpEntity<>(form, httpHeaders);
+    }
+
+    /**
+     * 文件上传
+     */
+    private HttpEntity<MultiValueMap<String, Object>> getMultiValueMapHttpEntity(HttpHeaders httpHeaders) {
+        MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
+        step.getFile().forEach((k, v) -> {
+            k = StringUtils.isBlank(k) ? "file" : k;
+            FileSystemResource fileSystemResource = new FileSystemResource(new File(v));
+            form.add(k, fileSystemResource);
+        });
+        Map<String, String> stepForm = step.getForm();
+        for (String key : stepForm.keySet()) {
+            form.add(replace(key), replace(stepForm.get(key)));
+        }
+        return new HttpEntity<>(form, httpHeaders);
+    }
+
+    /**
+     * 验签字段
+     */
+    private void sign(HttpHeaders httpHeaders, Map<String, String> header, String body) throws NoSuchAlgorithmException {
         if (step.isNeedTanmaSign()) {
             MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
             String needSignStr = replace(header.get("appId") + header.get("timestamp") + body + header.get("appKey"));
-            String sign = BaseEncoding.base16().encode(sha256.digest(needSignStr.getBytes()));
-            httpHeaders.add("sign", sign);
+            byte[] digest = sha256.digest(needSignStr.getBytes(StandardCharsets.UTF_8));
+            httpHeaders.add("sign", BaseEncoding.base16().lowerCase().encode(digest));
         }
-        return new HttpEntity<>(parse, httpHeaders);
     }
 
     @Override

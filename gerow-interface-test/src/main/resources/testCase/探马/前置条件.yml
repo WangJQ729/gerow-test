@@ -1,0 +1,5 @@
+name: 统一前置处理
+beforeSuite:
+  name: 登录
+  step:
+    - keyWord: 登录

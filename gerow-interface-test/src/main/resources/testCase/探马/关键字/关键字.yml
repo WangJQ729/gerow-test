@@ -1,7 +1,25 @@
 keyWord:
   step:
+    - name: 登录
+      url: /domainServer/market-cloud/login
+      method: POST
+      headers:
+        device: web
+        User-Agent: Apifox/1.0.0 (https://www.apifox.cn)
+      body: |
+        {
+           "userId": "${userId}",
+           "password": "${password}"
+        }
+      assertion: [ json: { $.code: 0 } ]
+      extractor:
+        - json:
+            authorization: $.data.token
+          site: TESTSUIT
     - name: 用户跟进记录
       url: /domainServer/qw/clientCustomer/addCustomerFollow
+      headers:
+        authorization: ${authorization}
       method: POST
       body: |
         {
@@ -15,6 +33,9 @@ keyWord:
             $.code: 0
     - name: 更新客户旅程
       url: /domainServer/qwCrm/webCustomer/customerInfoUpdate
+      headers:
+        authorization:
+          ${authorization}
       method: POST
       body: |
         {   "fieldName":"sales_stage",
@@ -37,6 +58,8 @@ keyWord:
       assertion: [ json: { $.code: 0 } ]
     - name: 添加增加按钮菜单
       url: /domainServer/sys_menu/addSysButton
+      headers:
+        authorization: ${authorization}
       method: POST
       body: |
         [{     "name": "导出",
@@ -48,6 +71,8 @@ keyWord:
       assertion: [ json: { $.code: 0 } ]
     - name: 公海添加个人客户
       url: /domainServer/qwCrm/webCustomer/addOpenSeaCustomerByMobiles
+      headers:
+        authorization: ${authorization}
       method: POST
       body: |
         {
@@ -63,6 +88,8 @@ keyWord:
       assertion: [ json: { $.code: 0 } ]
     - name: 新增个人线索
       url: /domainServer/market-cloud/crm2/addClue
+      headers:
+        authorization: ${authorization}
       method: POST
       body: |
         {
@@ -77,6 +104,8 @@ keyWord:
       assertion: [ json: { $.code: 0 } ]
     - name: 添加企业
       url: /domainServer/qw/company/saveCompanyInfo
+      headers:
+        authorization: ${authorization}
       method: POST
       body: |
         {"corpName":"GerowWang_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}_${__time(/1000,)}","corpNameShort":"GerowWang","business":null,"scale":null,"level":null,"address":null,"creditCode":"","corpDefineField":[]}
@@ -86,6 +115,8 @@ keyWord:
             corpId: $.data
     - name: 添加企业线索
       url: /domainServer/market-cloud/crm3/addCorpAllocatedCustomer
+      headers:
+        authorization: ${authorization}
       method: POST
       body: |
         {"contacts":[],"clueInfo":{"salesStage":"","fields":[],"mobiles":["${__RandomPhoneNum(phoneNum)}"]},"companyId":${corpId},"modalType":1,"customerName":"","salesStage":"","fields":[],"address":""}
@@ -98,6 +129,5 @@ keyWord:
         appId: ${appId}
         appKey: ${appKey}
         timestamp: ${timestamp}
-      body: |
-        { "customerName": "${buyer_id}","mobiles": [ "${phoneNum}" ],"fields": [ ] }
+      body: '{"customerName":"${buyer_id}","mobiles":["${phoneNum}"],"fields":[]}'
       assertion: [ json: { $.code: 0 } ]
