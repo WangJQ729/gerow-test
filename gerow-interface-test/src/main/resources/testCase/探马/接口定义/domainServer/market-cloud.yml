@@ -1,0 +1,12 @@
+keyWord:
+  step:
+    - name: 获取所有管理员
+      url: /domainServer/market-cloud/showAllUserManager
+      headers:
+        authorization: ${authorization}
+      method: POST
+      assertion: [ json: { $.code: 0 } ]
+      extractor:
+        - json:
+            salesId: $.data[?(@.username=='${userName}')].salesId
+            user_id: $.data[?(@.username=='${userName}')].user_id

@@ -1,0 +1,17 @@
+name: 添加公海客户
+dataProvider:
+  - openSeaName: 【Gerow】公海
+beforeClass:
+  name: 获取公海Id
+  step:
+    - keyWord: 公海列表
+testMethod:
+  - name: 公海添加个人客户
+    invocationCount: 1
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        phoneNum: ${__RandomPhoneNum()}
+    severity: CRITICAL
+    step:
+      - keyWord: 公海添加含手机号个人客户
+      - keyWord: 根据手机号查询公海客户

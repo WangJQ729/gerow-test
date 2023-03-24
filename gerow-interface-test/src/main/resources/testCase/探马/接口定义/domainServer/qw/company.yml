@@ -1,0 +1,13 @@
+keyWord:
+  step:
+    - name: 添加企业
+      url: /domainServer/qw/company/saveCompanyInfo
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"corpName":"GerowWang_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}_${__time(/1000,)}","corpNameShort":"GerowWang","business":null,"scale":null,"level":null,"address":null,"creditCode":"","corpDefineField":[]}
+      assertion: [ json: { $.code: 0 } ]
+      extractor:
+        - json:
+            companyId: $.data

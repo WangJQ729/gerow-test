@@ -1,0 +1,19 @@
+keyWord:
+  step:
+    - name: 公海列表
+      url: /domainServer/openSea/list
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "salesIdList":[],
+            "departmentIdList":[],
+            "openSeaName":"",
+            "pageNo":1,
+            "pageSize":50
+        }
+      assertion: [ json: { $.code: 0 } ]
+      extractor:
+        - json:
+            openSeaId: $.data.data[?(@.openSeaName=='${openSeaName}')].openSeaId

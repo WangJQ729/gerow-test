@@ -1,0 +1,34 @@
+keyWord:
+  step:
+    - name: 新增含手机号个人线索
+      url: /domainServer/market-cloud/crm2/addClue
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "customerName":"${__RandomName(customerName)}",
+            "salesStage":"",
+            "fields":[],
+            "mobiles":[${__RandomPhoneNum(phoneNum)}],
+            "modalType":0,
+            "address":""
+        }
+      assertion: [ json: { $.code: 0 } ]
+    - name: 添加个人待分配线索
+      url: /domainServer/market-cloud/crm2/addAllocatedCustomer
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "customerName":"${__RandomName(customerName)}",
+            "salesStage":"",
+            "fields":[
+            ],
+            "mobiles":[
+                "${__RandomPhoneNum(phoneNum)}"
+            ],
+            "modalType":0,
+            "address":""
+        }

@@ -2,6 +2,7 @@ data:
   test:
     platform: tanmarket
     host: blue.wechatsi.com
-    userId: admin_bjjx
-    password: Hujing.666
+    userId: ${userId}
+    password: ${password}
+    userName: 王健强
 

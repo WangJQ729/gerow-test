@@ -1,0 +1,16 @@
+name: 添加线索
+invocationCount: 1
+testMethod:
+  - name: 添加个人线索
+    severity: CRITICAL
+    step:
+      - keyWord: 新增含手机号个人线索
+  - name: 添加待分配线索
+    severity: CRITICAL
+    step:
+      - keyWord: 添加个人待分配线索
+  - name: 新增企业线索
+    severity: CRITICAL
+    step:
+      - keyWord: 添加企业
+      - keyWord: 添加企业线索

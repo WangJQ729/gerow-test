@@ -1,5 +1,5 @@
-name: 统一前置处理
+name: 前置条件
 beforeSuite:
-  name: 登录
+  name: beforeSuite
   step:
     - keyWord: 登录

@@ -1,0 +1,29 @@
+keyWord:
+  step:
+    - name: 登录
+      url: /domainServer/market-cloud/login
+      method: POST
+      headers:
+        device: web
+        User-Agent: Apifox/1.0.0 (https://www.apifox.cn)
+      body: |
+        {
+           "userId": "${userId}",
+           "password": "${password}"
+        }
+      assertion: [ json: { $.code: 0 } ]
+      extractor:
+        - json:
+            authorization: $.data.token
+            corpid: $.data.corpid
+          site: TESTSUIT
+    - name: api新增个人线索
+      url: /apiServer/api/v3/add-unassigned
+      needTanmaSign: true
+      method: POST
+      headers:
+        appId: ${appId}
+        appKey: ${appKey}
+        timestamp: ${timestamp}
+      body: '{"customerName":"${customerName}","mobiles":["${phoneNum}"],"fields":[]}'
+      assertion: [ json: { $.code: 0 } ]
