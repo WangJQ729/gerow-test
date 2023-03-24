@@ -7,8 +7,8 @@ keyWord:
       method: POST
       body: |
         {
-          "customerId":${customerId},
           "content":"${content}",
+          "customerId":${customerId},
           "followType":${followType},
           "salesId":${user_id}
         }

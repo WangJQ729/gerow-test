@@ -52,4 +52,4 @@ keyWord:
       assertion: [ json: { $.code: 0 } ]
       extractor:
         - json:
-            customerId: $.data.data..id
+            customerId: $.data.data..customerId

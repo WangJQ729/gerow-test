@@ -54,8 +54,8 @@ keyWord:
             ],
             "addressList":[
             ],
-            "salesStage":480693588891904,
-            "stageFlowId":"531097695396032",
+            "salesStage":${stageFlowId},
+            "stageFlowId":"${stageId}",
             "mobiles":["${mobiles}"]
         }
       assertion: [ json: { $.code: 0 } ]

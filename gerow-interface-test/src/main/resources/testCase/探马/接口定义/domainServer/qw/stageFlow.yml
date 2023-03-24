@@ -10,4 +10,4 @@ keyWord:
       assertion: [ json: { $.code: 0 } ]
       extractor:
         - json:
-            userIds: $.data.stageFlowInfos
+            stageFlowInfos: $.data.stageFlowInfos.*〜
