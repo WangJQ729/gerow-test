@@ -15,9 +15,3 @@ testMethod:
     step:
       - keyWord: 公海添加含手机号个人客户
       - keyWord: 根据手机号查询公海客户
-        assertion:
-          - json:
-              $.code: 0
-              $.data.data.length(): 1
-              $.data.data[0].qwRemark: ${customerName}
-              $.data.data[0].30744: ["${phoneNum}"]

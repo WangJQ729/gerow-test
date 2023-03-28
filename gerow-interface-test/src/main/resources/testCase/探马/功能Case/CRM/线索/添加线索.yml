@@ -1,16 +1,42 @@
 name: 添加线索
 invocationCount: 1
+beforeClass:
+  name: 初始化线索分配模式
+  step:
+    - keyWord: 获取当前线索分配模式
+    - keyWord: 设置线索手动分配模式
 testMethod:
   - name: 添加个人线索
     severity: CRITICAL
     step:
-      - keyWord: 新增含手机号个人线索
+      - keyWord: 新增含手机号待分配线索
+      - keyWord: 获取未处理线索列表
   - name: 添加待分配线索
     severity: CRITICAL
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        phoneNum: ${__RandomPhoneNum()}
     step:
-      - keyWord: 添加个人待分配线索
-  - name: 新增企业线索
+      - keyWord: 新增个人待分配线索
+      - keyWord: 获取待分配线索列表
+  - name: 添加待分配企业线索
     severity: CRITICAL
+    dataProvider:
+      - corpName: 【Gerow】${__RandomName()}公司
+        corpContactValue: ${__RandomPhoneNum()}
+        phoneNum: ${__RandomPhoneNum()}
     step:
       - keyWord: 添加企业
-      - keyWord: 添加企业线索
+      - keyWord: 添加企业待分配线索
+      - keyWord: 获取待分配线索列表
+        assertion:
+          - json:
+              $.data.result.length(): 1
+              $.data.result[0].corpNameFull: ${corpName}
+              $.data.result[0].${mobileFieldId}: [ '${phoneNum}' ]
+afterClass:
+  name: 还原线索分配模式
+  step:
+    - keyWord: 设置线索分配模式
+      dataProvider:
+        - using_auto_allocate_rule: ${usingAutoAllocateRule}

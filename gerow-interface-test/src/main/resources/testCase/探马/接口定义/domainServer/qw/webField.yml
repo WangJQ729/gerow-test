@@ -1,0 +1,13 @@
+keyWord:
+  step:
+    - name: 获取所有用户字段定义
+      url: /domainServer/qw/webField/customerFieldListAll
+      headers:
+        authorization: ${authorization}
+      method: POST
+      assertion: [ json: { $.code: 0 } ]
+      extractor:
+        - json:
+            mobileFieldId: $.data[?(@.fieldName=='电话')].fieldId
+            customerNameFieldId: $.data[?(@.fieldName=='姓名')].fieldId
+          site: TESTSUITE

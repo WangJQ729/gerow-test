@@ -3,3 +3,4 @@ beforeSuite:
   name: beforeSuite
   step:
     - keyWord: 登录
+    - keyWord: 获取所有用户字段定义

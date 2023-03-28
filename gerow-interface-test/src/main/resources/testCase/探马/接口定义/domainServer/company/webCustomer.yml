@@ -1,0 +1,37 @@
+keyWord:
+  step:
+    - name: 添加企业客户
+      url: /domainServer/company/webCustomer/addWebCustomer
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "addressList":[],
+            "salesStage":${stageFlowId},
+            "stageFlowId":"${stageFlowId}",
+            "contactInfo":[
+                {
+                    "addressList":[],
+                    "contactFields":[
+                      { "fieldId":${customerNameFieldId},
+                        "fieldType":1,
+                        "fieldValue":"${customerName}"},
+                      { "fieldId":${mobileFieldId},
+                        "fieldType":1,
+                        "fieldValue":"${phoneNum}"}
+                    ]}],
+            "corpFields":[
+                {
+                    "fieldId":${mobileFieldId},
+                    "fieldValue":"${corpContactValue}",
+                    "phoneArr":[
+                        "${corpContactValue}"
+                    ],
+                    "fieldType":8,
+                    "isduilcutePhone":false
+                }],
+            "companyId":${companyId},
+            "salesId":${user_id}
+        }
+      assertion: [ json: { $.code: 0 } ]

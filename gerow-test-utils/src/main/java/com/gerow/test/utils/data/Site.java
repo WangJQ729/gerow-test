@@ -14,7 +14,7 @@ public enum Site {
      * excel级别
      */
     EXCEL,
-    TESTSUIT,
+    TESTSUITE,
     /**
      * 全局变量
      */

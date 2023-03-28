@@ -23,7 +23,7 @@ keyWord:
         - json:
             shop_id: $.user.shop_id
             shop_category_id: $.default_shop.category_id
-          site: TESTSUIT
+          site: TESTSUITE
       assertion: [json: {$.code: 0}]
     - name: 获取子账号
       url: /api/admin/platform/search_client_configs_v3
@@ -39,7 +39,7 @@ keyWord:
             child_seller: $.subusers[?(@.auth_status==1)].sub_nick[0]
             child_seller2: $.subusers[?(@.auth_status==1)].sub_nick[1]
             child_seller3: $.subusers[?(@.auth_status==1)].sub_nick[2]
-          site: TESTSUIT
+          site: TESTSUITE
       assertion: [json: {$.code: 0}]
     - name: 催单设置为自己和静默
       url: /api/admin/user/shop_subnick_client_config_edit_v3

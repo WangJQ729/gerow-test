@@ -6,7 +6,7 @@ keyWord:
         authorization: ${authorization}
       method: POST
       body: |
-        {"corpName":"GerowWang_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}_${__time(/1000,)}","corpNameShort":"GerowWang","business":null,"scale":null,"level":null,"address":null,"creditCode":"","corpDefineField":[]}
+        {"corpName":"${corpName}","corpNameShort":"${corpName}","business":null,"scale":null,"level":null,"address":null,"creditCode":"","corpDefineField":[]}
       assertion: [ json: { $.code: 0 } ]
       extractor:
         - json:

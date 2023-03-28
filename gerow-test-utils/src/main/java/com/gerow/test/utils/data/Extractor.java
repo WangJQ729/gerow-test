@@ -230,7 +230,7 @@ public class Extractor {
                 break;
             case EXCEL:
             case ALL:
-            case TESTSUIT:
+            case TESTSUITE:
                 save = test.getTestClass().getTestSuite();
                 break;
             case TESTCASE:

@@ -1,12 +1,12 @@
 keyWord:
   step:
-    - name: 添加企业线索
+    - name: 添加企业待分配线索
       url: /domainServer/market-cloud/crm3/addCorpAllocatedCustomer
       headers:
         authorization: ${authorization}
       method: POST
       body: |
-        {"contacts":[],"clueInfo":{"salesStage":"","fields":[],"mobiles":["${__RandomPhoneNum(phoneNum)}"]},"companyId":${companyId},"modalType":1,"customerName":"","salesStage":"","fields":[],"address":""}
+        {"contacts":[],"clueInfo":{"salesStage":"","fields":[],"mobiles":["${phoneNum}"]},"companyId":${companyId},"modalType":1,"customerName":"","salesStage":"","fields":[],"address":""}
       assertion: [ json: { $.code: 0 } ]
     - name: 获取旅程列表
       url: /domainServer/market-cloud/crm3/getStageFlowList

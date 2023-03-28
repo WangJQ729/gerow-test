@@ -16,7 +16,7 @@ keyWord:
         - json:
             authorization: $.data.token
             corpid: $.data.corpid
-          site: TESTSUIT
+          site: TESTSUITE
     - name: api新增个人线索
       url: /apiServer/api/v3/add-unassigned
       needTanmaSign: true

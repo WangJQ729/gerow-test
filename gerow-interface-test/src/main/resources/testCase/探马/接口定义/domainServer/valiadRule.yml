@@ -1,0 +1,31 @@
+keyWord:
+  step:
+    - name: 设置线索分配模式
+      url: /domainServer/valiadRule/setAutoAllocateRule
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"using_auto_allocate_rule":${using_auto_allocate_rule}}
+      assertion: [ json: { $.code: 0 } ]
+    - keyWord: 设置线索分配模式
+      name: 设置线索手动分配模式
+      body: |
+        {"using_auto_allocate_rule":0}
+
+    - keyWord: 设置线索分配模式
+      name: 设置线索自动分配模式
+      body: |
+        {"using_auto_allocate_rule":1}
+    - name: 获取当前线索分配模式
+      url: /domainServer/valiadRule/showRule
+      headers:
+        authorization: ${authorization}
+      method: POST
+      extractor:
+        - json:
+            usingAutoAllocateRule: $.data.using_auto_allocate_rule
+    - keyWord: 设置线索分配模式
+      name: 还原线索分配模式
+      body: |
+        {"using_auto_allocate_rule":${usingAutoAllocateRule}}

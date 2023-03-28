@@ -1,0 +1,27 @@
+name: 添加客户
+invocationCount: 1
+beforeClass:
+  name: 添加客户
+  step:
+    - keyWord: 获取所有管理员
+    - keyWord: 获取员工旅程
+    - keyWord: 获取旅程列表
+testMethod:
+  - name: 添加个人客户
+    severity: CRITICAL
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        mobiles: ${__RandomPhoneNum()}
+    step:
+      - keyWord: web添加个人客户
+      - keyWord: 根据手机号查询客户
+  - name: 添加企业客户
+    severity: CRITICAL
+    dataProvider:
+      - corpName: 【Gerow】${__RandomName()}公司
+        corpContactValue: ${__RandomPhoneNum()}
+        customerName: 【Gerow】${__RandomName()}
+        phoneNum: ${__RandomPhoneNum()}
+    step:
+      - keyWord: 添加企业
+      - keyWord: 添加企业客户
