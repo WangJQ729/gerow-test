@@ -19,14 +19,14 @@ keyWord:
                         "fieldValue":"${customerName}"},
                       { "fieldId":${mobileFieldId},
                         "fieldType":1,
-                        "fieldValue":"${phoneNum}"}
+                        "fieldValue":"${contactMobiles}"}
                     ]}],
             "corpFields":[
                 {
                     "fieldId":${mobileFieldId},
-                    "fieldValue":"${corpContactValue}",
+                    "fieldValue":"${corpContactMobiles}",
                     "phoneArr":[
-                        "${corpContactValue}"
+                        "${corpContactMobiles}"
                     ],
                     "fieldType":8,
                     "isduilcutePhone":false

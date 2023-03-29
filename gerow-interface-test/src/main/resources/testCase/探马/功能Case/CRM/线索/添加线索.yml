@@ -23,7 +23,7 @@ testMethod:
     severity: CRITICAL
     dataProvider:
       - corpName: 【Gerow】${__RandomName()}公司
-        corpContactValue: ${__RandomPhoneNum()}
+        corpContactMobiles: ${__RandomPhoneNum()}
         phoneNum: ${__RandomPhoneNum()}
     step:
       - keyWord: 添加企业
