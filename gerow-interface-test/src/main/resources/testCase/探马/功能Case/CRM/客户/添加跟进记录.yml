@@ -9,7 +9,7 @@ dataProvider:
 beforeClass:
   name: 添加客户
   step:
-    - keyWord: 获取所有管理员
+    - keyWord: 获取所有员工
     - keyWord: 获取员工旅程
     - keyWord: 获取旅程列表
     - keyWord: web添加个人客户

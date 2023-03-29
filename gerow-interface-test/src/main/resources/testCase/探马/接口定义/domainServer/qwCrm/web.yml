@@ -1,0 +1,31 @@
+keyWord:
+  step:
+    - name: 添加客户手机号
+      url: /domainServer/qwCrm/web/customerModifyPhone
+      headers:
+        authorization:
+          ${authorization}
+      method: POST
+      body: |
+        {
+            "defaultFieldId":1,
+            "fieldId":${mobileFieldId},
+            "fieldType":8,
+            "fieldName":"电话",
+            "customerId":${customerId},
+            "salesId":${user_id},
+            "phoneNumber":["${mobiles}","${mobiles2}"],
+            "followContent":"编辑了客户的信息: “电话”\n 由${mobiles}\n修改为\n ${mobiles}，${mobiles2}",
+            "phoneInfo":{
+                "originalPhone":["${mobiles}"],
+                "currentPhone":["${mobiles}","${mobiles2}"]
+            }
+        }
+      assertion: [ json: { $.code: 0 } ]
+    - keyWord: 添加客户手机号
+      name: 修改客户手机号
+      bodyEditor:
+        json:
+          $.phoneNumber: ["${mobiles2}"]
+          $.phoneInfo.currentPhone: ["${mobiles2}"]
+          $.followContent: "编辑了客户的信息: “电话”\n 由${mobiles}\n修改为\n ${mobiles2}"

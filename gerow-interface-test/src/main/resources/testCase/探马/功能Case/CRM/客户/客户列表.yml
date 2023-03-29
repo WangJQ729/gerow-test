@@ -1,0 +1,178 @@
+name: 客户列表
+beforeClass:
+  name: 添加客户
+  step:
+    - keyWord: 获取所有员工
+    - keyWord: 获取员工旅程
+    - keyWord: 获取旅程列表
+testMethod:
+  - name: 个人客户-按${searchKeyModel}查询
+    severity: CRITICAL
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        mobiles: ${__RandomPhoneNum()}
+        dataProvider:
+          - searchKey: ${mobiles}
+            searchKeyModel: 完整手机号
+          - searchKey: ${__SubString(${mobiles},0,16,)}
+            searchKeyModel: 手机号前几位
+          - searchKey: ${__SubString(${mobiles},5,17,)}
+            searchKeyModel: 手机号后几位
+          - searchKey: ${__SubString(${mobiles},5,16,)}
+            searchKeyModel: 手机号中间几位
+    step:
+      - keyWord: web添加个人客户
+      - keyWord: web端客户查询
+  - name: 个人客户-新增手机号后按${searchKeyModel}查询
+    severity: CRITICAL
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        mobiles: ${__RandomPhoneNum()}
+        searchKey: ${mobiles}
+        mobiles2: ${__RandomPhoneNum()}
+        dataProvider:
+          - searchKey2: ${mobiles2}
+            searchKeyModel: 完整新手机号
+          - searchKey2: ${__SubString(${mobiles2},0,16,)}
+            searchKeyModel: 新手机号前几位
+          - searchKey2: ${__SubString(${mobiles2},5,17,)}
+            searchKeyModel: 新手机号后几位
+          - searchKey2: ${__SubString(${mobiles2},5,16,)}
+            searchKeyModel: 新手机号中间几位
+          - searchKey2: ${mobiles}
+            searchKeyModel: 完整原手机号
+          - searchKey2: ${__SubString(${mobiles},0,16,)}
+            searchKeyModel: 原手机号前几位
+          - searchKey2: ${__SubString(${mobiles},5,17,)}
+            searchKeyModel: 原手机号后几位
+          - searchKey2: ${__SubString(${mobiles},5,16,)}
+            searchKeyModel: 原手机号中间几位
+    step:
+      - keyWord: web添加个人客户
+      - keyWord: web端客户查询
+      - keyWord: 添加客户手机号
+      - keyWord: web端按新增手机号查询
+  - name: 个人客户-编辑手机号后按${searchKeyModel}查询
+    severity: CRITICAL
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        mobiles: ${__RandomPhoneNum()}
+        searchKey: ${mobiles}
+        mobiles2: ${__RandomPhoneNum()}
+        dataProvider:
+          - searchKey2: ${mobiles2}
+            searchKeyModel: 完整新手机号
+          - searchKey2: ${__SubString(${mobiles2},0,16,)}
+            searchKeyModel: 新手机号前几位
+          - searchKey2: ${__SubString(${mobiles2},5,17,)}
+            searchKeyModel: 新手机号后几位
+          - searchKey2: ${__SubString(${mobiles2},5,16,)}
+            searchKeyModel: 新手机号中间几位
+    step:
+      - keyWord: web添加个人客户
+      - keyWord: web端客户查询
+      - keyWord: 修改客户手机号
+      - keyWord: web端按新手机号查询
+  - name: 企业客户-按${searchKeyModel}查询
+    severity: CRITICAL
+    dataProvider:
+      - corpName: 【Gerow】${__RandomName()}公司
+        corpContactMobiles: ${__RandomPhoneNum()}
+        mobiles: ${corpContactMobiles}
+        customerName: 【Gerow】${__RandomName()}
+        contactMobiles: ${__RandomPhoneNum()}
+        dataProvider:
+          - searchKey: ${corpContactMobiles}
+            searchKeyModel: 企业完整手机号
+          - searchKey: ${__SubString(${corpContactMobiles},5,16,)}
+            searchKeyModel: 企业手机号中间几位
+          - searchKey: ${__SubString(${corpContactMobiles},0,16,)}
+            searchKeyModel: 企业手机号前几位
+          - searchKey: ${__SubString(${corpContactMobiles},5,16,)}
+            searchKeyModel: 企业手机号后几位
+          - searchKey: ${contactMobiles}
+            searchKeyModel: 企业联系人完整手机号
+          - searchKey: ${__SubString(${contactMobiles},5,16,)}
+            searchKeyModel: 企业联系人手机号中间几位
+          - searchKey: ${__SubString(${contactMobiles},0,16,)}
+            searchKeyModel: 企业联系人手机号手机号前几位
+          - searchKey: ${__SubString(${contactMobiles},5,16,)}
+            searchKeyModel: 企业联系人手机号手机号后几位
+    step:
+      - keyWord: 添加企业
+      - keyWord: 添加企业客户
+      - keyWord: web端客户查询
+  - name: 企业客户-编辑企业手机号-按${searchKeyModel}查询
+    severity: CRITICAL
+    dataProvider:
+      - corpName: 【Gerow】${__RandomName()}公司
+        corpContactMobiles: ${__RandomPhoneNum()}
+        mobiles: ${corpContactMobiles}
+        searchKey: ${mobiles}
+        mobiles2: ${__RandomPhoneNum()}
+        customerName: 【Gerow】${__RandomName()}
+        contactMobiles: ${__RandomPhoneNum()}
+        dataProvider:
+          - searchKey2: ${corpContactMobiles}
+            searchKeyModel: 企业完整手机号
+          - searchKey2: ${__SubString(${corpContactMobiles},5,16,)}
+            searchKeyModel: 企业手机号中间几位
+          - searchKey2: ${__SubString(${corpContactMobiles},0,16,)}
+            searchKeyModel: 企业手机号前几位
+          - searchKey2: ${__SubString(${corpContactMobiles},5,16,)}
+            searchKeyModel: 企业手机号后几位
+          - searchKey2: ${contactMobiles}
+            searchKeyModel: 企业联系人手机号
+          - searchKey2: ${__SubString(${contactMobiles},5,16,)}
+            searchKeyModel: 企业联系人手机号中间几位
+          - searchKey2: ${__SubString(${contactMobiles},0,16,)}
+            searchKeyModel: 企业联系人手机号前几位
+          - searchKey2: ${__SubString(${contactMobiles},5,16,)}
+            searchKeyModel: 企业联系人手机号后几位
+    step:
+      - keyWord: 添加企业
+      - keyWord: 添加企业客户
+      - keyWord: web端客户查询
+      - keyWord: 修改客户手机号
+      - keyWord: web端按新手机号查询
+  - name: 企业客户-添加企业联系人手机号-按${searchKeyModel}查询
+    severity: CRITICAL
+    dataProvider:
+      - corpName: 【Gerow】${__RandomName()}公司
+        corpContactMobiles: ${__RandomPhoneNum()}
+        mobiles: ${corpContactMobiles}
+        searchKey: ${mobiles}
+        customerName: 【Gerow】${__RandomName()}
+        contactMobiles: ${__RandomPhoneNum()}
+        mobiles2: ${__RandomPhoneNum()}
+        dataProvider:
+          - searchKey2: ${corpContactMobiles}
+            searchKeyModel: 原完整手机号
+          - searchKey2: ${__SubString(${corpContactMobiles},5,16,)}
+            searchKeyModel: 原手机号中间几位
+          - searchKey2: ${__SubString(${corpContactMobiles},0,16,)}
+            searchKeyModel: 原手机号前几位
+          - searchKey2: ${__SubString(${corpContactMobiles},5,16,)}
+            searchKeyModel: 原手机号后几位
+          - searchKey2: ${contactMobiles}
+            searchKeyModel: 企业联系人完整手机号
+          - searchKey2: ${__SubString(${contactMobiles},5,16,)}
+            searchKeyModel: 企业联系人手机号中间几位
+          - searchKey2: ${__SubString(${contactMobiles},0,16,)}
+            searchKeyModel: 企业联系人手机号前几位
+          - searchKey2: ${__SubString(${contactMobiles},5,17,)}
+            searchKeyModel: 企业联系人手机号后几位
+          - searchKey2: ${mobiles2}
+            searchKeyModel: 企业新手机号中间几位
+          - searchKey2: ${__SubString(${mobiles2},5,16,)}
+            searchKeyModel: 企业新手机号前几位
+          - searchKey2: ${__SubString(${mobiles2},0,16,)}
+            searchKeyModel: 企业新手机号后几位
+          - searchKey2: ${__SubString(${mobiles2},5,17,)}
+            searchKeyModel: 企业新手机号
+    step:
+      - keyWord: 添加企业
+      - keyWord: 添加企业客户
+      - keyWord: web端客户查询
+      - keyWord: 添加客户手机号
+      - keyWord: web端按新增手机号查询

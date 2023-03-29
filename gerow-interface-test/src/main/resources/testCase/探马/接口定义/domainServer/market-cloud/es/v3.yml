@@ -28,6 +28,7 @@ keyWord:
             $.data.data[0].${mobileFieldId}: [ "${phoneNum}" ]
     - name: web端客户查询
       url: /domainServer/market-cloud/es/v3/webCustomerListRetrieve
+      untilWait: 5
       headers:
         authorization: ${authorization}
       method: POST
@@ -59,7 +60,27 @@ keyWord:
         - json:
             $.code: 0
             $.data.data.length(): 1
-            $.data.data[0].${mobileFieldId}: ['${mobiles}']
+            $.data.data[0].${mobileFieldId}: [ '${mobiles}' ]
       extractor:
         - json:
             customerId: $.data.data..customerId
+    - keyWord: web端客户查询
+      name: web端按新增手机号查询
+      bodyEditor:
+        json:
+          $.searchKey: ${searchKey2}
+      assertion:
+        - json:
+            $.code: 0
+            $.data.data.length(): 1
+            $.data.data[0].${mobileFieldId}: [ '${mobiles}','${mobiles2}' ]
+    - keyWord: web端客户查询
+      name: web端按新手机号查询
+      bodyEditor:
+        json:
+          $.searchKey: ${searchKey2}
+      assertion:
+        - json:
+            $.code: 0
+            $.data.data.length(): 1
+            $.data.data[0].${mobileFieldId}: ['${mobiles2}']
