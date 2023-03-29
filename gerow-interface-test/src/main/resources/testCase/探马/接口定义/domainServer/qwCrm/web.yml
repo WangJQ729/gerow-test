@@ -29,3 +29,27 @@ keyWord:
           $.phoneNumber: ["${mobiles2}"]
           $.phoneInfo.currentPhone: ["${mobiles2}"]
           $.followContent: "编辑了客户的信息: “电话”\n 由${mobiles}\n修改为\n ${mobiles2}"
+    - name: 修改企业联系人手机号
+      url: /domainServer/qwCrm/web/contactModifyPhone
+      headers:
+        authorization:
+          ${authorization}
+      method: POST
+      body: |
+        {
+            "defaultFieldId":1,
+            "fieldId":${mobileFieldId},
+            "fieldType":8,
+            "fieldName":"电话",
+            "corpCustomerId":${customerId},
+            "salesId":${user_id},
+            "phoneNumber":["${mobiles2}"],
+            "followContent":"编辑了客户的信息: “电话”\n 由${mobiles}\n修改为\n ${mobiles2}",
+            "clue":false,
+            "contactId":${contactId},
+            "phoneInfo":{
+                "originalPhone":["${mobiles}"],
+                "currentPhone":["${mobiles2}"]
+            }
+        }
+      assertion: [ json: { $.code: 0 } ]
