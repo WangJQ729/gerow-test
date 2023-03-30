@@ -7,8 +7,6 @@ import org.apache.jmeter.functions.InvalidVariableException;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.samplers.Sampler;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -24,7 +22,7 @@ public class RandomPhoneNum extends AbstractFunction {
     @Override
     public String execute(SampleResult previousResult, Sampler currentSampler) {
 
-        String phoneNum = "86" + System.currentTimeMillis() + String.format("%02d", random.nextInt(100));
+        String phoneNum = "86" + System.currentTimeMillis() + String.format("%04d", random.nextInt(10000));
         if (vars != null) {
             TestUtils.saveVariables(vars, phoneNum);
         }

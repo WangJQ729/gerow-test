@@ -1,4 +1,5 @@
 name: 添加线索
+story: 线索
 invocationCount: 1
 beforeClass:
   name: 初始化线索分配模式

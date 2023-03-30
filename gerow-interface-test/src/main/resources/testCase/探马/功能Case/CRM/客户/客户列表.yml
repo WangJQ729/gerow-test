@@ -1,5 +1,5 @@
 name: 手机号查询
-story: 客户列表
+story: 客户
 beforeClass:
   name: 添加客户
   step:
@@ -136,7 +136,7 @@ testMethod:
       - keyWord: web端客户查询
       - keyWord: 修改客户手机号
       - keyWord: web端按新手机号查询
-  - name: 企业客户-修改联系人手机号-按${searchKeyModel}查询
+  - name: 企业客户-编辑联系人手机号-按${searchKeyModel}查询
     severity: CRITICAL
     dataProvider:
       - corpName: 【Gerow】${__RandomName()}公司
