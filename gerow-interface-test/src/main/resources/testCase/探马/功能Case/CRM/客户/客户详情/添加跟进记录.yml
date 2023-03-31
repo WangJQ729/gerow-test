@@ -1,4 +1,5 @@
 name: 添加跟进记录
+story: 客户
 invocationCount: 1
 dataProvider:
   - content: 跟进记录${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
