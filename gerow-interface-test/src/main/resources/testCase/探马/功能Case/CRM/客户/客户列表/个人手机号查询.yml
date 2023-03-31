@@ -15,11 +15,11 @@ testMethod:
         dataProvider:
           - searchKey: ${mobiles}
             searchKeyModel: 完整手机号
-          - searchKey: ${__SubString(${mobiles},0,16,)}
+          - searchKey: ${__SubString(${mobiles},0,17,)}
             searchKeyModel: 手机号前几位
-          - searchKey: ${__SubString(${mobiles},5,17,)}
+          - searchKey: ${__SubString(${mobiles},5,19,)}
             searchKeyModel: 手机号后几位
-          - searchKey: ${__SubString(${mobiles},5,16,)}
+          - searchKey: ${__SubString(${mobiles},5,17,)}
             searchKeyModel: 手机号中间几位
     step:
       - keyWord: web添加个人客户
@@ -34,19 +34,19 @@ testMethod:
         dataProvider:
           - searchKey2: ${mobiles2}
             searchKeyModel: 完整新手机号
-          - searchKey2: ${__SubString(${mobiles2},0,16,)}
+          - searchKey2: ${__SubString(${mobiles2},0,17,)}
             searchKeyModel: 新手机号前几位
-          - searchKey2: ${__SubString(${mobiles2},5,17,)}
+          - searchKey2: ${__SubString(${mobiles2},5,19,)}
             searchKeyModel: 新手机号后几位
-          - searchKey2: ${__SubString(${mobiles2},5,16,)}
+          - searchKey2: ${__SubString(${mobiles2},5,17,)}
             searchKeyModel: 新手机号中间几位
           - searchKey2: ${mobiles}
             searchKeyModel: 完整原手机号
-          - searchKey2: ${__SubString(${mobiles},0,16,)}
+          - searchKey2: ${__SubString(${mobiles},0,17,)}
             searchKeyModel: 原手机号前几位
-          - searchKey2: ${__SubString(${mobiles},5,17,)}
+          - searchKey2: ${__SubString(${mobiles},5,19,)}
             searchKeyModel: 原手机号后几位
-          - searchKey2: ${__SubString(${mobiles},5,16,)}
+          - searchKey2: ${__SubString(${mobiles},5,17,)}
             searchKeyModel: 原手机号中间几位
     step:
       - keyWord: web添加个人客户
@@ -63,11 +63,11 @@ testMethod:
         dataProvider:
           - searchKey2: ${mobiles2}
             searchKeyModel: 完整新手机号
-          - searchKey2: ${__SubString(${mobiles2},0,16,)}
+          - searchKey2: ${__SubString(${mobiles2},0,17,)}
             searchKeyModel: 新手机号前几位
-          - searchKey2: ${__SubString(${mobiles2},5,17,)}
+          - searchKey2: ${__SubString(${mobiles2},5,19,)}
             searchKeyModel: 新手机号后几位
-          - searchKey2: ${__SubString(${mobiles2},5,16,)}
+          - searchKey2: ${__SubString(${mobiles2},5,17,)}
             searchKeyModel: 新手机号中间几位
     step:
       - keyWord: web添加个人客户
@@ -84,11 +84,11 @@ testMethod:
         dataProvider:
           - searchKey2: ${mobiles}
             searchKeyModel: 完整原手机号
-          - searchKey2: ${__SubString(${mobiles},0,16,)}
+          - searchKey2: ${__SubString(${mobiles},0,17,)}
             searchKeyModel: 原手机号前几位
-          - searchKey2: ${__SubString(${mobiles},5,17,)}
+          - searchKey2: ${__SubString(${mobiles},5,19,)}
             searchKeyModel: 原手机号后几位
-          - searchKey2: ${__SubString(${mobiles},5,16,)}
+          - searchKey2: ${__SubString(${mobiles},5,17,)}
             searchKeyModel: 原手机号中间几位
     step:
       - keyWord: web添加个人客户
