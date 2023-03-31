@@ -1,0 +1,97 @@
+name: 个人手机号查询
+story: 客户
+beforeClass:
+  name: 添加客户
+  step:
+    - keyWord: 获取所有员工
+    - keyWord: 获取员工旅程
+    - keyWord: 获取旅程列表
+testMethod:
+  - name: 个人客户-按${searchKeyModel}查询
+    severity: CRITICAL
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        mobiles: ${__RandomPhoneNum()}
+        dataProvider:
+          - searchKey: ${mobiles}
+            searchKeyModel: 完整手机号
+          - searchKey: ${__SubString(${mobiles},0,16,)}
+            searchKeyModel: 手机号前几位
+          - searchKey: ${__SubString(${mobiles},5,17,)}
+            searchKeyModel: 手机号后几位
+          - searchKey: ${__SubString(${mobiles},5,16,)}
+            searchKeyModel: 手机号中间几位
+    step:
+      - keyWord: web添加个人客户
+      - keyWord: web端客户查询
+  - name: 个人客户-新增手机号后按${searchKeyModel}查询
+    severity: CRITICAL
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        mobiles: ${__RandomPhoneNum()}
+        searchKey: ${mobiles}
+        mobiles2: ${__RandomPhoneNum()}
+        dataProvider:
+          - searchKey2: ${mobiles2}
+            searchKeyModel: 完整新手机号
+          - searchKey2: ${__SubString(${mobiles2},0,16,)}
+            searchKeyModel: 新手机号前几位
+          - searchKey2: ${__SubString(${mobiles2},5,17,)}
+            searchKeyModel: 新手机号后几位
+          - searchKey2: ${__SubString(${mobiles2},5,16,)}
+            searchKeyModel: 新手机号中间几位
+          - searchKey2: ${mobiles}
+            searchKeyModel: 完整原手机号
+          - searchKey2: ${__SubString(${mobiles},0,16,)}
+            searchKeyModel: 原手机号前几位
+          - searchKey2: ${__SubString(${mobiles},5,17,)}
+            searchKeyModel: 原手机号后几位
+          - searchKey2: ${__SubString(${mobiles},5,16,)}
+            searchKeyModel: 原手机号中间几位
+    step:
+      - keyWord: web添加个人客户
+      - keyWord: web端客户查询
+      - keyWord: 添加客户手机号
+      - keyWord: web端按新增手机号查询
+  - name: 个人客户-编辑手机号后按${searchKeyModel}查询
+    severity: CRITICAL
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        mobiles: ${__RandomPhoneNum()}
+        searchKey: ${mobiles}
+        mobiles2: ${__RandomPhoneNum()}
+        dataProvider:
+          - searchKey2: ${mobiles2}
+            searchKeyModel: 完整新手机号
+          - searchKey2: ${__SubString(${mobiles2},0,16,)}
+            searchKeyModel: 新手机号前几位
+          - searchKey2: ${__SubString(${mobiles2},5,17,)}
+            searchKeyModel: 新手机号后几位
+          - searchKey2: ${__SubString(${mobiles2},5,16,)}
+            searchKeyModel: 新手机号中间几位
+    step:
+      - keyWord: web添加个人客户
+      - keyWord: web端客户查询
+      - keyWord: 修改客户手机号
+      - keyWord: web端按新手机号查询
+  - name: 个人客户-编辑手机号后按${searchKeyModel}查询
+    severity: CRITICAL
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        mobiles: ${__RandomPhoneNum()}
+        searchKey: ${mobiles}
+        mobiles2: ${__RandomPhoneNum()}
+        dataProvider:
+          - searchKey2: ${mobiles}
+            searchKeyModel: 完整原手机号
+          - searchKey2: ${__SubString(${mobiles},0,16,)}
+            searchKeyModel: 原手机号前几位
+          - searchKey2: ${__SubString(${mobiles},5,17,)}
+            searchKeyModel: 原手机号后几位
+          - searchKey2: ${__SubString(${mobiles},5,16,)}
+            searchKeyModel: 原手机号中间几位
+    step:
+      - keyWord: web添加个人客户
+      - keyWord: web端客户查询
+      - keyWord: 修改客户手机号
+      - keyWord: web端按原手机号查询

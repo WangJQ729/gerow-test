@@ -84,6 +84,17 @@ keyWord:
             $.code: 0
             $.data.data.length(): 1
             $.data.data[0].${mobileFieldId}: ['${mobiles2}']
+    - keyWord: web端客户查询
+      name: web端按原手机号查询
+      bodyEditor:
+        json:
+          $.searchKey: ${searchKey2}
+      assertion:
+        - json:
+            $.code: 0
+            $.data.data.length(): 0
+      extractor:
+        - json: {}
     - name: web端客户查询-提取企业联系人Id
       keyWord: web端客户查询
       extractor:
