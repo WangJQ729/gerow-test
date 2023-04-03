@@ -1,0 +1,14 @@
+keyWord:
+  step:
+    - name: 商机名称列表
+      url: /domainServer/opportunity_name/search_by_auth_dept_id
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"name":"","pageNo":1,"pageSize":20}
+      assertion: [ json: { $.code: 0 } ]
+      extractor:
+        - json:
+            productModel: $.data[0].model
+            productName: $.data[0].productName

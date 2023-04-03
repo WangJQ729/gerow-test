@@ -1,0 +1,21 @@
+name: 添加商机
+story: 商机
+dataProvider:
+    - customerName: 【Gerow】${__RandomName()}
+      mobiles: ${__RandomPhoneNum()}
+      searchKey: ${mobiles}
+beforeClass:
+  name: 添加客户
+  step:
+    - keyWord: 获取所有员工
+    - keyWord: 获取员工旅程
+    - keyWord: 获取旅程列表
+    - keyWord: web添加个人客户
+    - keyWord: web端客户查询
+testMethod:
+  - name: 添加跟进记录
+    severity: CRITICAL
+    step:
+      - keyWord: 商机名称列表
+      - keyWord: 获取商机配置
+      - keyWord: 添加商机

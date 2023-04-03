@@ -1,6 +1,5 @@
 name: 添加线索
 story: 线索
-invocationCount: 1
 beforeClass:
   name: 初始化线索分配模式
   step:
@@ -10,14 +9,16 @@ testMethod:
   - name: 添加个人线索
     severity: CRITICAL
     step:
-      - keyWord: 新增含手机号待分配线索
+      - keyWord: 新增含手机号未处理线索
       - keyWord: 获取未处理线索列表
   - name: 添加待分配线索
     severity: CRITICAL
+    invocationCount: 5
     dataProvider:
       - customerName: 【Gerow】${__RandomName()}
         phoneNum: ${__RandomPhoneNum()}
     step:
+      - keyWord: 检查手机号重复
       - keyWord: 新增个人待分配线索
       - keyWord: 获取待分配线索列表
   - name: 添加待分配企业线索

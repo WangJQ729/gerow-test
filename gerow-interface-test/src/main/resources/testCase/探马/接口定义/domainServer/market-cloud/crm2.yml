@@ -1,6 +1,6 @@
 keyWord:
   step:
-    - name: 新增含手机号待分配线索
+    - name: 新增含手机号未处理线索
       url: /domainServer/market-cloud/crm2/addClue
       headers:
         authorization: ${authorization}
@@ -24,8 +24,7 @@ keyWord:
         {
             "customerName":"${customerName}",
             "salesStage":"",
-            "fields":[
-            ],
+            "fields":[],
             "mobiles":[
                 "${phoneNum}"
             ],
@@ -71,7 +70,6 @@ keyWord:
             "startTime":"",
             "endTime":"",
             "tagIds":[
-
             ],
             "authId":10417,
             "clueStatus":"",
