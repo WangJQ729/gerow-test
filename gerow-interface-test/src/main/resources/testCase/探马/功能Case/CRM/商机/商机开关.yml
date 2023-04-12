@@ -1,0 +1,29 @@
+name: 商机开关
+story: 商机
+beforeClass:
+  name: 获取商机原状态
+  step:
+    - keyWord: 获取商机原始状态
+testMethod:
+  - name: 启用商机
+    severity: CRITICAL
+    step:
+      - keyWord: 启用商机
+      - keyWord: 获取商机状态
+        assertion:
+          - json:
+              $.code: 0
+              $.data: true
+  - name: 停用商机
+    severity: CRITICAL
+    step:
+      - keyWord: 停用商机
+      - keyWord: 获取商机状态
+        assertion:
+          - json:
+              $.code: 0
+              $.data: false
+afterClass:
+  name: 还原商机配置
+  step:
+    - keyWord: 设置商机状态

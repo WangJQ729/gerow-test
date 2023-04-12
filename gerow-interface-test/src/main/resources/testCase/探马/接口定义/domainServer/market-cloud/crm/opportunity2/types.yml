@@ -1,0 +1,117 @@
+keyWord:
+  step:
+    - name: 商机类型列表
+      url: /domainServer/market-cloud/crm/opportunity2/types/list
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {}
+      extractor:
+        - json:
+            oppTypeId: $.data[?(@.defaultType==false)].id
+        - json:
+            userDefinedTypeId_list: $.data[?(@.defaultType==false)].id
+          size: 1000
+          options: [ DEFAULT_PATH_LEAF_TO_NULL ]
+      assertion: [ json: { $.code: 0 } ]
+    - name: 删除商机类型
+      url: /domainServer/market-cloud/crm/opportunity2/types/del
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"id":${userDefinedTypeId}}
+      assertion: [ json: { $.code: 0 } ]
+    - name: 删除所有商机类型
+      keyWord: 删除商机类型
+      iter:
+        userDefinedTypeId: ${userDefinedTypeId_list}
+    - name: 添加商机类型
+      url: /domainServer/market-cloud/crm/opportunity2/types/add
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "name":"${opportunity2_type_name}",
+            "allowSkip":true,
+            "allowGoBack":true,
+            "allowInvalidGoBack":true,
+            "allowDelete":true,
+            "allowDeleteWithinDays":1,
+            "scope":{
+                "departments":[],
+                "sales":[{"id":${user_id}}]},
+            "stages":[{
+                    "id":${newClueId},
+                    "name":"新线索",
+                    "rank":0,
+                    "stageId":${newClueId},
+                    "possibility":0,
+                    "requirement":"",
+                    "remind":false,
+                    "remindAfterDays":[1],
+                    "requiredOppTypeFields":[],
+                    "requiredCustomerFields":[]
+                },{
+                    "id":${businessNegotiationId},
+                    "name":"商务谈判",
+                    "rank":1,
+                    "stageId":${businessNegotiationId},
+                    "possibility":5,
+                    "requirement":"",
+                    "remind":false,
+                    "remindAfterDays":[1],
+                    "requiredOppTypeFields":[],
+                    "requiredCustomerFields":[]
+                },{
+                    "id":${signContractId},
+                    "name":"签订合同",
+                    "rank":2,
+                    "stageId":${signContractId},
+                    "possibility":10,
+                    "requirement":"",
+                    "remind":false,
+                    "remindAfterDays":[1],
+                    "requiredOppTypeFields":[],
+                    "requiredCustomerFields":[]
+                },{
+                    "id":${confirmDemandsId},
+                    "name":"确认需求",
+                    "rank":3,
+                    "stageId":${confirmDemandsId},
+                    "possibility":15,
+                    "requirement":"",
+                    "remind":false,
+                    "remindAfterDays":[1],
+                    "requiredOppTypeFields":[],
+                    "requiredCustomerFields":[]
+                },{
+                    "id":${secondaryPurchaseId},
+                    "name":"二次购买",
+                    "rank":4,
+                    "stageId":${secondaryPurchaseId},
+                    "possibility":20,
+                    "requirement":"",
+                    "remind":false,
+                    "remindAfterDays":[1],
+                    "requiredOppTypeFields":[],
+                    "requiredCustomerFields":[]
+                },{
+                    "id":${winOrderId},
+                    "name":"赢单",
+                    "rank":32765,
+                    "stageId":${winOrderId},
+                    "possibility":100,
+                    "requirement":"",
+                    "remind":false,
+                    "remindAfterDays":[],
+                    "requiredOppTypeFields":[],
+                    "requiredCustomerFields":[]
+                }],
+            "fields":[{
+                    "id":${opportunity_fields_id},
+                    "required":false}]
+        }
+      assertion: [ json: { $.code: 0 } ]

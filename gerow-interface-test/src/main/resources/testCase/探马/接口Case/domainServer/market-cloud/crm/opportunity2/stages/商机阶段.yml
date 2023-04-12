@@ -1,0 +1,111 @@
+name: 商机阶段
+story: 商机
+beforeClass:
+  name: 开启商机
+  step:
+    - keyWord: 获取商机原始状态
+    - keyWord: 启用商机
+testMethod:
+  - name: 设置商机阶段
+    step:
+      - keyWord: 保存商机阶段设置
+      - keyWord: 商机阶段库获取阶段列表
+  - name: 设置20个商机阶段
+    step:
+      - keyWord: 保存商机阶段设置
+        bodyEditor:
+          json:
+            $.commonStages:
+              - name: 新线索
+              - name: 商务谈判
+              - name: 签订合同
+              - name: 确认需求
+              - name: 二次购买
+              - name: 二次购买1
+              - name: 二次购买2
+              - name: 二次购买3
+              - name: 二次购买4
+              - name: 二次购买5
+              - name: 二次购买6
+              - name: 二次购买7
+              - name: 二次购买8
+              - name: 二次购买9
+              - name: 二次购买10
+              - name: 二次购买11
+              - name: 二次购买12
+              - name: 二次购买13
+              - name: 二次购买14
+      - keyWord: 商机阶段库获取阶段列表
+        assertion:
+          - json:
+              $.code: 0
+              $.data[0].name: 新线索
+              $.data[1].name: 商务谈判
+              $.data[2].name: 签订合同
+              $.data[3].name: 确认需求
+              $.data[4].name: 二次购买
+              $.data[5].name: 二次购买1
+              $.data[6].name: 二次购买2
+              $.data[7].name: 二次购买3
+              $.data[8].name: 二次购买4
+              $.data[9].name: 二次购买5
+              $.data[10].name: 二次购买6
+              $.data[11].name: 二次购买7
+              $.data[12].name: 二次购买8
+              $.data[13].name: 二次购买9
+              $.data[14].name: 二次购买10
+              $.data[15].name: 二次购买11
+              $.data[16].name: 二次购买12
+              $.data[17].name: 二次购买13
+              $.data[18].name: 二次购买14
+              $.data[19].name: 赢单
+              $.data[20].name: 输单
+              $.data[20].reason[0].name: 价格过高
+              $.data[21].name: 无效
+              $.data[21].reason[0].name: 不需要
+  - name: 设置21个商机阶段
+    step:
+      - keyWord: 保存商机阶段设置
+        bodyEditor:
+          json:
+            $.commonStages:
+              - name: 新线索
+              - name: 商务谈判
+              - name: 签订合同
+              - name: 确认需求
+              - name: 二次购买
+              - name: 二次购买1
+              - name: 二次购买2
+              - name: 二次购买3
+              - name: 二次购买4
+              - name: 二次购买5
+              - name: 二次购买6
+              - name: 二次购买7
+              - name: 二次购买8
+              - name: 二次购买9
+              - name: 二次购买10
+              - name: 二次购买11
+              - name: 二次购买12
+              - name: 二次购买13
+              - name: 二次购买14
+              - name: 二次购买15
+        assertion:
+          - json:
+              $.code: -1
+              $.message: 最多可以定义20个商机阶段（包含赢单）
+  - name: 输单原因名称重复
+    step:
+      - keyWord: 保存商机阶段设置
+        bodyEditor:
+          json:
+            $.loseStageReasons:
+              - name: 价格过高
+              - name: 价格过高
+        assertion:
+          - json:
+              $.code: -1
+              $.message: 输单原因名称不能重复：第 1个和第 2 个原因名称均为"价格过高"
+afterClass:
+  name: 还原商机配置
+  step:
+    - keyWord: 设置商机状态

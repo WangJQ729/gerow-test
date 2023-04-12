@@ -38,7 +38,6 @@ dataProvider:
       - fixCustomerRepoId: 445499822248128
 testMethod:
   - name: 修复客户库
-    severity: CRITICAL
     step:
       - keyWord: 修复客户库
         sleep: 5000

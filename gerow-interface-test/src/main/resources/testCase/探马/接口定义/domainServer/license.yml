@@ -1,0 +1,26 @@
+keyWord:
+  step:
+    - name: 接口许可账号列表
+      url: /domainServer/license/list
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {   "type":2,
+            "salesIds":[],
+            "status":1,
+            "pageNo":1,
+            "pageSize":50,
+            "totalCount":0  }
+      extractor:
+        - json:
+            license_id: $.data.result[0].id
+      assertion: [ json: { $.code: 0 } ]
+    - name: 绑定员工
+      url: /domainServer/license/bound
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"id":${license_id},"salesId":${user_id}}
+      assertion: [ json: { $.code: 0 } ]

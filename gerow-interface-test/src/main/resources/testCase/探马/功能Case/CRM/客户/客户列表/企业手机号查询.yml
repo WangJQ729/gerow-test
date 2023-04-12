@@ -3,7 +3,6 @@ story: 客户
 beforeClass:
   name: 添加客户
   step:
-    - keyWord: 获取所有员工
     - keyWord: 获取员工旅程
     - keyWord: 获取旅程列表
 testMethod:
@@ -37,7 +36,6 @@ testMethod:
       - keyWord: 添加企业客户
       - keyWord: web端客户查询
   - name: 企业客户-编辑企业手机号-按${searchKeyModel}查询
-    severity: CRITICAL
     dataProvider:
       - corpName: 【Gerow】${__RandomName()}公司
         corpContactMobiles: ${__RandomPhoneNum()}
@@ -70,7 +68,6 @@ testMethod:
       - keyWord: 修改客户手机号
       - keyWord: web端按新手机号查询
   - name: 企业客户-编辑企业手机号-按${searchKeyModel}查询
-    severity: CRITICAL
     dataProvider:
       - corpName: 【Gerow】${__RandomName()}公司
         corpContactMobiles: ${__RandomPhoneNum()}
@@ -95,7 +92,6 @@ testMethod:
       - keyWord: 修改客户手机号
       - keyWord: web端按原手机号查询
   - name: 企业客户-编辑联系人手机号-按${searchKeyModel}查询
-    severity: CRITICAL
     dataProvider:
       - corpName: 【Gerow】${__RandomName()}公司
         corpContactMobiles: ${__RandomPhoneNum()}
@@ -128,7 +124,6 @@ testMethod:
       - keyWord: 修改企业联系人手机号
       - keyWord: web端按新手机号查询-断言联系人手机号
   - name: 企业客户-编辑联系人手机号-按${searchKeyModel}查询
-    severity: CRITICAL
     dataProvider:
       - corpName: 【Gerow】${__RandomName()}公司
         corpContactMobiles: ${__RandomPhoneNum()}

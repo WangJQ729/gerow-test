@@ -7,13 +7,10 @@ beforeClass:
     - keyWord: 设置线索手动分配模式
 testMethod:
   - name: 添加个人线索
-    severity: CRITICAL
     step:
       - keyWord: 新增含手机号未处理线索
       - keyWord: 获取未处理线索列表
   - name: 添加待分配线索
-    severity: CRITICAL
-    invocationCount: 5
     dataProvider:
       - customerName: 【Gerow】${__RandomName()}
         phoneNum: ${__RandomPhoneNum()}
@@ -22,7 +19,6 @@ testMethod:
       - keyWord: 新增个人待分配线索
       - keyWord: 获取待分配线索列表
   - name: 添加待分配企业线索
-    severity: CRITICAL
     dataProvider:
       - corpName: 【Gerow】${__RandomName()}公司
         corpContactMobiles: ${__RandomPhoneNum()}

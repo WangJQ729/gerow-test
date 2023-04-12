@@ -1,4 +1,5 @@
 name: 添加公海客户
+story: 公海
 dataProvider:
   - openSeaName: 【Gerow】公海
 beforeClass:

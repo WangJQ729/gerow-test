@@ -1,0 +1,90 @@
+keyWord:
+  step:
+    - name: 添加单行文本商机字段
+      url: /domainServer/market-cloud/crm/opportunity2/fields/add
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"id":"","name":"${opportunity2_fields}","required":false,"type":1,"options":[],"scale":0,"maxUnicode":0}
+      assertion: [ json: { $.code: 0 } ]
+    - keyWord: 添加单行文本商机字段
+      name: 添加单选商机字段
+      bodyEditor:
+        json:
+          $.type: 2
+          $.options:
+            - name: ${options_name_1}
+            - name: ${options_name_2}
+            - name: ${options_name_3}
+            - name: ${options_name_4}
+    - keyWord: 添加单行文本商机字段
+      name: 添加日期商机字段
+      bodyEditor:
+        json:
+          $.type: 3
+    - keyWord: 添加单行文本商机字段
+      name: 添加数值商机字段
+      bodyEditor:
+        json:
+          $.type: 4
+          $.scale: ${scale}
+    - keyWord: 添加单行文本商机字段
+      name: 添加多行文本字段
+      bodyEditor:
+        json:
+          $.type: 5
+          $.maxUnicode: ${maxUnicode}
+    - keyWord: 添加单行文本商机字段
+      name: 添加多选商机字段
+      bodyEditor:
+        json:
+          $.type: 6
+          $.options:
+            - name: ${options_name_1}
+            - name: ${options_name_2}
+            - name: ${options_name_3}
+            - name: ${options_name_4}
+    - keyWord: 添加单行文本商机字段
+      name: 添加时间商机字段
+      bodyEditor:
+        json:
+          $.type: 7
+    - name: 获取商机字段列表
+      url: /domainServer/market-cloud/crm/opportunity2/fields/list
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: | 
+        {}
+      extractor:
+        - json:
+            opportunity2_fields_list: $.data[*].id
+          size: 1000
+          options: [ DEFAULT_PATH_LEAF_TO_NULL ]
+      assertion: [json: {$.code: 0}]
+    - name: 获取商机字段列表-获取字段ID
+      keyWord: 获取商机字段列表
+      extractor:
+        - json:
+            opportunity_fields_id: $.data[?(@.name=='${opportunity2_fields}')].id
+
+    - keyWord: 获取商机字段列表
+      name: 商机字段列表判断添加成功
+      assertion:
+        - json:
+            $.code: 0
+            $.data[?(@.name=='${opportunity2_fields}')].name:
+              - ${opportunity2_fields}
+    - name: 删除商机字段
+      url: /domainServer/market-cloud/crm/opportunity2/fields/delete
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"id":${opportunity2FieldId}}
+      assertion: [ json: { $.code: 0 } ]
+    - name: 删除所有商机字段
+      keyWord: 删除商机字段
+      iter:
+        opportunity2FieldId: ${opportunity2_fields_list}

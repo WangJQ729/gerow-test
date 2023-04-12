@@ -8,7 +8,7 @@ keyWord:
       assertion: [ json: { $.code: 0 } ]
       extractor:
         - json:
-            mobileFieldId: $.data[?(@.fieldName=='电话')].fieldId
+            mobileFieldId: $.data[?(@.fieldName=='电话' && @.fieldType==8)].fieldId
             customerNameFieldId: $.data[?(@.fieldName=='姓名')].fieldId
             describeFieldId: $.data[?(@.fieldName=='描述')].fieldId
           site: TESTSUITE

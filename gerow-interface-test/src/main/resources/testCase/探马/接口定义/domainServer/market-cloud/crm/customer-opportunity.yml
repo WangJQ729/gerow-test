@@ -1,0 +1,21 @@
+keyWord:
+  step:
+    - name: 客户添加商机
+      url: /domainServer/market-cloud/crm/customer-opportunity/add2
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "salesId":${user_id},
+            "customerId":${customerId},
+            "name":"${opportunity_name}",
+            "stage":${stagesId},
+            "expectedDealTime":"${expectedDealTime}",
+            "expectedDealAmount":1,
+            "fields":[{"fieldId":"${opportunity_fields_id}",
+                    "value":"${opportunity_fields_value}"}],
+            "commodities":[],
+            "oppTypeId":${oppTypeId}
+        }
+      assertion: [ json: { $.code: 0 } ]

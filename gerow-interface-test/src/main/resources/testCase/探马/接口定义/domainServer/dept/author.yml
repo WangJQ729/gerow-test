@@ -1,0 +1,22 @@
+keyWord:
+  step:
+    - name: 模糊搜索员工
+      url: /domainServer/dept/author/fuzzyMatching
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "keyword":"${userName}",
+            "displayAll":false,
+            "displayAdmin":false,
+            "childRange":"all",
+            "isQwOnly":false,
+            "isUsing":false,
+            "queryQuit":false
+        }
+      assertion: [ json: { $.code: 0 } ]
+      extractor:
+        - json:
+            user_id: $.data[?(@.name=='${userName}')].id
+          site: TESTSUITE

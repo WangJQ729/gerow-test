@@ -1,28 +1,21 @@
 keyWord:
   step:
-    - name: 更新客户旅程
+    - name: 修改客户描述信息
       url: /domainServer/qwCrm/webCustomer/customerInfoUpdate
       headers:
         authorization:
           ${authorization}
       method: POST
       body: |
-        {   "fieldName":"sales_stage",
+        {
+            "fieldId":${describeFieldId},
+            "fieldType":1,
+            "fieldName":"描述",
             "customerId":${customerId},
-            "fieldValue":[
-                "527413161068736",
-                500337933863104],
+            "fieldValue":"${description}",
             "salesId":${user_id},
             "isWeb":true,
-            "stageFlowId":"527413161068736",
-            "salesStage":500337933863104,
-            "salesStageSub":"",
-            "salesStageName":"签约",
-            "salesStageSubName":"",
-            "preStageFlowId":"527413161068736",
-            "preSalesStage":445499848396996,
-            "salesStageEnd":"",
-            "oldSalesStage":""
+            "followContent":"添加了客户的信息：\n“描述: ${description}”"
         }
       assertion: [ json: { $.code: 0 } ]
     - name: 公海添加含手机号个人客户

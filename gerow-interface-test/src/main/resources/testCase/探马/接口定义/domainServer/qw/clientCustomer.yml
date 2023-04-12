@@ -12,6 +12,4 @@ keyWord:
           "followType":${followType},
           "salesId":${user_id}
         }
-      assertion:
-        - json:
-            $.code: 0
+      assertion: [ json: { $.code: 0 } ]

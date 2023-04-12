@@ -1,0 +1,8 @@
+name: 接口许可账号
+enable: false
+story: 许可账号
+testMethod:
+  - name: 许可账号列表
+    step:
+      - keyWord: 接口许可账号列表
+      - keyWord: 绑定员工

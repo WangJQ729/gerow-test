@@ -1,0 +1,92 @@
+name: 添加描述信息
+story: 客户
+invocationCount: 1
+dataProvider:
+  - customerName: 【Gerow】${__RandomName()}
+    mobiles: ${__RandomPhoneNum()}
+    searchKey: ${mobiles}
+beforeClass:
+  name: 添加客户
+  step:
+    - keyWord: 获取员工旅程
+    - keyWord: 获取旅程列表
+    - keyWord: web添加个人客户
+    - keyWord: web端客户查询
+testMethod:
+  - name: 添加描述信息
+    dataProvider:
+      - description: ${__RandomString(50,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+    step:
+      - keyWord: 修改客户描述信息
+      - keyWord: web端客户查询
+        assertion:
+          - json:
+              $.code: 0
+              $.data.data.length(): 1
+              $.data.data[0].${describeFieldId}: ${description}
+  - name: 添加手机号
+    dataProvider:
+      - mobiles1: ${__RandomPhoneNum()}
+        mobiles2: ${__RandomPhoneNum()}
+        mobiles3: ${__RandomPhoneNum()}
+        mobiles4: ${__RandomPhoneNum()}
+        mobiles5: ${__RandomPhoneNum()}
+        mobiles6: ${__RandomPhoneNum()}
+        mobiles7: ${__RandomPhoneNum()}
+        mobiles8: ${__RandomPhoneNum()}
+        mobiles9: ${__RandomPhoneNum()}
+        mobiles10: ${__RandomPhoneNum()}
+        mobiles11: ${__RandomPhoneNum()}
+        mobiles12: ${__RandomPhoneNum()}
+        mobiles13: ${__RandomPhoneNum()}
+    step:
+      - keyWord: 添加客户手机号
+        bodyEditor:
+          json:
+            $.phoneNumber:
+              - "${mobiles1}"
+              - "${mobiles2}"
+              - "${mobiles3}"
+              - "${mobiles4}"
+              - "${mobiles5}"
+              - "${mobiles6}"
+              - "${mobiles7}"
+              - "${mobiles8}"
+              - "${mobiles9}"
+              - "${mobiles10}"
+              - "${mobiles11}"
+              - "${mobiles12}"
+            $.phoneInfo.currentPhone:
+              - "${mobiles1}"
+              - "${mobiles2}"
+              - "${mobiles3}"
+              - "${mobiles4}"
+              - "${mobiles5}"
+              - "${mobiles6}"
+              - "${mobiles7}"
+              - "${mobiles8}"
+              - "${mobiles9}"
+              - "${mobiles10}"
+              - "${mobiles11}"
+              - "${mobiles12}"
+            $.followContent: "编辑了客户的信息: “电话”\n 由${mobiles}\n修改为\n ${mobiles1}"
+      - keyWord: web端客户查询
+        dataProvider:
+          - searchKey: ${mobiles1}
+        assertion:
+          - json:
+              $.code: 0
+              $.data.data.length(): 1
+              $.data.data[0].${mobileFieldId}:
+                - "${mobiles1}"
+                - "${mobiles2}"
+                - "${mobiles3}"
+                - "${mobiles4}"
+                - "${mobiles5}"
+                - "${mobiles6}"
+                - "${mobiles7}"
+                - "${mobiles8}"
+                - "${mobiles9}"
+                - "${mobiles10}"
+                - "${mobiles11}"
+                - "${mobiles12}"

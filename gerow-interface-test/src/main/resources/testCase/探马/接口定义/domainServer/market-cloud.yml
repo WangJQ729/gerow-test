@@ -1,6 +1,6 @@
 keyWord:
   step:
-    - name: 获取所有员工
+    - name: 获取所有管理员
       url: /domainServer/market-cloud/showAllUserManager
       headers:
         authorization: ${authorization}

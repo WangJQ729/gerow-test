@@ -1,0 +1,31 @@
+keyWord:
+  step:
+    - name: 启用商机
+      url: /domainServer/market-cloud/crm/opportunity/enable
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"enabled":true}
+      assertion: [ json: { $.code: 0 } ]
+    - name: 停用商机
+      keyWord: 启用商机
+      bodyEditor:
+        json:
+          $.enabled: false
+    - name: 获取商机状态
+      url: /domainServer/market-cloud/crm/opportunity/enable
+      headers:
+        authorization: ${authorization}
+      method: GET
+      assertion: [ json: { $.code: 0 } ]
+    - keyWord: 获取商机状态
+      name: 获取商机原始状态
+      extractor:
+        - json:
+            opportunity_enable: $.data
+    - name: 设置商机状态
+      keyWord: 启用商机
+      bodyEditor:
+        json:
+          $.enabled: ${opportunity_enable}

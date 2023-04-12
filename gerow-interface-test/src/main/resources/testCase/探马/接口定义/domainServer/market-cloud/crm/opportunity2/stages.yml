@@ -1,0 +1,49 @@
+keyWord:
+  step:
+    - name: 商机阶段库获取阶段列表
+      url: /domainServer/market-cloud/crm/opportunity2/stages/list
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {}
+      assertion:
+        - json:
+            $.code: 0
+            $.data[0].name: 新线索
+            $.data[1].name: 商务谈判
+            $.data[2].name: 签订合同
+            $.data[3].name: 确认需求
+            $.data[4].name: 二次购买
+            $.data[5].name: 赢单
+            $.data[6].name: 输单
+            $.data[6].reason[0].name: 价格过高
+            $.data[7].name: 无效
+            $.data[7].reason[0].name: 不需要
+    - name: 商机阶段库获取阶段ID
+      keyWord: 商机阶段库获取阶段列表
+      extractor:
+        - json:
+            newClueId: $.data[?(name=='新线索')].id
+            businessNegotiationId: $.data[?(name=='商务谈判')].id
+            signContractId: $.data[?(name=='签订合同')].id
+            confirmDemandsId: $.data[?(name=='确认需求')].id
+            secondaryPurchaseId: $.data[?(name=='二次购买')].id
+            winOrderId: $.data[?(name=='赢单')].id
+    - name: 保存商机阶段设置
+      url: /domainServer/market-cloud/crm/opportunity2/stages/save-list
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {   "commonStages":[
+                  {"name":"新线索"},
+                  {"name":"商务谈判"},
+                  {"name":"签订合同"},
+                  {"name":"确认需求"},
+                  {"name":"二次购买"}],
+            "winStageName":"赢单",
+            "loseStageReasons":[{"name":"价格过高"}],
+            "invalidStageReasons":[{"name":"不需要"}]
+        }
+      assertion: [ json: { $.code: 0 } ]
