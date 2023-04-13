@@ -7,6 +7,9 @@ beforeClass:
     - keyWord: 设置线索手动分配模式
 testMethod:
   - name: 添加个人线索
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        phoneNum: ${__RandomPhoneNum()}
     step:
       - keyWord: 新增含手机号未处理线索
       - keyWord: 获取未处理线索列表
@@ -38,3 +41,7 @@ afterClass:
     - keyWord: 设置线索分配模式
       dataProvider:
         - using_auto_allocate_rule: ${usingAutoAllocateRule}
+afterMethod:
+  name: 删除用户
+  step:
+    - keyWord: 彻底删除线索

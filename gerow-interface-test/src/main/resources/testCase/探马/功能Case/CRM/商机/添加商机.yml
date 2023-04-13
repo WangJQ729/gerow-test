@@ -5,7 +5,6 @@ dataProvider:
     opportunity2_type_name: 商机类型_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
     customerName: 【Gerow】${__RandomName()}
     mobiles: ${__RandomPhoneNum()}
-    expectedDealTime: ${__PlusDay(yyyy-MM-dd 00:00:00,7,)}
     searchKey: ${mobiles}
 beforeClass:
   name: 获取商机原状态
@@ -21,7 +20,7 @@ beforeClass:
     - keyWord: 商机类型列表
     - keyWord: 删除所有商机类型
     - keyWord: 添加商机类型
-    - keyWord: 商机类型列表
+    - keyWord: 获取商机类型ID
     - keyWord: 获取员工旅程
     - keyWord: 获取旅程列表
     - keyWord: web添加个人客户
@@ -36,9 +35,21 @@ testMethod:
     dataProvider:
       - opportunity_name: 【Gerow】商机名称_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         opportunity_fields_value: ${__RandomString(16,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        expectedDealTime: ${__PlusDay(yyyy-MM-dd 00:00:00,7,)}
+        expectedDealAmount: ${__Random(1000,99999999999)}
     step:
       - keyWord: 客户添加商机
+      - keyWord: 获取客户动态
+        assertion:
+          - json:
+              $.data[0].content: 创建了商机：${opportunity_name}
+      - keyWord: 客户商机列表
 afterClass:
   name: 还原商机配置
   step:
+    - keyWord: 彻底删除用户
+    - keyWord: 获取商机字段列表
+    - keyWord: 删除所有商机字段
+    - keyWord: 商机类型列表
+    - keyWord: 删除所有商机类型
     - keyWord: 设置商机状态

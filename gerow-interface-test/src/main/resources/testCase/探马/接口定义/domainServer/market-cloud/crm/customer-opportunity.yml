@@ -12,7 +12,7 @@ keyWord:
             "name":"${opportunity_name}",
             "stage":${stagesId},
             "expectedDealTime":"${expectedDealTime}",
-            "expectedDealAmount":1,
+            "expectedDealAmount":${expectedDealAmount},
             "fields":[{"fieldId":"${opportunity_fields_id}",
                     "value":"${opportunity_fields_value}"}],
             "commodities":[],

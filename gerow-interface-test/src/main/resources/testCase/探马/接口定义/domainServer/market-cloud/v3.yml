@@ -1,0 +1,9 @@
+keyWord:
+  step:
+    - name: 彻底删除用户
+      url: /domainServer/market-cloud/crm2/v3/customerDelete
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"relations":[{"customerId":${customerId},"salesId":${user_id}}]}

@@ -90,3 +90,7 @@ testMethod:
                 - "${mobiles10}"
                 - "${mobiles11}"
                 - "${mobiles12}"
+afterClass:
+  name: 删除用户
+  step:
+    - keyWord: 彻底删除用户

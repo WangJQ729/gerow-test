@@ -147,3 +147,7 @@ testMethod:
       - keyWord: web端客户查询-提取企业联系人Id
       - keyWord: 修改企业联系人手机号
       - keyWord: web端按原手机号查询
+afterMethod:
+  name: 删除用户
+  step:
+    - keyWord: 彻底删除用户

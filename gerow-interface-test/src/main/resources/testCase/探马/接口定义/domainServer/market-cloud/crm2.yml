@@ -7,10 +7,10 @@ keyWord:
       method: POST
       body: |
         {
-            "customerName":"${__RandomName(customerName)}",
+            "customerName":"${customerName}",
             "salesStage":"",
             "fields":[],
-            "mobiles":[${__RandomPhoneNum(phoneNum)}],
+            "mobiles":[${phoneNum}],
             "modalType":0,
             "address":""
         }
@@ -59,6 +59,9 @@ keyWord:
             $.data.result.length(): 1
             $.data.result[0].${customerNameFieldId}: ${customerName}
             $.data.result[0].${mobileFieldId}: ['${phoneNum}']
+      extractor:
+        - json:
+            clue_id: $.data.result[0].customerId
     - name: 获取待分配线索列表
       url: /domainServer/market-cloud/crm2/getAllocatedCustomerListAdvance
       headers:
@@ -88,3 +91,14 @@ keyWord:
             $.data.result.length(): 1
             $.data.result[0].${customerNameFieldId}: ${customerName}
             $.data.result[0].${mobileFieldId}: ['${phoneNum}']
+      extractor:
+        - json:
+            clue_id: $.data.result[0].customerId
+    - name: 彻底删除线索
+      url: /domainServer/market-cloud/crm2/clueDelete
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"customerIds":[${clue_id}],"toBeAllocated":"0"}
+      assertion: [ json: { $.code: 0 } ]

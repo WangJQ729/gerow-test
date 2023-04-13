@@ -8,7 +8,6 @@ keyWord:
       assertion: [ json: { $.code: 0 } ]
       extractor:
         - json:
-            salesId: $.data[?(@.username=='${userName}')].salesId
             user_id: $.data[?(@.username=='${userName}')].user_id
     - name: 检查手机号重复
       url: /domainServer/market-cloud/webCheckRepeatMobile

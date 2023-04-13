@@ -9,12 +9,15 @@ keyWord:
         {}
       extractor:
         - json:
-            oppTypeId: $.data[?(@.defaultType==false)].id
-        - json:
             userDefinedTypeId_list: $.data[?(@.defaultType==false)].id
           size: 1000
           options: [ DEFAULT_PATH_LEAF_TO_NULL ]
       assertion: [ json: { $.code: 0 } ]
+    - keyWord: 商机类型列表
+      name: 获取商机类型ID
+      extractor:
+        - json:
+            oppTypeId: $.data[?(@.defaultType==false)].id
     - name: 删除商机类型
       url: /domainServer/market-cloud/crm/opportunity2/types/del
       headers:

@@ -29,3 +29,20 @@ keyWord:
       bodyEditor:
         json:
           $.enabled: ${opportunity_enable}
+    - name: 客户商机列表
+      url: /domainServer/market-cloud/crm/customer-opportunity/list
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"customerId":${customerId},"salesId":${user_id}}
+      assertion:
+        - json:
+            $.code: 0
+            $.data[0].name: ${opportunity_name}
+            $.data[0].expectedDealAmount: ${expectedDealAmount}
+            $.data[0].expectedDealTime: ${expectedDealTime}
+            $.data[0].stage.name: 新线索
+        - json:
+            $.data[0].stage.id: ${newClueId}
+          valueType: BIGDECIMAL

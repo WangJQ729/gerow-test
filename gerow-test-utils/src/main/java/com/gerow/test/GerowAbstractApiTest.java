@@ -62,9 +62,7 @@ public abstract class GerowAbstractApiTest extends AbstractTestBase implements G
     public Iterator<Object[]> data() {
         List<ITestMethod> testMethods = testClass.getTestMethods().parallelStream()
                 //根据测试名称过来测试
-                .filter(ITest::enable)
-                .flatMap(this::buildTestMethods)
-                .collect(Collectors.toList());
+                .filter(ITest::enable).flatMap(this::buildTestMethods).collect(Collectors.toList());
         return testMethods.stream().map(o -> new Object[]{o}).iterator();
     }
 
@@ -89,12 +87,20 @@ public abstract class GerowAbstractApiTest extends AbstractTestBase implements G
 
     @AfterSuite
     public void tearDownAfterSuite() {
-        testClass.getTestSuite().tearDown();
+        try {
+            testClass.getTestSuite().tearDown();
+        } catch (Throwable e) {
+            logger.error(e.getMessage());
+        }
     }
 
     @AfterClass
     public void tearDownAfterClass() {
-        testClass.tearDownAfterClass();
+        try {
+            testClass.tearDownAfterClass();
+        } catch (Throwable e) {
+            logger.error(e.getMessage());
+        }
     }
 
     @AfterMethod
@@ -102,7 +108,7 @@ public abstract class GerowAbstractApiTest extends AbstractTestBase implements G
         try {
             testClass.tearDown();
         } catch (Throwable e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
 
         logger.debug("测试结束：" + testName);
