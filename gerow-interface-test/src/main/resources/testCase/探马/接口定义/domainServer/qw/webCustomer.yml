@@ -27,4 +27,7 @@ keyWord:
       body: |
         {"notGroup":false,"customerId":${customerId},"salesId":${user_id},"pageSize":30,"isCorp":false,"allowType":[8,2,1,5,4,3,7,6,9]}
       method: POST
-      assertion: [ json: { $.code: 0 } ]
+      assertion:
+        - json:
+            $.data[?(@.travelType==6)].content:
+              - 创建了商机：${opportunity_name}

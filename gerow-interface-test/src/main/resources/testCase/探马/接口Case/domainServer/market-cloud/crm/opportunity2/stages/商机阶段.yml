@@ -108,4 +108,5 @@ testMethod:
 afterClass:
   name: 还原商机配置
   step:
+    - keyWord: 保存商机阶段设置
     - keyWord: 设置商机状态

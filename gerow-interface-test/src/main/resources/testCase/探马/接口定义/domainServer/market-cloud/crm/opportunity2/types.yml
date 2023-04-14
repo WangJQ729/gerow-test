@@ -1,35 +1,24 @@
 keyWord:
   step:
-    - name: 商机类型列表
+    - name: 商机类型添加成功
       url: /domainServer/market-cloud/crm/opportunity2/types/list
       headers:
         authorization: ${authorization}
       method: POST
       body: |
         {}
-      extractor:
-        - json:
-            userDefinedTypeId_list: $.data[?(@.defaultType==false)].id
-          size: 1000
-          options: [ DEFAULT_PATH_LEAF_TO_NULL ]
       assertion: [ json: { $.code: 0 } ]
-    - keyWord: 商机类型列表
-      name: 获取商机类型ID
       extractor:
         - json:
-            oppTypeId: $.data[?(@.defaultType==false)].id
+            oppTypeId: $.data[?(@.name=='${opportunity2_type_name}')].id
     - name: 删除商机类型
       url: /domainServer/market-cloud/crm/opportunity2/types/del
       headers:
         authorization: ${authorization}
       method: POST
       body: |
-        {"id":${userDefinedTypeId}}
+        {"id":${oppTypeId}}
       assertion: [ json: { $.code: 0 } ]
-    - name: 删除所有商机类型
-      keyWord: 删除商机类型
-      iter:
-        userDefinedTypeId: ${userDefinedTypeId_list}
     - name: 添加商机类型
       url: /domainServer/market-cloud/crm/opportunity2/types/add
       headers:

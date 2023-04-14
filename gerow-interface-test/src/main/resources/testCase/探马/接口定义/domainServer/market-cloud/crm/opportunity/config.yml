@@ -1,0 +1,13 @@
+keyWord:
+  step:
+    - name: 获取商机配置
+      url: /domainServer/market-cloud/crm/opportunity/config/get
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {}
+      assertion: [ json: { $.code: 0 } ]
+      extractor:
+        - json:
+            stagesId: $.data.stages[0].id

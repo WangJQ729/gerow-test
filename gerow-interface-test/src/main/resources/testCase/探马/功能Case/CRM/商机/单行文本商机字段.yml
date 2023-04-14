@@ -1,0 +1,83 @@
+name: 单行文本商机字段
+story: 商机
+dataProvider:
+  - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+    opportunity2_type_name: 【Gerow】_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+beforeClass:
+  name: 获取商机原状态
+  step:
+    - keyWord: 获取员工旅程
+    - keyWord: 获取旅程列表
+    - keyWord: 获取商机原始状态
+    - keyWord: 启用商机
+    - keyWord: 保存商机阶段设置
+    - keyWord: 商机阶段库获取阶段ID
+    - keyWord: 添加单行文本商机字段
+    - keyWord: 获取商机字段列表
+    - keyWord: 添加商机类型
+    - keyWord: 商机类型添加成功
+    - keyWord: 获取商机配置
+testMethod:
+  - name: 添加单行文本商机
+    severity: CRITICAL
+    dataProvider:
+      - opportunity_name: 【Gerow】商机名称_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        opportunity_fields_value: ${__RandomString(16,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        expectedDealTime: ${__PlusDay(yyyy-MM-dd 00:00:00,7,)}
+        expectedDealAmount: ${__Random(1000,99999999999)}
+        customerName: 【Gerow】${__RandomName()}
+        mobiles: ${__RandomPhoneNum()}
+        searchKey: ${mobiles}
+    step:
+      - keyWord: web添加个人客户
+      - keyWord: web端客户查询
+      - keyWord: 客户添加商机
+      - keyWord: 获取客户动态
+      - keyWord: 客户商机列表
+  - name: 添加单行文本商机-预计成交金额${expectedDealAmount}
+    severity: CRITICAL
+    dataProvider:
+      - opportunity_name: 【Gerow】商机名称_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        opportunity_fields_value: ${__RandomString(16,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        expectedDealTime: ${__PlusDay(yyyy-MM-dd 00:00:00,7,)}
+        customerName: 【Gerow】${__RandomName()}
+        mobiles: ${__RandomPhoneNum()}
+        searchKey: ${mobiles}
+        dataProvider:
+          - expectedDealAmount: -0.01
+    step:
+      - keyWord: web添加个人客户
+      - keyWord: web端客户查询
+      - keyWord: 客户添加商机
+        assertion:
+          - json:
+              $.code: 400
+              $.message: 期望的成交金额不能小于等于0
+  - name: 添加商机-预计成交时间早于当前时间
+    severity: CRITICAL
+    dataProvider:
+      - opportunity_name: 【Gerow】商机名称_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        opportunity_fields_value: ${__RandomString(16,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        expectedDealTime: ${__PlusDay(yyyy-MM-dd 00:00:00,0,)}
+        expectedDealAmount: ${__Random(1000,99999999999)}
+        customerName: 【Gerow】${__RandomName()}
+        mobiles: ${__RandomPhoneNum()}
+        searchKey: ${mobiles}
+    step:
+      - keyWord: web添加个人客户
+      - keyWord: web端客户查询
+      - keyWord: 客户添加商机
+        assertion:
+          - json:
+              $.code: 400
+              $.message: 预计成交时间早于当前时间
+afterMethod:
+  name: 删除用户
+  step:
+    - keyWord: 彻底删除用户
+afterClass:
+  name: 还原商机配置
+  step:
+    - keyWord: 删除商机字段
+    - keyWord: 删除商机类型
+    - keyWord: 设置商机状态

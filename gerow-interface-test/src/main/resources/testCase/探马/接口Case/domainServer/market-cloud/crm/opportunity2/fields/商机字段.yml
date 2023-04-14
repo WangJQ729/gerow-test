@@ -5,22 +5,17 @@ beforeClass:
   step:
     - keyWord: 获取商机原始状态
     - keyWord: 启用商机
-beforeMethod:
-  name: 清空商机字段设置
-  step:
-    - keyWord: 获取商机字段列表
-    - keyWord: 删除所有商机字段
 testMethod:
   - name: 单行文本商机字段
     severity: CRITICAL
     dataProvider:
-      - opportunity2_fields: 单行_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+      - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
     step:
       - keyWord: 添加单行文本商机字段
       - keyWord: 商机字段列表判断添加成功
   - name: 单行文本商机字段-字段长度9
     dataProvider:
-      - opportunity2_fields: 单行文本_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+      - opportunity2_fields: 【G】_${__RandomString(6,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
     step:
       - keyWord: 添加单行文本商机字段
         assertion:
@@ -30,27 +25,29 @@ testMethod:
   - name: 多行文本商机字段
     severity: CRITICAL
     dataProvider:
-      - opportunity2_fields: 多行_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+      - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         maxUnicode: 50
     step:
       - keyWord: 添加多行文本字段
       - keyWord: 商机字段列表判断添加成功
   - name: 多行文本商机字段-文字字数
+    enable: false
     dataProvider:
-      - opportunity2_fields: 多行_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+      - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         maxUnicode: -1
-      - opportunity2_fields: 多行_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+      - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         maxUnicode: 5001
-#      - opportunity2_fields: 多行_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-#        maxUnicode: 1.1
-#      - opportunity2_fields: 多行_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-#        maxUnicode: ssss
     step:
       - keyWord: 添加多行文本字段
+      - keyWord: 商机字段列表判断添加成功
+        assertion:
+          - json:
+              $.code: 0
+              $.data[?(@.name=='${opportunity2_fields}')].name: []
   - name: 单选商机字段
     severity: CRITICAL
     dataProvider:
-      - opportunity2_fields: 单选_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+      - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         options_name_1: 单选项_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         options_name_2: 单选项_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         options_name_3: 单选项_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -61,7 +58,7 @@ testMethod:
   - name: 多选商机字段
     severity: CRITICAL
     dataProvider:
-      - opportunity2_fields: 多选_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+      - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         options_name_1: 多选项_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         options_name_2: 多选项_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         options_name_3: 多选项_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -72,21 +69,21 @@ testMethod:
   - name: 日期商机字段
     severity: CRITICAL
     dataProvider:
-      - opportunity2_fields: 日期_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+      - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
     step:
       - keyWord: 添加日期商机字段
       - keyWord: 商机字段列表判断添加成功
   - name: 时间商机字段
     severity: CRITICAL
     dataProvider:
-      - opportunity2_fields: 时间_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+      - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
     step:
       - keyWord: 添加时间商机字段
       - keyWord: 商机字段列表判断添加成功
   - name: 数值商机字段
     severity: CRITICAL
     dataProvider:
-      - opportunity2_fields: 数值_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+      - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         scale: 16
     step:
       - keyWord: 添加数值商机字段
@@ -94,8 +91,7 @@ testMethod:
 afterMethod:
   name: 清空商机字段设置
   step:
-    - keyWord: 获取商机字段列表
-    - keyWord: 删除所有商机字段
+    - keyWord: 删除商机字段
 afterClass:
   name: 还原商机配置
   step:

@@ -1,6 +1,7 @@
 keyWord:
   step:
     - name: 商机阶段库获取阶段列表
+      sleep: 1000
       url: /domainServer/market-cloud/crm/opportunity2/stages/list
       headers:
         authorization: ${authorization}

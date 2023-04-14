@@ -57,18 +57,19 @@ keyWord:
       method: POST
       body: | 
         {}
+      assertion: [json: {$.code: 0}]
       extractor:
         - json:
-            opportunity2_fields_list: $.data[*].id
-          size: 1000
-          options: [ DEFAULT_PATH_LEAF_TO_NULL ]
-      assertion: [json: {$.code: 0}]
-    - name: 获取商机字段列表-获取字段ID
+            opportunity_fields_id: $.data[?(@.name=='${opportunity2_fields}')].id
+    - name: 获取选项商机字段选项ID
       keyWord: 获取商机字段列表
       extractor:
         - json:
             opportunity_fields_id: $.data[?(@.name=='${opportunity2_fields}')].id
-
+            opportunity_fields_options_id1: $.data[?(@.name=='${opportunity2_fields}')].options[0].id
+            opportunity_fields_options_id2: $.data[?(@.name=='${opportunity2_fields}')].options[1].id
+            opportunity_fields_options_id3: $.data[?(@.name=='${opportunity2_fields}')].options[2].id
+            opportunity_fields_options_id4: $.data[?(@.name=='${opportunity2_fields}')].options[3].id
     - keyWord: 获取商机字段列表
       name: 商机字段列表判断添加成功
       assertion:
@@ -82,9 +83,21 @@ keyWord:
         authorization: ${authorization}
       method: POST
       body: |
-        {"id":${opportunity2FieldId}}
+        {"id":${opportunity_fields_id}}
       assertion: [ json: { $.code: 0 } ]
-    - name: 删除所有商机字段
-      keyWord: 删除商机字段
-      iter:
-        opportunity2FieldId: ${opportunity2_fields_list}
+    - name: 编辑商机字段
+      url: /domainServer/market-cloud/crm/opportunity2/fields/edit
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "id":${opportunity_fields_id},
+            "name":"${opportunity2_fields}",
+            "required":false,
+            "type":5,
+            "options":[],
+            "scale":0,
+            "maxUnicode":${maxUnicode}
+        }
+      assertion: [ json: { $.code: 0 } ]

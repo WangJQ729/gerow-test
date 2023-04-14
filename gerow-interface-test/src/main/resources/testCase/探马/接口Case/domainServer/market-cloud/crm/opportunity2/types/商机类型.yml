@@ -1,28 +1,26 @@
 name: 商机类型
 story: 商机
 dataProvider:
-  - opportunity2_fields: 单行_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-    opportunity2_type_name: 商机类型_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+  - opportunity2_fields: 【G】${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+    opportunity2_type_name: 【Gerow】_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
 beforeClass:
   name: 获取商机原状态
   step:
     - keyWord: 获取商机原始状态
     - keyWord: 启用商机
-    - keyWord: 获取商机字段列表
-    - keyWord: 删除所有商机字段
     - keyWord: 添加单行文本商机字段
-    - keyWord: 获取商机字段列表-获取字段ID
+    - keyWord: 获取商机字段列表
     - keyWord: 保存商机阶段设置
     - keyWord: 商机阶段库获取阶段ID
-    - keyWord: 商机类型列表
-    - keyWord: 删除所有商机类型
 testMethod:
   - name: 添加商机类型
     severity: CRITICAL
     step:
       - keyWord: 添加商机类型
-      - keyWord: 商机类型列表
+      - keyWord: 商机类型添加成功
 afterClass:
   name: 还原商机配置
   step:
+    - keyWord: 删除商机字段
     - keyWord: 设置商机状态
+    - keyWord: 删除商机类型

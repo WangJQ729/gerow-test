@@ -19,3 +19,21 @@ keyWord:
             "oppTypeId":${oppTypeId}
         }
       assertion: [ json: { $.code: 0 } ]
+    - keyWord: 客户添加商机
+      name: 客户添加字段超长商机
+      assertion:
+        - json:
+            $.code: 400
+            $.message: 商机字段 ${opportunity2_fields} 最多允许 ${maxUnicode}个字符
+    - keyWord: 客户添加商机
+      name: 客户添加单选ID错误商机
+      assertion:
+        - json:
+            $.code: 400
+            $.message: 商机字段 ${opportunity2_fields} 的值不能是 ${opportunity_fields_value}
+    - keyWord: 客户添加商机
+      name: 客户添加多选字段错误商机
+      assertion:
+        - json:
+            $.code: 400
+            $.message: 多选类型商机字段 ${opportunity2_fields} 传参格式错误
