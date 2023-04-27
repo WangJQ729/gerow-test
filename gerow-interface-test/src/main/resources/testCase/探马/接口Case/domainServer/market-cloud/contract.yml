@@ -1,0 +1,51 @@
+name: 合同接口
+story: 合同回款
+enable: false
+dataProvider:
+  - customerName: 【Gerow】${__RandomName()}
+    mobiles: ${__RandomPhoneNum()}
+    searchKey: ${mobiles}
+    contract_name: 合同_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+    contractSignDate: ${__PlusDay(yyyy-MM-dd,${__Random(-100,200)},)}
+    contractStartDate: ${contractSignDate}
+    contractEndDate: ${contractSignDate}
+    amount: ${__Random(1000,9999)}
+beforeClass:
+  name: 添加客户
+  step:
+    - keyWord: 获取员工旅程
+    - keyWord: 获取旅程列表
+    - keyWord: web添加个人客户
+    - keyWord: web端客户查询
+    - keyWord: 获取合同字段
+    - keyWord: 获取回款字段
+    - keyWord: 获取合同编号
+    - keyWord: 获取部门Id
+    - keyWord: 创建合同
+testMethod:
+  - name: 合同按钮权限不传id
+    step:
+      - keyWord: 合同按钮权限
+        bodyEditor:
+          json:
+            $.id: ~
+        assertion:
+          - json:
+              $.code: 400
+              $.message: '请求参数验证失败: 编号id为空'
+  - name: 合同按钮权限错误id
+    step:
+      - keyWord: 合同按钮权限
+        bodyEditor:
+          json:
+            $.id: HT.537154475565248
+  - name: 合同按钮权限authId为空
+    step:
+      - keyWord: 合同按钮权限
+        bodyEditor:
+          json:
+            $.authId: ~
+        assertion:
+          - json:
+              $.code: 400
+              $.message: '请求参数验证失败: 权限authId为空'

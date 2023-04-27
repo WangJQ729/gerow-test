@@ -1,0 +1,36 @@
+keyWord:
+  step:
+    - name: 获取回款单编号
+      url: /domainServer/fundRestream/getBillId
+      headers:
+        authorization: ${authorization}
+      method: GET
+      extractor:
+        - json:
+            bill_Id: $.data
+    - name: 创建回款单
+      url: /domainServer/fundRestream/salesCreateFundRestreamBill?loading=yes
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "id":"${bill_Id}",
+            "customerId":${customerId},
+            "contractId":"",
+            "departmentId":${departmentId},
+            "amount":"${amount}",
+            "paymentMethod":"",
+            "frbTime":"${frbTime} 00:00:00",
+            "remark":"",
+            "planId":"",
+            "planInfoId":"",
+            "ascriptionId":${user_id},
+            "salesName":"${userName}",
+            "type":2,
+            "annexs":[],
+            "customDefine":"{\"${associatedContract}\":\"\",\"${fundRestreamAmount}\":\"\",\"${fundRestreamType}\":\"\",\"${fundRestreamDate}\":\"\"}",
+            "salesId":${user_id},
+            "approvalSwitchFlag":0
+        }
+      assertion: [ json: { $.code: 0 } ]

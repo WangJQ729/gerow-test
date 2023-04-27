@@ -18,6 +18,18 @@ keyWord:
             "followContent":"添加了客户的信息：\n“描述: ${description}”"
         }
       assertion: [ json: { $.code: 0 } ]
+    - keyWord: 公海添加含手机号个人客户
+      name: 公海添加个人客户
+      body: |
+        {
+            "customerName":"${customerName}",
+            "fields":[
+            ],
+            "addressList":[
+            ],
+            "mobiles":[],
+            "openSeaId":${openSeaId}
+        }
     - name: 公海添加含手机号个人客户
       url: /domainServer/qwCrm/webCustomer/addOpenSeaCustomerByMobiles
       headers:

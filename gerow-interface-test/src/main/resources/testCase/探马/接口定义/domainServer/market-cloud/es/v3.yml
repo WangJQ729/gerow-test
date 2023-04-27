@@ -1,6 +1,6 @@
 keyWord:
   step:
-    - name: 根据手机号查询公海客户
+    - name: 根据关键字查询公海客户
       untilWait: 10
       url: /domainServer/market-cloud/es/v3/webHighSeasList
       headers:
@@ -10,7 +10,7 @@ keyWord:
         {
             "repoId":${openSeaId},
             "isCustomer":1,
-            "searchKey":"${phoneNum}",
+            "searchKey":"${searchKey}",
             "authId":10411,
             "openSeaTime":null,
             "createTime":null,
@@ -26,6 +26,13 @@ keyWord:
             $.data.data.length(): 1
             $.data.data[0].qwRemark: ${customerName}
             $.data.data[0].${mobileFieldId}: [ "${phoneNum}" ]
+    - keyWord: 根据关键字查询公海客户
+      name: 根据关键字查询公海客户-无手机号
+      assertion:
+        - json:
+            $.code: 0
+            $.data.data.length(): 1
+            $.data.data[0].qwRemark: ${customerName}
     - name: web端客户查询
       url: /domainServer/market-cloud/es/v3/webCustomerListRetrieve
       untilWait: 10
@@ -84,6 +91,16 @@ keyWord:
             $.code: 0
             $.data.data.length(): 1
             $.data.data[0].${mobileFieldId}: ['${mobiles2}']
+    - keyWord: web端客户查询
+      name: web端客户名称查询
+      bodyEditor:
+        json:
+          $.searchKey: ${customerName}
+      assertion:
+        - json:
+            $.code: 0
+            $.data.data.length(): 1
+            $.data.data[0].${customerNameFieldId}: [ '${customerName}' ]
     - keyWord: web端客户查询
       name: web端按原手机号查询
       bodyEditor:

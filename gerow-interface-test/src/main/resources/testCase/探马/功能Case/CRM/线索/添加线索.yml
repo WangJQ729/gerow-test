@@ -14,6 +14,7 @@ testMethod:
       - keyWord: 新增含手机号未处理线索
       - keyWord: 获取未处理线索列表
   - name: 添加待分配线索
+    invocationCount: 10
     dataProvider:
       - customerName: 【Gerow】${__RandomName()}
         phoneNum: ${__RandomPhoneNum()}

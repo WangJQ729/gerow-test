@@ -1,0 +1,76 @@
+keyWord:
+  step:
+    - name: 获取合同编号
+      url: /domainServer/contract/getContractId
+      headers:
+        authorization: ${authorization}
+      method: GET
+      extractor:
+        - json:
+            contract_id: $.data
+      assertion: [ json: { $.code: 0 } ]
+    - name: 获取部门Id
+      url: /domainServer/contract/departmentIdNameSearch
+      variables:
+        salesId: ${user_id}
+      headers:
+        authorization: ${authorization}
+      method: GET
+      extractor:
+        - json:
+            departmentId: $.data[${__Random(0,3)}].departmentId
+      assertion: [ json: { $.code: 0 } ]
+    - name: 创建合同
+      url: /domainServer/contract/salesCreateContract?loading=yes
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "id":"${contract_id}",
+            "title":"${contract_name}",
+            "customerId":${customerId},
+            "amount":"${amount}",
+            "departmentId":${departmentId},
+            "ascriptionId":${user_id},
+            "salesName":"${userName}",
+            "opportunityIds":[],
+            "crmOrderIds":[],
+            "approvalLogs":[],
+            "status":0,
+            "salesId": ${user_id},
+            "contractType":0,
+            "customDefine":"{\"${contractStatus_fieldId}\":${contractStatus_id},\"${contractEndDate_fieldId}\":\"${contractEndDate}\",\"${contractSignDate_fieldId}\":\"${contractSignDate}\",\"${contractStartDate_fieldId}\":\"${contractStartDate}\"}",
+            "customDefineKey":["${contractStatus_fieldId}","${contractEndDate_fieldId}","${contractSignDate_fieldId}","${contractStartDate_fieldId}"],
+            "approvalSwitchFlag":0
+        }
+      assertion: [ json: { $.code: 0 } ]
+    - name: 合同按钮权限
+      url: /domainServer/contract/buttonJurisdiction
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"id":"${contract_id}","authId":"10401"}
+      assertion: [ json: { $.code: 0 } ]
+    - name: 获取客户合同列表
+      url: /domainServer/contract/queryCustomerContractDetail
+      method: GET
+      headers:
+        authorization: ${authorization}
+      variables:
+        customerId: ${customerId}
+        status: 4
+        customerSalesId: ${user_id}
+      assertion: [ json: { $.code: 0 } ]
+      extractor:
+        - json:
+            contractId: $.data[0].id
+    - name: 查看合同详情
+      url: /domainServer/contract/queryContractDetail
+      method: GET
+      headers:
+        authorization: ${authorization}
+      variables:
+        contractId: ${contract_id}
+      assertion: [ json: { $.code: 0 } ]

@@ -1,0 +1,32 @@
+keyWord:
+  step:
+    - name: 获取合同字段
+      url: /domainServer/business/field/fieldList
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"type":1,"departmentId":106040}
+      extractor:
+        - json:
+            contractId_fieldId: $.data.essentialInfoParams[?(@.fieldName=='合同编号')].fieldId
+            contractName_fieldId: $.data.essentialInfoParams[?(@.fieldName=='合同标题')].fieldId
+            contractCustomerName_fieldId: $.data.essentialInfoParams[?(@.fieldName=='客户名称')].fieldId
+            contractAmount_fieldId: $.data.essentialInfoParams[?(@.fieldName=='合同金额')].fieldId
+            contractStatus_fieldId: $.data.essentialInfoParams[?(@.fieldName=='合同状态')].fieldId
+            contractStatus_id: $.data.essentialInfoParams[?(@.fieldName=='合同状态')].fieldOptsList[0].id
+            contractEndDate_fieldId: $.data.essentialInfoParams[?(@.fieldName=='合同结束日期')].fieldId
+            contractSignDate_fieldId: $.data.essentialInfoParams[?(@.fieldName=='合同签约日期')].fieldId
+            contractStartDate_fieldId: $.data.essentialInfoParams[?(@.fieldName=='合同开始日期')].fieldId
+      assertion: [ json: { $.code: 0 } ]
+    - name: 获取回款字段
+      keyWord: 获取合同字段
+      bodyEditor:
+        json:
+          $.type: 3
+      extractor:
+        - json:
+            fundRestreamType: $.data.essentialInfoParams[?(@.fieldName=='回款方式')].fieldId
+            associatedContract: $.data.essentialInfoParams[?(@.fieldName=='关联合同')].fieldId
+            fundRestreamAmount: $.data.essentialInfoParams[?(@.fieldName=='回款金额')].fieldId
+            fundRestreamDate: $.data.essentialInfoParams[?(@.fieldName=='回款日期')].fieldId

@@ -1,12 +1,8 @@
-name: 多选商机字段
+name: 日期商机字段
 story: 商机
 dataProvider:
   - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
     opportunity2_type_name: 【Gerow】_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-    options_name_1: 多选项_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-    options_name_2: 多选项_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-    options_name_3: 多选项_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-    options_name_4: 多选项_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
 beforeClass:
   name: 获取商机原状态
   step:
@@ -17,48 +13,47 @@ beforeClass:
     - keyWord: 商机阶段库获取阶段列表
     - keyWord: 保存商机阶段设置
     - keyWord: 商机阶段库获取阶段列表
-    - keyWord: 添加多选商机字段
-    - keyWord: 获取选项商机字段选项ID
+    - keyWord: 添加日期商机字段
+    - keyWord: 获取商机字段列表
     - keyWord: 添加商机类型
     - keyWord: 商机类型添加成功
     - keyWord: 获取商机配置
 testMethod:
-  - name: 添加多选商机
+  - name: 添加日期商机
     severity: CRITICAL
     dataProvider:
       - opportunity_name: 【Gerow】商机名称_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        opportunity_fields_value: ${__PlusDay(yyyy-MM-dd,14,)}
         expectedDealTime: ${__PlusDay(yyyy-MM-dd 00:00:00,7,)}
         expectedDealAmount: ${__Random(1000,99999999999)}
         customerName: 【Gerow】${__RandomName()}
         mobiles: ${__RandomPhoneNum()}
         searchKey: ${mobiles}
-        dataProvider:
-          - opportunity_fields_value: '[${opportunity_fields_options_id1}]'
-          - opportunity_fields_value: '[${opportunity_fields_options_id2}]'
-          - opportunity_fields_value: '[${opportunity_fields_options_id3}]'
-          - opportunity_fields_value: '[${opportunity_fields_options_id4}]'
-          - opportunity_fields_value: '[${opportunity_fields_options_id1},${opportunity_fields_options_id2},${opportunity_fields_options_id3},${opportunity_fields_options_id4}]'
     step:
       - keyWord: web添加个人客户
       - keyWord: web端客户查询
       - keyWord: 客户添加商机
       - keyWord: 获取客户动态
       - keyWord: 客户商机列表
-  - name: 添加多选商机-选项错误
+      - keyWord: 获取客户商机列表
+  - name: 添加日期商机-非日期
+    enable: false
     severity: CRITICAL
     dataProvider:
       - opportunity_name: 【Gerow】商机名称_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        opportunity_fields_value: ${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
         expectedDealTime: ${__PlusDay(yyyy-MM-dd 00:00:00,7,)}
         expectedDealAmount: ${__Random(1000,99999999999)}
         customerName: 【Gerow】${__RandomName()}
         mobiles: ${__RandomPhoneNum()}
         searchKey: ${mobiles}
-        dataProvider:
-          - opportunity_fields_value: '[${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}]'
     step:
       - keyWord: web添加个人客户
       - keyWord: web端客户查询
-      - keyWord: 客户添加多选字段错误商机
+      - keyWord: 客户添加商机
+      - keyWord: 获取客户动态
+      - keyWord: 客户商机列表
+      - keyWord: 获取客户商机列表
 afterMethod:
   name: 删除用户
   step:

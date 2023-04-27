@@ -27,4 +27,11 @@ public class TanmaTest {
         String result = BaseEncoding.base16().lowerCase().encode(digest);
         Assertions.assertThat(result).isEqualTo(sign);
     }
+
+    @Test
+    public void testStringLength() {
+        String str = "18716124481#18716124492#18716124480#18716124491#18716124490#18716124479#18716124485#18716124484#18716124483#18716124482#18716124478#18716124489#18716124477#18716124488#18716124476#18716124487#18716124475#18716124486";
+        System.out.println(str.length());
+
+    }
 }

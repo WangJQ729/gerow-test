@@ -15,8 +15,9 @@ beforeClass:
     - keyWord: 获取旅程列表
     - keyWord: 获取商机原始状态
     - keyWord: 启用商机
+    - keyWord: 商机阶段库获取阶段列表
     - keyWord: 保存商机阶段设置
-    - keyWord: 商机阶段库获取阶段ID
+    - keyWord: 商机阶段库获取阶段列表
     - keyWord: 添加单选商机字段
     - keyWord: 获取选项商机字段选项ID
     - keyWord: 添加商机类型

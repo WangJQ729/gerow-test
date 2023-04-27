@@ -1,0 +1,18 @@
+name: 跟进拜访
+story: 客户设置
+dataProvider:
+  - template_name: ${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+beforeClass:
+  name: 添加跟进模板
+  step:
+    - keyWord: 添加跟进模板
+testMethod:
+  - name: 跟进模板
+    dataProvider:
+      - fieldName: ${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        fieldType: 2
+      - fieldName: ${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        fieldType: 6
+    severity: CRITICAL
+    step:
+      - keyWord: 添加跟进字段

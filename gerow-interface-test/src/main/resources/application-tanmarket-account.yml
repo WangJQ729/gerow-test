@@ -2,6 +2,6 @@ data:
   test:
     platform: tanmarket
     host: account.tanmarket.cn
-    userId: admin_jxy02011
-    password: Hujing.666
+    userId: ${userId}
+    password: ${password}
     userName: 王健强

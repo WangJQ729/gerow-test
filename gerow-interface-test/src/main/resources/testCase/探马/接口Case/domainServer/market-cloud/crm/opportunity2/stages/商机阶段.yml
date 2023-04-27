@@ -3,6 +3,7 @@ story: 商机
 beforeClass:
   name: 开启商机
   step:
+    - keyWord: 商机阶段库获取阶段列表
     - keyWord: 获取商机原始状态
     - keyWord: 启用商机
 testMethod:
@@ -17,10 +18,15 @@ testMethod:
           json:
             $.commonStages:
               - name: 新线索
+                id: ${newClueId}
               - name: 商务谈判
+                id: ${businessNegotiationId}
               - name: 签订合同
+                id: ${signContractId}
               - name: 确认需求
+                id: ${confirmDemandsId}
               - name: 二次购买
+                id: ${secondaryPurchaseId}
               - name: 二次购买1
               - name: 二次购买2
               - name: 二次购买3
@@ -63,6 +69,13 @@ testMethod:
               $.data[20].reason[0].name: 价格过高
               $.data[21].name: 无效
               $.data[21].reason[0].name: 不需要
+          - json:
+              $.data[0].id: ${newClueId}
+              $.data[1].id: ${businessNegotiationId}
+              $.data[2].id: ${signContractId}
+              $.data[3].id: ${confirmDemandsId}
+              $.data[4].id: ${secondaryPurchaseId}
+            valueType: BIGDECIMAL
   - name: 设置21个商机阶段
     step:
       - keyWord: 保存商机阶段设置
@@ -70,10 +83,15 @@ testMethod:
           json:
             $.commonStages:
               - name: 新线索
+                id: ${newClueId}
               - name: 商务谈判
+                id: ${businessNegotiationId}
               - name: 签订合同
+                id: ${signContractId}
               - name: 确认需求
+                id: ${confirmDemandsId}
               - name: 二次购买
+                id: ${secondaryPurchaseId}
               - name: 二次购买1
               - name: 二次购买2
               - name: 二次购买3

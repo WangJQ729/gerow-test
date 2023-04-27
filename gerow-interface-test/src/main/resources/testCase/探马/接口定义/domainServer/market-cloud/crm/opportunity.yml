@@ -46,3 +46,21 @@ keyWord:
         - json:
             $.data[0].stage.id: ${newClueId}
           valueType: BIGDECIMAL
+      extractor:
+        - json:
+            customerOpportunityId: $.data[?(@.name=='${opportunity_name}')].id
+    - name: 获取客户商机列表
+      url: /domainServer/market-cloud/crm/customer-opportunity/get
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "salesId":${user_id},
+            "customerId":${customerId},
+            "customerOpportunityId":${customerOpportunityId},
+            "authId":10437
+        }
+      assertion:
+        - json:
+            $.data[?(@.name=='${opportunity_name}')].fields[?(@.fieldId==${opportunity_fields_id})].value: ['${opportunity_fields_value}']
