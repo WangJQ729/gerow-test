@@ -20,3 +20,11 @@ keyWord:
         - json:
             user_id: $.data[?(@.name=='${userName}')].id
           site: TESTSUITE
+    - name: 模糊搜索其他员工
+      keyWord: 模糊搜索员工
+      bodyEditor:
+        json:
+          $.keyword: ${userName2}
+      extractor:
+        - json:
+            user_id2: $.data[?(@.name=='${userName2}')].id

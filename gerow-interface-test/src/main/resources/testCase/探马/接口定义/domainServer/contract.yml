@@ -18,7 +18,7 @@ keyWord:
       method: GET
       extractor:
         - json:
-            departmentId: $.data[${__Random(0,3)}].departmentId
+            departmentId: $.data[${__Random(0,2)}].departmentId
       assertion: [ json: { $.code: 0 } ]
     - name: 创建合同
       url: /domainServer/contract/salesCreateContract?loading=yes

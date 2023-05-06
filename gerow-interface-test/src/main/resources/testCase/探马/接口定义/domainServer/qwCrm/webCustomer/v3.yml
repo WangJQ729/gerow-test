@@ -1,0 +1,35 @@
+keyWord:
+  step:
+    - name: 转移客户
+      url: /domainServer/qwCrm/webCustomer/v3/batchTransfer
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "customers":[{   
+                    "customerName":"${customerName}",
+                    "customerId":${customerId},
+                    "salesId":${user_id}}],
+            "isCustomer":1,
+            "authId":"10401",
+            "qwLastFollowTypes":[1,2,3,4,5,6],
+            "followTimeType":0,
+            "replayTime":{
+                "start":"${__PlusDay(yyyy-MM-dd 00:00:00,-7)}",
+                "end":"${__PlusDay(yyyy-MM-dd 23:59:59,0)}"
+            },
+            "searchKey":"",
+            "createTime":null,
+            "qwCustomerTime":null,
+            "getCreateTime":null,
+            "qwLastFollowTime":null,
+            "departmentIdList":null,
+            "salesIdList":null,
+            "isResignedDept":false,
+            "role":1,
+            "isSelectAll":0,
+            "handoverTo":${user_id2},
+            "isAssociates":false
+        }
+      assertion: [ json: { $.code: 0 } ]

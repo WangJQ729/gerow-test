@@ -4,5 +4,6 @@ data:
     host: blue.wechatsi.com
     userId: ${userId}
     password: ${password}
-    userName: 王健强
+    userName: GerowWang
+    userName2: 王健强
 

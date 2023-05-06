@@ -1,0 +1,19 @@
+keyWord:
+  step:
+    - name: 获取合同审批设置
+      url: /domainServer/qw/approval/commitApproval
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "businessId":"${contract_id}",
+            "businessType":1,
+            "customerName":"${customerName}",
+            "amount":${amount},
+            "contractStatus":${contractStatus_id}
+        }
+      extractor:
+        - json:
+            approvalLogs: $.data
+      assertion: [ json: { $.code: 0 } ]

@@ -64,3 +64,17 @@ keyWord:
             "mobiles":["${mobiles}"]
         }
       assertion: [ json: { $.code: 0 } ]
+    - name: 添加协作人
+      url: /domainServer/qwCrm/webCustomer/batchAddShare
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "customerId":${customerId},
+            "salesId":${user_id},
+            "shareToSalesIdList":[
+                ${user_id2}
+            ]
+        }
+      assertion: [ json: { $.code: 0 } ]

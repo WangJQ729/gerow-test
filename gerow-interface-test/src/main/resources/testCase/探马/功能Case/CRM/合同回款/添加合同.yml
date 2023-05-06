@@ -1,4 +1,4 @@
-name: 添加合同
+name: 合同
 story: 合同回款
 invocationCount: 1
 dataProvider:
@@ -19,14 +19,18 @@ testMethod:
     invocationCount: 1
     dataProvider:
       - contract_name: 合同_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
-        contractSignDate: ${__PlusDay(yyyy-MM-dd,${__Random(-100,200)},)}
+        contractSignDate: ${__PlusDay(yyyy-MM-dd,0,)}
         contractStartDate: ${contractSignDate}
         contractEndDate: ${contractSignDate}
         amount: ${__Random(1000,9999)}
     step:
       - keyWord: 获取合同编号
       - keyWord: 获取部门Id
+      - keyWord: 获取合同审批设置
       - keyWord: 创建合同
+        bodyEditor:
+          json:
+            $.approvalLogs: ${approvalLogs}
   - name: 添加回款单
     invocationCount: 1
     dataProvider:

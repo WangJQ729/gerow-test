@@ -214,6 +214,8 @@ public class Assertion {
                 actual = buildInteger(actual);
                 break;
             case STRING:
+                actual = actual.toString();
+                break;
             case DEFAULT:
             default:
                 if (actual instanceof BigDecimal) {

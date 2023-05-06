@@ -4,7 +4,7 @@ import com.gerow.test.task.ITestClass;
 import com.gerow.test.task.ITestMethod;
 import com.gerow.test.task.YmlTestMethod;
 import com.gerow.test.utils.TestUtils;
-import com.gerow.test.utils.data.StepEditor;
+import com.gerow.test.utils.data.BodyEditor;
 import com.gerow.test.utils.data.DataProviderUtils;
 import io.qameta.allure.SeverityLevel;
 import lombok.Data;
@@ -40,7 +40,7 @@ public class YmlTestMethodEntity {
     /**
      * 字段检查构造工厂
      */
-    private List<StepEditor> editor = new ArrayList<>();
+    private List<BodyEditor> editor = new ArrayList<>();
 
     /**
      * @param testClass 测试类
@@ -51,12 +51,12 @@ public class YmlTestMethodEntity {
             dataProvider = Collections.singletonList(new LinkedHashMap<>());
         }
         if (editor.isEmpty()) {
-            editor = Collections.singletonList(new StepEditor());
+            editor = Collections.singletonList(new BodyEditor());
         }
         List<ITestMethod> result = new ArrayList<>();
         for (int i = 0; i < invocationCount; i++) {
             for (LinkedHashMap<String, Object> data : dataProvider) {
-                for (StepEditor factory : editor) {
+                for (BodyEditor factory : editor) {
                     for (LinkedHashMap<String, String> newData : DataProviderUtils.dataProvider(data)) {
                         YmlTestMethod testMethod = buildTestMethod(testClass, newData, i, factory);
                         result.add(testMethod);
@@ -74,7 +74,7 @@ public class YmlTestMethodEntity {
      * @param factory   字段检查构造工厂
      * @return 测试方法
      */
-    private YmlTestMethod buildTestMethod(ITestClass testClass, Map<String, String> data, Integer i, StepEditor factory) {
+    private YmlTestMethod buildTestMethod(ITestClass testClass, Map<String, String> data, Integer i, BodyEditor factory) {
         Map<String, String> map = new LinkedHashMap<>(data);
         map.put("methodNum", i.toString());
         YmlTestMethod testMethod = new YmlTestMethod();
