@@ -8,7 +8,7 @@ import com.gerow.test.utils.TestUtils;
 import com.gerow.test.utils.assertion.Assertion;
 import com.gerow.test.utils.data.ConfigManager;
 import com.gerow.test.utils.data.Extractor;
-import com.gerow.test.utils.data.BodyEditor;
+import com.gerow.test.utils.data.StepEditor;
 import com.google.common.io.BaseEncoding;
 import io.qameta.allure.Allure;
 import lombok.Data;
@@ -51,7 +51,7 @@ public class YmlTestStep implements ITestStep {
     /**
      * 字段检查工厂
      */
-    private BodyEditor factory;
+    private StepEditor factory;
 
     /**
      * 参数
@@ -72,7 +72,7 @@ public class YmlTestStep implements ITestStep {
      * @param testMethod 测试方法
      * @param factory    字段检查工厂
      */
-    public YmlTestStep(YmlHttpStepEntity step, Map<String, String> params, ITestMethod testMethod, BodyEditor factory) {
+    public YmlTestStep(YmlHttpStepEntity step, Map<String, String> params, ITestMethod testMethod, StepEditor factory) {
         this.step = step;
         this.testMethod = testMethod;
         this.params = params;

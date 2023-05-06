@@ -216,7 +216,7 @@
               #task_info为测试开始前获取到的任务模板
               body: ${task_info}
               #bodyEditor根据设置的jsonPath修改对应的参数
-              bodyEditor:
+              stepEditor:
                 json:
                   #id为beforeClass中提取到的task_id
                   $.id: ${task_id}

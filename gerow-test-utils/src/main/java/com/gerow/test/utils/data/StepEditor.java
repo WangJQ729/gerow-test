@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
-public class BodyEditor {
+public class StepEditor {
     /**
      * jsonPath
      */
@@ -97,7 +97,7 @@ public class BodyEditor {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BodyEditor that = (BodyEditor) o;
+        StepEditor that = (StepEditor) o;
         return this.hashCode() == that.hashCode();
     }
 

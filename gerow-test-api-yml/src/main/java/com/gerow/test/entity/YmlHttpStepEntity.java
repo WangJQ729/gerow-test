@@ -5,7 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.gerow.test.task.ITestMethod;
 import com.gerow.test.utils.data.DataType;
 import com.gerow.test.utils.data.Extractor;
-import com.gerow.test.utils.data.BodyEditor;
+import com.gerow.test.utils.data.StepEditor;
 import com.gerow.test.task.ITestStep;
 import com.gerow.test.task.YmlTestStep;
 import com.gerow.test.utils.assertion.Assertion;
@@ -90,9 +90,9 @@ public class YmlHttpStepEntity {
     /**
      * 字段检查对象
      */
-    private List<BodyEditor> editor = new ArrayList<>();
+    private List<StepEditor> editor = new ArrayList<>();
 
-    private BodyEditor bodyEditor;
+    private StepEditor bodyEditor;
 
     private DataType responseType = DataType.JSON;
 
@@ -105,26 +105,26 @@ public class YmlHttpStepEntity {
      * @param factory    字段检查构造参数
      * @return 测试步骤
      */
-    public List<ITestStep> build(ITestMethod testMethod, BodyEditor factory) {
+    public List<ITestStep> build(ITestMethod testMethod, StepEditor factory) {
         if (dataProvider.isEmpty()) {
             dataProvider = Collections.singletonList(new LinkedHashMap<>());
         }
         if (editor.isEmpty()) {
-            editor = Collections.singletonList(new BodyEditor());
+            editor = Collections.singletonList(new StepEditor());
         }
         List<ITestStep> result = new ArrayList<>();
-        for (BodyEditor checkFactory : editor) {
-            BodyEditor bodyEditor;
-            if (checkFactory.equals(new BodyEditor())) {
-                bodyEditor = factory;
+        for (StepEditor checkFactory : editor) {
+            StepEditor stepEditor;
+            if (checkFactory.equals(new StepEditor())) {
+                stepEditor = factory;
             } else {
-                bodyEditor = checkFactory;
+                stepEditor = checkFactory;
             }
             for (int i = 0; i < invocationCount; i++) {
                 for (Map<String, String> data : dataProvider) {
                     Map<String, String> map = new LinkedHashMap<>(data);
                     map.put("stepNum", String.valueOf(i));
-                    YmlTestStep testStep = new YmlTestStep(this.copy(), map, testMethod, bodyEditor);
+                    YmlTestStep testStep = new YmlTestStep(this.copy(), map, testMethod, stepEditor);
                     result.add(testStep);
                 }
             }
