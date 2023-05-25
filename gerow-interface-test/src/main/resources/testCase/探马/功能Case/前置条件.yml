@@ -3,5 +3,6 @@ beforeSuite:
   name: 全局前置条件
   step:
     - keyWord: 登录
+    - keyWord: 获取部门员工
     - keyWord: 获取用户字段定义
     - keyWord: 模糊搜索员工

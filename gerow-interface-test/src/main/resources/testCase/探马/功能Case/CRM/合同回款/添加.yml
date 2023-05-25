@@ -1,0 +1,44 @@
+name: 合同
+story: 合同回款
+invocationCount: 1
+dataProvider:
+  - customerName: 【Gerow】${__RandomName()}
+    mobiles: ${__RandomPhoneNum()}
+    searchKey: ${mobiles}
+beforeClass:
+  name: 添加客户
+  step:
+    - keyWord: 获取员工旅程
+    - keyWord: 获取旅程列表
+    - keyWord: web添加个人客户
+    - keyWord: web端客户查询
+    - keyWord: 获取合同字段
+    - keyWord: 获取回款字段
+testMethod:
+  - name: 添加合同
+    invocationCount: 1
+    dataProvider:
+      - contract_name: 合同_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        contractSignDate: ${__PlusDay(yyyy-MM-dd,${__Random(-130,220)},)}
+        contractStartDate: ${__PlusDay(yyyy-MM-dd,${__Random(-130,0)},)}
+        contractEndDate: ${__PlusDay(yyyy-MM-dd,${__Random(0,220)},)}
+        contractBuyType: 492530046415104
+        contractPayTime: ${__PlusDay(yyyy-MM-dd,${__Random(0,220)},)}
+        amount: ${__Random(1000,9999)}
+    step:
+      - keyWord: 获取合同编号
+      - keyWord: 获取部门Id
+      - keyWord: 创建合同
+        bodyEditor:
+          json:
+            $.approvalLogs: [{"id":null,"corpid":"wwd074f3968f56dcb0","ruleId":"8LvwmQ1","businessId":"HT.541762378637504","businessType":1,"status":null,"nodeType":1,"salesId":511501417162944,"approverId":539059815217472,"customerName":"Gerow","departmentName":null,"agreeType":2,"seq":0,"createTime":null,"approvalTime":null,"salesName":"王健强","thumbAvatar":"https://wework.qpic.cn/wwpic/429129_0u4kEF0pSlOoakf_1684259902/0","freeSelect":2,"scope":0,"scopeType":0,"scopeSalesid":[]},{"id":541762442002752,"corpid":"wwd074f3968f56dcb0","ruleId":"GxgfFW1","businessId":"HT.541762378637504","businessType":1,"status":null,"nodeType":2,"salesId":null,"approverId":539059815217472,"customerName":"Gerow","departmentName":null,"agreeType":null,"seq":1,"createTime":null,"approvalTime":null,"salesName":null,"thumbAvatar":null,"freeSelect":1,"scope":null,"scopeType":null,"scopeSalesid":[]}]
+#            $.approvalLogs: [{"id":null,"corpid":"wwd074f3968f56dcb0","ruleId":"8LvwmQ1","businessId":"HT.541766544066752","businessType":1,"status":null,"nodeType":1,"salesId":539064127586624,"approverId":445499900074176,"customerName":"【Gerow】余莲寒(1684575939)","departmentName":null,"agreeType":2,"seq":0,"createTime":null,"approvalTime":null,"salesName":"李晓娜小号","thumbAvatar":"https://wework.qpic.cn/wwpic/303208_IU_xjLi0QgWMFPf_1683372721/0","freeSelect":2,"scope":0,"scopeType":0,"scopeSalesid":[]},{"id":541766559596737,"corpid":"wwd074f3968f56dcb0","ruleId":"GxgfFW1","businessId":"HT.541766544066752","businessType":1,"status":null,"nodeType":2,"salesId":null,"approverId":445499900074176,"customerName":"【Gerow】余莲寒(1684575939)","departmentName":null,"agreeType":null,"seq":1,"createTime":null,"approvalTime":null,"salesName":null,"thumbAvatar":null,"freeSelect":1,"scope":null,"scopeType":null,"scopeSalesid":[]}]
+  - name: 添加回款单
+    invocationCount: 10
+    dataProvider:
+      - amount: ${__Random(1000,9999)}
+        frbTime: ${__PlusDay(yyyy-MM-dd,${__Random(-100,200)},)}
+    step:
+      - keyWord: 获取回款单编号
+      - keyWord: 获取部门Id
+      - keyWord: 创建回款单

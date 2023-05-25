@@ -1,0 +1,16 @@
+keyWord:
+  step:
+    - name: 获取部门员工
+      url: /domainServer/dept/author/deptUserByRange
+      variables:
+        displayAll: true
+        isAuthor: false
+        moduleId: 10442
+      headers:
+        authorization: ${authorization}
+      method: GET
+      extractor:
+        - json:
+            thumbAvatar: $.data..users[?(@.name=='${userName}')].avatar
+          site: TESTSUITE
+      assertion: [ json: { $.code: 0 } ]

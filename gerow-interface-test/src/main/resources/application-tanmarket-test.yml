@@ -4,6 +4,8 @@ data:
     host: blue.wechatsi.com
     userId: ${userId}
     password: ${password}
-    userName: GerowWang
-    userName2: 王健强
+    userName: 王健强
+    userName2: GerowWang
+    appId: wwd074f3968f56dcb0_MUVXzH
+    appKey: OtfNkhTNnGC45aRL37y1m50R17dba9wG
 

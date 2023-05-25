@@ -1,0 +1,39 @@
+name: 添加待分配客户
+story: 线索
+invocationCount: 10
+testMethod:
+  - name: 添加待分配客户
+    invocationCount: 1
+    dataProvider:
+      - customerName: 【Gerow】${__RandomName()}
+        phoneNum: ${__RandomPhoneNum()}
+    step:
+      - keyWord: 检查手机号重复
+      - keyWord: 新增个人待分配线索
+        sleep: 200
+  - name: api添加待分配客户
+    invocationCount: 1
+    dataProvider:
+      - buyer_id: 【Gerow】${__RandomName()}
+        phoneNum: ${__RandomPhoneNum()}
+        timestamp: ${__time()}
+        body: '{"mobiles":["${phoneNum}"],"fields":[],"customerName":"${buyer_id}"}'
+    step:
+      - keyWord: 检查手机号重复
+      - keyWord: api新增待分配客户
+        sleep: 200
+  - name: 添加待分配企业客户
+    enable: false
+    dataProvider:
+      - corpName: 【Gerow】${__RandomName()}公司
+        corpContactMobiles: ${__RandomPhoneNum()}
+        phoneNum: ${__RandomPhoneNum()}
+    step:
+      - keyWord: 添加企业
+      - keyWord: 添加企业待分配线索
+      - keyWord: 获取待分配线索列表
+        assertion:
+          - json:
+              $.data.result.length(): 1
+              $.data.result[0].corpNameFull: ${corpName}
+              $.data.result[0].${mobileFieldId}: [ '${phoneNum}' ]

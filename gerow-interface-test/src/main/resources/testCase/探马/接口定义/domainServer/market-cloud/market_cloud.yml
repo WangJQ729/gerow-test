@@ -17,7 +17,7 @@ keyWord:
             authorization: $.data.token
             corpid: $.data.corpid
           site: TESTSUITE
-    - name: api新增个人线索
+    - name: api新增待分配客户
       url: /apiServer/api/v3/add-unassigned
       needTanmaSign: true
       method: POST
@@ -25,5 +25,5 @@ keyWord:
         appId: ${appId}
         appKey: ${appKey}
         timestamp: ${timestamp}
-      body: '{"customerName":"${customerName}","mobiles":["${phoneNum}"],"fields":[]}'
+      body: ${body}
       assertion: [ json: { $.code: 0 } ]

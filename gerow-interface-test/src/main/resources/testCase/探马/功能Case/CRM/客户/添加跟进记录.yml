@@ -19,7 +19,7 @@ testMethod:
     step:
       - keyWord: 添加用户跟进记录
       - keyWord: 获取客户跟进记录
-afterClass:
-  name: 删除用户
-  step:
-    - keyWord: 彻底删除用户
+#afterClass:
+#  name: 删除用户
+#  step:
+#    - keyWord: 彻底删除用户

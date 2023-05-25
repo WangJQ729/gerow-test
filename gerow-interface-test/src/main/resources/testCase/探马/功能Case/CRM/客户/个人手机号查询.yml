@@ -91,7 +91,7 @@ testMethod:
       - keyWord: web端客户查询
       - keyWord: 修改客户手机号
       - keyWord: web端按原手机号查询
-afterMethod:
-  name: 删除用户
-  step:
-    - keyWord: 彻底删除用户
+#afterMethod:
+#  name: 删除用户
+#  step:
+#    - keyWord: 彻底删除用户

@@ -9,7 +9,7 @@ beforeClass:
     - keyWord: 公海列表
 testMethod:
   - name: 公海添加个人客户
-    invocationCount: 1
+    invocationCount: 500
     dataProvider:
       - customerName: 【Gerow】${__RandomName()}
         phoneNum: ${__RandomPhoneNum()}
@@ -19,4 +19,4 @@ testMethod:
 #      - keyWord: 公海添加个人客户
 #      - keyWord: 根据关键字查询公海客户-无手机号
       - keyWord: 公海添加含手机号个人客户
-      - keyWord: 根据关键字查询公海客户
+#      - keyWord: 根据关键字查询公海客户

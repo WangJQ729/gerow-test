@@ -1,5 +1,5 @@
 name: 测试接口
-enable: false
+#enable: false
 story: 测试接口
 testMethod:
   - name: 企微回调-${username}
@@ -8,14 +8,15 @@ testMethod:
 #      - username: 李帅虎
 #      - username: 窦泽天
 #      - username: Hey Siri
+      - username: 王瑜
       - username: 王健强
     step:
       - keyWord: 获取所有管理员
         extractor:
           - json:
-              salesId: $.data[?(@.username=='${userName}')].salesId
-              user_id: $.data[?(@.username=='${userName}')].user_id
-              corpid: $.data[?(@.username=='${userName}')].corpid
+              salesId: $.data[?(@.username=='${username}')].salesId
+              user_id: $.data[?(@.username=='${username}')].user_id
+              corpid: $.data[?(@.username=='${username}')].corpid
       - name: 企微同步测试接口
         url: /domainServer/initCustomerTest
         variables:

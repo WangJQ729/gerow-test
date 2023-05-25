@@ -18,7 +18,7 @@ keyWord:
       method: GET
       extractor:
         - json:
-            departmentId: $.data[${__Random(0,2)}].departmentId
+            departmentId: $.data[${__Random(0,0)}].departmentId
       assertion: [ json: { $.code: 0 } ]
     - name: 创建合同
       url: /domainServer/contract/salesCreateContract?loading=yes
@@ -37,13 +37,14 @@ keyWord:
             "opportunityIds":[],
             "crmOrderIds":[],
             "approvalLogs":[],
-            "status":0,
+            "status":1,
             "salesId": ${user_id},
             "contractType":0,
-            "customDefine":"{\"${contractStatus_fieldId}\":${contractStatus_id},\"${contractEndDate_fieldId}\":\"${contractEndDate}\",\"${contractSignDate_fieldId}\":\"${contractSignDate}\",\"${contractStartDate_fieldId}\":\"${contractStartDate}\"}",
-            "customDefineKey":["${contractStatus_fieldId}","${contractEndDate_fieldId}","${contractSignDate_fieldId}","${contractStartDate_fieldId}"],
-            "approvalSwitchFlag":0
+            "customDefine":"{\"${contractStatus_fieldId}\":${contractStatus_id},\"${contractEndDate_fieldId}\":\"${contractEndDate}\",\"${contractSignDate_fieldId}\":\"${contractSignDate}\",\"${contractStartDate_fieldId}\":\"${contractStartDate}\",\"${contractPayTime_fieldId}\":\"${contractPayTime}\",\"${contractBuyType_fieldId}\":${contractBuyType}}",
+            "customDefineKey":["15269","15271","15270","15272","16491","16400","15273","15274","15275","15276","15277","15278","16434","16435","16437","16503","16504","16755","16081","16082"],
+            "approvalSwitchFlag":1
         }
+#            "customDefineKey":["${contractStatus_fieldId}","${contractEndDate_fieldId}","${contractSignDate_fieldId}","${contractStartDate_fieldId}","${contractPayTime_fieldId}","${contractBuyType_fieldId}"],
       assertion: [ json: { $.code: 0 } ]
     - name: 合同按钮权限
       url: /domainServer/contract/buttonJurisdiction

@@ -15,5 +15,6 @@ keyWord:
         }
       extractor:
         - json:
-            approvalLogs: $.data
+            approvalLog1: $.data[0]
+            approvalLog2: $.data[1]
       assertion: [ json: { $.code: 0 } ]

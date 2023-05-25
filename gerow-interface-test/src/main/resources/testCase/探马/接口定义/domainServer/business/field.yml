@@ -18,6 +18,8 @@ keyWord:
             contractEndDate_fieldId: $.data.essentialInfoParams[?(@.fieldName=='合同结束日期')].fieldId
             contractSignDate_fieldId: $.data.essentialInfoParams[?(@.fieldName=='合同签约日期')].fieldId
             contractStartDate_fieldId: $.data.essentialInfoParams[?(@.fieldName=='合同开始日期')].fieldId
+            contractPayTime_fieldId: $.data.essentialInfoParams[?(@.fieldName=='付款日期时间')].fieldId
+            contractBuyType_fieldId: $.data.essentialInfoParams[?(@.fieldName=='购买类型')].fieldId
       assertion: [ json: { $.code: 0 } ]
     - name: 获取回款字段
       keyWord: 获取合同字段
