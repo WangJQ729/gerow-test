@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class RandomDoubleColorBallTest {
-    @Test(invocationCount = 100)
+    @Test(invocationCount = 1)
     public void test() {
         // 生成红球号码
         int[] redBalls = generateRedBalls();

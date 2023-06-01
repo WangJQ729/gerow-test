@@ -1,0 +1,13 @@
+keyWord:
+  step:
+    - name: 初始化客户跟进记录
+      url: /market-cloud/init/syncCustomerFollowerInfo
+      host: http://172.18.0.98:20060
+      method: POST
+      body: |
+        {
+            "key":"vduviwe$$W!!$*%",
+            "corpid":"${corpid}",
+            "startId":543520181473472,
+            "endId":543520181473472
+        }

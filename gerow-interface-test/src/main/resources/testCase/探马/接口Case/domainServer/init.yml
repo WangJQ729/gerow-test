@@ -1,0 +1,7 @@
+name: 初始化客户跟进记录
+#enable: false
+story: 测试接口
+testMethod:
+  - name: 初始化客户跟进记录
+    step:
+      - keyWord: 初始化客户跟进记录

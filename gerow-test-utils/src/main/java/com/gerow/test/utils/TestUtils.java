@@ -120,9 +120,10 @@ public class TestUtils {
         if (iTest instanceof ITestClass) {
             int i = 0;
             while (i < 10) {
-                Matcher matcher = Pattern.compile("\\$\\{__((?!\\$\\{.*?}).)*?}").matcher(content);
+//                Matcher matcher = Pattern.compile("\\$\\{__((?!\\$\\{.*?}).)*?}").matcher(content);
+                Matcher matcher = Pattern.compile("\\$\\{__([^{}]*(?:(?!\\$\\{)[^{}])*)}").matcher(content);
                 if (matcher.find()) {
-                    String group = matcher.group(0);
+                    String group = matcher.group();
                     CompoundVariable variable = new CompoundVariable(group);
                     content = StringUtils.replace(content, group, variable.execute().trim());
                     TestUtils.addParams(iTest);

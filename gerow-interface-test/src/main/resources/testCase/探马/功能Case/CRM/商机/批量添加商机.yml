@@ -1,4 +1,5 @@
 name: 批量添加商机
+invocationCount: 1
 story: 商机
 dataProvider:
   - opportunity2_fields: 【G】_${__RandomString(4,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
@@ -25,7 +26,7 @@ beforeClass:
     - keyWord: web端客户查询
 testMethod:
   - name: 添加单行文本商机
-    invocationCount: 20000
+    invocationCount: 1
     severity: CRITICAL
     dataProvider:
       - opportunity_name: 【Gerow】商机名称_${__RandomString(5,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
