@@ -9,7 +9,7 @@ public interface ITestStep extends ITest {
     /**
      * 执行测试
      */
-    void doing();
+    void execution();
 
     /**
      * 执行数据校验

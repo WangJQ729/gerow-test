@@ -27,24 +27,24 @@ public abstract class AbstractTestMethod implements ITestMethod {
     private boolean enable;
 
     @Override
-    public void doing() {
+    public void execution() {
         for (String key : new ArrayList<>(getParams().keySet())) {
             getParams().put(key, replace(getParams().get(key)));
             TestUtils.addParams(this);
         }
-        doStep();
+        stepExecution();
     }
 
     /**
      * 执行测试步骤
      */
-    private void doStep() {
+    private void stepExecution() {
         //如果没有测试类，则不需要设置allure参数
         if (getTestClass() != null) {
             setAllure();
         }
         for (ITestStep testStep : testSteps) {
-            testStep.doing();
+            testStep.execution();
         }
     }
 

@@ -45,7 +45,7 @@ public abstract class AbstractTestClass implements ITestClass {
     @Override
     public void setUp() {
         for (ITestMethod testMethod : before) {
-            testMethod.doing();
+            testMethod.execution();
         }
     }
 
@@ -63,7 +63,7 @@ public abstract class AbstractTestClass implements ITestClass {
         executor.submit((Runnable) () -> {
             while (true) {
                 try {
-                    classHeartbeat.get(0).doing();
+                    classHeartbeat.get(0).execution();
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -71,21 +71,21 @@ public abstract class AbstractTestClass implements ITestClass {
             }
         });
         for (ITestMethod testMethod : beforeClass) {
-            testMethod.doing();
+            testMethod.execution();
         }
     }
 
     @Override
     public void tearDown() {
         for (ITestMethod testMethod : after) {
-            testMethod.doing();
+            testMethod.execution();
         }
     }
 
     @Override
     public void tearDownAfterClass() {
         for (ITestMethod testMethod : afterClass) {
-            testMethod.doing();
+            testMethod.execution();
         }
         executor.shutdown();
     }

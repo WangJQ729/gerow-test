@@ -42,11 +42,11 @@ public abstract class AbstractTestSuite implements ITestSuite {
         beforeSuite.stream().filter(iTestMethod ->
                 TestUtils.isRun(iTestMethod.getTestClass().getFeature(), System.getProperty("features")) &&
                         TestUtils.isRun(System.getProperty("platform"), iTestMethod.getTestClass().getPlatform()))
-                .forEach(ITestMethod::doing);
+                .forEach(ITestMethod::execution);
         executor.submit((Runnable) () -> {
             while (true) {
                 try {
-                    heartbeat.get(0).doing();
+                    heartbeat.get(0).execution();
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -61,7 +61,7 @@ public abstract class AbstractTestSuite implements ITestSuite {
         //只运行features下的前置条件
         afterSuite.stream().filter(iTestMethod ->
                 TestUtils.isRun(iTestMethod.getTestClass().getFeature(), System.getProperty("features")))
-                .forEach(ITestMethod::doing);
+                .forEach(ITestMethod::execution);
         executor.shutdown();
     }
 

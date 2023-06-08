@@ -110,11 +110,11 @@ public class YmlTestStep implements ITestStep {
     }
 
     @Override
-    public void doing() {
+    public void execution() {
         this.buildParams();
         this.step = buildStep(step);
         if (step.getIter().isEmpty()) {
-            doWithWait();
+            executionWithWait();
         } else {
             Map<String, String[]> dataList = new HashMap<>();
             step.getIter().forEach((k, v) -> dataList.put(k, replace(v).split(",")));
@@ -130,7 +130,7 @@ public class YmlTestStep implements ITestStep {
                     YmlHttpStepEntity copy = step.copy();
                     copy.setIter(new HashMap<>());
                     YmlTestStep newStep = new YmlTestStep(copy, newParams, testMethod, factory);
-                    newStep.doing();
+                    newStep.execution();
                 }
             }
         }
@@ -139,7 +139,7 @@ public class YmlTestStep implements ITestStep {
     /**
      * 间隔执行
      */
-    private void doWithWait() {
+    private void executionWithWait() {
         if (Integer.parseInt(replace(step.getSleep())) != 0) {
             try {
                 Thread.sleep(Integer.parseInt(replace(step.getSleep())));
@@ -147,7 +147,7 @@ public class YmlTestStep implements ITestStep {
             }
         }
         String stepName = replace(TestUtils.firstNonEmpty(factory.getName(), step.getName(), step.getKeyWord()).orElse("testStep"));
-        Allure.step(stepName, () -> doWithWait(System.currentTimeMillis()));
+        Allure.step(stepName, () -> executionWithWait(System.currentTimeMillis()));
     }
 
     private void buildParams() {
@@ -160,7 +160,7 @@ public class YmlTestStep implements ITestStep {
      * @param startTime 开始时间
      * @throws Exception 异常
      */
-    private void doWithWait(long startTime) throws Exception {
+    private void executionWithWait(long startTime) throws Exception {
         long nowTime = System.currentTimeMillis();
         if (step.getUntilWait() > 0) {
             try {
@@ -169,7 +169,7 @@ public class YmlTestStep implements ITestStep {
                 //抛异常后重试
                 if (nowTime - startTime < step.getUntilWait() * 1000L) {
                     Thread.sleep(step.getIntervals());
-                    doWithWait(startTime);
+                    executionWithWait(startTime);
                 } else {
                     throw e;
                 }

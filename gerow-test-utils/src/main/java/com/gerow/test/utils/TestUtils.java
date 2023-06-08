@@ -3,7 +3,6 @@ package com.gerow.test.utils;
 import com.gerow.test.task.ITest;
 import com.gerow.test.task.ITestClass;
 import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,41 +44,38 @@ public class TestUtils {
      * 初始化JMeter的functions
      */
     public static void initJMeterFunctions() {
-        Field functions;
-        Object myFunctions = null;
-        List<Class> classes = new ArrayList<>();
-        Resource[] resources = new Resource[0];
         try {
-            functions = CompoundVariable.class.getDeclaredField("functions");
+            Field functions = CompoundVariable.class.getDeclaredField("functions");
             functions.setAccessible(true);
-            myFunctions = functions.get(null);
-            resources = new PathMatchingResourcePatternResolver().getResources("classpath*:*/**/jmeter/functions/**/*.class");
-        } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
-            e.printStackTrace();
-        }
-        for (Resource resource : resources) {
-            try {
-                classes.add(ClassUtils.getClass(new CachingMetadataReaderFactory().getMetadataReader(resource).getClassMetadata().getClassName()));
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
-            }
-        }
-        for (Class clz : classes) {
-            Function tempFunc;
-            try {
-                Object o = clz.getDeclaredConstructor().newInstance();
-                if (o instanceof Function) {
-                    tempFunc = (Function) o;
-                    String referenceKey = tempFunc.getReferenceKey();
-                    if (referenceKey.length() > 0 && myFunctions instanceof Map) { // ignore self
-                        ((Map<String, Object>) myFunctions).put(referenceKey, tempFunc.getClass());
+            Object myFunctions = functions.get(null);
+
+            Resource[] resources = new PathMatchingResourcePatternResolver().getResources("classpath*:*/**/jmeter/functions/**/*.class");
+
+            Map<String, Object> functionsMap = (Map<String, Object>) myFunctions;
+
+            for (Resource resource : resources) {
+                try {
+                    // 加载类并实例化
+                    Class<?> functionClass = ClassUtils.getClass(new CachingMetadataReaderFactory().getMetadataReader(resource).getClassMetadata().getClassName());
+
+                    Object functionInstance = functionClass.getDeclaredConstructor().newInstance();
+
+                    if (functionInstance instanceof Function) {
+                        Function function = (Function) functionInstance;
+                        String referenceKey = function.getReferenceKey();
+                        if (referenceKey.length() > 0) {
+                            // 将函数类添加到函数映射中
+                            functionsMap.put(referenceKey, functionClass);
+                        }
                     }
+                } catch (ClassNotFoundException | IOException | InstantiationException | IllegalAccessException |
+                         InvocationTargetException | NoSuchMethodException ignored) {
                 }
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                     NoSuchMethodException | ExceptionInInitializerError | ClassCastException e) {
             }
+        } catch (NoSuchFieldException | IllegalAccessException | IOException ignored) {
         }
     }
+
 
     /**
      * @param content    所要替换的对象
@@ -101,6 +97,8 @@ public class TestUtils {
         }
         return content;
     }
+
+    private static final String regex = "\\$\\{__([^{}]*(?:(?!\\$\\{)[^{}])*)}";
 
     /**
      * @param content 所要替换的字符串

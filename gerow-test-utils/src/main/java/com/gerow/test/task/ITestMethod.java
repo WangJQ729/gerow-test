@@ -10,7 +10,7 @@ public interface ITestMethod extends ITest {
     /**
      * 执行测试方法
      */
-    void doing();
+    void execution();
 
     /**
      * @return 测试类

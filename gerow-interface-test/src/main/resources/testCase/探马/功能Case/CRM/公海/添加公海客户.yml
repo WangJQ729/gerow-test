@@ -20,3 +20,12 @@ testMethod:
 #      - keyWord: 根据关键字查询公海客户-无手机号
       - keyWord: 公海添加含手机号个人客户
 #      - keyWord: 根据关键字查询公海客户
+  - name: 公海添加企业客户
+    dataProvider:
+      - corpName: 【Gerow】${__RandomName()}
+        phoneNum: ${__RandomPhoneNum()}
+        searchKey: ${corpName}
+    severity: CRITICAL
+    step:
+      - keyWord: 添加企业
+      - keyWord: 公海添加企业客户
