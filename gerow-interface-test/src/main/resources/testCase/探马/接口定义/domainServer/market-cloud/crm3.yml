@@ -20,3 +20,14 @@ keyWord:
         - json:
             stageId: $.data[?(@.name=='${stageFlowInfos}')].id
             stageFlowId: $.data[?(@.name=='${stageFlowInfos}')].stageFlows..id
+    - name: 数据-客户分析
+      url: /domainServer/market-cloud/crm3/getStageModifyCustomers
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"customerSource":[],"allocateSource":[],"channelState":[],"salesIds":[],"departmentIds":[],"stageFlowIds":[531132475592896,530960960338240,529904491456704,527605854943424,539989676024128,536617253302464,536617313704128,539770312446272,529691208804672,531132853266752,529863651231936,530970915352768,525478570727616,532902040193344,525481276064064,529863757687104,525483611808064,539989715964096,530970860411200,532902089959616,531131983765696,539772654440768,531672881041728,527245885872320,531097695396032,531129198289088],"pageNo":1,"pageSize":50,"stageModifyTime":{"startTime":"2023-03-15 00:00:00","endTime":"2023-06-13 23:59:59"},"sortField":"create_time","sortDir":1,"usingTrueValue":0,"stageId":null,"customerType":1,"timeType":0,"isCustomer":null,"conditionItems":[{"name":"totalTagIds","op":6,"totalTagIds":[{"name":"tagIds","op":6,"values":[]}]}],"allOpenSea":false,"customerRepoIds":[],"dimissionSalesId":[],"isDown":true,"totalCount":8}
+      assertion: [ json: { $.code: 0 } ]
+      extractor:
+        - json:
+            companyId: $.data

@@ -17,3 +17,10 @@ keyWord:
       extractor:
         - json:
             openSeaId: $.data.data[?(@.openSeaName=='${openSeaName}')].openSeaId
+    - name: 公海转出记录
+      url: /domainServer/openSea/es/openSeaRecordListRetrieve
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"isCustomer":1,"searchKey":"","authId":"10411","openSeaTime":null,"createTime":null,"transferOutTime":null,"rollOutTypeList":[1,2,3,4,5],"repoId":${openSeaId},"conditions":null,"conditionGroups":[],"pageSize":100,"pageNo":1,"sortField":"transfer_out_time","sortDir":1}

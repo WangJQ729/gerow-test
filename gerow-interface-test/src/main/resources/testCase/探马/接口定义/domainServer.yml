@@ -1,0 +1,27 @@
+name: 获取跟进记录
+story: 跟进记录
+testMethod:
+  - name: 获取跟进记录
+    step:
+      - name: 获取跟进记录
+        url: /domainServer/getMainFollows
+        headers:
+          authorization: ${authorization}
+        method: POST
+        body: |
+          {
+              "salesId": "522811459903680",
+              "customerId": "545843465248768"
+          }
+        assertion:
+          - json:
+              $.code: 4100
+              $.message: 客户不存在
+      - keyWord: 获取跟进记录
+        bodyEditor:
+          json:
+            $.salesId: 539086324322624
+            $.customerId: 543518136553792
+        assertion:
+          - json:
+              $.code: 0

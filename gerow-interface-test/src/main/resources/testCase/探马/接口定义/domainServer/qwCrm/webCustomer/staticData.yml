@@ -1,0 +1,10 @@
+keyWord:
+  step:
+    - name: 数据-客户阶段漏斗
+      url: /domainServer/qwCrm/webCustomer/staticData/customerListRetrieveByRange
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"customerType":3,"repoId":null,"departmentIds":[],"salesIds":[],"pageNo":1,"pageSize":50,"createTime":{"start":"2023-05-14 00:00:00","end":"2023-06-13 23:59:59"},"customerAllocateSources":[],"customerSources":[],"salesStage":null,"sortField":"create_time","sortDir":1,"showCurrentStage":false,"authId":"10106","stageId":null,"stageModifyTime":{"startTime":"2023-06-13 00:00:00","endTime":"2023-06-13 23:59:59"},"allocateSource":[],"customerSource":[],"channelState":[],"usingTrueValue":1,"isCustomer":1,"stageFlowList":[531132475592896,530960960338240,529904491456704,527605854943424,539989676024128,536617253302464,536617313704128,539770312446272,529691208804672,531132853266752,529863651231936,530970915352768,525478570727616,532902040193344,525481276064064,529863757687104,525483611808064,539989715964096,530970860411200,532902089959616,531131983765696,539772654440768,531672881041728,527245885872320,531097695396032,531129198289088],"timeType":1,"totalCount":5}
+      assertion: [ json: { $.code: 0 } ]

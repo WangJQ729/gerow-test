@@ -9,7 +9,7 @@ beforeClass:
     - keyWord: 公海列表
 testMethod:
   - name: 公海添加个人客户
-    invocationCount: 10
+    invocationCount: 200
     dataProvider:
       - customerName: 【Gerow】${__RandomName()}
         phoneNum: ${__RandomPhoneNum()}

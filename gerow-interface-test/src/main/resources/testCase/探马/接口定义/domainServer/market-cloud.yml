@@ -17,3 +17,10 @@ keyWord:
       body: |
         {"mobiles":["${phoneNum}"]}
       assertion: [ json: { $.code: 0 } ]
+    - name: 线索分配记录
+      url: /domainServer/market-cloud/crm2/getAllocatedCustomerListAdvance1
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"searchKey":"","startTime":"","endTime":"","tagIds":[],"authId":10417,"clueStatus":"","allocateStatus":1,"orderDirect":"desc","customerType":3,"clueSourceType":"","pageSize":50,"pageNo":1,"totalCount":229382,"sortField":"create_time","sortDir":1}

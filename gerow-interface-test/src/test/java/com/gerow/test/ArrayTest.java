@@ -47,4 +47,26 @@ public class ArrayTest {
             }
         }
     }
+
+    @Test
+    public void test2() {
+        System.out.println(
+                tilingRectangle(11, 13));
+    }
+
+    public int tilingRectangle(int n, int m) {
+        if (n == m && n != 0) {
+            System.out.println(n);
+            return 1;
+        } else if (n > m && n > 0 && m > 0) {
+            System.out.println(m);
+            return 1 + tilingRectangle(n - m, m);
+        } else if (n > 0 && m > 0) {
+            System.out.println(n);
+            return 1 + tilingRectangle(n, m - n);
+        } else {
+            return 0;
+        }
+    }
+
 }

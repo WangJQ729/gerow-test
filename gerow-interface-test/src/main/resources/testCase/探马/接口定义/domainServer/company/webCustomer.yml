@@ -35,3 +35,21 @@ keyWord:
             "salesId":${user_id}
         }
       assertion: [ json: { $.code: 0 } ]
+    - name: 公海添加企业客户
+      url: /domainServer/company/webCustomer/addOpenSeaCustomer
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {
+            "addressList":[
+            ],
+            "contactInfo":[
+            ],
+            "corpFields":[
+            ],
+            "companyId":${companyId},
+            "openSeaId":${openSeaId},
+            "mobiles":[${phoneNum}]
+        }
+      assertion: [ json: { $.code: 0 } ]

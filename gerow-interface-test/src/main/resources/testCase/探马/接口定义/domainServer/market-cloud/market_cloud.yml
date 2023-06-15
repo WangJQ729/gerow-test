@@ -27,3 +27,11 @@ keyWord:
         timestamp: ${timestamp}
       body: ${body}
       assertion: [ json: { $.code: 0 } ]
+    - name: 管控-跟进拜访
+      url: /domainServer/market-cloud/es/webCustomerFollowerInfoListRetrieve
+      headers:
+        authorization: ${authorization}
+      method: POST
+      body: |
+        {"sortDir":1,"sortField":"create_time","searchKey":"","salesIds":[],"departmentIds":[],"createTime":{"start":"2022-06-13 00:00:00","end":"2023-06-13 23:59:59"},"templateId":null,"signStatus":null,"followerType":null,"pageNo":1,"pageSize":30}
+      assertion: [ json: { $.code: 0 } ]

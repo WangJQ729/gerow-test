@@ -1,0 +1,205 @@
+name: 列表分页参数
+story: 列表分页参数
+dataProvider:
+  - searchKey: 86
+    openSeaName: 【Gerow】公海
+beforeClass:
+  name: 获取公海Id
+  step:
+    - keyWord: 公海列表
+testMethod:
+  - name: 客户列表-${pageSize}
+    dataProvider:
+      - pageSize: 101
+        checkSize: 100
+      - pageSize: 100
+        checkSize: 100
+      - pageSize: 1
+        checkSize: 1
+      - pageSize: 20
+        checkSize: 20
+      - pageSize: 50
+        checkSize: 50
+    step:
+      - keyWord: web端客户查询
+        bodyEditor:
+          json:
+            $.pageSize: ${__BeanShell(${pageSize})}
+        assertion:
+          - json:
+              $.code: 0
+              $.data.pageSize: ${checkSize}
+              $.data.data.length(): ${checkSize}
+  - name: 公海列表
+    dataProvider:
+      - pageSize: 101
+        checkSize: 100
+      - pageSize: 100
+        checkSize: 100
+      - pageSize: 1
+        checkSize: 1
+      - pageSize: 20
+        checkSize: 20
+      - pageSize: 50
+        checkSize: 50
+    severity: CRITICAL
+    step:
+      - keyWord: 根据关键字查询公海客户
+        bodyEditor:
+          json:
+            $.pageSize: ${__BeanShell(${pageSize})}
+        assertion:
+          - json:
+              $.code: 0
+              $.data.pageSize: ${checkSize}
+              $.data.data.length(): ${checkSize}
+  - name: 公海转出记录
+    dataProvider:
+      - pageSize: 101
+        checkSize: 100
+      - pageSize: 100
+        checkSize: 100
+      - pageSize: 1
+        checkSize: 1
+      - pageSize: 20
+        checkSize: 20
+      - pageSize: 50
+        checkSize: 50
+    severity: CRITICAL
+    step:
+      - keyWord: 公海转出记录
+        bodyEditor:
+          json:
+            $.pageSize: ${__BeanShell(${pageSize})}
+        assertion:
+          - json:
+              $.code: 0
+              $.data.pageSize: ${checkSize}
+              $.data.data.length(): ${checkSize}
+
+  - name: 线索分配记录
+    dataProvider:
+      - pageSize: 101
+        checkSize: 100
+      - pageSize: 100
+        checkSize: 100
+      - pageSize: 1
+        checkSize: 1
+      - pageSize: 20
+        checkSize: 20
+      - pageSize: 50
+        checkSize: 50
+    severity: CRITICAL
+    step:
+      - keyWord: 线索分配记录
+        bodyEditor:
+          json:
+            $.pageSize: ${__BeanShell(${pageSize})}
+        assertion:
+          - json:
+              $.code: 0
+              $.data.pageSize: ${checkSize}
+              $.data.result.length(): ${checkSize}
+  - name: 企业列表
+    dataProvider:
+      - pageSize: 101
+        checkSize: 100
+      - pageSize: 100
+        checkSize: 100
+      - pageSize: 1
+        checkSize: 1
+      - pageSize: 20
+        checkSize: 20
+      - pageSize: 50
+        checkSize: 50
+    severity: CRITICAL
+    step:
+      - keyWord: 企业列表
+        body: |
+          {"searchKey":"","pageNo":1,"pageSize":50,"totalCount":0,"sortField":"create_time","sortDir":1}
+        bodyEditor:
+          json:
+            $.pageSize: ${__BeanShell(${pageSize})}
+        assertion:
+          - json:
+              $.code: 0
+              $.data.pageSize: ${checkSize}
+              $.data.data.length(): ${checkSize}
+  - name: 数据-客户分析
+    dataProvider:
+      - pageSize: 101
+        checkSize: 100
+      - pageSize: 100
+        checkSize: 100
+      - pageSize: 1
+        checkSize: 1
+      - pageSize: 20
+        checkSize: 20
+      - pageSize: 50
+        checkSize: 50
+    severity: CRITICAL
+    step:
+      - keyWord: 数据-客户分析
+        body: |
+          {"searchKey":"","pageNo":1,"pageSize":50,"totalCount":0,"sortField":"create_time","sortDir":1}
+        bodyEditor:
+          json:
+            $.pageSize: ${__BeanShell(${pageSize})}
+        assertion:
+          - json:
+              $.code: 0
+              $.data.pageSize: ${checkSize}
+              $.data.data.length(): ${checkSize}
+
+  - name: 数据-客户阶段漏斗
+    dataProvider:
+      - pageSize: 1
+        checkSize: 1
+      - pageSize: 20
+        checkSize: 20
+      - pageSize: 50
+        checkSize: 50
+      - pageSize: 51
+        checkSize: 50
+    severity: CRITICAL
+    step:
+      - keyWord: 数据-客户阶段漏斗
+        body: |
+          {"searchKey":"","pageNo":1,"pageSize":50,"totalCount":0,"sortField":"create_time","sortDir":1}
+        bodyEditor:
+          json:
+            $.pageSize: ${__BeanShell(${pageSize})}
+        assertion:
+          - json:
+              $.code: 0
+              $.data.pageSize: ${checkSize}
+              $.data.data.length(): ${checkSize}
+
+  - name: 管控-跟进拜访
+    dataProvider:
+      - pageSize: 201
+        checkSize: 200
+      - pageSize: 200
+        checkSize: 200
+      - pageSize: 100
+        checkSize: 100
+      - pageSize: 1
+        checkSize: 1
+      - pageSize: 20
+        checkSize: 20
+      - pageSize: 50
+        checkSize: 50
+    severity: CRITICAL
+    step:
+      - keyWord: 管控-跟进拜访
+        body: |
+          {"searchKey":"","pageNo":1,"pageSize":50,"totalCount":0,"sortField":"create_time","sortDir":1}
+        bodyEditor:
+          json:
+            $.pageSize: ${__BeanShell(${pageSize})}
+        assertion:
+          - json:
+              $.code: 0
+              $.data.pageSize: ${checkSize}
+              $.data.data.length(): ${checkSize}
+
