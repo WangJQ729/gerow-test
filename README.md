@@ -186,14 +186,3 @@ public class RandomDate extends AbstractFunction {
     
    [脚本编写介绍](gerow-interface-test "介绍")
    [催单脚本环境搭建](gerow-interface-test/README_CONF.md "环境搭建")
-
-
-
-
-studentId\name\teacherId  s
-teacherid\teacherName\class t
-
-select t.class,count(*) from s
-left jion t on t.teacherid = s.teacherId
-group by class;
-
