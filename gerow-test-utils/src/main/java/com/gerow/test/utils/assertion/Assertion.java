@@ -22,6 +22,7 @@ import javax.crypto.NoSuchPaddingException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -156,6 +157,8 @@ public class Assertion {
             case STRING:
                 value = value.toString();
                 break;
+            case ARRAY:
+                value = Collectors.toList();
             case DEFAULT:
             default:
                 //默认状态下，类型与实际值保持一致

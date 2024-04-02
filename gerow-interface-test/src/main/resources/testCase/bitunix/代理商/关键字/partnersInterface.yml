@@ -1,0 +1,47 @@
+keyWord:
+  step:
+    - name: 登录partners
+      host: ${partners_host}
+      url: /partner/login
+      method: POST
+      body: |
+        {"password":"${__digest(MD5,${partner_password})}","account":"${partner_email}"}
+      extractor:
+        - json:
+            partner_token: $.result.token
+    - name: 获取合伙人邀请码
+      host: ${partners_host}
+      url: /partner/statistics/myInvitation
+      headers:
+        Token: ${partner_token}
+      method: GET
+      extractor:
+        - json:
+            vipCode: $.result.vipCode
+    - name: 升级为合伙人
+      host: ${partners_host}
+      url: /partner/add
+      headers:
+        Token: ${partner_token}
+      method: POST
+      body: |
+        {"uid":${userId},"nickName":"${email}","futureRatio":10,"exchangeRatio":10}
+      assertion:
+        - json:
+            $.code: '0'
+    - name: 直客佣金查询
+      host: ${partners_host}
+      url: /partner/rebate/userRebate/list
+      headers:
+        Token: ${partner_token}
+      variables:
+        page: 1
+        pageSize: 10
+        uid: ${userId}
+        showBelow: false
+      method: GET
+      extractor:
+        - json:
+            makerFee: $.result.items[0].makerFee
+            makerRebate: $.result.items[0].makerRebate
+            makerTradeAmount: $.result.items[0].makerTradeAmount

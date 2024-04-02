@@ -1,7 +1,0 @@
-data:
-  test:
-    platform: tanmarket
-    host: beta.tanmarket.cn
-    userId: ${userId}
-    password: ${password}
-    userName: 王健强

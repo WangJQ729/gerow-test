@@ -1,9 +1,0 @@
-keyWord:
-  step:
-    - name: 修复客户库
-      url: /domainServer/market-cloud/repo/fixCustomerRepo
-      method: GET
-      variables:
-        fixCorpid: ${fixCorpid}
-        fixCustomerRepoId: ${fixCustomerRepoId}
-      assertion: [ json: { $.code: 0 } ]

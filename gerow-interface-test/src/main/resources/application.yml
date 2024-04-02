@@ -9,6 +9,8 @@ client:
   timeOut: 10
   headers:
     Content-Type: "application/json;charset=UTF-8"
+    Accept: '*/*'
+    Accept-Encoding: gzip, deflate, br
 data:
   test:
     answer_time: 0

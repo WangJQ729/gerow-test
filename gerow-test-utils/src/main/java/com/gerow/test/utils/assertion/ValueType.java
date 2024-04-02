@@ -16,5 +16,6 @@ public enum ValueType {
     /**
      * 整型
      */
-    INTEGER
+    INTEGER,
+    ARRAY
 }

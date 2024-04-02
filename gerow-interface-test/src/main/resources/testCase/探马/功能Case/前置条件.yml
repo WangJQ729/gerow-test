@@ -1,6 +1,0 @@
-name: 前置条件
-beforeSuite:
-  name: beforeSuite
-  step:
-    - keyWord: 登录
-    - keyWord: 获取所有用户字段定义

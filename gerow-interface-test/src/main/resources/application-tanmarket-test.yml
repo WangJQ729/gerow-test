@@ -1,8 +1,0 @@
-data:
-  test:
-    platform: tanmarket
-    host: blue.wechatsi.com
-    userId: ${userId}
-    password: ${password}
-    userName: 王健强
-

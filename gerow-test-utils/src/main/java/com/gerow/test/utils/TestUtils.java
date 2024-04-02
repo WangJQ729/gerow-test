@@ -3,7 +3,6 @@ package com.gerow.test.utils;
 import com.gerow.test.task.ITest;
 import com.gerow.test.task.ITestClass;
 import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

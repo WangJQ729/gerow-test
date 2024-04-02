@@ -1,0 +1,47 @@
+name: 合伙人分后台
+invocationCount: 1
+dataProvider:
+  - email: gerow${__time()}@bitunix.com
+    password: Aa123456
+    partner_email: gerow.wang@gmail.com
+    partner_password: Aa123456
+    partnersadmin_account: admin
+    partnersadmin_password: admin
+    bd_name: gerow3
+    symbol: BTCUSDT
+    amount: 0.16
+    side: 2
+beforeClass:
+  name: 登录partnersadmin
+  step:
+    - keyWord: 登录partnersadmin
+    - keyWord: 获取BD列表
+    - keyWord: 登录partners
+    - keyWord: 获取合伙人邀请码
+    - keyWord: 快捷注册
+testMethod:
+  - name: 新增合伙人
+    step:
+      - keyWord: 获取用户信息
+      - keyWord: 升级为合伙人
+        bodyEditor:
+          json:
+            $.futureRatio: 50
+            $.exchangeRatio: 50
+      - keyWord: 登录partners
+        bodyEditor:
+          json:
+            $.account: ${email}
+            $.password: ${__digest(MD5,${password})}
+      - keyWord: 获取合伙人邀请码
+      - keyWord: 快捷注册
+        bodyEditor:
+          json:
+            $.emails:
+              - gerow${__time()}@bitunix.com
+            $.invitedCode: ${vipCode}
+      - keyWord: 通过uid获取用户token
+      - keyWord: 增加合约账户资产
+      - keyWord: 市价开仓
+      - keyWord: 持有仓位信息
+      - keyWord: 市价平仓
