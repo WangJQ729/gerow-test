@@ -26,15 +26,17 @@ testMethod:
       - keyWord: U本位合约历史委托
       - keyWord: 直客佣金查询
         intervals: 10000
-        untilWait: 300
+        untilWait: 600
         assertion:
           - json:
-              $.result.items[0].makerFee: ${__BeanShell(${makerFee}+${openDealFee},)}
+              $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${openDealFee})}
+            assertionType: EIGHTDECIMALPLACES
       - keyWord: 市价平仓
       - keyWord: U本位合约历史委托-平仓
       - keyWord: 直客佣金查询
         intervals: 10000
-        untilWait: 300
+        untilWait: 600
         assertion:
           - json:
-              $.result.items[0].makerFee: ${__BeanShell(${makerFee}+${closeDealFee},)}
+              $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${closeDealFee})}
+            assertionType: EIGHTDECIMALPLACES

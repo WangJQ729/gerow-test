@@ -45,3 +45,37 @@ keyWord:
             makerFee: $.result.items[0].makerFee
             makerRebate: $.result.items[0].makerRebate
             makerTradeAmount: $.result.items[0].makerTradeAmount
+    - name: 直客佣金查询-现货
+      keyWord: 直客佣金查询
+      variables:
+        coin: BTC
+      extractor:
+        - json:
+            takerTradeAmount: $.result.items[0].takerTradeAmount
+            takerRealFee: $.result.items[0].takerRealFee
+            takerRebate: $.result.items[0].takerRebate
+    - name: 代理商现货历史委托
+      host: ${partners_host}
+      url: /partner/trade/order/spot_history/history
+      headers:
+        Token: ${partner_token}
+      variables:
+        page: 1
+        pageSize: 10
+        uid: ${userId}
+        showBelow: true
+      method: GET
+      extractor:
+        - json:
+            partnerFee: $.result.fee
+    - name: 用户列表
+      host: ${partners_host}
+      url: /partner/user/page
+      headers:
+        Token: ${partner_token}
+      method: POST
+      body: |
+        {"page":1,"pageSize":10,"subShow":true,"uid":"${userId}","registerStart":"","registerEnd":""}
+      extractor:
+        - json:
+            exchangeRatio: $.result.items[0].exchangeRatio

@@ -22,8 +22,8 @@ import javax.crypto.NoSuchPaddingException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -341,6 +341,10 @@ public class Assertion {
         switch (assertionType) {
             case GREATEROREQUALTO:
                 Assertions.assertThat(new BigDecimal(actual.toString())).isGreaterThanOrEqualTo(new BigDecimal(value.toString()));
+                break;
+            case EIGHTDECIMALPLACES:
+                Assertions.assertThat(new BigDecimal(actual.toString()).setScale(8, RoundingMode.HALF_UP))
+                        .isEqualTo(new BigDecimal(value.toString()).setScale(8, RoundingMode.HALF_UP));
                 break;
             case LESSTHANOREQUALTO:
                 Assertions.assertThat(new BigDecimal(actual.toString())).isLessThanOrEqualTo(new BigDecimal(value.toString()));

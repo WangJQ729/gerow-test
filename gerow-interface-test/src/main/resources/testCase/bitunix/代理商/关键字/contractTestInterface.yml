@@ -24,7 +24,7 @@ keyWord:
       body: |
         {
             "uid": ${userId},
-            "amount": 99999,
+            "amount": 9999,
             "coin": "USDT"
         }
     - name: 通过uid获取用户token
