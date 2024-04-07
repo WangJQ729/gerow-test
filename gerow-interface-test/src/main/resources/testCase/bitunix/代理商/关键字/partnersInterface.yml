@@ -52,6 +52,7 @@ keyWord:
       extractor:
         - json:
             takerTradeAmount: $.result.items[0].takerTradeAmount
+            takerFee: $.result.items[0].takerFee
             takerRealFee: $.result.items[0].takerRealFee
             takerRebate: $.result.items[0].takerRebate
     - name: 代理商现货历史委托
@@ -79,3 +80,5 @@ keyWord:
       extractor:
         - json:
             exchangeRatio: $.result.items[0].exchangeRatio
+            futureRatio: $.result.items[0].futureRatio
+            parentUid: $.result.items[0].parentUid

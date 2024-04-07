@@ -1,4 +1,5 @@
 name: 用户开仓
+story: trade
 invocationCount: 1
 dataProvider:
   - email: gerow${__time()}@bitunix.com

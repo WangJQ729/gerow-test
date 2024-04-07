@@ -343,8 +343,10 @@ public class Assertion {
                 Assertions.assertThat(new BigDecimal(actual.toString())).isGreaterThanOrEqualTo(new BigDecimal(value.toString()));
                 break;
             case EIGHTDECIMALPLACES:
+                // 2次四舍五入数据相加，有可能有1个精度误差
                 Assertions.assertThat(new BigDecimal(actual.toString()).setScale(8, RoundingMode.HALF_UP))
-                        .isEqualTo(new BigDecimal(value.toString()).setScale(8, RoundingMode.HALF_UP));
+                        .isGreaterThanOrEqualTo(new BigDecimal(value.toString()).add(new BigDecimal("-0.00000001")).setScale(8, RoundingMode.HALF_UP))
+                        .isLessThanOrEqualTo(new BigDecimal(value.toString()).add(new BigDecimal("0.00000001")).setScale(8, RoundingMode.HALF_UP));
                 break;
             case LESSTHANOREQUALTO:
                 Assertions.assertThat(new BigDecimal(actual.toString())).isLessThanOrEqualTo(new BigDecimal(value.toString()));

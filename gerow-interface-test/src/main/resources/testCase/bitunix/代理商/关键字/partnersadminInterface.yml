@@ -59,3 +59,15 @@ keyWord:
             fee: $.result.items[?(@.symbol=='${symbol}')].fee
             userRebate: $.result.items[?(@.symbol=='${symbol}')].userRebate
             partnerRebate: $.result.items[?(@.symbol=='${symbol}')].partnerRebate
+    - name: 合伙人列表
+      host: ${partnersadmin_host}
+      url: /partner/root/page
+      headers:
+        Token: ${partnersadmin_token}
+      method: POST
+      body: |
+        {"page":1,"pageSize":10,"uid":"${parentUid}","registerStart":"","registerEnd":"","pageIndex":1}
+      extractor:
+        - json:
+            totalExchangeRatio: $.result.items[0].exchangeRatio
+            totalFutureRatio: $.result.items[0].futureRatio
