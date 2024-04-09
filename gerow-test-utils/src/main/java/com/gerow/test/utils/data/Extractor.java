@@ -57,6 +57,7 @@ public class Extractor {
      */
     private String data;
     private boolean need_decode = false;
+    private boolean ignore = false;
     /**
      * 数据类型参数的分隔符
      */
@@ -118,13 +119,11 @@ public class Extractor {
                                 json = Objects.requireNonNull(entity.getBody()).toString();
                                 saveJsonPath(save, JsonPathUtils.read(json, value.replace("$", "$.answer"), options));
                             } else {
-                                json = TestUtils.des3Cipher("828d1bc65eefc6c88ca1a5d4", "828d1bc6", 2,
-                                        Objects.requireNonNull(entity.getBody()).toString());
+                                json = TestUtils.des3Cipher("828d1bc65eefc6c88ca1a5d4", "828d1bc6", 2, Objects.requireNonNull(entity.getBody()).toString());
                                 Allure.addAttachment("解密结果：", json);
                                 saveJsonPath(save, JsonPathUtils.read(json, value, options));
                             }
-                        } else
-                            saveJsonPath(save, JsonPathUtils.read(entity.getBody(), value, options));
+                        } else saveJsonPath(save, JsonPathUtils.read(entity.getBody(), value, options));
                         break;
                     case XML:
                     case DEFAULT:
@@ -161,7 +160,9 @@ public class Extractor {
             if (Arrays.asList(options).contains(Option.DEFAULT_PATH_LEAF_TO_NULL)) {
                 save.save(name, "");
             } else {
-                Assertions.fail("请求响应中未找到：" + value);
+                if (!ignore) {
+                    Assertions.fail("请求响应中未找到：" + value);
+                }
             }
         } else {
             String value;
@@ -250,6 +251,7 @@ public class Extractor {
         extractor.setValue(value);
         extractor.setData(data);
         extractor.setNeed_decode(isNeed_decode());
+        extractor.setIgnore(isIgnore());
         extractor.setOptions(options);
         extractor.setSeparator(separator);
         extractor.setSite(site);
@@ -266,6 +268,7 @@ public class Extractor {
         extractor.setOptions(getOptions());
         extractor.setSize(getSize());
         extractor.setNeed_decode(isNeed_decode());
+        extractor.setIgnore(isIgnore());
         extractor.setSeparator(getSeparator());
         extractor.setData(step.replace(getData()));
         extractor.setName(step.replace(getName()));

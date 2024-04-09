@@ -46,6 +46,7 @@ keyWord:
       url: /partner/rebate/userRebate/list
       headers:
         Token: ${partner_token}
+      untilWait: 5
       variables:
         page: 1
         pageSize: 10
@@ -57,6 +58,25 @@ keyWord:
             makerFee: $.result.items[0].makerFee
             makerRebate: $.result.items[0].makerRebate
             makerTradeAmount: $.result.items[0].makerTradeAmount
+    - name: 直客佣金查询-首单
+      keyWord: 直客佣金查询
+      assertion:
+        - json:
+            $.result.items[0].makerFee: ${openDealFee}
+            $.result.items[0].makerRebate: ${__BeanShell(${openDealFee} * ${futureRatio} / 100)}
+          assertionType: EIGHTDECIMALPLACES
+    - name: 直客佣金查询-开仓
+      keyWord: 直客佣金查询
+      assertion:
+        - json:
+            $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${openDealFee})}
+          assertionType: EIGHTDECIMALPLACES
+    - name: 直客佣金查询-平仓
+      keyWord: 直客佣金查询
+      assertion:
+        - json:
+            $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${closeDealFee})}
+          assertionType: EIGHTDECIMALPLACES
     - name: 直客佣金查询-现货
       keyWord: 直客佣金查询
       variables:
@@ -94,3 +114,37 @@ keyWord:
             exchangeRatio: $.result.items[0].exchangeRatio
             futureRatio: $.result.items[0].futureRatio
             parentUid: $.result.items[0].parentUid
+    - name: 代理商更新合伙人返佣比例
+      host: ${partners_host}
+      url: /partner/rebate/updatePartnerRatio
+      headers:
+        Token: ${partner_token}
+      method: GET
+      assertion:
+        - json:
+            $.code: '0'
+    - name: 代理商后台差价佣金统计
+      host: ${partners_host}
+      url: /partner/rebate/partnerSubStatistic
+      headers:
+        Token: ${partner_token}
+      method: GET
+      assertion:
+        - json:
+            $.code: '0'
+    - name: 代理商后台返佣发放
+      host: ${partners_host}
+      url: /partner/rebate/distribute
+      headers:
+        Token: ${partner_token}
+      method: GET
+      assertion:
+        - json:
+            $.code: '0'
+    - name: 代理商后台更新返佣统计
+      host: ${partners_host}
+      url: /partner/rebate/createRecord
+      method: GET
+      assertion:
+        - json:
+            $.code: '0'

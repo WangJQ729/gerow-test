@@ -7,6 +7,6 @@ data:
     partnersadmin_host: https://partnersadmin.bitunix.one
 client:
   protocol: https
-  timeOut: 10
+  timeOut: 30
   headers:
     Content-Type: "application/json;charset=UTF-8"

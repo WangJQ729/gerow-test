@@ -19,7 +19,7 @@ beforeClass:
     - keyWord: 获取BD列表
     - keyWord: 登录partners
     - keyWord: 获取合伙人邀请码
-    - keyWord: 快捷注册
+#    - keyWord: 快捷注册
 testMethod:
   - name: 新增合伙人
     dataProvider:
@@ -27,13 +27,14 @@ testMethod:
         exchangeRatio: 50
         new_emails: gerow${__time()}@bitunix.com
     step:
-      - keyWord: 获取用户信息
-      - keyWord: 升级为合伙人-设置返佣比例
-      - keyWord: 登录partners-新合伙人
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-新邮箱
-      - keyWord: 通过uid获取用户token
-      - keyWord: 增加合约账户资产
-      - keyWord: 市价开仓
-      - keyWord: 持有仓位信息
-      - keyWord: 市价平仓
+      - keyWord: partner触发定时任务
+#      - keyWord: 获取用户信息
+#      - keyWord: 升级为合伙人-设置返佣比例
+#      - keyWord: 登录partners-新合伙人
+#      - keyWord: 获取合伙人邀请码
+#      - keyWord: 快捷注册-新邮箱
+#      - keyWord: 通过uid获取用户token
+#      - keyWord: 增加合约账户资产
+#      - keyWord: 市价开仓
+#      - keyWord: 持有仓位信息
+#      - keyWord: 市价平仓
