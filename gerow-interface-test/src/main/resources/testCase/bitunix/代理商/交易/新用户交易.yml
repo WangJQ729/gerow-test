@@ -1,4 +1,4 @@
-name: 用户开仓
+name: 新用户交易
 story: trade
 invocationCount: 1
 dataProvider:
@@ -22,6 +22,42 @@ testMethod:
     step:
       - keyWord: 市价开仓
       - keyWord: 持有仓位信息
+      - keyWord: U本位合约历史委托
+      - keyWord: 直客佣金查询
+        intervals: 10000
+        untilWait: 300
+        assertion:
+          - json:
+              $.result.items[0].makerFee: ${openDealFee}
+            assertionType: EIGHTDECIMALPLACES
       - keyWord: 市价平仓
-
-
+      - keyWord: U本位合约历史委托-平仓
+      - keyWord: 直客佣金查询
+        intervals: 10000
+        untilWait: 300
+        assertion:
+          - json:
+              $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${closeDealFee})}
+            assertionType: EIGHTDECIMALPLACES
+  - name: 用户成为合伙人市价开仓
+    step:
+      - keyWord: 升级为合伙人
+      - keyWord: 市价开仓
+      - keyWord: 持有仓位信息
+      - keyWord: U本位合约历史委托
+      - keyWord: 直客佣金查询
+        intervals: 10000
+        untilWait: 300
+        assertion:
+          - json:
+              $.result.items[0].makerFee: ${openDealFee}
+            assertionType: EIGHTDECIMALPLACES
+      - keyWord: 市价平仓
+      - keyWord: U本位合约历史委托-平仓
+      - keyWord: 直客佣金查询
+        intervals: 10000
+        untilWait: 300
+        assertion:
+          - json:
+              $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${closeDealFee})}
+            assertionType: EIGHTDECIMALPLACES

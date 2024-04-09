@@ -53,14 +53,14 @@ public class TestUtils {
             functions.setAccessible(true);
             myFunctions = functions.get(null);
             resources = new PathMatchingResourcePatternResolver().getResources("classpath*:*/**/jmeter/functions/**/*.class");
-        } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | NoSuchFieldException | IOException ignored) {
+
         }
         for (Resource resource : resources) {
             try {
                 classes.add(ClassUtils.getClass(new CachingMetadataReaderFactory().getMetadataReader(resource).getClassMetadata().getClassName()));
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
+            } catch (ClassNotFoundException | IOException ignored) {
+
             }
         }
         for (Class clz : classes) {
@@ -70,12 +70,12 @@ public class TestUtils {
                 if (o instanceof Function) {
                     tempFunc = (Function) o;
                     String referenceKey = tempFunc.getReferenceKey();
-                    if (referenceKey.length() > 0 && myFunctions instanceof Map) { // ignore self
+                    if (!referenceKey.isEmpty() && myFunctions instanceof Map) { // ignore self
                         ((Map<String, Object>) myFunctions).put(referenceKey, tempFunc.getClass());
                     }
                 }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                     NoSuchMethodException | ExceptionInInitializerError | ClassCastException e) {
+                     NoSuchMethodException | ExceptionInInitializerError | ClassCastException ignored) {
             }
         }
     }
@@ -156,7 +156,7 @@ public class TestUtils {
         if (key != null) {
             JMeterVariables vars = JMeterContextService.getContext().getVariables();
             final String varTrim = key.execute().trim();
-            if (vars != null && varTrim.length() > 0) {// vars will be null on TestPlan
+            if (vars != null && !varTrim.isEmpty()) {// vars will be null on TestPlan
                 vars.put(varTrim, value);
             }
         }
@@ -236,8 +236,8 @@ public class TestUtils {
 
     public static String des3Cipher(String key, String iv, int mode, String data) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException {
         DESedeKeySpec spec = new DESedeKeySpec(key.getBytes());
-        SecretKeyFactory keyfactory = SecretKeyFactory.getInstance("desede");
-        Key deskey = keyfactory.generateSecret(spec);
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("desede");
+        Key deskey = factory.generateSecret(spec);
         Cipher cipher = Cipher.getInstance("desede" + "/CBC/PKCS5Padding");
         IvParameterSpec ips = new IvParameterSpec(iv.getBytes());
         cipher.init(mode, deskey, ips);

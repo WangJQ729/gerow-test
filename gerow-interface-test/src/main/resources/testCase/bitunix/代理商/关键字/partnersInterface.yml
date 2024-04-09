@@ -9,6 +9,12 @@ keyWord:
       extractor:
         - json:
             partner_token: $.result.token
+    - name: 登录partners-新合伙人
+      keyWord: 登录partners
+      bodyEditor:
+        json:
+          $.account: ${email}
+          $.password: ${__digest(MD5,${password})}
     - name: 获取合伙人邀请码
       host: ${partners_host}
       url: /partner/statistics/myInvitation
@@ -29,6 +35,12 @@ keyWord:
       assertion:
         - json:
             $.code: '0'
+    - name: 升级为合伙人-设置返佣比例
+      keyWord: 升级为合伙人
+      bodyEditor:
+        json:
+          $.futureRatio: ${futureRatio}
+          $.exchangeRatio: ${exchangeRatio}
     - name: 直客佣金查询
       host: ${partners_host}
       url: /partner/rebate/userRebate/list

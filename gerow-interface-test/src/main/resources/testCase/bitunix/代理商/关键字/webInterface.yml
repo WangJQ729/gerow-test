@@ -29,6 +29,6 @@ keyWord:
       extractor:
         - json:
             webFee: $.data.data[0].fee
-            progress: $.data.data[0].progress
+            dealAmount: $.data.data[0].dealAmount
             orderId: $.data.data[0].orderId
       assertion: [ json: { $.code: '0' } ]

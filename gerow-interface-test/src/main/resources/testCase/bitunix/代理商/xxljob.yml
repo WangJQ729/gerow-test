@@ -1,0 +1,9 @@
+name: xxljob
+testMethod:
+  - name: xxljob
+    step:
+      - keyWord: 登录xxljob
+      - keyWord: 触发定时任务
+      - keyWord: 触发定时任务
+      - keyWord: 触发定时任务
+      - keyWord: 触发定时任务

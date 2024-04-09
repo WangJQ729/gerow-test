@@ -2,6 +2,7 @@ data:
   test:
     platform: bitunix
     host: api.bitunix.one
+    xxljob_host: https://xxljob.bitunix.one
     partners_host: https://partners.bitunix.one
     partnersadmin_host: https://partnersadmin.bitunix.one
 client:

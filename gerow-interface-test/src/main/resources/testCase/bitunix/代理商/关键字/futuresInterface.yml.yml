@@ -16,7 +16,7 @@ keyWord:
       headers:
         Token: ${token}
       body: |
-        {"symbol":"${symbol}","side":${side},"amount":"${amount}","price":"","positionId":"${position_id}"}
+        {"symbol":"${market}","side":${side},"amount":"${amount}","price":"","positionId":"${position_id}"}
       extractor:
         - json:
             closeOrderId: $.data.orderId

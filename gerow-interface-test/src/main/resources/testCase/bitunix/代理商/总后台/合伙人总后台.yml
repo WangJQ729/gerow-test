@@ -1,4 +1,5 @@
 name: 合伙人总后台
+story: partnersadmin
 invocationCount: 1
 dataProvider:
   - email: gerow${__time()}@bitunix.com
@@ -21,13 +22,12 @@ beforeClass:
     - keyWord: 快捷注册
 testMethod:
   - name: 新增合伙人
+    dataProvider:
+      - futureRatio: 80
+        exchangeRatio: 80
     step:
       - keyWord: 获取用户信息
-      - keyWord: 升级为合伙人
-        bodyEditor:
-          json:
-            $.futureRatio: 80
-            $.exchangeRatio: 80
+      - keyWord: 升级为合伙人-设置返佣比例
       - keyWord: 通过uid获取用户token
       - keyWord: 增加合约账户资产
       - keyWord: 市价开仓
@@ -37,21 +37,14 @@ testMethod:
     dataProvider:
       - partner_email: ${email}
         new_emails: gerow${__time()}@bitunix.com
+        futureRatio: 30
+        exchangeRatio: 30
     step:
       - keyWord: 登录partners
       - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册
-        bodyEditor:
-          json:
-            $.emails:
-              - ${new_emails}
+      - keyWord: 快捷注册-新邮箱
       - keyWord: 获取用户信息
-      - keyWord: 升级为合伙人
-        bodyEditor:
-          json:
-            $.nickName: ${new_emails}
-            $.futureRatio: 30
-            $.exchangeRatio: 30
+      - keyWord: 升级为合伙人-设置返佣比例
       - keyWord: 通过uid获取用户token
       - keyWord: 增加合约账户资产
       - keyWord: 市价开仓

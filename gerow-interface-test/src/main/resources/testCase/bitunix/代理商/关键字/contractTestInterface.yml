@@ -15,6 +15,12 @@ keyWord:
       extractor:
         - json:
             userId: $.data[0]
+    - name: 快捷注册-新邮箱
+      keyWord: 快捷注册
+      bodyEditor:
+        json:
+          $.emails:
+            - ${new_emails}
     - name: 增加合约账户资产
       url: /test/futuresproxy/inner/test/transfer
       method: POST
@@ -47,4 +53,7 @@ keyWord:
       method: POST
       extractor:
         - json:
-            position_id: $.data.position_id
+            position_id: $.data[0].position_id
+            amount: $.data[0].amount
+            market: $.data[0].market
+            side: $.data[0].side
