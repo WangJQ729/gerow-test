@@ -24,6 +24,10 @@ keyWord:
       extractor:
         - json:
             vipCode: $.result.vipCode
+            exchangeSubRatio: $.result.exchangeSubRatio
+            exchangeSelfRatio: $.result.exchangeSelfRatio
+            futureSelfRatio: $.result.futureSelfRatio
+            futureSubRatio: $.result.futureSubRatio
     - name: 升级为合伙人
       host: ${partners_host}
       url: /partner/add
@@ -63,6 +67,13 @@ keyWord:
       assertion:
         - json:
             $.result.items[0].makerFee: ${openDealFee}
+            $.result.items[0].makerRebate: ${__BeanShell(${openDealFee} * (${totalExchangeRatio} - ${futureRatio}) / 100)}
+          assertionType: EIGHTDECIMALPLACES
+    - name: 合伙人佣金查询-首单
+      keyWord: 直客佣金查询
+      assertion:
+        - json:
+            $.result.items[0].makerFee: ${openDealFee}
             $.result.items[0].makerRebate: ${__BeanShell(${openDealFee} * ${futureRatio} / 100)}
           assertionType: EIGHTDECIMALPLACES
     - name: 直客佣金查询-开仓
@@ -70,12 +81,21 @@ keyWord:
       assertion:
         - json:
             $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${openDealFee})}
+            $.result.items[0].makerRebate: ${__BeanShell(${makerRebate} + ${openDealFee} * (${totalExchangeRatio} - ${futureRatio}) / 100)}
           assertionType: EIGHTDECIMALPLACES
     - name: 直客佣金查询-平仓
       keyWord: 直客佣金查询
       assertion:
         - json:
             $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${closeDealFee})}
+            $.result.items[0].makerRebate: ${__BeanShell(${makerRebate} + ${closeDealFee} * (${totalExchangeRatio} - ${futureRatio})/ 100)}
+          assertionType: EIGHTDECIMALPLACES
+    - name: 合伙人佣金查询-平仓
+      keyWord: 直客佣金查询
+      assertion:
+        - json:
+            $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${closeDealFee})}
+            $.result.items[0].makerRebate: ${__BeanShell(${makerRebate} + ${closeDealFee} * ${futureRatio}/ 100)}
           assertionType: EIGHTDECIMALPLACES
     - name: 直客佣金查询-现货
       keyWord: 直客佣金查询

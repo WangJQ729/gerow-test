@@ -26,7 +26,7 @@ public class YmlTestMethodEntity {
      */
     private String name;
     private String description;
-    private String author = "王健强";
+    private String author = "GerowWang";
     private SeverityLevel severity = SeverityLevel.NORMAL;
     /**
      * 测试步骤

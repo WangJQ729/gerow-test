@@ -18,7 +18,7 @@
        
        -Dplatform=融合版                  平台为融合版
        
-       -Dtest.severity=ALL 执行的用例等级为所有等级，可选参数：   BLOCKER
+       -Dtest.severity=ALL 执行的用例等级为所有等级，可选参数：    BLOCKER
                                                             CRITICAL
                                                             NORMAL
                                                             MINOR

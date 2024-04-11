@@ -35,12 +35,6 @@ keyWord:
       method: POST
       body: |
         {"uid":${userId},"futureRatio":1,"exchangeRatio":1,"nickName":"${nickName}","bdUid":${bd_uid}}
-    - name: 统计佣金发放
-      host: ${partnersadmin_host}
-      url: /partner/rebate/createRecord
-      method: GET
-      headers:
-        Token: ${partnersadmin_token}
     - name: 佣金发放查询
       host: ${partnersadmin_host}
       url: /partner/root/rebate/statistics/list
@@ -66,7 +60,7 @@ keyWord:
         Token: ${partnersadmin_token}
       method: POST
       body: |
-        {"page":1,"pageSize":10,"uid":"${parentUid}","registerStart":"","registerEnd":"","pageIndex":1}
+        {"page":1,"pageSize":10,"uid":"","registerStart":"","registerEnd":"","pageIndex":1,"nickName":"${nickName}"}
       extractor:
         - json:
             totalExchangeRatio: $.result.items[0].exchangeRatio
