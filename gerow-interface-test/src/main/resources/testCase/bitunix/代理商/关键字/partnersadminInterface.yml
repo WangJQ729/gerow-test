@@ -60,7 +60,7 @@ keyWord:
         Token: ${partnersadmin_token}
       method: POST
       body: |
-        {"page":1,"pageSize":10,"uid":"","registerStart":"","registerEnd":"","pageIndex":1,"nickName":"${nickName}"}
+        {"page":1,"pageSize":10,"uid":"${partner_uid}","registerStart":"","registerEnd":"","pageIndex":1}
       extractor:
         - json:
             totalExchangeRatio: $.result.items[0].exchangeRatio

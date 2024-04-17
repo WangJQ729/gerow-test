@@ -162,6 +162,8 @@ public class Extractor {
             } else {
                 if (!ignore) {
                     Assertions.fail("请求响应中未找到：" + value);
+                } else {
+                    save.save(name, "0");
                 }
             }
         } else {

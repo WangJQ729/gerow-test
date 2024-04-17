@@ -2,9 +2,9 @@ name: 合伙人分后台
 story: partners
 invocationCount: 1
 dataProvider:
-  - email: gerow${__time()}@bitunix.com
+  - email: ${__RandomEmail()}
     password: Aa123456
-    partner_email: gerow.wang@gmail.com
+    partner_email: gerow@126.com
     partner_password: Aa123456
     partnersadmin_account: admin
     partnersadmin_password: admin
@@ -19,19 +19,19 @@ beforeClass:
     - keyWord: 获取BD列表
     - keyWord: 登录partners
     - keyWord: 获取合伙人邀请码
-    - keyWord: 快捷注册
+    - keyWord: 快捷注册-合伙人邀请码
 testMethod:
   - name: 新增合伙人
     dataProvider:
       - futureRatio: 50
         exchangeRatio: 50
-        new_emails: gerow${__time()}@bitunix.com
+        new_emails: ${__RandomEmail()}
     step:
       - keyWord: 获取用户信息
       - keyWord: 升级为合伙人-设置返佣比例
       - keyWord: 登录partners-新合伙人
       - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-新邮箱
+      - keyWord: 新邮箱快捷注册-合伙人邀请码
       - keyWord: 通过uid获取用户token
       - keyWord: 增加合约账户资产
       - keyWord: 市价开仓

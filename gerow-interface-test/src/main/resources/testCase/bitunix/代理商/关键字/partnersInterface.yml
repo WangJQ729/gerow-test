@@ -15,6 +15,15 @@ keyWord:
         json:
           $.account: ${email}
           $.password: ${__digest(MD5,${password})}
+    - name: 获取合伙人信息
+      host: ${partners_host}
+      url: /partner/getUserInfo
+      headers:
+        Token: ${partner_token}
+      method: GET
+      extractor:
+        - json:
+            partner_uid: $.result.uid
     - name: 获取合伙人邀请码
       host: ${partners_host}
       url: /partner/statistics/myInvitation
@@ -45,6 +54,20 @@ keyWord:
         json:
           $.futureRatio: ${futureRatio}
           $.exchangeRatio: ${exchangeRatio}
+    - name: 新用户升级为合伙人
+      keyWord: 升级为合伙人
+      bodyEditor:
+        json:
+          $.futureRatio: ${futureRatio}
+          $.exchangeRatio: ${exchangeRatio}
+          $.nickName: ${nickName}
+    - name: 新用户升级为合伙人-修改返佣比例
+      keyWord: 升级为合伙人
+      bodyEditor:
+        json:
+          $.futureRatio: ${__BeanShell(${futureSelfRatio} - 1)}
+          $.exchangeRatio: ${__BeanShell(${exchangeSelfRatio} - 1)}
+          $.nickName: ${nickName}
     - name: 直客佣金查询
       host: ${partners_host}
       url: /partner/rebate/userRebate/list
@@ -56,12 +79,14 @@ keyWord:
         pageSize: 10
         uid: ${userId}
         showBelow: false
+        tradeType: futures
       method: GET
       extractor:
         - json:
             makerFee: $.result.items[0].makerFee
             makerRebate: $.result.items[0].makerRebate
             makerTradeAmount: $.result.items[0].makerTradeAmount
+          ignore: true
     - name: 直客佣金查询-首单
       keyWord: 直客佣金查询
       assertion:
@@ -76,12 +101,19 @@ keyWord:
             $.result.items[0].makerFee: ${openDealFee}
             $.result.items[0].makerRebate: ${__BeanShell(${openDealFee} * ${futureRatio} / 100)}
           assertionType: EIGHTDECIMALPLACES
+    - name: 合伙人佣金查询-平仓
+      keyWord: 直客佣金查询
+      assertion:
+        - json:
+            $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${closeDealFee})}
+            $.result.items[0].makerRebate: ${__BeanShell(${makerRebate} + ${closeDealFee} * ${futureRatio}/ 100)}
+          assertionType: EIGHTDECIMALPLACES
     - name: 直客佣金查询-开仓
       keyWord: 直客佣金查询
       assertion:
         - json:
             $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${openDealFee})}
-            $.result.items[0].makerRebate: ${__BeanShell(${makerRebate} + ${openDealFee} * (${totalExchangeRatio} - ${futureRatio}) / 100)}
+            $.result.items[0].makerRebate: ${__BeanShell(${makerRebate} + ${openDealFee} *  (${totalExchangeRatio} - ${futureRatio}) / 100)}
           assertionType: EIGHTDECIMALPLACES
     - name: 直客佣金查询-平仓
       keyWord: 直客佣金查询
@@ -90,23 +122,28 @@ keyWord:
             $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${closeDealFee})}
             $.result.items[0].makerRebate: ${__BeanShell(${makerRebate} + ${closeDealFee} * (${totalExchangeRatio} - ${futureRatio})/ 100)}
           assertionType: EIGHTDECIMALPLACES
-    - name: 合伙人佣金查询-平仓
-      keyWord: 直客佣金查询
-      assertion:
-        - json:
-            $.result.items[0].makerFee: ${__BeanShell(${makerFee} + ${closeDealFee})}
-            $.result.items[0].makerRebate: ${__BeanShell(${makerRebate} + ${closeDealFee} * ${futureRatio}/ 100)}
-          assertionType: EIGHTDECIMALPLACES
-    - name: 直客佣金查询-现货
+    - name: 直客佣金查询-获取现货交易数据
       keyWord: 直客佣金查询
       variables:
         coin: BTC
+        tradeType: exchange
       extractor:
         - json:
             takerTradeAmount: $.result.items[0].takerTradeAmount
             takerFee: $.result.items[0].takerFee
             takerRealFee: $.result.items[0].takerRealFee
             takerRebate: $.result.items[0].takerRebate
+          ignore: true
+    - name: 直客佣金查询-校验现货交易数据
+      keyWord: 直客佣金查询-获取现货交易数据
+      assertion:
+        - json:
+            $.result.items[0].takerRebate: ${__BeanShell(${takerRebate} + ${webFee} * (${totalExchangeRatio} - ${exchangeRatio}) / 100)}
+            $.result.items[0].takerFee: ${__BeanShell(${takerFee} + ${webFee})}
+            $.result.items[0].takerRealFee: ${__BeanShell(${takerRealFee} + ${webFee})}
+            $.result.items[0].takerTradeAmount: ${__BeanShell(${takerTradeAmount} + ${dealAmount})}
+          assertionType: EIGHTDECIMALPLACES
+          valueType: BIGDECIMAL
     - name: 代理商现货历史委托
       host: ${partners_host}
       url: /partner/trade/order/spot_history/history
@@ -121,7 +158,7 @@ keyWord:
       extractor:
         - json:
             partnerFee: $.result.fee
-    - name: 用户列表
+    - name: 分后台获取用户信息
       host: ${partners_host}
       url: /partner/user/page
       headers:
