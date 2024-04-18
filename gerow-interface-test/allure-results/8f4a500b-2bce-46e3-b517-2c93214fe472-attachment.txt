@@ -1,0 +1,13 @@
+HTTPS/1.1 200
+Server:nginx
+Date:Thu, 18 Apr 2024 01:54:28 GMT
+Content-Type:application/json
+Transfer-Encoding:chunked
+Connection:keep-alive
+Vary:Accept-Encoding
+Access-Control-Allow-Origin:*
+Access-Control-Allow-Methods:GET, POST, PUT,OPTIONS
+Access-Control-Allow-Headers:*
+Access-Control-Expose-Headers:Content-Length,Content-Range
+
+{"msg":"成功","code":0,"data":[{"leverage":20,"bkr_price":"0","liq_order_time":"0","fee":"20.7784692928","liq_price":"0","margin_rate":"0.0004","unRoe":"-0.1079","open_margin":"988.3539694500000000","type":2,"profit_real":"-88.90168100000000000000","markPrice":"61438.65","update_time":"2024-04-18T01:54:28Z","mainten_margin_amount":"78.6414720000000000","open_price":"61772.1230906250000000","open_val":"19767.07938900000000000000","profit_unreal":"-106.71138900000000000000","side":2,"amount":"0.3200","funding":"24.8925617657633987","create_time":"2024-04-17T11:55:24Z","liq_time":"0","amount_max":"0.4800","pnl":"-88.90168100000000000000","market":"BTCUSDT","position_mode":1,"finish_type":0,"mainten_margin":"0.0040000000","margin_amount":"988.3539694500000000","user_id":"48321","close_left":"0.3200","lastPrice":"61438.88","position_id":"6821908728680388685"}],"success":true}

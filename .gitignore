@@ -7,6 +7,5 @@
 *.iml
 gerow-test-api-yml/target/
 gerow-test-utils/target/
-gerow-interface-test/allure-results
 gerow-interface-test/target/
 

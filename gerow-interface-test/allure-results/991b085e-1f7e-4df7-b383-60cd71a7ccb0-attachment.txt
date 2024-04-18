@@ -1,0 +1,6 @@
+GET https://api.bitunix.one/futures/futures/order/history?side=0&pageSize=10&page=1&type=2 HTTPS/1.1
+Token:d67642d7535187359ed4fbee3adf9c33ff503bbf8131439f9241e3c6f1111fbb
+Accept-Encoding:gzip, deflate, br
+Accept:*/*
+Content-Type:application/json;charset=UTF-8
+

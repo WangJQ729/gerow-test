@@ -3,9 +3,7 @@ story: partners
 invocationCount: 1
 dataProvider:
   - email: ${__RandomEmail()}
-    password: Aa123456
     partner_email: gerow@126.com
-    partner_password: Aa123456
     partnersadmin_account: admin
     partnersadmin_password: admin
     bd_name: gerow3
@@ -28,7 +26,7 @@ testMethod:
         new_emails: ${__RandomEmail()}
     step:
       - keyWord: 获取用户信息
-      - keyWord: 升级为合伙人-设置返佣比例
+      - keyWord: 升级为合伙人
       - keyWord: 登录partners-新合伙人
       - keyWord: 获取合伙人邀请码
       - keyWord: 新邮箱快捷注册-合伙人邀请码

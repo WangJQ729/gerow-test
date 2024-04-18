@@ -1,0 +1,6 @@
+GET https://partners.bitunix.one/partner/rebate/userRebate/list?uid=48550&pageSize=10&showBelow=false&page=1&tradeType=futures HTTPS/1.1
+Token:eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl91c2VyX2tleSI6NDg1NDl9.nCRpx74hUdZgGx87wP49DWDYYGyzoryqqjeVauNa_7o
+Accept-Encoding:gzip, deflate, br
+Accept:*/*
+Content-Type:application/json;charset=UTF-8
+

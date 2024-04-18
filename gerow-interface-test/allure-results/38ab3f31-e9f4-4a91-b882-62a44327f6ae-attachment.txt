@@ -1,0 +1,8 @@
+POST https://api.bitunix.one/test/futuresproxy/inner/test/transfer HTTPS/1.1
+Uid:48547
+Type:query_by_uid
+Accept-Encoding:gzip, deflate, br
+Accept:*/*
+Content-Type:application/json;charset=UTF-8
+
+{"uid":48547,"amount":9999,"coin":"USDT"}

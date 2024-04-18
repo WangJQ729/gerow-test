@@ -1,0 +1,7 @@
+POST https://partners.bitunix.one/partner/user/page HTTPS/1.1
+Token:eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl91c2VyX2tleSI6NDg1NjF9.lTA9I4bVsv7G3jDQNJMpaNCFLMAIKe0qCY-AsDGEj5Y
+Accept-Encoding:gzip, deflate, br
+Accept:*/*
+Content-Type:application/json;charset=UTF-8
+
+{"registerEnd":"","uid":"48562","registerStart":"","subShow":true,"pageSize":10,"page":1}

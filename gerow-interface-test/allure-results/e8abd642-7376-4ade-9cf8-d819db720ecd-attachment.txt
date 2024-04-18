@@ -1,0 +1,13 @@
+HTTPS/1.1 200
+Server:nginx
+Date:Thu, 18 Apr 2024 01:53:59 GMT
+Content-Type:application/json
+Transfer-Encoding:chunked
+Connection:keep-alive
+Vary:Accept-Encoding
+Access-Control-Allow-Origin:*
+Access-Control-Allow-Methods:GET, POST, PUT,OPTIONS
+Access-Control-Allow-Headers:*
+Access-Control-Expose-Headers:Content-Length,Content-Range
+
+{"msg":"Success","code":0,"data":{"total":2,"current":1,"pages":1,"size":10,"optimizeCountSql":true,"records":[{"symbol":"BTCUSDT","leverage":20,"positionType":2,"orderId":"1780776753317289984","openPrice":"61444.2","orderStatus":"FILLED","type":2,"mtime":"2024-04-18T01:53:57Z","price":"58367.96","ctime":"2024-04-18T01:53:57Z","reductionOnly":true,"side":1,"amount":"0.16","dealAmount":"0.16","positionMode":1,"dealFee":"5.8982288664","profitRate":"-0.14","effectType":1,"dealProfit":"-0.690556","averagePrice":"61439.88","stopProfitLoss":0},{"symbol":"BTCUSDT","leverage":20,"positionType":2,"orderId":"1780776694387318784","openPrice":"0","orderStatus":"FILLED","type":2,"mtime":"2024-04-18T01:53:43Z","price":"64519.82","ctime":"2024-04-18T01:53:43Z","reductionOnly":false,"side":2,"amount":"0.16","dealAmount":"0.16","positionMode":1,"dealFee":"5.8986432","effectType":1,"dealProfit":"0","averagePrice":"61444.2","stopProfitLoss":0}],"searchCount":true,"orders":[]}}

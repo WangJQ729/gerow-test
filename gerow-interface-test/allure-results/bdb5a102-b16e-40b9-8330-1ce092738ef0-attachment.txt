@@ -1,0 +1,7 @@
+POST https://api.bitunix.one/futures/futures/position/close/market HTTPS/1.1
+Token:cf1402438ba55f930936c6ddb3e0deaf1099f32141ac48cbb63769c9c1e713c5
+Accept-Encoding:gzip, deflate, br
+Accept:*/*
+Content-Type:application/json;charset=UTF-8
+
+{"symbol":"BTCUSDT","side":2,"amount":"0.1600","positionId":"3145865128904821614","price":""}

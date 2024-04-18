@@ -1,0 +1,13 @@
+HTTPS/1.1 200
+Server:nginx
+Date:Thu, 18 Apr 2024 01:53:14 GMT
+Content-Type:application/json
+Transfer-Encoding:chunked
+Connection:keep-alive
+Vary:Accept-Encoding
+Access-Control-Allow-Origin:*
+Access-Control-Allow-Methods:GET, POST, PUT,OPTIONS
+Access-Control-Allow-Headers:*
+Access-Control-Expose-Headers:Content-Length,Content-Range
+
+{"msg":"Success","code":0,"data":{"total":0,"current":1,"pages":0,"size":10,"optimizeCountSql":true,"records":[],"searchCount":true,"orders":[]}}

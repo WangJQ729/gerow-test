@@ -5,6 +5,7 @@ data:
     xxljob_host: https://xxljob.bitunix.one
     partners_host: https://partners.bitunix.one
     partnersadmin_host: https://partnersadmin.bitunix.one
+    password: Aa123456
 client:
   protocol: https
   timeOut: 30

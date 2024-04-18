@@ -1,0 +1,7 @@
+POST https://partners.bitunix.one/partner/add HTTPS/1.1
+Token:eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl91c2VyX2tleSI6NDg1NTN9.qXcUOlfbDfFSOyrmiVc9MZPe5S85npeCIJca6kvi6P4
+Accept-Encoding:gzip, deflate, br
+Accept:*/*
+Content-Type:application/json;charset=UTF-8
+
+{"uid":48554,"exchangeRatio":75,"futureRatio":75,"nickName":"gerow1713405301043"}

@@ -1,0 +1,6 @@
+GET https://partners.bitunix.one/partner/statistics/myInvitation HTTPS/1.1
+Token:eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl91c2VyX2tleSI6NDg1NTd9.DPm9sIJD3Kla_vFzL5kLlQYirYBmsVpyFEWK9h5xNPs
+Accept-Encoding:gzip, deflate, br
+Accept:*/*
+Content-Type:application/json;charset=UTF-8
+

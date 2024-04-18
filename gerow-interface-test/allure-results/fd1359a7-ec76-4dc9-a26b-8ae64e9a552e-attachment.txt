@@ -1,0 +1,7 @@
+POST https://api.bitunix.one/futures/futures/order/market HTTPS/1.1
+Token:27340b302721defdbfab5662780f22f002c89cd56c4342a5ae316b0a8b5989eb
+Accept-Encoding:gzip, deflate, br
+Accept:*/*
+Content-Type:application/json;charset=UTF-8
+
+{"symbol":"BTCUSDT","amount":"0.16","side":"2","reductionOnly":false}

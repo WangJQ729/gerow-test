@@ -1,0 +1,6 @@
+POST https://partnersadmin.bitunix.one/partner/root/login HTTPS/1.1
+Accept-Encoding:gzip, deflate, br
+Accept:*/*
+Content-Type:application/json;charset=UTF-8
+
+{"password":"21232f297a57a5a743894a0e4a801fc3","account":"admin"}

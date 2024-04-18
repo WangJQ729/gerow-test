@@ -5,7 +5,6 @@ dataProvider:
   - partnersadmin_account: admin
     partnersadmin_password: admin
     partner_email: gerow@126.com
-    partner_password: Aa123456
     bd_nickName: gerow
     symbol: BTCUSDT
     amount: 0.16
@@ -22,7 +21,6 @@ testMethod:
   - name: 用户市价开仓
     dataProvider:
       - email: ${__RandomEmail()}
-        password: Aa123456
     step:
       - keyWord: 快捷注册-合伙人邀请码
       - keyWord: 分后台获取用户信息
@@ -40,14 +38,13 @@ testMethod:
   - name: 用户成为合伙人市价开仓
     dataProvider:
       - email: ${__RandomEmail()}
-        password: Aa123456
         futureRatio: 20
         exchangeRatio: 30
     step:
       - keyWord: 快捷注册-合伙人邀请码
       - keyWord: 增加合约账户资产
       - keyWord: 通过uid获取用户token
-      - keyWord: 升级为合伙人-设置返佣比例
+      - keyWord: 升级为合伙人
       - keyWord: 市价开仓
       - keyWord: 持有仓位信息
       - keyWord: U本位合约历史委托
@@ -57,66 +54,28 @@ testMethod:
       - keyWord: U本位合约历史委托-平仓
       - keyWord: 代理商后台更新返佣统计
       - keyWord: 合伙人佣金查询-平仓
-  - name: 邀请用户
+  - name: 下级合约交易
     dataProvider:
-      - password: Aa123456
-        futureRatio: 90
-        exchangeRatio: 90
+      - email: ${__RandomEmail()}
+        new_emails: gerow2${__time()}@bitunix.com
+        partner_email: ${email}
+        futureRatio: 50
+        exchangeRatio: 50
     step:
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 快捷注册-合伙人邀请码
       - keyWord: 获取用户信息
-      - keyWord: 新用户升级为合伙人
+      - keyWord: 升级为合伙人
       - keyWord: 登录partners-新合伙人
       - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
-      - keyWord: 获取用户信息
-      - keyWord: 新用户升级为合伙人-修改返佣比例
-      - keyWord: 登录partners-新合伙人
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
-      - keyWord: 获取用户信息
-      - keyWord: 新用户升级为合伙人-修改返佣比例
-      - keyWord: 登录partners-新合伙人
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
-      - keyWord: 获取用户信息
-      - keyWord: 新用户升级为合伙人-修改返佣比例
-      - keyWord: 登录partners-新合伙人
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
-      - keyWord: 获取用户信息
-      - keyWord: 新用户升级为合伙人-修改返佣比例
-      - keyWord: 登录partners-新合伙人
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
-      - keyWord: 获取用户信息
-      - keyWord: 新用户升级为合伙人-修改返佣比例
-      - keyWord: 登录partners-新合伙人
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
-      - keyWord: 获取用户信息
-      - keyWord: 新用户升级为合伙人-修改返佣比例
-      - keyWord: 登录partners-新合伙人
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
-      - keyWord: 获取用户信息
-      - keyWord: 新用户升级为合伙人-修改返佣比例
-      - keyWord: 登录partners-新合伙人
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
-      - keyWord: 获取用户信息
-      - keyWord: 新用户升级为合伙人-修改返佣比例
-      - keyWord: 登录partners-新合伙人
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
-      - keyWord: 获取用户信息
-      - keyWord: 新用户升级为合伙人-修改返佣比例
-      - keyWord: 登录partners-新合伙人
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
-      - keyWord: 获取用户信息
-      - keyWord: 新用户升级为合伙人-修改返佣比例
-      - keyWord: 登录partners-新合伙人
-      - keyWord: 获取合伙人邀请码
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 新邮箱快捷注册-合伙人邀请码
+      - keyWord: 通过uid获取用户token
+      - keyWord: 增加合约账户资产
+      - keyWord: 市价开仓
+      - keyWord: 持有仓位信息
+      - keyWord: U本位合约历史委托
+      - keyWord: 代理商后台更新返佣统计
+      - keyWord: 合伙人佣金查询-首单
+      - keyWord: 市价平仓
+      - keyWord: U本位合约历史委托-平仓
+      - keyWord: 代理商后台更新返佣统计
+      - keyWord: 合伙人佣金查询-平仓
