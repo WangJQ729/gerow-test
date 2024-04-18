@@ -87,7 +87,7 @@ public abstract class AbstractTestMethod implements ITestMethod {
 
     @Override
     public String toString() {
-        return this.params.toString();
+        return this.params.toString() + hashCode();
     }
 
     public String getDescription() {
