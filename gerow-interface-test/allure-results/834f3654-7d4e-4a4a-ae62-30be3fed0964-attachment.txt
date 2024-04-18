@@ -1,5 +1,0 @@
-GET https://partners.bitunix.one/partner/rebate/createRecord HTTPS/1.1
-Accept-Encoding:gzip, deflate, br
-Accept:*/*
-Content-Type:application/json;charset=UTF-8
-

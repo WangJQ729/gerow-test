@@ -6,7 +6,7 @@ keyWord:
       body: |
         {
             "emails": [
-                "${email}"
+                "${__RandomEmail(email)}"
             ],
             "password": "${password}",
             "normalAccount": true

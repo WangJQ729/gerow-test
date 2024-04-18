@@ -1,6 +1,0 @@
-POST https://api.bitunix.one/auth-v2/test/batch_register HTTPS/1.1
-Accept-Encoding:gzip, deflate, br
-Accept:*/*
-Content-Type:application/json;charset=UTF-8
-
-{"emails":["gerow1713405160299@bitunix.com"],"password":"Aa123456","invitedCode":"bu4p5710","normalAccount":true}

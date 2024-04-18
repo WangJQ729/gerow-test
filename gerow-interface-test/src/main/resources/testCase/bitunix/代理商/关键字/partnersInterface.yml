@@ -58,7 +58,7 @@ keyWord:
     - name: 新用户升级为合伙人-修改返佣比例
       keyWord: 升级为合伙人
       body: |
-        {"uid":${userId},"nickName":"${nickName}","futureRatio":${__BeanShell(${futureSelfRatio} - 5)},"exchangeRatio":${__BeanShell(${exchangeSelfRatio} - 5)}}
+        {"uid":${userId},"nickName":"${nickName}","futureRatio":${__BeanShell(${futureSelfRatio} - 10)},"exchangeRatio":${__BeanShell(${exchangeSelfRatio} - 10)}}
     - name: 直客佣金查询
       host: ${partners_host}
       url: /partner/rebate/userRebate/list
@@ -196,3 +196,13 @@ keyWord:
       assertion:
         - json:
             $.code: '0'
+    - name: 佣金发放明细
+      host: ${partners_host}
+      url: /partner/rebate/detail/list
+      headers:
+        Token: ${partner_token}
+      method: GET
+      variables:
+        showBelow: true
+        page: 1
+        pageSize: 10

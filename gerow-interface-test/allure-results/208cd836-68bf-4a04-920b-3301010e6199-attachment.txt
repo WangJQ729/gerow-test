@@ -1,8 +1,0 @@
-POST https://api.bitunix.one/test/futuresproxy/api/v1/position/pending HTTPS/1.1
-Uid:48550
-Type:query_by_uid
-Accept-Encoding:gzip, deflate, br
-Accept:*/*
-Content-Type:application/json;charset=UTF-8
-
-{"uid":48550}

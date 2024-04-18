@@ -1,5 +1,0 @@
-GET https://api.bitunix.one/web/test/login?userId=48547 HTTPS/1.1
-Accept-Encoding:gzip, deflate, br
-Accept:*/*
-Content-Type:application/json;charset=UTF-8
-

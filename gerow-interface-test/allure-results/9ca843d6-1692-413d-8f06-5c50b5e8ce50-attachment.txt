@@ -1,7 +1,0 @@
-POST https://api.bitunix.one/futures/futures/assets/futures2spot HTTPS/1.1
-Token:d9248afd08a6df44f2a9815e47d89e73f4a6bb8205374adcbc5c573b81ab57ff
-Accept-Encoding:gzip, deflate, br
-Accept:*/*
-Content-Type:application/json;charset=UTF-8
-
-{"symbol":"USDT","amount":"999"}

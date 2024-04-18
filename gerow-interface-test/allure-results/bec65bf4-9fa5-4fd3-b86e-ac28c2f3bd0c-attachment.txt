@@ -1,6 +1,0 @@
-POST https://partners.bitunix.one/partner/login HTTPS/1.1
-Accept-Encoding:gzip, deflate, br
-Accept:*/*
-Content-Type:application/json;charset=UTF-8
-
-{"password":"afdd0b4ad2ec172c586e2150770fbf9e","account":"gerow1713405301043@yahoo.com"}

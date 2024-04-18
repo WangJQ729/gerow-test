@@ -1,6 +1,0 @@
-GET https://partnersadmin.bitunix.one/partner/root/getUserInfoByUid/48551 HTTPS/1.1
-Token:6c5db89bc8204640ba932b7b3ef8dde7
-Accept-Encoding:gzip, deflate, br
-Accept:*/*
-Content-Type:application/json;charset=UTF-8
-

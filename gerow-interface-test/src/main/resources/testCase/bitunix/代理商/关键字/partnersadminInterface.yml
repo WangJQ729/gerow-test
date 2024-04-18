@@ -34,7 +34,7 @@ keyWord:
         Token: ${partnersadmin_token}
       method: POST
       body: |
-        {"uid":${userId},"futureRatio":1,"exchangeRatio":1,"nickName":"${nickName}","bdUid":${bd_uid}}
+        {"uid":${userId},"futureRatio":95,"exchangeRatio":95,"nickName":"${nickName}","bdUid":${bd_uid}}
     - name: 佣金发放查询
       host: ${partnersadmin_host}
       url: /partner/root/rebate/statistics/list
