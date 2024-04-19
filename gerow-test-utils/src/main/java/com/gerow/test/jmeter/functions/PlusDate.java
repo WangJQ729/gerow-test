@@ -37,7 +37,7 @@ public class PlusDate extends AbstractFunction {
         if (StringUtils.isBlank(fm)) {
             fm = "yyyy-MM-dd";
         }
-        LocalDate result = LocalDate.now().plusDays(Integer.valueOf(this.plusDay.execute().trim()));
+        LocalDate result = LocalDate.now().plusDays(Integer.parseInt(this.plusDay.execute().trim()));
         this.result = result.format(DateTimeFormatter.ofPattern(fm));
     }
 

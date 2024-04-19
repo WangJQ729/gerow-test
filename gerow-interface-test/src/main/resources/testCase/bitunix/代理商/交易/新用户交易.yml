@@ -56,18 +56,15 @@ testMethod:
       - keyWord: 合伙人佣金查询-平仓
   - name: 下级合约交易
     dataProvider:
-      - email: ${__RandomEmail()}
-        new_emails: gerow2${__time()}@bitunix.com
-        partner_email: ${email}
-        futureRatio: 50
+      - futureRatio: 50
         exchangeRatio: 50
     step:
-      - keyWord: 快捷注册-合伙人邀请码
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
       - keyWord: 获取用户信息
       - keyWord: 升级为合伙人
       - keyWord: 登录partners-新合伙人
       - keyWord: 获取合伙人邀请码
-      - keyWord: 新邮箱快捷注册-合伙人邀请码
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
       - keyWord: 通过uid获取用户token
       - keyWord: 增加合约账户资产
       - keyWord: 市价开仓

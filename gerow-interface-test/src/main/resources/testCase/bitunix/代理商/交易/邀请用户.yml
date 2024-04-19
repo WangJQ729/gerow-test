@@ -22,9 +22,7 @@ testMethod:
       - keyWord: 获取合伙人邀请码
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱
       - keyWord: 获取用户信息
-      - keyWord: 升级为合伙人
-        body: |
-          {"uid":${userId},"nickName":"${email}","futureRatio":${totalFutureRatio},"exchangeRatio":${totalExchangeRatio}}
+      - keyWord: 升级为合伙人-最高返佣
       - keyWord: 登录partners-新合伙人
       - keyWord: 获取合伙人邀请码
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱
@@ -57,9 +55,7 @@ testMethod:
       - keyWord: 获取合伙人邀请码
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱
       - keyWord: 获取用户信息
-      - keyWord: 升级为合伙人
-        body: |
-          {"uid":${userId},"nickName":"${email}","futureRatio":${totalFutureRatio},"exchangeRatio":${totalExchangeRatio}}
+      - keyWord: 升级为合伙人-最高返佣
       - keyWord: 登录partners-新合伙人
       - keyWord: 获取合伙人邀请码
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱

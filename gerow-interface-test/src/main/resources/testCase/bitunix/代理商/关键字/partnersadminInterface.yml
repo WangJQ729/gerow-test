@@ -65,3 +65,12 @@ keyWord:
         - json:
             totalExchangeRatio: $.result.items[0].exchangeRatio
             totalFutureRatio: $.result.items[0].futureRatio
+    - name: 变更BD
+      host: ${partnersadmin_host}
+      url: /partner/root/change_bd
+      headers:
+        Token: ${partnersadmin_token}
+      method: POST
+      body: |
+        {"bdUid":284,"uid":${partner_uid}}
+      assertion: [json: {$.code: '0'}]

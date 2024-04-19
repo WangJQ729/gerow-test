@@ -11,10 +11,8 @@ keyWord:
             partner_token: $.result.token
     - name: 登录partners-新合伙人
       keyWord: 登录partners
-      bodyEditor:
-        json:
-          $.account: ${email}
-          $.password: ${__digest(MD5,${password})}
+      body: |
+        {"password":"${__digest(MD5,${password})}","account":"${email}"}
     - name: 获取合伙人信息
       host: ${partners_host}
       url: /partner/getUserInfo
@@ -48,6 +46,10 @@ keyWord:
       assertion:
         - json:
             $.code: '0'
+    - name: 升级为合伙人-最高返佣
+      keyWord: 升级为合伙人
+      body: |
+        {"uid":${userId},"nickName":"${email}","futureRatio":${totalFutureRatio},"exchangeRatio":${totalExchangeRatio}}
     - name: 新用户升级为合伙人
       keyWord: 升级为合伙人
       bodyEditor:
