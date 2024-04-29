@@ -6,7 +6,7 @@ dataProvider:
     partnersadmin_password: admin
     bd_email: gerow@bitunix.io
     bd_name: gerow
-    symbol: BTCUSDT
+    symbol: ETHUSDT
     amount: 0.16
     side: 2
 beforeMethod:
@@ -18,13 +18,17 @@ testMethod:
   - name: 更改BD
     step:
       - keyWord: 获取BD列表
+      - keyWord: BD统计
       - keyWord: 快捷注册
+      - keyWord: BD统计-团队人数不变
       - keyWord: 获取用户信息
       - keyWord: 新增合伙人
+      - keyWord: BD统计-校验新增合伙人
       - keyWord: 登录partners-新合伙人
       - keyWord: 获取合伙人信息
       - keyWord: 获取合伙人邀请码
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: BD统计-用户合伙人邀请码注册
       - keyWord: 获取用户信息
         extractor:
           - json:
@@ -34,9 +38,11 @@ testMethod:
       - keyWord: 获取团队佣金
       - keyWord: 获取本月交易额
       - keyWord: 新用户升级为合伙人-修改返佣比例
+      - keyWord: BD统计-团队人数不变
       - keyWord: 登录partners-新合伙人
       - keyWord: 获取合伙人邀请码
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: BD统计-用户合伙人邀请码注册
       - keyWord: 获取用户信息
       - keyWord: 增加合约账户资产
       - keyWord: 通过uid获取用户token
@@ -51,6 +57,7 @@ testMethod:
               $.result.items[0].makerRebate: ${__BeanShell(${openDealFee} * ${futureSelfRatio} / 100)}
             assertionType: EIGHTDECIMALPLACES
       - keyWord: 获取本月交易额-校验交易额
+      - keyWord: BD统计
       - keyWord: 获取团队佣金
         assertion:
           - json:
@@ -74,6 +81,7 @@ testMethod:
             assertionType: EIGHTDECIMALPLACES
       - keyWord: 变更BD
       - keyWord: 代理商后台更新返佣统计
+      - keyWord: BD统计
       - keyWord: 获取本月交易额
         assertion:
           - json:

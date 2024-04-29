@@ -6,6 +6,7 @@ data:
     partners_host: https://partners.bitunix.one
     partnersadmin_host: https://partnersadmin.bitunix.one
     bdadmin_host: https://bdadmin.bitunix.one
+    spotwebadmin_host: https://spotwebadmin.bitunix.one
     password: Aa123456
 client:
   protocol: https

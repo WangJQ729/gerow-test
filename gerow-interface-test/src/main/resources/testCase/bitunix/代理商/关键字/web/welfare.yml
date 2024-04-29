@@ -1,0 +1,14 @@
+keyWord:
+  step:
+    - name: 统计活动数据
+      url: /welfare/inner/bonus/activity/userRecord
+      method: GET
+      assertion: [ json: { $.code: '0' } ]
+    - name: 活动报名
+      url: /welfare/bonus/activity/goal/register
+      headers:
+        Token: ${token}
+      method: POST
+      body: |
+        {"actId":${actId}}
+      assertion: [ json: { $.code: '0' } ]

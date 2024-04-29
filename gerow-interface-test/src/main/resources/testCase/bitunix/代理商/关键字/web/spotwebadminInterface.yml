@@ -1,0 +1,45 @@
+keyWord:
+  step:
+    - name: 现货后台获取登录信息
+      host: ${spotwebadmin_host}
+      url: /api/login
+      method: POST
+      body: |
+        {
+            "userName": "${userName}",
+            "password": "${__digest(MD5,${password})}"
+        }
+      extractor:
+        - json:
+            spotwebadmin_userId: $.result.userId
+    - name: 现货后台获取googleKey
+      host: ${spotwebadmin_host}
+      url: /api/get_google_key
+      method: GET
+      variables:
+        userId: ${spotwebadmin_userId}
+      extractor:
+        - json:
+            googleKey: $.result.googleKey
+    - name: 登录现货后台
+      host: ${spotwebadmin_host}
+      url: /api/google_auth
+      method: POST
+      body: |
+        {
+            "googleCode": "${__GoogleAuthenticator(${googleCode})}",
+            "userName": "${userName}",
+            "password": "${__digest(MD5,${password})}",
+            "authType": 2,
+            "googleKey": "${googleKey}"
+        }
+      extractor:
+        - json:
+            spotwebadmin_token: $.result.token
+    - name: 任务类奖励活动列表
+      host: ${spotwebadmin_host}
+      url: /api/recharge/common/act/list
+      headers:
+        Token: ${spotwebadmin_token}
+      method: GET
+      assertion: [json: {$.code: '0'}]

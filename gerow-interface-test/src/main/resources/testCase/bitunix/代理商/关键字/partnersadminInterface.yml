@@ -74,3 +74,53 @@ keyWord:
       body: |
         {"bdUid":284,"uid":${partner_uid}}
       assertion: [json: {$.code: '0'}]
+    - name: BD统计
+      host: ${partnersadmin_host}
+      url: /partner/root/get_bd_team_information
+      method: GET
+      headers:
+        Token: ${partnersadmin_token}
+      variables:
+        page: 1
+        pageSize: 10
+        partnerInfo: ${bd_name}
+        startTime: ${__PlusDay(yyyy-MM-dd,0,)}T00:00:00.000Z
+        endTime: ${__PlusDay(yyyy-MM-dd,0,)}T23:59:59.999Z
+        orderType: 4
+        orderDirection: DESC
+      extractor:
+        - json:
+            bdTradeAmount: $.result.items[0].totalTradeAmount
+            bdTotalPartners: $.result.items[0].totalPartners
+            bdTeamSize: $.result.items[0].teamSize
+            bdNewUser: $.result.items[0].newUser
+            bdPlatformRevenue: $.result.items[0].platformRevenue
+            bdTotalCommission: $.result.items[0].totalCommission
+            bdTotalFee: $.result.items[0].totalFee
+    - keyWord: BD统计
+      name: BD统计-校验新增合伙人
+      assertion:
+        - json:
+            $.result.items[0].teamSize: ${__BeanShell(${bdTeamSize} + 1)}
+            $.result.items[0].totalPartners: ${__BeanShell(${bdTotalPartners} + 1)}
+            $.result.items[0].totalTradeAmount: ${bdTradeAmount}
+            $.result.items[0].newUser: ${__BeanShell(${bdNewUser} + 1)}
+    - keyWord: BD统计
+      name: BD统计-用户合伙人邀请码注册
+      assertion:
+        - json:
+            $.result.items[0].teamSize: ${__BeanShell(${bdTeamSize} + 1)}
+            $.result.items[0].totalPartners: ${bdTotalPartners}
+            $.result.items[0].totalTradeAmount: ${bdTradeAmount}
+            $.result.items[0].newUser: ${__BeanShell(${bdNewUser} + 1)}
+    - name: BD统计-团队人数不变
+      keyWord: BD统计
+      assertion:
+        - json:
+            $.result.items[0].teamSize: ${bdTeamSize}
+            $.result.items[0].totalPartners: ${bdTotalPartners}
+            $.result.items[0].totalTradeAmount: ${bdTradeAmount}
+            $.result.items[0].newUser: ${bdNewUser}
+            $.result.items[0].platformRevenue: ${bdPlatformRevenue}
+            $.result.items[0].totalCommission: ${bdTotalCommission}
+            $.result.items[0].totalFee: ${bdTotalFee}
