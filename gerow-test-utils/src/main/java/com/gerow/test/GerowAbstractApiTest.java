@@ -1,6 +1,5 @@
 package com.gerow.test;
 
-import com.gerow.test.listener.CaseListListener;
 import com.gerow.test.task.ITest;
 import com.gerow.test.task.ITestMethod;
 import com.gerow.test.task.GerowTest;
@@ -83,8 +82,8 @@ public abstract class GerowAbstractApiTest extends AbstractTestBase implements G
     }
 
     @Test(dataProvider = "data")
-    public void doing(ITestMethod test) {
-        test.doing();
+    public void doing(ITestMethod params) {
+        params.doing();
     }
 
     @AfterSuite

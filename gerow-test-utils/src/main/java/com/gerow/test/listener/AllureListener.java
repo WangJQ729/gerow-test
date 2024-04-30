@@ -15,6 +15,7 @@
  */
 package com.gerow.test.listener;
 
+import com.gerow.test.task.AbstractTestMethod;
 import com.gerow.test.task.ITestMethod;
 import io.qameta.allure.*;
 import io.qameta.allure.model.Link;
@@ -667,13 +668,23 @@ public class AllureListener implements
 
                 final int indexFromAnnotation = i - skippedCount;
                 if (indexFromAnnotation < providedNames.length) {
-                    result.put(providedNames[indexFromAnnotation], ObjectUtils.toString(parameters[i]));
+                    result.put(providedNames[indexFromAnnotation], ObjectUtils.toString(((AbstractTestMethod) parameters[i]).getParams()));
                     continue;
                 }
 
                 if (i < reflectionNames.length) {
-                    result.put(reflectionNames[i], ObjectUtils.toString(parameters[i]));
+//                    result.putAll(((AbstractTestMethod) parameters[i]).getParams());
+                    Map<String, String> params = ((AbstractTestMethod) parameters[i]).getParams();
+                    Map<String, String> filteredParams = new HashMap<>();
+                    for (Map.Entry<String, String> entry : params.entrySet()) {
+                        if (!"methodNum".equals(entry.getKey())) {
+                            // 如果键不是"methodNum"，则加入到filteredParams中
+                            filteredParams.put(entry.getKey(), entry.getValue());
+                        }
+                    }
+                    result.putAll(filteredParams);
                 }
+
             }
 
         });

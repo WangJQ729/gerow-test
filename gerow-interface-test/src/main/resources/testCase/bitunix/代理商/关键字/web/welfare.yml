@@ -12,3 +12,25 @@ keyWord:
       body: |
         {"actId":${actId}}
       assertion: [ json: { $.code: '0' } ]
+    - name:  活动信息-活动不存在
+      url: /welfare/bonus/activity/goal/info
+      method: GET
+      variables:
+        actCode: ${actCode}
+      assertion:
+        - json:
+            $.code: '90001'
+            $.msg: Events don't exist
+    - keyWord: 活动信息-活动不存在
+      name: 活动信息
+      extractor:
+        - json:
+            actStatus: $.data.actStatus
+            color: $.data.color
+            minBalance: $.data.minBalance
+            actStartTime: $.data.actStartTime
+            actEndTime: $.data.actEndTime
+            actEnrollStartTime: $.data.actEnrollStartTime
+            actEnrollEndTime: $.data.actEnrollEndTime
+            firstRuleName: $.data.firstRuleName
+      assertion: [ json: { $.code: '0' } ]
