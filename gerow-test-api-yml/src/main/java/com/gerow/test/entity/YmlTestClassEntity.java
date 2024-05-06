@@ -1,9 +1,9 @@
 package com.gerow.test.entity;
 
 import com.gerow.test.task.ITestClass;
+import com.gerow.test.task.ITestSuite;
 import com.gerow.test.task.YmlTestClass;
 import com.gerow.test.utils.TestUtils;
-import com.gerow.test.task.ITestSuite;
 import com.gerow.test.utils.data.DataProviderUtils;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;

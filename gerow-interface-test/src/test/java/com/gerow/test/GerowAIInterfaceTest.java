@@ -1,8 +1,8 @@
 package com.gerow.test;
 
-import com.gerow.test.task.YmlTestSuite;
 import com.gerow.test.task.ITestClass;
 import com.gerow.test.task.ITestSuite;
+import com.gerow.test.task.YmlTestSuite;
 import com.gerow.test.utils.JavassistUtils;
 import javassist.ClassPool;
 import javassist.CtClass;

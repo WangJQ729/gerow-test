@@ -11,7 +11,10 @@ keyWord:
       method: POST
       body: |
         {"actId":${actId}}
-      assertion: [ json: { $.code: '0' } ]
+      assertion:
+        - json:
+            $.code: '${code}'
+            $.msg: ${msg}
     - name:  活动信息-活动不存在
       url: /welfare/bonus/activity/goal/info
       method: GET

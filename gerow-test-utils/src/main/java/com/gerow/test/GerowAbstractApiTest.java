@@ -1,10 +1,10 @@
 package com.gerow.test;
 
-import com.gerow.test.task.ITest;
-import com.gerow.test.task.ITestMethod;
-import com.gerow.test.task.GerowTest;
 import com.gerow.test.listener.AllureListener;
+import com.gerow.test.task.GerowTest;
+import com.gerow.test.task.ITest;
 import com.gerow.test.task.ITestClass;
+import com.gerow.test.task.ITestMethod;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.ITestResult;

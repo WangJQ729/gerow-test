@@ -1,12 +1,12 @@
 package com.gerow.test.utils.data;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jayway.jsonpath.Option;
 import com.gerow.test.task.ITest;
 import com.gerow.test.task.ITestMethod;
 import com.gerow.test.task.ITestStep;
 import com.gerow.test.utils.TestUtils;
 import com.gerow.test.utils.json.JsonPathUtils;
+import com.jayway.jsonpath.Option;
 import io.qameta.allure.Allure;
 import lombok.Getter;
 import lombok.Setter;

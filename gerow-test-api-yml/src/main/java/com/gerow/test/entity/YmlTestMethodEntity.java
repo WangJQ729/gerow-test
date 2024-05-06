@@ -4,8 +4,8 @@ import com.gerow.test.task.ITestClass;
 import com.gerow.test.task.ITestMethod;
 import com.gerow.test.task.YmlTestMethod;
 import com.gerow.test.utils.TestUtils;
-import com.gerow.test.utils.data.StepEditor;
 import com.gerow.test.utils.data.DataProviderUtils;
+import com.gerow.test.utils.data.StepEditor;
 import io.qameta.allure.SeverityLevel;
 import lombok.Data;
 

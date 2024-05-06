@@ -400,7 +400,11 @@ public class Assertion {
 
     private static void oneOfAssertion(Object actual, Object value) {
         if (value instanceof Collection) {
-            Assertions.assertThat((Collection) value).containsAnyElementsOf((Collection<Object>) actual);
+            if (actual instanceof Collection) {
+                Assertions.assertThat((Collection) value).containsAnyElementsOf((Collection<Object>) actual);
+            }else {
+                Assertions.assertThat((Collection) value).contains(actual);
+            }
         } else {
             Assertions.assertThat((Object[]) value).containsAnyOf(((Object[]) actual)[0]);
         }

@@ -1,7 +1,7 @@
 package com.gerow.test.utils;
 
-import com.gerow.test.task.ITestMethod;
 import com.gerow.test.task.ITestClass;
+import com.gerow.test.task.ITestMethod;
 import javassist.*;
 import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ConstPool;
