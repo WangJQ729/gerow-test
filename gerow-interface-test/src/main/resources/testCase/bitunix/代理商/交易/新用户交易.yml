@@ -6,9 +6,6 @@ dataProvider:
     partnersadmin_password: admin
     partner_email: gerow@126.com
     bd_name: gerow
-    symbol: BTCUSDT
-    amount: 0.16
-    side: 2
 beforeClass:
   name: 登录合伙人后台
   step:
@@ -22,6 +19,7 @@ testMethod:
     dataProvider:
       - email: ${__RandomEmail()}
     step:
+      - keyWord: 代理商后台更新返佣统计
       - keyWord: 快捷注册-合伙人邀请码
       - keyWord: 分后台获取用户信息
       - keyWord: 增加合约账户资产
@@ -41,6 +39,7 @@ testMethod:
         futureRatio: 20
         exchangeRatio: 30
     step:
+      - keyWord: 代理商后台更新返佣统计
       - keyWord: 快捷注册-合伙人邀请码
       - keyWord: 增加合约账户资产
       - keyWord: 通过uid获取用户token
@@ -64,6 +63,7 @@ testMethod:
       - keyWord: 升级为合伙人
       - keyWord: 登录partners-新合伙人
       - keyWord: 获取合伙人邀请码
+      - keyWord: 代理商后台更新返佣统计
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱
       - keyWord: 通过uid获取用户token
       - keyWord: 增加合约账户资产

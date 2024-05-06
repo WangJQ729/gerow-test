@@ -6,9 +6,6 @@ dataProvider:
     partnersadmin_password: admin
     bd_email: gerow@bitunix.io
     bd_name: gerow
-    symbol: ETHUSDT
-    amount: 0.16
-    side: 2
 beforeMethod:
   name: 登录合伙人系统
   step:
@@ -41,6 +38,7 @@ testMethod:
       - keyWord: BD统计-团队人数不变
       - keyWord: 登录partners-新合伙人
       - keyWord: 获取合伙人邀请码
+      - keyWord: 代理商后台更新返佣统计
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱
       - keyWord: BD统计-用户合伙人邀请码注册
       - keyWord: 获取用户信息

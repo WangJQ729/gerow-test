@@ -11,6 +11,9 @@ keyWord:
       method: POST
       body: |
         {"actId":${actId}}
+      assertion: [ json: { $.code: '0' } ]
+    - name: 活动报名-校验报名结果
+      keyWord: 活动报名
       assertion:
         - json:
             $.code: '${code}'
@@ -37,3 +40,49 @@ keyWord:
             actEnrollEndTime: $.data.actEnrollEndTime
             firstRuleName: $.data.firstRuleName
       assertion: [ json: { $.code: '0' } ]
+    - name: 获取记录
+      url: /welfare/bonus/activity/goal/user/record
+      headers:
+        Token: ${token}
+      method: GET
+      variables:
+        actId: ${actId}
+      extractor:
+        - json:
+            ruleId: $.data.realValue[0].ruleId
+      assertion:
+        - json:
+            $.code: '0'
+            $.data.realValue[0].rule: ${firstRuleName}
+    - name: 领取奖励
+      url: /welfare/bonus/activity/goal/claim/coupon
+      headers:
+        Token: ${token}
+      method: GET
+      variables:
+        actId: ${actId}
+        ruleId: ${ruleId}
+      assertion:
+        - json:
+            $.code: '0'
+            $.data.bonus: '${awardAmt}'
+    - keyWord: 领取奖励
+      name: 领取奖励-任务未完成
+      assertion:
+        - json:
+            $.code: '60001'
+            $.msg: Tasks not completed
+    - name: 奖励记录
+      url: /welfare/bonus/activity/goal/coupon/list
+      headers:
+        Token: ${token}
+      method: GET
+      variables:
+        actId: ${actId}
+      assertion:
+        - json:
+            $.code: '0'
+            $.data[0].task: ${firstRuleName}
+            $.data[0].bonus: '${awardAmt}'
+            $.data[0].transactionType: 'FUTURES'
+            $.data[0].type: 'EXPERIENCE'

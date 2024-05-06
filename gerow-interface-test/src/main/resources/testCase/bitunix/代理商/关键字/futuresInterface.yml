@@ -1,15 +1,23 @@
 keyWord:
   step:
     - name: 市价开仓
+      sleep: 1000
       url: /futures/futures/order/market
       method: POST
       headers:
         Token: ${token}
       body: |
-        {"amount":"${amount}","side":"${side}","symbol":"${symbol}","reductionOnly":false}
+        {"amount":"0.16","side":"1","symbol":"BTCUSDT","reductionOnly":false}
       extractor:
         - json:
             orderId: $.data.orderId
+    - keyWord: 市价开仓
+      name: 市价开仓-指定交易对
+      bodyEditor:
+        json:
+          $.amount: '${amount}'
+          $.side: '${side}'
+          $.symbol: ${symbol}
     - name: 市价平仓
       url: /futures/futures/position/close/market
       method: POST
@@ -46,7 +54,7 @@ keyWord:
         type: 2
       extractor:
         - json:
-            openDealFee: $.data.records[?(@.orderId=='${orderId}' && @.side==2)].dealFee
+            openDealFee: $.data.records[?(@.orderId=='${orderId}' && @.side==${side})].dealFee
     - keyWord: U本位合约历史委托
       name: U本位合约历史委托-平仓
       extractor:

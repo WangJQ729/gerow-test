@@ -13,7 +13,7 @@ dataProvider:
     firstRuleTarget: 100
     type: create
 beforeClass:
-  name: 登录partnersadmin
+  name: 登录现货后台
   step:
     - keyWord: 现货后台获取登录信息
     - keyWord: 现货后台获取googleKey

@@ -46,7 +46,7 @@ keyWord:
       body: |
         {
             "uid": ${userId},
-            "amount": 9999,
+            "amount": 999.99,
             "coin": "USDT"
         }
     - name: 增加合约账户资产-指定资产

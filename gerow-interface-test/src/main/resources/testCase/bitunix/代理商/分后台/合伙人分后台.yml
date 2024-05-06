@@ -7,9 +7,6 @@ dataProvider:
     partnersadmin_account: admin
     partnersadmin_password: admin
     bd_name: gerow3
-    symbol: BTCUSDT
-    amount: 0.16
-    side: 2
 beforeClass:
   name: 登录partnersadmin
   step:

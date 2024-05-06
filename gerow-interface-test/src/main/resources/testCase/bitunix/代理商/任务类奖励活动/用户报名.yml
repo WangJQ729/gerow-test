@@ -13,7 +13,7 @@ dataProvider:
     firstRuleTarget: 100
     type: create
 beforeClass:
-  name: 登录partnersadmin
+  name: 登录现货后台
   step:
     - keyWord: 现货后台获取登录信息
     - keyWord: 现货后台获取googleKey
@@ -61,7 +61,7 @@ testMethod:
       - keyWord: 快捷注册
       - keyWord: 增加合约账户资产-指定资产
       - keyWord: 通过uid获取用户token
-      - keyWord: 活动报名
+      - keyWord: 活动报名-校验报名结果
 afterMethod:
   name: 删除任务类奖励活动
   step:

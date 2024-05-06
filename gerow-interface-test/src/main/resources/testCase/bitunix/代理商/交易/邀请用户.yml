@@ -6,9 +6,6 @@ dataProvider:
     partnersadmin_password: admin
     partner_email: gerow@126.com
     bd_name: gerow
-    symbol: BTCUSDT
-    amount: 0.16
-    side: 2
 beforeMethod:
   name: 登录合伙人系统
   step:
