@@ -673,16 +673,15 @@ public class AllureListener implements
                 }
 
                 if (i < reflectionNames.length) {
-//                    result.putAll(((AbstractTestMethod) parameters[i]).getParams());
                     Map<String, String> params = ((AbstractTestMethod) parameters[i]).getParams();
                     Map<String, String> filteredParams = new HashMap<>();
                     for (Map.Entry<String, String> entry : params.entrySet()) {
                         if (!"methodNum".equals(entry.getKey())) {
-                            // 如果键不是"methodNum"，则加入到filteredParams中
                             filteredParams.put(entry.getKey(), entry.getValue());
                         }
                     }
                     result.putAll(filteredParams);
+                    result.put(reflectionNames[i], ObjectUtils.toString(parameters[i]));
                 }
 
             }

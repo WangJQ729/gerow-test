@@ -1,5 +1,5 @@
 name: 新用户交易
-story: trade
+story: partners
 invocationCount: 1
 dataProvider:
   - partnersadmin_account: admin

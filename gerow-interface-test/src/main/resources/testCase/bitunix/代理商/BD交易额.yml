@@ -1,5 +1,5 @@
 name: BD交易额
-story: trade
+story: partners
 invocationCount: 1
 dataProvider:
   - partnersadmin_account: admin
