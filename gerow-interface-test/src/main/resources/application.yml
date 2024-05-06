@@ -1,0 +1,13 @@
+logging:
+  level:
+    root: INFO
+    org.apache.jmeter.util: OFF
+    io.qameta.allure: OFF
+    org.mongodb.driver.cluster: OFF
+client:
+  protocol: https
+  timeOut: 10
+  headers:
+    Content-Type: "application/json;charset=UTF-8"
+    Accept: '*/*'
+    Accept-Encoding: gzip, deflate, br

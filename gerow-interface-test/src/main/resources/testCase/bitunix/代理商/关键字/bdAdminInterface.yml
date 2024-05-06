@@ -1,0 +1,72 @@
+keyWord:
+  step:
+    - name: 登录bdAdmin
+      host: ${bdadmin_host}
+      url: /partner/bd/login
+      method: POST
+      body: |
+        {"password":"${__digest(MD5,${password})}","account":"${bd_email}"}
+      assertion: [json: {$.code: '0'}]
+      extractor:
+        - json:
+            bd_token: $.result.token
+    - name: 团队佣金
+      host: ${bdadmin_host}
+      url: /partner/bd/get_partner_team_information
+      method: GET
+      untilWait: 5
+      headers:
+        Token: ${bd_token}
+      variables:
+        page: 1
+        pageSize: 10
+        partnerInfo: ${firstPartnerUid}
+        orderType: 0
+        orderDirection: DESC
+      assertion:
+        - json:
+            $.result.items[?(@.uid==${firstPartnerUid})].totalCommission: ['0']
+    - name: 获取团队佣金
+      keyWord: 团队佣金
+      extractor:
+        - json:
+            totalCommission: $.result.items[?(@.uid==${firstPartnerUid})].totalCommission
+            totalTradeAmount: $.result.items[?(@.uid==${firstPartnerUid})].totalTradeAmount
+    - name: BD合伙人列表
+      host: ${bdadmin_host}
+      url: /partner/bd/page
+      method: POST
+      headers:
+        Token: ${bd_token}
+      body: |
+        {"page":1,"pageSize":10,"uid":"${firstPartnerUid}","registerStart":"","registerEnd":"","pageIndex":1}
+      extractor:
+        - json:
+            bdExchangeRatio: $.result.items[?(@.uid==${firstPartnerUid})].exchangeRatio
+            bdFutureRatio: $.result.items[?(@.uid==${firstPartnerUid})].futureRatio
+      assertion: [json: {$.code: '0'}]
+    - name: 获取本月交易额
+      host: ${bdadmin_host}
+      url: /partner/bd/transaction_data
+      method: GET
+      headers:
+        Token: ${bd_token}
+      variables:
+        startTime: ${__PlusDay(yyyy-MM-01,0,)}T00:00:00.000Z
+        endTime: ${__PlusDay(yyyy-MM-dd,0,)}T23:59:59.999Z
+      extractor:
+        - json:
+            transactionAmountMonth: $.result.transactionAmountMonth
+            oldTransactionAmountMonth: $.result.transactionAmountMonth
+      assertion:
+        - json:
+            $.code: '0'
+    - name: 获取本月交易额-校验交易额
+      keyWord: 获取本月交易额
+      assertion:
+        - json:
+            $.result.transactionAmountMonth: ${__BeanShell(${oldTransactionAmountMonth} + ${makerTradeAmount})}
+          assertionType: EIGHTDECIMALPLACES
+      extractor:
+        - json:
+            transactionAmountMonth: $.result.transactionAmountMonth

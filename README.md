@@ -1,92 +1,188 @@
-# partnerInterfaceTest
+# 一、项目结构
+
+##### 1、gerow-test-utils相关工具类
+##### 2、gerow-test-api-yml测试框架实现代码
+##### 3、gerow-interface-test 测试用例
 
 
+# 二、环境配置
 
-## Getting started
+### 1、maven、java 
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+    参考：https://www.runoob.com/maven/maven-setup.html maven
+          https://www.runoob.com/java/java-environment-setup.html
+    
+### 2、allure安装
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+    https://www.jianshu.com/p/5735d388faa2
 
-## Add your files
+# 三、测试执行
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+    1、在根目录下运行命令：mvn clean install -DskipTests将代码编译到本地的maven仓库
+    
+    2、进入gerow-interface-test直接运行
+    融合版参数：
+    -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wangjq_1990 -Dstory= -Dcomponent= -Dtest.name=
+    老淘宝参数：
+    -Dspring.profiles.active=tb-test -Dplatform=淘宝 -Dfeatures=催单 -Dtest.severity= -Denv=test-znkf -DshopName=wangjq_1990 -Dstory= -Dcomponent= -Dtest.name=
+    淘动力参数：
+    -Dspring.profiles.active=tdl -DtestDir=淘宝 -Dplatform=淘动力 -Dfeatures=催单 -Denv=test-znkf -DshopName= -Dstory= -Dcomponent= -Dtest.name=
+    
+## 可选参数
+    
+###  1、执行环境 
+      
+    -Dspring.profiles.active=xxx   
+    
+    需要对应的配置文件
 
-```
-cd existing_repo
-git remote add origin https://git.searchalpha.xyz/wangjianqiang/partnerinterfacetest.git
-git branch -M main
-git push -uf origin main
-```
+### 2、单独用例执行
+    
+    1、根据催单场景选择  -Dstory=xxx,xxx
+    
+        example:    -Dstory=下单未付款,已付款
+    
+    2、根据组件选择     -Dcomponent=xxx,xxx
+    
+        example:    -Dcomponent=任务开关,催单消息
+                
+### example
+       
+    执行催单场景“下单未付款”、“已付款”场景下“任务开关”和“催单消息”组件
+    
+    -ea -Dspring.profiles.active=ipa-test -DtestDir=淘宝 -Dplatform=融合版 -Dfeatures=催单 -Dtest.severity=ALL -Denv=mini-test -DshopName=wanggerow_1990 -Dstory=下单未付款,已付款 -Dcomponent=任务开关,催单消息 -Dtest.name=
+                
+    执行完成后会在ipa-interface-test\target\allure-results生成allure测试结果
+    
+    注：powershell会将“.”拆分，用cmd执行，在powershell先执行命令cmd即可。
 
-## Integrate with your tools
+# 四、生成测试结果
 
-- [ ] [Set up project integrations](https://git.searchalpha.xyz/wangjianqiang/partnerinterfacetest/-/settings/integrations)
+    执行命令：allure serve xxxx\target\allure-results
+ 
+# 五、多环境配置
 
-## Collaborate with your team
+    1、同springboot配置
+    
+    2、application-xxx.properties 即为各个环境的配置
+    
+    3、在测试用例中可调用的参数格式为data.test.xxxx，在测试中调用格式为：${xxxx}
+    
+### example 
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+####  参数配置
+    
+    data:
+      test:
+        shopName: "xxxxxx" -------------------全局变量通过${shopName}调用
+    
+#####    调用格式
 
-## Test and Deploy
+######      example1：
+    - name: 获取MP后台地址
+      url: /api/auth/mp_switcher
+      variables:
+        subnick: ${shopName}
+      method: GET
+      assertion:
+        - json:
+            $.code: 0
+      extractor:
+        - json:
+            auth_url: $.url
+    - name: 进入主页
+      host: ""
+      url: ${auth_url}
+      method: GET
+      responseType: DEFAULT
+    - name: 获取shop_id
+      url: /api/admin/user/logined
+      method: GET
+      extractor:
+        - json:
+            shop_id: $.user.shop_id
+            shop_category_id: $.default_shop.category_id
+          site: TESTSUIT
+      assertion: [json: {$.code: 0}]
+# 六、JMeter Functions支持
 
-Use the built-in continuous integration in GitLab.
+### 1、function调用
+    
+####    example
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+        给customerRemark赋值一个随机字符串并保存，后续可以调用：
+         
+###### 赋值格式
+       
+        ${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,customerRemark)}
+         
+###### 调用格式
 
-***
+        ${customerRemark}
+        
+### 2、自定义function
+        
+        Module：gerow-test-utils
+        
+        package：com.gerow.test.jmeter.functions
 
-# Editing this README
+    
+#### RandomDate代码示例如下：
+        
+````
+public class RandomDate extends AbstractFunction {
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+    private static final String KEY = "__RandomDay";
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+    private CompoundVariable plusDay;
 
-## Name
-Choose a self-explaining name for your project.
+    private CompoundVariable format;
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+    private CompoundVariable varName;
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+    private String result;
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+    @Override
+    public String execute(SampleResult previousResult, Sampler currentSampler) {
+        build();
+        TestUtils.saveVariables(varName, result);
+        return result;
+    }
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+    private void build() {
+        String fm = format.execute().trim();
+        if (StringUtils.isBlank(fm)) {
+            fm = "yyyy-MM-dd";
+        }
+        int plusDay = new Random().nextInt(Integer.valueOf(this.plusDay.execute().trim()));
+        LocalDate result = LocalDate.now().plusDays(plusDay);
+        this.result = result.format(DateTimeFormatter.ofPattern(fm));
+    }
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+    @Override
+    public void setParameters(Collection<CompoundVariable> parameters) throws InvalidVariableException {
+        checkParameterCount(parameters, 3, 3);
+        CompoundVariable[] compoundVariables = parameters.toArray(new CompoundVariable[0]);
+        this.format = compoundVariables[0];
+        this.plusDay = compoundVariables[1];
+        this.varName = compoundVariables[2];
+    }
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+    @Override
+    public String getReferenceKey() {
+        return KEY;
+    }
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+    @Override
+    public List<String> getArgumentDesc() {
+        return null;
+    }
+}
+````   
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+        调用${__RandomDay(yyyy-MM-dd,180,endDate)}：取当前时间开始往后180天随机的某一天，并赋值给endDate
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+# 七、测试用例编写
+    
+   [脚本编写介绍](gerow-interface-test "介绍")
+   [催单脚本环境搭建](gerow-interface-test/README_CONF.md "环境搭建")

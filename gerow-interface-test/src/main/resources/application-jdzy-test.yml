@@ -1,0 +1,12 @@
+data:
+  test:
+    host: jd-${env}.xiaoduoai.com
+    platform: jd
+    shopName: ${shopName}
+    seller_name: ${shopName}
+client:
+  protocol: http
+  timeOut: 30
+  headers:
+    Xiaoduo-Platform: jdzy
+    Content-Type: "application/json;charset=UTF-8"

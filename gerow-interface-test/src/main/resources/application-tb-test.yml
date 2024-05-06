@@ -1,0 +1,8 @@
+data:
+  test:
+    platform: tb
+    host: wangcai-${env}.xiaoduoai.com
+
+    shopName: ${shopName}
+
+    seller_name: ${shopName}

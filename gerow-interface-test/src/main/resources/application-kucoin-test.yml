@@ -1,0 +1,10 @@
+data:
+  test:
+    platform: kucoin
+    #    host: appapi-v2.kucoin.net
+    host: 10.232.128.219:10240
+client:
+  protocol: http
+  timeOut: 10
+  headers:
+    Content-Type: "application/json;charset=UTF-8"

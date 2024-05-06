@@ -1,0 +1,22 @@
+keyWord:
+  step:
+    - name: 登录xxljob
+      host: ${xxljob_host}
+      url: /xxl-job-admin/login
+      method: POST
+      headers:
+        Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+      form:
+        userName: developer
+        password: PX67Geor7q
+        ifRemember: on
+      assertion: [json: {$.code: 200}]
+    - name: 触发定时任务
+      host: ${xxljob_host}
+      url: /xxl-job-admin/jobinfo/trigger
+      method: POST
+      headers:
+        Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+      form:
+        id: 21
+      assertion: [json: {$.code: 200}]

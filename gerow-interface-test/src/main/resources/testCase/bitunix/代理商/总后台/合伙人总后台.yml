@@ -1,0 +1,52 @@
+name: 合伙人总后台
+story: partnersadmin
+invocationCount: 1
+dataProvider:
+  - email: ${__RandomEmail()}
+    partner_email: gerow@126.com
+    partnersadmin_account: admin
+    partnersadmin_password: admin
+    bd_name: gerow3
+beforeClass:
+  name: 登录partnersadmin
+  step:
+    - keyWord: 登录partnersadmin
+    - keyWord: 获取BD列表
+    - keyWord: 登录partners
+    - keyWord: 获取合伙人邀请码
+    - keyWord: 快捷注册-合伙人邀请码
+testMethod:
+  - name: 新增合伙人
+    dataProvider:
+      - futureRatio: 80
+        exchangeRatio: 80
+    step:
+      - keyWord: 获取用户信息
+      - keyWord: 升级为合伙人
+      - keyWord: 通过uid获取用户token
+      - keyWord: 增加合约账户资产
+      - keyWord: 市价开仓
+      - keyWord: 持有仓位信息
+      - keyWord: 市价平仓
+  - name: 新增2级合伙人
+    dataProvider:
+      - partner_email: ${email}
+        new_emails: ${__RandomEmail()}
+        futureRatio: 30
+        exchangeRatio: 30
+    step:
+      - keyWord: 登录partners
+      - keyWord: 获取合伙人邀请码
+      - keyWord: 新邮箱快捷注册-合伙人邀请码
+      - keyWord: 获取用户信息
+      - keyWord: 升级为合伙人
+      - keyWord: 通过uid获取用户token
+      - keyWord: 增加合约账户资产
+      - keyWord: 市价开仓
+      - keyWord: 持有仓位信息
+      - keyWord: 市价平仓
+
+
+
+
+
