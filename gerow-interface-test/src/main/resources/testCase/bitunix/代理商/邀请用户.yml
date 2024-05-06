@@ -1,5 +1,5 @@
 name: 邀请用户
-story: trade
+story: partners
 invocationCount: 1
 dataProvider:
   - partnersadmin_account: admin
