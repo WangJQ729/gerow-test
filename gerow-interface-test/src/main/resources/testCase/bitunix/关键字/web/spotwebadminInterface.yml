@@ -36,6 +36,7 @@ keyWord:
       extractor:
         - json:
             spotwebadmin_token: $.result.token
+          site: TESTSUITE
     - name: 任务类奖励活动列表-活动不存在
       host: ${spotwebadmin_host}
       url: /api/recharge/common/act/list

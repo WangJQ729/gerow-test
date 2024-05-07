@@ -7,7 +7,9 @@ data:
     partnersadmin_host: https://partnersadmin.bitunix.one
     bdadmin_host: https://bdadmin.bitunix.one
     spotwebadmin_host: https://spotwebadmin.bitunix.one
+    userName: gerow.wang@bitunix.io
     password: Aa123456
+    googleCode: 6XYRQBKYF2NCLSCF
 client:
   protocol: https
   timeOut: 30

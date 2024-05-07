@@ -7,7 +7,7 @@ keyWord:
       headers:
         Token: ${token}
       body: |
-        {"amount":"0.16","side":"1","symbol":"BTCUSDT","reductionOnly":false}
+        {"amount":"0.16","side":"${__Random(1,2)}","symbol":"BTCUSDT","reductionOnly":false}
       extractor:
         - json:
             orderId: $.data.orderId

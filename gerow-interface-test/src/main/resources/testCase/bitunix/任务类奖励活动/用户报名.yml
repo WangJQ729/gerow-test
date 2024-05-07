@@ -1,10 +1,7 @@
 name: 用户报名
 story: welfare
 dataProvider:
-  - userName: gerow.wang@bitunix.io
-    password: Aa123456
-    googleCode: 6XYRQBKYF2NCLSCF
-    minBalance: 999.99
+  - minBalance: 999.99
     firstRuleName: tradingVolume
     award: experience
     awardAmt: 88
@@ -12,12 +9,6 @@ dataProvider:
     awardNumber: 10
     firstRuleTarget: 100
     type: create
-beforeClass:
-  name: 登录现货后台
-  step:
-    - keyWord: 现货后台获取登录信息
-    - keyWord: 现货后台获取googleKey
-    - keyWord: 登录现货后台
 testMethod:
   - name: 用户报名-${testType}
     dataProvider:

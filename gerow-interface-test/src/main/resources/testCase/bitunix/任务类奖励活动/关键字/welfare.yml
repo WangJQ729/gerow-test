@@ -1,6 +1,7 @@
 keyWord:
   step:
     - name: 统计活动数据
+      sleep: 1000
       url: /welfare/inner/bonus/activity/userRecord
       method: GET
       assertion: [ json: { $.code: '0' } ]
@@ -50,11 +51,18 @@ keyWord:
       extractor:
         - json:
             ruleId: $.data.realValue[0].ruleId
+            realValue: $.data.realValue[0].realValue
       assertion:
         - json:
             $.code: '0'
-            $.data.realValue[0].rule: ${firstRuleName}
+    - name: 领取记录-进度为零
+      keyWord: 获取记录
+      assertion:
+        - json:
+            $.data.realValue[0].realValue: '0'
+            $.code: '0'
     - name: 领取奖励
+      untilWait: 5
       url: /welfare/bonus/activity/goal/claim/coupon
       headers:
         Token: ${token}
@@ -72,6 +80,12 @@ keyWord:
         - json:
             $.code: '60001'
             $.msg: Tasks not completed
+    - keyWord: 领取奖励
+      name: 领取奖励-任务未开始
+      assertion:
+        - json:
+            $.code: '90001'
+            $.msg: Events don't exist
     - name: 奖励记录
       url: /welfare/bonus/activity/goal/coupon/list
       headers:
