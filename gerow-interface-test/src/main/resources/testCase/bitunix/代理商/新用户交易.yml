@@ -1,11 +1,6 @@
 name: 新用户交易
 story: partners
 invocationCount: 1
-dataProvider:
-  - partnersadmin_account: admin
-    partnersadmin_password: admin
-    partner_email: gerow@126.com
-    bd_name: gerow
 beforeClass:
   name: 登录合伙人后台
   step:
@@ -15,9 +10,25 @@ beforeClass:
     - keyWord: 获取合伙人邀请码
     - keyWord: 合伙人列表
 testMethod:
-  - name: 用户市价开仓
+  - name: 现货
     dataProvider:
-      - email: ${__RandomEmail()}
+      - spotSymbols: ${__RandomEnum(LTC,spotSymbols)}
+    step:
+      - keyWord: 代理商后台更新返佣统计
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 分后台获取用户信息
+      - keyWord: 增加合约账户资产
+      - keyWord: 通过uid获取用户token
+      - keyWord: 直客佣金查询-获取现货交易数据
+      - keyWord: 代理商现货历史委托
+      - keyWord: 增加合约账户资产
+      - keyWord: 合约划转现货
+      - keyWord: 现货市价买入
+      - keyWord: web现货历史委托
+      - keyWord: 代理商现货历史委托
+      - keyWord: 代理商后台更新返佣统计
+      - keyWord: 直客佣金查询-校验现货交易数据
+  - name: 用户市价开仓
     step:
       - keyWord: 代理商后台更新返佣统计
       - keyWord: 快捷注册-合伙人邀请码
@@ -35,8 +46,7 @@ testMethod:
       - keyWord: 直客佣金查询-平仓
   - name: 用户成为合伙人市价开仓
     dataProvider:
-      - email: ${__RandomEmail()}
-        futureRatio: 20
+      - futureRatio: 20
         exchangeRatio: 30
     step:
       - keyWord: 代理商后台更新返佣统计

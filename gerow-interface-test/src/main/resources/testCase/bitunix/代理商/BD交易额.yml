@@ -1,11 +1,6 @@
 name: BD交易额
 story: partners
 invocationCount: 1
-dataProvider:
-  - partnersadmin_account: admin
-    partnersadmin_password: admin
-    bd_email: gerow@bitunix.io
-    bd_name: gerow
 beforeMethod:
   name: 登录合伙人系统
   step:

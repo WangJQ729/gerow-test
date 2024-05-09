@@ -1,11 +1,6 @@
 name: 邀请用户
 story: partners
 invocationCount: 1
-dataProvider:
-  - partnersadmin_account: admin
-    partnersadmin_password: admin
-    partner_email: gerow@126.com
-    bd_name: gerow
 beforeMethod:
   name: 登录合伙人系统
   step:

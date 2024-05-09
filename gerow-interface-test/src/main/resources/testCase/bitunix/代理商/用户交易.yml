@@ -2,12 +2,7 @@ name: 用户交易
 story: partners
 invocationCount: 1
 dataProvider:
-  - partnersadmin_account: admin
-    partnersadmin_password: admin
-    partner_email: gerow@126.com
-    bd_name: gerow
-    dataProvider:
-      - userId: 48321
+  - userId: 48321
 beforeClass:
   name: 登录合伙人系统
   step:
@@ -19,6 +14,8 @@ beforeClass:
     - keyWord: 通过uid获取用户token
 testMethod:
   - name: 现货
+    dataProvider:
+      - spotSymbols: ${__RandomEnum(LTC,)}
     step:
       - keyWord: 直客佣金查询-获取现货交易数据
       - keyWord: 代理商现货历史委托

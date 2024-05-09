@@ -27,7 +27,7 @@ keyWord:
       method: POST
       body: |
         {
-            "googleCode": "${__GoogleAuthenticator(${googleCode})}",
+            "googleCode": "${__GoogleAuthenticator(${spotAdminGoogleCode})}",
             "userName": "${userName}",
             "password": "${__digest(MD5,${password})}",
             "authType": 2,

@@ -1,3 +1,4 @@
+story: welfare
 beforeSuite:
   name: 登录后台
   step:
