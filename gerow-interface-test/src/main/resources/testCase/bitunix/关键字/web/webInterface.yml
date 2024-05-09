@@ -6,7 +6,7 @@ keyWord:
         Token: ${token}
       method: POST
       body: |
-        {"side":"2","price":0,"volume":"999","base":"BTC","quote":"USDT","type":"2"}
+        {"side":"2","price":0,"volume":"99","base":"${spotSymbols}","quote":"USDT","type":"2"}
       assertion: [json: {$.code: '0'}]
     - name: web现货历史委托
       url: /web/api/v1/order/history/page
@@ -19,7 +19,7 @@ keyWord:
             "page": 1,
             "pageSize": 10,
             "side": null,
-            "base": null,
+            "base": "${spotSymbols}",
             "quote": null,
             "type": null,
             "status": null,
@@ -31,4 +31,9 @@ keyWord:
             webFee: $.data.data[0].fee
             dealAmount: $.data.data[0].dealAmount
             orderId: $.data.data[0].orderId
-      assertion: [ json: { $.code: '0' } ]
+      assertion:
+        - json:
+            $.code: '0'
+        - json:
+            $.data.data[0].dealAmount: 5
+          assertionType: GREATEROREQUALTO

@@ -9,6 +9,7 @@ keyWord:
       extractor:
         - json:
             partnersadmin_token: $.result.token
+          site: TESTSUITE
     - name: 获取BD列表
       host: ${partnersadmin_host}
       url: /partner/root/bdList
@@ -65,6 +66,7 @@ keyWord:
         - json:
             totalExchangeRatio: $.result.items[0].exchangeRatio
             totalFutureRatio: $.result.items[0].futureRatio
+          site: TESTSUITE
     - name: 变更BD
       host: ${partnersadmin_host}
       url: /partner/root/change_bd

@@ -1,5 +1,18 @@
 keyWord:
   step:
+    - name: 直接注册并返回token
+      url: /test/register
+      method: POST
+      body: |
+        {
+            "emails": "${__RandomEmail(email)}",
+            "password": "${password}",
+            "normalAccount": true
+        }
+      extractor:
+        - json:
+            userId: $.data[0]
+            token: $.token
     - name: 快捷注册
       url: /auth-v2/test/batch_register
       method: POST

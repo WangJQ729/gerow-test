@@ -9,6 +9,7 @@ keyWord:
       extractor:
         - json:
             partner_token: $.result.token
+          site: TESTSUITE
     - name: 登录partners-新合伙人
       keyWord: 登录partners
       body: |
@@ -22,6 +23,7 @@ keyWord:
       extractor:
         - json:
             partner_uid: $.result.uid
+          site: TESTSUITE
     - name: 获取合伙人邀请码
       host: ${partners_host}
       url: /partner/statistics/myInvitation
@@ -49,7 +51,7 @@ keyWord:
     - name: 升级为合伙人-最高返佣
       keyWord: 升级为合伙人
       body: |
-        {"uid":${userId},"nickName":"${email}","futureRatio":${totalFutureRatio},"exchangeRatio":${totalExchangeRatio}}
+        {"uid":${userId},"nickName":"${email}","futureRatio":${futureSelfRatio},"exchangeRatio":${exchangeSelfRatio}}
     - name: 新用户升级为合伙人
       keyWord: 升级为合伙人
       bodyEditor:
@@ -118,7 +120,7 @@ keyWord:
     - name: 直客佣金查询-获取现货交易数据
       keyWord: 直客佣金查询
       variables:
-        coin: BTC
+        coin: ${spotSymbols}
         tradeType: exchange
       extractor:
         - json:
@@ -192,6 +194,8 @@ keyWord:
         - json:
             $.code: '0'
     - name: 代理商后台更新返佣统计
+      sleep: 2000
+      untilWait: 30
       host: ${partners_host}
       url: /partner/rebate/createRecord
       method: GET
@@ -208,3 +212,14 @@ keyWord:
         showBelow: true
         page: 1
         pageSize: 10
+    - name: 合约当前持仓
+      host: ${partners_host}
+      url: /partner/trade/position/pending
+      headers:
+        Token: ${partner_token}
+      method: GET
+      variables:
+        showBelow: true
+        page: 1
+        pageSize: 10
+      
