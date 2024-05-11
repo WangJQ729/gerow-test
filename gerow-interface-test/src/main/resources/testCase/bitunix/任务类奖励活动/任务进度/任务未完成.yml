@@ -1,0 +1,75 @@
+name: 任务未完成
+story: welfare
+dataProvider:
+  - minBalance: 999.99
+    firstRuleName: tradingVolume
+    award: experience
+    awardAmt: 8888
+    couponId: 248
+    awardNumber: 10
+    firstRuleTarget: 1000
+    type: create
+    actCode: gerow_${__time()}
+    actEnrollStartTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-9H,zh_CN,)}
+    actEnrollEndTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-7H,zh_CN,)}
+    actStartTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-9H,zh_CN,)}
+    actEndTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-7H,zh_CN,)}
+    actStatusType: in_progress
+    symbol: BTCUSDT
+    amount: 0.0005
+    side: ${__Random(1,2)}
+beforeClass:
+  name: 创建活动
+  step:
+    - keyWord: 创建任务类奖励活动
+    - keyWord: 任务类奖励活动列表
+    - keyWord: 快捷注册
+    - keyWord: 增加合约账户资产
+    - keyWord: 通过uid获取用户token
+    - keyWord: 活动报名
+    - keyWord: 市价开仓-指定交易对
+    - keyWord: 持有仓位信息
+    - keyWord: 市价平仓
+    - keyWord: 统计活动数据
+    - keyWord: 获取记录
+testMethod:
+  - name: 未完成任务领取奖励-${Accept-Language}
+    dataProvider:
+      - Accept-Language: en_US
+        msg: Tasks not completed
+      - Accept-Language: zh_CN
+        msg: 任务未完成
+      - Accept-Language: zh_TW
+        msg: 任務未完成
+      - Accept-Language: tr_TR
+        msg: Tamamlanmayan görevler
+      - Accept-Language: fr_FR
+        msg: Tâches non accomplies
+      - Accept-Language: ru_RU
+        msg: Невыполненные задачи
+      - Accept-Language: vi_VN
+        msg: Tasks not completed
+      - Accept-Language: es_ES
+        msg: Tareas no completadas
+      - Accept-Language: pt_PT
+        msg: Tarefas não concluídas
+      - Accept-Language: pt_BR
+        msg: Tarefas não concluídas
+      - Accept-Language: it_IT
+        msg: Tasks not completed
+      - Accept-Language: de_DE
+        msg: Tasks not completed
+      - Accept-Language: ja_JP
+        msg: Tasks not completed
+      - Accept-Language: ko_KR
+        msg: Tasks not completed
+      - Accept-Language: pl_PL
+        msg: Tasks not completed
+      - Accept-Language: id_ID
+        msg: Tasks not completed
+      - Accept-Language: th_TH
+        msg: Tasks not completed
+      - Accept-Language: uk_UA
+        msg: Tasks not completed
+    step:
+      - keyWord: 领取奖励-任务未完成
