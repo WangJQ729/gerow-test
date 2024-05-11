@@ -42,7 +42,7 @@ keyWord:
             openDealFee: $.data.records[?(@.orderId=='${orderId}')].dealFee
           size: 100
     - name: U本位合约历史委托
-      untilWait: 5
+      untilWait: 30
       url: /futures/futures/order/history
       method: GET
       headers:

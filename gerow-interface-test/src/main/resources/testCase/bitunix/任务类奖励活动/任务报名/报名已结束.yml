@@ -1,0 +1,70 @@
+name: 报名已结束
+story: welfare
+dataProvider:
+  - actCode: gerow_${__time()}
+    firstRuleName: tradingVolume
+    actEnrollStartTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-10H,zh_CN,)}
+    actEnrollEndTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-9H,zh_CN,)}
+    actStartTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-9H,zh_CN,)}
+    actEndTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-7H,zh_CN,)}
+    actStatusType: in_progress
+    award: experience
+    awardAmt: 88
+    couponId: 248
+    awardNumber: 10
+    firstRuleTarget: 100
+    type: create
+    msgKey: partner.act.enroll.not.start
+    testType: 报名已结束
+    minBalance: 999.99
+    amount: 999.99
+    code: 90005
+beforeClass:
+  name: 创建活动
+  step:
+    - keyWord: 创建任务类奖励活动
+    - keyWord: 任务类奖励活动列表
+    - keyWord: 快捷注册
+    - keyWord: 增加合约账户资产-指定资产
+    - keyWord: 通过uid获取用户token
+testMethod:
+  - name: 用户报名-${testType}-${Accept-Language}
+    dataProvider:
+      - Accept-Language: en_US
+        msg: Campaign registration has not started or has ended
+      - Accept-Language: zh_CN
+        msg: 活动报名未开始或已结束
+      - Accept-Language: zh_TW
+        msg: 活動報名未開始或已結束
+      - Accept-Language: tr_TR
+        msg: Kampanya kaydı başlamadı veya bitmedi
+      - Accept-Language: fr_FR
+        msg: L'inscription à la campagne n'a pas commencé ou n'a fini
+      - Accept-Language: ru_RU
+        msg: Регистрация кампании не началась или закончилась
+      - Accept-Language: vi_VN
+        msg: Đăng ký chiến dịch chưa bắt đầu hoặc đã kết thúc
+      - Accept-Language: es_ES
+        msg: El registro de la campaña no ha comenzado o ha terminado
+      - Accept-Language: pt_PT
+        msg: El registro de la campaña no ha comenzado o ha terminado
+      - Accept-Language: pt_BR
+        msg: O registro de campanha não começou ou terminou
+      - Accept-Language: it_IT
+        msg: La registrazione della campagna non è iniziata o è finita
+      - Accept-Language: de_DE
+        msg: 活动报名未开始或已结束
+      - Accept-Language: ja_JP
+        msg: 活动报名未开始或已结束
+      - Accept-Language: ko_KR
+        msg: 活动报名未开始或已结束
+      - Accept-Language: pl_PL
+        msg: 活动报名未开始或已结束
+      - Accept-Language: id_ID
+        msg: 活动报名未开始或已结束
+      - Accept-Language: th_TH
+        msg: 活动报名未开始或已结束
+      - Accept-Language: uk_UA
+        msg: 活动报名未开始或已结束
+    step:
+      - keyWord: 活动报名-校验报名结果

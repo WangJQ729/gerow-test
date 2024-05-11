@@ -1,4 +1,4 @@
-name: 任务进度
+name: 完成任务
 story: welfare
 dataProvider:
   - minBalance: 999.99
@@ -38,19 +38,3 @@ testMethod:
       - keyWord: 获取记录
       - keyWord: 领取奖励
       - keyWord: 奖励记录
-  - name: 未完成任务领取奖励
-    dataProvider:
-      - symbol: BTCUSDT
-        amount: 0.0005
-        side: ${__Random(1,2)}
-    step:
-      - keyWord: 快捷注册
-      - keyWord: 增加合约账户资产
-      - keyWord: 通过uid获取用户token
-      - keyWord: 活动报名
-      - keyWord: 市价开仓-指定交易对
-      - keyWord: 持有仓位信息
-      - keyWord: 市价平仓
-      - keyWord: 统计活动数据
-      - keyWord: 获取记录
-      - keyWord: 领取奖励-任务未完成

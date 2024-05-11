@@ -15,10 +15,16 @@ keyWord:
       assertion: [ json: { $.code: '0' } ]
     - name: 活动报名-校验报名结果
       keyWord: 活动报名
+      headers:
+        Accept-Language: ${Accept-Language}
+        Token: ${token}
       assertion:
         - json:
             $.code: '${code}'
             $.msg: ${msg}
+        - json:
+            $.msg: ${msgKey}
+          assertionType: NOT
     - name:  活动信息-活动不存在
       url: /welfare/bonus/activity/goal/info
       method: GET
@@ -76,10 +82,14 @@ keyWord:
             $.data.bonus: '${awardAmt}'
     - keyWord: 领取奖励
       name: 领取奖励-任务未完成
+      untilWait: 0
+      headers:
+        Token: ${token}
+        Accept-Language: ${Accept-Language}
       assertion:
         - json:
             $.code: '60001'
-            $.msg: Tasks not completed
+            $.msg: ${msg}
     - keyWord: 领取奖励
       name: 领取奖励-任务未开始
       assertion:

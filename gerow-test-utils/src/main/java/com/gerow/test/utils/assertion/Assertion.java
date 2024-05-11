@@ -372,6 +372,11 @@ public class Assertion {
             case ONEOF:
                 oneOfAssertion(actual, value);
                 break;
+            case NOT:
+                Assertions.assertThat(actual == null ? "" : actual)
+                        .as(key + "不为：" + value)
+                        .isNotEqualTo(value == null ? "" : value);
+                break;
             case EQ:
             default:
                 //null转换为空字符串进行判断
