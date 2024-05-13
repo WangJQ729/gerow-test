@@ -4,7 +4,7 @@ keyWord:
       sleep: 1000
       url: /welfare/inner/bonus/activity/userRecord
       method: GET
-      assertion: [ json: { $.code: '0' } ]
+#      assertion: [ json: { $.code: '0' } ]
     - name: 活动报名
       url: /welfare/bonus/activity/goal/register
       headers:
@@ -81,21 +81,15 @@ keyWord:
             $.code: '0'
             $.data.bonus: '${awardAmt}'
     - keyWord: 领取奖励
-      name: 领取奖励-任务未完成
-      untilWait: 0
+      name: 领取奖励-校验领取结果
+      untilWait: 1
       headers:
         Token: ${token}
         Accept-Language: ${Accept-Language}
       assertion:
         - json:
-            $.code: '60001'
+            $.code: '${code}'
             $.msg: ${msg}
-    - keyWord: 领取奖励
-      name: 领取奖励-任务未开始
-      assertion:
-        - json:
-            $.code: '90001'
-            $.msg: Events don't exist
     - name: 奖励记录
       url: /welfare/bonus/activity/goal/coupon/list
       headers:

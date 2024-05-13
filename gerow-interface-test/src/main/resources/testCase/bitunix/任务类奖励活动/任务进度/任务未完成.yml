@@ -35,41 +35,43 @@ beforeClass:
 testMethod:
   - name: 未完成任务领取奖励-${Accept-Language}
     dataProvider:
-      - Accept-Language: en_US
-        msg: Tasks not completed
-      - Accept-Language: zh_CN
-        msg: 任务未完成
-      - Accept-Language: zh_TW
-        msg: 任務未完成
-      - Accept-Language: tr_TR
-        msg: Tamamlanmayan görevler
-      - Accept-Language: fr_FR
-        msg: Tâches non accomplies
-      - Accept-Language: ru_RU
-        msg: Невыполненные задачи
-      - Accept-Language: vi_VN
-        msg: Tasks not completed
-      - Accept-Language: es_ES
-        msg: Tareas no completadas
-      - Accept-Language: pt_PT
-        msg: Tarefas não concluídas
-      - Accept-Language: pt_BR
-        msg: Tarefas não concluídas
-      - Accept-Language: it_IT
-        msg: Tasks not completed
-      - Accept-Language: de_DE
-        msg: Tasks not completed
-      - Accept-Language: ja_JP
-        msg: Tasks not completed
-      - Accept-Language: ko_KR
-        msg: Tasks not completed
-      - Accept-Language: pl_PL
-        msg: Tasks not completed
-      - Accept-Language: id_ID
-        msg: Tasks not completed
-      - Accept-Language: th_TH
-        msg: Tasks not completed
-      - Accept-Language: uk_UA
-        msg: Tasks not completed
+      - code: 60001
+        dataProvider:
+          - Accept-Language: en_US
+            msg: Tasks not completed
+          - Accept-Language: zh_CN
+            msg: 任务未完成
+          - Accept-Language: zh_TW
+            msg: 任務未完成
+          - Accept-Language: tr_TR
+            msg: Tamamlanmayan görevler
+          - Accept-Language: fr_FR
+            msg: Tâches non accomplies
+          - Accept-Language: ru_RU
+            msg: Невыполненные задачи
+          - Accept-Language: vi_VN
+            msg: Tasks not completed
+          - Accept-Language: es_ES
+            msg: Tareas no completadas
+          - Accept-Language: pt_PT
+            msg: Tarefas não concluídas
+          - Accept-Language: pt_BR
+            msg: Tarefas não concluídas
+          - Accept-Language: it_IT
+            msg: Tasks not completed
+          - Accept-Language: de_DE
+            msg: Tasks not completed
+          - Accept-Language: ja_JP
+            msg: Tasks not completed
+          - Accept-Language: ko_KR
+            msg: Tasks not completed
+          - Accept-Language: pl_PL
+            msg: Tasks not completed
+          - Accept-Language: id_ID
+            msg: Tasks not completed
+          - Accept-Language: th_TH
+            msg: Tasks not completed
+          - Accept-Language: uk_UA
+            msg: Tasks not completed
     step:
-      - keyWord: 领取奖励-任务未完成
+      - keyWord: 领取奖励-校验领取结果
