@@ -34,7 +34,7 @@ public class JavassistUtils {
      * @param doing     所需添加注解的方法
      * @param type      所需添加的组件
      */
-    private static void addAnnotations(ConstPool constPool, CtMethod doing, Class type) {
+    private static void addAnnotations(ConstPool constPool, CtMethod doing, Class<?> type) {
         AnnotationsAttribute methodAttr = new AnnotationsAttribute(constPool, AnnotationsAttribute.visibleTag);
         Annotation test = new Annotation(type.getName(), constPool);
         methodAttr.addAnnotation(test);
@@ -48,7 +48,7 @@ public class JavassistUtils {
      * @param ct         类
      * @param methodName 方法名称
      */
-    public static void setField(ClassPool pool, CtClass ct, String methodName, Class type) throws CannotCompileException, NotFoundException {
+    public static void setField(ClassPool pool, CtClass ct, String methodName, Class<?> type) throws CannotCompileException, NotFoundException {
         CtField field = new CtField(pool.get(type.getName()), methodName, ct);
         field.setModifiers(Modifier.PUBLIC);
         ct.addField(field);
@@ -62,7 +62,7 @@ public class JavassistUtils {
      * @return 新的testClass
      */
     public static Object getInstance(ITestClass testClass, CtClass ct) throws CannotCompileException, NoSuchMethodException, InstantiationException, IllegalAccessException, java.lang.reflect.InvocationTargetException {
-        Class<?> aClass = ct.toClass();
+        Class<?> aClass = toClass(ct, JavassistUtils.class);
         Constructor<?> classConstructor = aClass.getConstructor();
         Object instance = classConstructor.newInstance();
         for (ITestMethod testMethod : testClass.getTestMethods()) {
@@ -72,16 +72,17 @@ public class JavassistUtils {
         return instance;
     }
 
-    /**
-     * 添加构造方法
-     *
-     * @param pool      类池
-     * @param className class名称
-     * @param ct        类
-     */
-    public static void setConstructor(ClassPool pool, String className, CtClass ct, Class superType) throws CannotCompileException, NotFoundException {
+    public static void setConstructor(ClassPool pool, String className, CtClass ct, Class<?> superType) throws CannotCompileException, NotFoundException {
+        // 确保超类在类路径中
+        pool.insertClassPath(new LoaderClassPath(superType.getClassLoader()));
+
+        // 设置超类
         ct.setSuperclass(pool.get(superType.getName()));
-        CtConstructor constructor = CtNewConstructor.make("public " + className + "(com.gerow.test.task.ITestClass testClass){super(testClass);}", ct);
+
+        // 创建构造函数
+        CtConstructor constructor = CtNewConstructor.make(
+                "public " + className + "(com.gerow.test.task.ITestClass testClass){" +
+                        "super(testClass);}", ct);
         ct.addConstructor(constructor);
     }
 
@@ -97,5 +98,18 @@ public class JavassistUtils {
                 "public void " + methodName + "()" + body, ct);
         addAnnotations(constPool, test, Test.class);
         ct.addMethod(test);
+    }
+
+    /**
+     * 将CtClass转换为Class
+     *
+     * @param ct            CtClass对象
+     * @param neighborClass 相邻类，用于获取ClassLoader和ProtectionDomain
+     * @return 转换后的Class对象
+     * @throws CannotCompileException 编译异常
+     */
+    public static Class<?> toClass(CtClass ct, Class<?> neighborClass) throws CannotCompileException {
+        // 使用相邻类的ClassLoader和ProtectionDomain来加载CtClass
+        return ct.toClass(neighborClass.getClassLoader(), neighborClass.getProtectionDomain());
     }
 }
