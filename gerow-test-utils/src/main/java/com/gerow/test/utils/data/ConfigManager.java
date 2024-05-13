@@ -83,7 +83,7 @@ public class ConfigManager {
     @Configuration
     @Data
     @ConfigurationProperties(prefix = "data")
-    private class Config {
+    public static class Config {
         private Map<String, String> test = new HashMap<>();
     }
 
@@ -93,7 +93,7 @@ public class ConfigManager {
     @Configuration
     @Data
     @ConfigurationProperties(prefix = "client")
-    private class ClientInfo {
+    public class ClientInfo {
         private Map<String, String> headers = new HashMap<>();
         private String protocol = "";
         private int timeOut = 5;

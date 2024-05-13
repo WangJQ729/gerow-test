@@ -13,7 +13,6 @@ import java.io.PrintWriter;
  */
 public class LoginHandlerInterceptor implements HandlerInterceptor {
     // 目标方法执行之前
-    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("Authorization");
         // 如果获取的request的session中的loginUser参数为空（未登录），就返回登录页，否则放行访问
