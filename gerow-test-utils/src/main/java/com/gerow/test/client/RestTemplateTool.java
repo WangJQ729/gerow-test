@@ -46,10 +46,9 @@ public class RestTemplateTool extends RestTemplate {
                 .setRedirectStrategy(new LaxRedirectStrategy())
 //                .disableCookieManagement()
                 .build();
-        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
         httpRequestFactory.setConnectionRequestTimeout(ConfigManager.getTimeOut() * 1000);
         httpRequestFactory.setConnectTimeout(ConfigManager.getTimeOut() * 1000);
-        httpRequestFactory.setReadTimeout(ConfigManager.getTimeOut() * 1000);
         setRequestFactory(httpRequestFactory);
 
         //使用fastJson
