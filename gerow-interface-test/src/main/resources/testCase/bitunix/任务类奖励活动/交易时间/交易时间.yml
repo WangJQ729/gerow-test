@@ -26,6 +26,9 @@ testMethod:
       - symbol: BTCUSDT
         amount: 0.05
         side: ${__Random(1,2)}
+        Accept-Language: en_US
+        msg: Events don't exist
+        code: 90001
     step:
       - keyWord: 快捷注册
       - keyWord: 增加合约账户资产
@@ -36,12 +39,15 @@ testMethod:
       - keyWord: 市价平仓
       - keyWord: 统计活动数据
       - keyWord: 领取记录-进度为零
-      - keyWord: 领取奖励-任务未开始
+      - keyWord: 领取奖励-校验领取结果
   - name: 任务未报名
     dataProvider:
       - symbol: BTCUSDT
         amount: 0.05
         side: ${__Random(1,2)}
+        Accept-Language: en_US
+        msg: Events don't exist
+        code: 90001
     step:
       - keyWord: 快捷注册
       - keyWord: 增加合约账户资产
@@ -51,7 +57,7 @@ testMethod:
       - keyWord: 市价平仓
       - keyWord: 统计活动数据
       - keyWord: 领取记录-进度为零
-      - keyWord: 领取奖励-任务未开始
+      - keyWord: 领取奖励-校验领取结果
 afterClass:
   name: 删除任务类奖励活动
   step:
