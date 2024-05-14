@@ -23,6 +23,7 @@ import io.qameta.allure.model.*;
 import io.qameta.allure.util.AnnotationUtils;
 import io.qameta.allure.util.ObjectUtils;
 import io.qameta.allure.util.ResultsUtils;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.*;
 import org.testng.annotations.Parameters;
@@ -46,31 +47,24 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.nonNull;
 
-public class AllureListener implements
-        ISuiteListener,
-        ITestListener,
-        IInvokedMethodListener2,
-        IConfigurationListener {
+public class AllureListener implements ISuiteListener, ITestListener, IInvokedMethodListener2, IConfigurationListener {
 
     private static final String ALLURE_UUID = "ALLURE_UUID";
 
     /**
      * Store current testng result uuid to attach before/after methods into.
      */
-    private final ThreadLocal<Current> currentTestResult = ThreadLocal
-            .withInitial(Current::new);
+    private final ThreadLocal<Current> currentTestResult = ThreadLocal.withInitial(Current::new);
 
     /**
      * Store current container uuid for fake containers around before/after methods.
      */
-    private final ThreadLocal<String> currentTestContainer = ThreadLocal
-            .withInitial(() -> UUID.randomUUID().toString());
+    private final ThreadLocal<String> currentTestContainer = ThreadLocal.withInitial(() -> UUID.randomUUID().toString());
 
     /**
      * Store uuid for current executable item to catch steps and attachments.
      */
-    private final ThreadLocal<String> currentExecutable = ThreadLocal
-            .withInitial(() -> UUID.randomUUID().toString());
+    private final ThreadLocal<String> currentExecutable = ThreadLocal.withInitial(() -> UUID.randomUUID().toString());
 
     /**
      * Store uuid for class test containers.
@@ -78,30 +72,18 @@ public class AllureListener implements
     private final Map<ITestClass, String> classContainerUuidStorage = new ConcurrentHashMap<>();
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
-    private static final List<Class<?>> INJECTED_TYPES = Arrays.asList(
-            ITestContext.class, ITestResult.class, XmlTest.class, Method.class, Object[].class
-    );
+    private static final List<Class<?>> INJECTED_TYPES = Arrays.asList(ITestContext.class, ITestResult.class, XmlTest.class, Method.class, Object[].class);
 
+    @Getter
     private final AllureLifecycle lifecycle;
-
-    public AllureListener(final AllureLifecycle lifecycle) {
-        this.lifecycle = lifecycle;
-    }
 
     public AllureListener() {
         this.lifecycle = Allure.getLifecycle();
     }
 
-    public AllureLifecycle getLifecycle() {
-        return lifecycle;
-    }
-
     @Override
     public void onStart(final ISuite suite) {
-        final TestResultContainer result = new TestResultContainer()
-                .setUuid(getUniqueUuid(suite))
-                .setName(suite.getName())
-                .setStart(System.currentTimeMillis());
+        final TestResultContainer result = new TestResultContainer().setUuid(getUniqueUuid(suite)).setName(suite.getName()).setStart(System.currentTimeMillis());
         getLifecycle().startTestContainer(result);
     }
 
@@ -109,21 +91,12 @@ public class AllureListener implements
     public void onStart(final ITestContext context) {
         final String parentUuid = getUniqueUuid(context.getSuite());
         final String uuid = getUniqueUuid(context);
-        final TestResultContainer container = new TestResultContainer()
-                .setUuid(uuid)
-                .setName(context.getName())
-                .setStart(System.currentTimeMillis());
+        final TestResultContainer container = new TestResultContainer().setUuid(uuid).setName(context.getName()).setStart(System.currentTimeMillis());
         getLifecycle().startTestContainer(parentUuid, container);
 
-        Stream.of(context.getAllTestMethods())
-                .map(ITestNGMethod::getTestClass)
-                .distinct()
-                .forEach(this::onBeforeClass);
+        Stream.of(context.getAllTestMethods()).map(ITestNGMethod::getTestClass).distinct().forEach(this::onBeforeClass);
 
-        context.getExcludedMethods().stream()
-                .filter(ITestNGMethod::isTest)
-                .filter(method -> !method.getEnabled())
-                .forEach(method -> createFakeResult(context, method));
+        context.getExcludedMethods().stream().filter(ITestNGMethod::isTest).filter(method -> !method.getEnabled()).forEach(method -> createFakeResult(context, method));
     }
 
     protected void createFakeResult(final ITestContext context, final ITestNGMethod method) {
@@ -147,17 +120,12 @@ public class AllureListener implements
         getLifecycle().stopTestContainer(uuid);
         getLifecycle().writeTestContainer(uuid);
 
-        Stream.of(context.getAllTestMethods())
-                .map(ITestNGMethod::getTestClass)
-                .distinct()
-                .forEach(this::onAfterClass);
+        Stream.of(context.getAllTestMethods()).map(ITestNGMethod::getTestClass).distinct().forEach(this::onAfterClass);
     }
 
     public void onBeforeClass(final ITestClass testClass) {
         final String uuid = UUID.randomUUID().toString();
-        final TestResultContainer container = new TestResultContainer()
-                .setUuid(uuid)
-                .setName(testClass.getName());
+        final TestResultContainer container = new TestResultContainer().setUuid(uuid).setName(testClass.getName());
         getLifecycle().startTestContainer(container);
         setClassContainer(testClass, uuid);
     }
@@ -181,67 +149,32 @@ public class AllureListener implements
 
         startTestCase(testResult, parentUuid, uuid);
 
-        Optional.of(testResult)
-                .map(ITestResult::getMethod)
-                .map(ITestNGMethod::getTestClass)
-                .ifPresent(clazz -> addClassContainerChild(clazz, uuid));
+        Optional.of(testResult).map(ITestResult::getMethod).map(ITestNGMethod::getTestClass).ifPresent(clazz -> addClassContainerChild(clazz, uuid));
     }
 
-    protected void startTestCase(final ITestResult testResult,
-                                 final String parentUuid,
-                                 final String uuid) {
-        startTestCase(
-                testResult.getTestContext(),
-                testResult.getMethod(),
-                testResult.getTestClass(),
-                testResult.getParameters(),
-                parentUuid,
-                uuid
-        );
+    protected void startTestCase(final ITestResult testResult, final String parentUuid, final String uuid) {
+        startTestCase(testResult.getTestContext(), testResult.getMethod(), testResult.getTestClass(), testResult.getParameters(), parentUuid, uuid);
     }
 
     @SuppressWarnings({"Indentation", "PMD.ExcessiveMethodLength", "deprecation"})
-    protected void startTestCase(final ITestContext context,
-                                 final ITestNGMethod method,
-                                 final IClass iClass,
-                                 final Object[] params,
-                                 final String parentUuid,
-                                 final String uuid) {
+    protected void startTestCase(final ITestContext context, final ITestNGMethod method, final IClass iClass, final Object[] params, final String parentUuid, final String uuid) {
         final ITestClass testClass = method.getTestClass();
         final List<Label> labels = new ArrayList<>();
         labels.addAll(getProvidedLabels());
         labels.addAll(Arrays.asList(
                 //Packages grouping
-                createPackageLabel(testClass.getName()),
-                createTestClassLabel(safeExtractTestTag(testClass, params)),
-                createTestMethodLabel(getMethodName(method, params)),
+                createPackageLabel(testClass.getName()), createTestClassLabel(safeExtractTestTag(testClass, params)), createTestMethodLabel(getMethodName(method, params)),
 
                 //xUnit grouping
-                createParentSuiteLabel(safeExtractSuiteName(testClass)),
-                createSuiteLabel(safeExtractTestTag(testClass, params)),
-                createSubSuiteLabel(safeExtractTestClassName(testClass)),
-                createSeverityLabel(getSeverity(params)),
+                createParentSuiteLabel(safeExtractSuiteName(testClass)), createSuiteLabel(safeExtractTestTag(testClass, params)), createSubSuiteLabel(safeExtractTestClassName(testClass)), createSeverityLabel(getSeverity(params)),
 
                 //Timeline grouping
-                createHostLabel(),
-                createThreadLabel(),
+                createHostLabel(), createThreadLabel(),
 
-                createFrameworkLabel("testng"),
-                createLanguageLabel("java")
-        ));
+                createFrameworkLabel("testng"), createLanguageLabel("java")));
         labels.addAll(getLabels(method, iClass));
         final List<Parameter> parameters = getParameters(context, method, params);
-        final TestResult result = new TestResult()
-                .setUuid(uuid)
-                .setHistoryId(getHistoryId(method, parameters))
-                .setName(getMethodName(method, params))
-                .setFullName(getQualifiedName(method, params))
-                .setStatusDetails(new StatusDetails()
-                        .setFlaky(isFlaky(method, iClass))
-                        .setMuted(isMuted(method, iClass)))
-                .setParameters(parameters)
-                .setLinks(getLinks(method, iClass))
-                .setLabels(labels);
+        final TestResult result = new TestResult().setUuid(uuid).setHistoryId(getHistoryId(method, parameters)).setName(getMethodName(method, params)).setFullName(getQualifiedName(method, params)).setStatusDetails(new StatusDetails().setFlaky(isFlaky(method, iClass)).setMuted(isMuted(method, iClass))).setParameters(parameters).setLinks(getLinks(method, iClass)).setLabels(labels);
         processDescription(getClass().getClassLoader(), method.getConstructorOrMethod().getMethod(), result);
         getLifecycle().scheduleTestCase(parentUuid, result);
         getLifecycle().startTestCase(uuid);
@@ -252,7 +185,7 @@ public class AllureListener implements
             if (param instanceof ITestMethod) {
                 try {
                     return ((ITestMethod) param).getSeverityLevel();
-                } catch (NullPointerException e) {
+                } catch (NullPointerException ignored) {
                 }
             }
         }
@@ -276,7 +209,7 @@ public class AllureListener implements
             if (param instanceof ITestMethod) {
                 try {
                     name = ((ITestMethod) param).getTestClass().getTestSuite().getName();
-                } catch (NullPointerException e) {
+                } catch (NullPointerException ignored) {
 
                 }
             }
@@ -364,8 +297,7 @@ public class AllureListener implements
     }
 
     @Override
-    public void beforeInvocation(final IInvokedMethod method, final ITestResult testResult,
-                                 final ITestContext context) {
+    public void beforeInvocation(final IInvokedMethod method, final ITestResult testResult, final ITestContext context) {
         final ITestNGMethod testMethod = method.getTestMethod();
         if (isSupportedConfigurationFixture(testMethod) && !StringUtils.containsIgnoreCase(testMethod.getMethodName(), "spring")) {
             ifSuiteFixtureStarted(context.getSuite(), testMethod);
@@ -386,12 +318,10 @@ public class AllureListener implements
 
     private void ifClassFixtureStarted(final ITestNGMethod testMethod) {
         if (testMethod.isBeforeClassConfiguration()) {
-            getClassContainer(testMethod.getTestClass())
-                    .ifPresent(parentUuid -> startBefore(parentUuid, testMethod));
+            getClassContainer(testMethod.getTestClass()).ifPresent(parentUuid -> startBefore(parentUuid, testMethod));
         }
         if (testMethod.isAfterClassConfiguration()) {
-            getClassContainer(testMethod.getTestClass())
-                    .ifPresent(parentUuid -> startAfter(parentUuid, testMethod));
+            getClassContainer(testMethod.getTestClass()).ifPresent(parentUuid -> startAfter(parentUuid, testMethod));
         }
     }
 
@@ -434,12 +364,7 @@ public class AllureListener implements
 
     private String createFakeContainer(final ITestNGMethod method, final Current current) {
         final String parentUuid = currentTestContainer.get();
-        final TestResultContainer container = new TestResultContainer()
-                .setUuid(parentUuid)
-                .setName(getQualifiedName(method))
-                .setStart(System.currentTimeMillis())
-                .setDescription(method.getDescription())
-                .setChildren(current.getUuid());
+        final TestResultContainer container = new TestResultContainer().setUuid(parentUuid).setName(getQualifiedName(method)).setStart(System.currentTimeMillis()).setDescription(method.getDescription()).setChildren(Collections.singletonList(current.getUuid()));
         getLifecycle().startTestContainer(container);
         return parentUuid;
     }
@@ -450,11 +375,7 @@ public class AllureListener implements
 
     @SuppressWarnings("deprecation")
     private FixtureResult getFixtureResult(final ITestNGMethod method) {
-        final FixtureResult fixtureResult = new FixtureResult()
-                .withName(getMethodName(method))
-                .withStart(System.currentTimeMillis())
-                .withDescription(method.getDescription())
-                .withStage(Stage.RUNNING);
+        final FixtureResult fixtureResult = new FixtureResult().withName(getMethodName(method)).withStart(System.currentTimeMillis()).withDescription(method.getDescription()).withStage(Stage.RUNNING);
         processDescription(getClass().getClassLoader(), method.getConstructorOrMethod().getMethod(), fixtureResult);
         return fixtureResult;
     }
@@ -465,18 +386,15 @@ public class AllureListener implements
     }
 
     @Override
-    public void afterInvocation(final IInvokedMethod method, final ITestResult testResult,
-                                final ITestContext context) {
+    public void afterInvocation(final IInvokedMethod method, final ITestResult testResult, final ITestContext context) {
         final ITestNGMethod testMethod = method.getTestMethod();
         if (isSupportedConfigurationFixture(testMethod)) {
             final String executableUuid = currentExecutable.get();
             currentExecutable.remove();
             if (testResult.isSuccess()) {
-                getLifecycle().updateFixture(executableUuid, result -> result.withStatus(Status.PASSED));
+                getLifecycle().updateFixture(executableUuid, result -> result.setStatus(Status.PASSED));
             } else {
-                getLifecycle().updateFixture(executableUuid, result -> result
-                        .withStatus(getStatus(testResult.getThrowable()))
-                        .withStatusDetails(getStatusDetails(testResult.getThrowable()).orElse(null)));
+                getLifecycle().updateFixture(executableUuid, result -> result.setStatus(getStatus(testResult.getThrowable())).setStatusDetails(getStatusDetails(testResult.getThrowable()).orElse(null)));
             }
             getLifecycle().stopFixture(executableUuid);
 
@@ -516,12 +434,10 @@ public class AllureListener implements
         final String methodName = method.getMethodName();
         digest.update(testClassName.getBytes(UTF_8));
         digest.update(methodName.getBytes(UTF_8));
-        parameters.stream()
-                .sorted(comparing(Parameter::getName).thenComparing(Parameter::getValue))
-                .forEachOrdered(parameter -> {
-                    digest.update(parameter.getName().getBytes(UTF_8));
-                    digest.update(parameter.getValue().getBytes(UTF_8));
-                });
+        parameters.stream().sorted(comparing(Parameter::getName).thenComparing(Parameter::getValue)).forEachOrdered(parameter -> {
+            digest.update(parameter.getName().getBytes(UTF_8));
+            digest.update(parameter.getValue().getBytes(UTF_8));
+        });
         final byte[] bytes = digest.digest();
         return bytesToHex(bytes);
     }
@@ -532,84 +448,53 @@ public class AllureListener implements
 
     @SuppressWarnings("BooleanExpressionComplexity")
     private boolean isSupportedConfigurationFixture(final ITestNGMethod testMethod) {
-        return testMethod.isBeforeMethodConfiguration() || testMethod.isAfterMethodConfiguration()
-                || testMethod.isBeforeTestConfiguration() || testMethod.isAfterTestConfiguration()
-                || testMethod.isBeforeClassConfiguration() || testMethod.isAfterClassConfiguration()
-                || testMethod.isBeforeSuiteConfiguration() || testMethod.isAfterSuiteConfiguration();
+        return testMethod.isBeforeMethodConfiguration() || testMethod.isAfterMethodConfiguration() || testMethod.isBeforeTestConfiguration() || testMethod.isAfterTestConfiguration() || testMethod.isBeforeClassConfiguration() || testMethod.isAfterClassConfiguration() || testMethod.isBeforeSuiteConfiguration() || testMethod.isAfterSuiteConfiguration();
     }
 
     private void validateContainerExists(final String fixtureName, final String containerUuid) {
         if (Objects.isNull(containerUuid)) {
-            throw new IllegalStateException(
-                    "Could not find container for after method fixture " + fixtureName
-            );
+            throw new IllegalStateException("Could not find container for after method fixture " + fixtureName);
         }
     }
 
     private List<Label> getLabels(final ITestNGMethod method, final IClass iClass) {
         final List<Label> labels = new ArrayList<>();
-        getMethod(method)
-                .map(AnnotationUtils::getLabels)
-                .ifPresent(labels::addAll);
-        getClass(iClass)
-                .map(AnnotationUtils::getLabels)
-                .ifPresent(labels::addAll);
+        getMethod(method).map(AnnotationUtils::getLabels).ifPresent(labels::addAll);
+        getClass(iClass).map(AnnotationUtils::getLabels).ifPresent(labels::addAll);
 
-        getMethod(method)
-                .map(this::getSeverity)
-                .filter(Optional::isPresent)
-                .orElse(getClass(iClass).flatMap(this::getSeverity))
-                .map(ResultsUtils::createSeverityLabel)
-                .ifPresent(labels::add);
+        getMethod(method).map(this::getSeverity).filter(Optional::isPresent).orElse(getClass(iClass).flatMap(this::getSeverity)).map(ResultsUtils::createSeverityLabel).ifPresent(labels::add);
         return labels;
     }
 
     private Optional<SeverityLevel> getSeverity(final AnnotatedElement annotatedElement) {
-        return Stream.of(annotatedElement.getAnnotationsByType(Severity.class))
-                .map(Severity::value)
-                .findAny();
+        return Stream.of(annotatedElement.getAnnotationsByType(Severity.class)).map(Severity::value).findAny();
     }
 
     private List<Link> getLinks(final ITestNGMethod method, final IClass iClass) {
         final List<Link> links = new ArrayList<>();
-        getMethod(method)
-                .map(AnnotationUtils::getLinks)
-                .ifPresent(links::addAll);
-        getClass(iClass)
-                .map(AnnotationUtils::getLinks)
-                .ifPresent(links::addAll);
+        getMethod(method).map(AnnotationUtils::getLinks).ifPresent(links::addAll);
+        getClass(iClass).map(AnnotationUtils::getLinks).ifPresent(links::addAll);
         return links;
     }
 
     private boolean isFlaky(final ITestNGMethod method, final IClass iClass) {
-        final boolean flakyMethod = getMethod(method)
-                .map(m -> m.isAnnotationPresent(Flaky.class))
-                .orElse(false);
-        final boolean flakyClass = getClass(iClass)
-                .map(clazz -> clazz.isAnnotationPresent(Flaky.class))
-                .orElse(false);
+        final boolean flakyMethod = getMethod(method).map(m -> m.isAnnotationPresent(Flaky.class)).orElse(false);
+        final boolean flakyClass = getClass(iClass).map(clazz -> clazz.isAnnotationPresent(Flaky.class)).orElse(false);
         return flakyMethod || flakyClass;
     }
 
     private boolean isMuted(final ITestNGMethod method, final IClass iClass) {
-        final boolean mutedMethod = getMethod(method)
-                .map(m -> m.isAnnotationPresent(Muted.class))
-                .orElse(false);
-        final boolean mutedClass = getClass(iClass)
-                .map(clazz -> clazz.isAnnotationPresent(Muted.class))
-                .orElse(false);
+        final boolean mutedMethod = getMethod(method).map(m -> m.isAnnotationPresent(Muted.class)).orElse(false);
+        final boolean mutedClass = getClass(iClass).map(clazz -> clazz.isAnnotationPresent(Muted.class)).orElse(false);
         return mutedMethod || mutedClass;
     }
 
     private Optional<Method> getMethod(final ITestNGMethod method) {
-        return Optional.ofNullable(method)
-                .map(ITestNGMethod::getConstructorOrMethod)
-                .map(ConstructorOrMethod::getMethod);
+        return Optional.ofNullable(method).map(ITestNGMethod::getConstructorOrMethod).map(ConstructorOrMethod::getMethod);
     }
 
     private Optional<Class<?>> getClass(final IClass iClass) {
-        return Optional.ofNullable(iClass)
-                .map(IClass::getRealClass);
+        return Optional.ofNullable(iClass).map(IClass::getRealClass);
     }
 
     /**
@@ -636,12 +521,8 @@ public class AllureListener implements
         return firstNonEmpty(testClass.getTestName(), testClass.getName()).orElse("Undefined class name");
     }
 
-    private List<Parameter> getParameters(final ITestContext context,
-                                          final ITestNGMethod method,
-                                          final Object... parameters) {
-        final Map<String, String> result = new HashMap<>(
-                context.getCurrentXmlTest().getAllParameters()
-        );
+    private List<Parameter> getParameters(final ITestContext context, final ITestNGMethod method, final Object... parameters) {
+        final Map<String, String> result = new HashMap<>(context.getCurrentXmlTest().getAllParameters());
 
         getMethod(method).ifPresent(m -> {
             final Class<?>[] parameterTypes = m.getParameterTypes();
@@ -650,13 +531,9 @@ public class AllureListener implements
                 return;
             }
 
-            final String[] providedNames = Optional.ofNullable(m.getAnnotation(Parameters.class))
-                    .map(Parameters::value)
-                    .orElse(new String[]{});
+            final String[] providedNames = Optional.ofNullable(m.getAnnotation(Parameters.class)).map(Parameters::value).orElse(new String[]{});
 
-            final String[] reflectionNames = Stream.of(m.getParameters())
-                    .map(java.lang.reflect.Parameter::getName)
-                    .toArray(String[]::new);
+            final String[] reflectionNames = Stream.of(m.getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 
             int skippedCount = 0;
             for (int i = 0; i < parameterTypes.length; i++) {
@@ -688,16 +565,11 @@ public class AllureListener implements
 
         });
 
-        return result.entrySet().stream()
-                .map(entry -> createParameter(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+        return result.entrySet().stream().map(entry -> createParameter(entry.getKey(), entry.getValue())).collect(Collectors.toList());
     }
 
     private String getMethodName(final ITestNGMethod method) {
-        return firstNonEmpty(
-                method.getDescription(),
-                method.getMethodName(),
-                getQualifiedName(method)).orElse("Unknown");
+        return firstNonEmpty(method.getDescription(), method.getMethodName(), getQualifiedName(method)).orElse("Unknown");
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -720,10 +592,7 @@ public class AllureListener implements
         try {
             final String parentUuid = classContainerUuidStorage.get(clazz);
             if (nonNull(parentUuid)) {
-                getLifecycle().updateTestContainer(
-                        parentUuid,
-                        container -> container.getChildren().add(childUuid)
-                );
+                getLifecycle().updateTestContainer(parentUuid, container -> container.getChildren().add(childUuid));
             }
         } finally {
             lock.writeLock().unlock();
@@ -757,6 +626,7 @@ public class AllureListener implements
      * Describes current test result.
      */
     private static class Current {
+        @Getter
         private final String uuid;
         private CurrentStage currentStage;
 
@@ -781,17 +651,12 @@ public class AllureListener implements
             return this.currentStage == CurrentStage.AFTER;
         }
 
-        public String getUuid() {
-            return uuid;
-        }
     }
 
     /**
      * The stage of current result context.
      */
     private enum CurrentStage {
-        BEFORE,
-        TEST,
-        AFTER
+        BEFORE, TEST, AFTER
     }
 }
