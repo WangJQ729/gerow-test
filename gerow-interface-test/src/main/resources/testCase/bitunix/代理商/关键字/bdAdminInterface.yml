@@ -10,6 +10,7 @@ keyWord:
       extractor:
         - json:
             bd_token: $.result.token
+          site: TESTSUITE
     - name: 团队佣金
       host: ${bdadmin_host}
       url: /partner/bd/get_partner_team_information

@@ -1,0 +1,70 @@
+keyWord:
+  step:
+    - name: 市价开仓
+      sleep: 1000
+      url: /futures/futures/order/market
+      method: POST
+      headers:
+        Token: ${token}
+      body: |
+        {"amount":"0.08","side":"${__Random(1,2)}","symbol":"${__RandomEnum(BTCUSDT|ETHUSDT|LTCUSDT,)}","reductionOnly":false}
+      extractor:
+        - json:
+            orderId: $.data.orderId
+    - keyWord: 市价开仓
+      name: 市价开仓-指定交易对
+      bodyEditor:
+        json:
+          $.amount: '${amount}'
+          $.side: '${side}'
+          $.symbol: ${symbol}
+    - name: 市价平仓
+      url: /futures/futures/position/close/market
+      method: POST
+      headers:
+        Token: ${token}
+      body: |
+        {"symbol":"${market}","side":${side},"amount":"${amount}","price":"","positionId":"${position_id}"}
+      extractor:
+        - json:
+            closeOrderId: $.data.orderId
+    - name: 历史成交查询
+      url: /futures/futures/order/deals/page
+      method: GET
+      headers:
+        Token: ${token}
+      variables:
+        page: 1
+        pageSize: 10
+        side: 0
+      extractor:
+        - json:
+            openDealFee: $.data.records[?(@.orderId=='${orderId}')].dealFee
+          size: 100
+    - name: U本位合约历史委托
+      untilWait: 30
+      url: /futures/futures/order/history
+      method: GET
+      headers:
+        Token: ${token}
+      variables:
+        page: 1
+        pageSize: 10
+        side: 0
+        type: 2
+      extractor:
+        - json:
+            openDealFee: $.data.records[?(@.orderId=='${orderId}' && @.side==${side})].dealFee
+    - keyWord: U本位合约历史委托
+      name: U本位合约历史委托-平仓
+      extractor:
+        - json:
+            closeDealFee: $.data.records[?(@.orderId=='${closeOrderId}')].dealFee
+    - name: 合约划转现货
+      url: /futures/futures/assets/futures2spot
+      method: POST
+      headers:
+        Token: ${token}
+      body: |
+        {"symbol":"USDT","amount":"999"}
+      assertion: [json: {$.code: 0}]

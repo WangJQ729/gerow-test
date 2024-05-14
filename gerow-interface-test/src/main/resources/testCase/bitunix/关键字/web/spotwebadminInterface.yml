@@ -1,0 +1,147 @@
+keyWord:
+  step:
+    - name: 现货后台获取登录信息
+      host: ${spotwebadmin_host}
+      url: /api/login
+      method: POST
+      body: |
+        {
+            "userName": "${userName}",
+            "password": "${__digest(MD5,${password})}"
+        }
+      extractor:
+        - json:
+            spotwebadmin_userId: $.result.userId
+    - name: 现货后台获取googleKey
+      host: ${spotwebadmin_host}
+      url: /api/get_google_key
+      method: GET
+      variables:
+        userId: ${spotwebadmin_userId}
+      extractor:
+        - json:
+            googleKey: $.result.googleKey
+    - name: 登录现货后台
+      host: ${spotwebadmin_host}
+      url: /api/google_auth
+      method: POST
+      body: |
+        {
+            "googleCode": "${__GoogleAuthenticator(${spotAdminGoogleCode})}",
+            "userName": "${userName}",
+            "password": "${__digest(MD5,${password})}",
+            "authType": 2,
+            "googleKey": "${googleKey}"
+        }
+      extractor:
+        - json:
+            spotwebadmin_token: $.result.token
+          site: TESTSUITE
+    - name: 任务类奖励活动列表-活动不存在
+      host: ${spotwebadmin_host}
+      url: /api/recharge/common/act/list
+      untilWait: 5
+      variables:
+        actName: ${actCode}
+        page: 1
+        pageSize: 20
+      headers:
+        Token: ${spotwebadmin_token}
+      method: GET
+      assertion:
+        - json:
+            $.code: '0'
+            $.result.items.length(): 0
+    - name: 任务类奖励活动列表
+      keyWord: 任务类奖励活动列表-活动不存在
+      extractor:
+        - json:
+            actId: $.result.items[?(@.actName == '${actCode}')].id
+      assertion:
+        - json:
+            $.code: '0'
+            $.result.items[?(@.actName == '${actCode}')].status:
+              - ${actStatusType}
+    - name: 创建任务类奖励活动
+      host: ${spotwebadmin_host}
+      url: /api/recharge/common/act/manage
+      headers:
+        Token: ${spotwebadmin_token}
+      method: POST
+      body: |
+        {
+            "type": "${type}",
+            "data": {
+                "minBalance": "${minBalance}",
+                "actName": "${actCode}",
+                "actStartTime": "${actStartTime}",
+                "actEndTime": "${actEndTime}",
+                "actEnrollStartTime": "${actEnrollStartTime}",
+                "actEnrollEndTime": "${actEnrollEndTime}",
+                "link": "${actCode}",
+                "actRuleDetails": [
+                    {
+                        "ruleLadder": 1,
+                        "firstRuleName": "${firstRuleName}",
+                        "firstRuleOperator": ">=",
+                        "ruleCondition": "and",
+                        "award": "${award}",
+                        "awardAmt": "${awardAmt}",
+                        "couponId": ${couponId},
+                        "awardNumber": "${awardNumber}",
+                        "firstRuleTarget": "${firstRuleTarget}"
+                    }
+                ],
+                "driftEffectSwitch": false,
+                "driftEffectImg": "",
+                "color": "#B9F641",
+                "webBgImg": [
+                    {
+                        "langKey": "en-US",
+                        "content": "https://bitunix-public.oss-ap-northeast-1.aliyuncs.com/config/kv/297126.jpg"
+                    }
+                ],
+                "h5BgImg": [
+                    {
+                        "langKey": "en-US",
+                        "content": "https://bitunix-public.oss-ap-northeast-1.aliyuncs.com/config/kv/257556.jpg"
+                    }
+                ],
+                "recommendImg": [
+                    {
+                        "langKey": "en-US",
+                        "content": "https://bitunix-public.oss-ap-northeast-1.aliyuncs.com/config/kv/183926.jpg"
+                    }
+                ],
+                "recommendText": [
+                    {
+                        "langKey": "en-US",
+                        "content": "🎉 【交易所合约赠金活动】 🎉 🚀 限时好礼！参与交易所合约赠金活动，轻松获取额外赠金！开启您的交易之旅，享受更多收益！不容错过的机会，立即参与！💰✨ #合约交易 #赠金活动 #交易所 #额外收益 #限时优惠\n\n"
+                    }
+                ],
+                "actDetails": [
+                    {
+                        "langKey": "en-US",
+                        "content": "<p>📜 活动规则：</p>\n<ol>\n<li>\n<p><strong>活动时间</strong>：本次交易所合约赠金活动将于活动开始后的一个月内举行，具体时间请以官方公告为准。</p>\n</li>\n<li>\n<p><strong>参与资格</strong>：所有注册并通过身份验证的交易所用户均可参与。</p>\n</li>\n<li>\n<p><strong>赠金计算</strong>：根据用户在活动期间的合约交易量，按照一定比例进行赠金计算。具体赠金比例和上限请参考活动页面。</p>\n</li>\n<li>\n<p><strong>赠金发放</strong>：赠金将在活动结束后的5个工作日内发放至用户的交易所账户中。</p>\n</li>\n<li>\n<p><strong>赠金使用</strong>：赠金仅可用于合约交易，不能直接提现。但用户可以使用赠金获得的利润进行提现。</p>\n</li>\n<li>\n<p><strong>违规处理</strong>：任何形式的恶意操作、刷量行为或违反交易所规定的行为都将导致取消赠金资格并可能被封号处理。</p>\n</li>\n<li>\n<p><strong>最终解释权</strong>：本活动的最终解释权归交易所所有，如有任何争议，交易所保留最终裁定权。</p>\n</li>\n<li>\n<p><strong>注意事项</strong>：参与活动前，请务必仔细阅读并理解活动规则及风险提示。合理规划交易，谨慎参与，理性投资。</p>\n</li>\n</ol>\n<p>🌟 抓住机会，加入我们的合约赠金活动，享受更多交易乐趣和收益！</p>"
+                    }
+                ],
+                "actAward": "experience",
+                "joinType": 1
+            }
+        }
+      assertion: [ json: { $.code: '0' } ]
+    - name: 删除任务类奖励活动
+      host: ${spotwebadmin_host}
+      url: /api/recharge/common/act/delete
+      headers:
+        Token: ${spotwebadmin_token}
+      method: POST
+      body: |
+        {"actId":${actId}}
+      assertion: [ json: { $.code: '0' } ]
+    - name: 删除任务类奖励活动-不允许删除
+      keyWord: 删除任务类奖励活动
+      assertion:
+        - json:
+            $.code: 2
+            $.message: 当前状态不允许删除

@@ -1,0 +1,39 @@
+keyWord:
+  step:
+    - name: 现货市价买入
+      url: /web/api/v1/order/place_order
+      headers:
+        Token: ${token}
+      method: POST
+      body: |
+        {"side":"2","price":0,"volume":"99","base":"${spotSymbols}","quote":"USDT","type":"2"}
+      assertion: [json: {$.code: '0'}]
+    - name: web现货历史委托
+      url: /web/api/v1/order/history/page
+      headers:
+        Token: ${token}
+      method: POST
+      sleep: 1000
+      body: |
+        {
+            "page": 1,
+            "pageSize": 10,
+            "side": null,
+            "base": "${spotSymbols}",
+            "quote": null,
+            "type": null,
+            "status": null,
+            "startTime": "${__PlusDay(yyyy-MM-dd,-1,)}T16:00:00.000Z",
+            "endTime": "${__PlusDay(yyyy-MM-dd,1,)}T16:00:00.000Z"
+        }
+      extractor:
+        - json:
+            webFee: $.data.data[0].fee
+            dealAmount: $.data.data[0].dealAmount
+            orderId: $.data.data[0].orderId
+      assertion:
+        - json:
+            $.code: '0'
+        - json:
+            $.data.data[0].dealAmount: 5
+          assertionType: GREATEROREQUALTO

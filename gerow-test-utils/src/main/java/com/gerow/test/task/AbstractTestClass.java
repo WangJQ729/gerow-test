@@ -78,14 +78,20 @@ public abstract class AbstractTestClass implements ITestClass {
     @Override
     public void tearDown() {
         for (ITestMethod testMethod : after) {
-            testMethod.doing();
+            try {
+                testMethod.doing();
+            } catch (Exception ignored) {
+            }
         }
     }
 
     @Override
     public void tearDownAfterClass() {
         for (ITestMethod testMethod : afterClass) {
-            testMethod.doing();
+            try {
+                testMethod.doing();
+            } catch (Error ignored) {
+            }
         }
         executor.shutdown();
     }

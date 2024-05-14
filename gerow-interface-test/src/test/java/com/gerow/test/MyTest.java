@@ -2,8 +2,6 @@ package com.gerow.test;
 
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
-
 public class MyTest {
 
     @Test

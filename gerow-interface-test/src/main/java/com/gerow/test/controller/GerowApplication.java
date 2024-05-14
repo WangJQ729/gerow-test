@@ -6,7 +6,6 @@ import com.gerow.test.utils.ResponseInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@RestController
 public class GerowApplication {
 
     private final ITestSuite taobaoTestSuite = getTestSuite("淘宝");

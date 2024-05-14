@@ -372,6 +372,11 @@ public class Assertion {
             case ONEOF:
                 oneOfAssertion(actual, value);
                 break;
+            case NOT:
+                Assertions.assertThat(actual == null ? "" : actual)
+                        .as(key + "不为：" + value)
+                        .isNotEqualTo(value == null ? "" : value);
+                break;
             case EQ:
             default:
                 //null转换为空字符串进行判断
@@ -400,7 +405,11 @@ public class Assertion {
 
     private static void oneOfAssertion(Object actual, Object value) {
         if (value instanceof Collection) {
-            Assertions.assertThat((Collection) value).containsAnyElementsOf((Collection<Object>) actual);
+            if (actual instanceof Collection) {
+                Assertions.assertThat((Collection) value).containsAnyElementsOf((Collection<Object>) actual);
+            }else {
+                Assertions.assertThat((Collection) value).contains(actual);
+            }
         } else {
             Assertions.assertThat((Object[]) value).containsAnyOf(((Object[]) actual)[0]);
         }

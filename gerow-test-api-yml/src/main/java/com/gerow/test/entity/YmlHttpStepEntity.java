@@ -3,12 +3,12 @@ package com.gerow.test.entity;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.gerow.test.task.ITestMethod;
-import com.gerow.test.utils.data.DataType;
-import com.gerow.test.utils.data.Extractor;
-import com.gerow.test.utils.data.StepEditor;
 import com.gerow.test.task.ITestStep;
 import com.gerow.test.task.YmlTestStep;
 import com.gerow.test.utils.assertion.Assertion;
+import com.gerow.test.utils.data.DataType;
+import com.gerow.test.utils.data.Extractor;
+import com.gerow.test.utils.data.StepEditor;
 import lombok.Data;
 
 import java.util.*;

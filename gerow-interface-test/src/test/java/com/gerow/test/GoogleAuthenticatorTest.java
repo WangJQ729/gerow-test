@@ -1,6 +1,7 @@
 package com.gerow.test;
 
 import org.apache.commons.codec.binary.Base32;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 

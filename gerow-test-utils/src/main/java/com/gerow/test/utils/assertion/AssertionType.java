@@ -38,5 +38,6 @@ public enum AssertionType {
      */
     ALLLESSTHANOREQUALTO,
     TOTAL,
-    ONEOF
+    ONEOF,
+    NOT,
 }

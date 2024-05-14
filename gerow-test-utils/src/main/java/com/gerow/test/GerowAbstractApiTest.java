@@ -1,10 +1,10 @@
 package com.gerow.test;
 
-import com.gerow.test.task.ITest;
-import com.gerow.test.task.ITestMethod;
-import com.gerow.test.task.GerowTest;
 import com.gerow.test.listener.AllureListener;
+import com.gerow.test.task.GerowTest;
+import com.gerow.test.task.ITest;
 import com.gerow.test.task.ITestClass;
+import com.gerow.test.task.ITestMethod;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.ITestResult;
@@ -61,9 +61,7 @@ public abstract class GerowAbstractApiTest extends AbstractTestBase implements G
     public Iterator<Object[]> data() {
         List<ITestMethod> testMethods = testClass.getTestMethods().parallelStream()
                 //根据测试名称过来测试
-                .filter(ITest::enable)
-                .flatMap(this::buildTestMethods)
-                .collect(Collectors.toList());
+                .filter(ITest::enable).flatMap(this::buildTestMethods).collect(Collectors.toList());
         return testMethods.stream().map(o -> new Object[]{o}).iterator();
     }
 
@@ -88,20 +86,25 @@ public abstract class GerowAbstractApiTest extends AbstractTestBase implements G
 
     @AfterSuite
     public void tearDownAfterSuite() {
-        testClass.getTestSuite().tearDown();
+        try {
+            testClass.getTestSuite().tearDown();
+        } catch (Throwable ignore) {
+        }
     }
 
     @AfterClass
     public void tearDownAfterClass() {
-        testClass.tearDownAfterClass();
+        try {
+            testClass.tearDownAfterClass();
+        } catch (Throwable ignore) {
+        }
     }
 
     @AfterMethod
     public void tearDownAfterMethod(ITestResult result) {
         try {
             testClass.tearDown();
-        } catch (Throwable e) {
-            System.out.println(e.getMessage());
+        } catch (Throwable ignore) {
         }
 
         logger.debug("测试结束：" + testName);
