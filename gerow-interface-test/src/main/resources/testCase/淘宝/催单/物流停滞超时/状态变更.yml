@@ -1,0 +1,94 @@
+name: 状态变更
+platform: 融合版
+story: ${reminder_type}
+dataProvider:
+  - node_state: logistics_stagnate_delay
+    order_state: arrival
+    message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
+    text_with_vars: ${message}
+    reminder_type: 物流停滞超时
+    action: ARRIVAL
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+
+testMethod:
+  - name: 状态变更为-${new_action_name}-${new_action}
+    dataProvider:
+      - new_action_name: 物流拒签
+        dataProvider:
+          - new_action: FAILED
+          - new_action: TMS_FAILED
+          - new_action: STA_BUYER_REJECT
+      - new_action_name: 物流签收
+        dataProvider:
+          - new_action: SIGNED
+          - new_action: SH_SIGNED
+          - new_action: STA_SIGNED
+          - new_action: TMS_SIGN
+          - new_action: STA_SEND_SIGN
+          - new_action: CONFIRM_SIGN
+          - new_action: STA_VILLAGER_SIGN
+          - new_action: STA_SIGN
+      - new_action_name: 未知状态
+        dataProvider:
+          - new_action: ERROR
+    severity: NORMAL
+    step:
+      - keyWord: 开启催单任务
+        name: 开启物流停滞超时催单任务-10秒后触发
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_state_delay_message')].args.state_delay: 10
+            $.rules[?(@.type=='send_state_delay_message')].args.message: ${message}
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-TaskSetTimer
+      - name: 发送物流消息-状态变更
+        keyWord: 发送物流消息
+        bodyEditor:
+          json:
+            $.action: ${new_action}
+            $.out_sid: ${out_sid}
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 查看trace详情-订单状态变更
+  - name: 状态变更为-${new_action_name}-${new_action}
+    dataProvider:
+      - new_action_name: 再次变更为到达中转站
+        dataProvider:
+          - new_action: ARRIVAL
+    severity: NORMAL
+    step:
+      - keyWord: 开启物流停滞超时催单任务-10秒后触发
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-TaskSetTimer
+      - keyWord: 发送物流消息-状态变更
+      - keyWord: 获取催单消息
+      - keyWord: 查看trace详情
+        name: 查看trace详情-StateChange
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_state_delay_message]
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - keyWord: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - keyWord: 主账号发送心跳检测

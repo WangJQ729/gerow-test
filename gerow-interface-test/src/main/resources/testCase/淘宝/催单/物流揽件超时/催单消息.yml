@@ -1,0 +1,69 @@
+name: 催单消息
+platform: 融合版
+story: ${reminder_type}
+dataProvider:
+  - node_state: got_delay
+    order_state: shipped
+    message: 由于近期订单量过大，快递小哥没能及时揽件，实在抱歉。请您耐心等待，小妹会尽快联系快递小哥安排给您优先处理呢！
+    text_with_vars: ${message}
+    reminder_type: 揽件超时
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+
+testMethod:
+  - name: 催单消息校验-${message}
+    dataProvider:
+      - message: 纯文字催单消息
+        text_with_vars: 纯文字催单消息
+      - message: "#E-s20#E-s20#E-s20#E-s20#E-s20"
+        text_with_vars: "#E-s20#E-s20#E-s20#E-s20#E-s20"
+      - message: "{{子账号名称}}"
+        text_with_vars: ${seller_name}
+      - message: "1{↓1秒后分行发送↓}2"
+        text_with_vars: "1{↓1秒后分行发送↓}2"
+    severity: NORMAL
+    step:
+      - keyWord: 开启催单任务
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 指定顾客指定订单推送已发货订单消息
+      - keyWord: 获取催单消息
+  - name: 催单消息校验-订单编号
+    dataProvider:
+      - message: "{订单编号}"
+    severity: NORMAL
+    step:
+      - keyWord: 开启催单任务
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 指定顾客指定订单推送已发货订单消息
+      - keyWord: 获取催单消息-订单编号
+  - name: 催单消息校验-包含图片
+    dataProvider:
+      - message: 含图片的消息
+        text_with_vars: 含图片的消息
+    severity: NORMAL
+    step:
+      - keyWord: 开启催单任务-包含图片
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 指定顾客指定订单推送已发货订单消息
+      - keyWord: 获取催单消息-包含图片
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - keyWord: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - keyWord: 主账号发送心跳检测

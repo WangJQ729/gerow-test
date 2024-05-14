@@ -1,0 +1,209 @@
+name: 时效标签
+story: ${reminder_type}
+dataProvider:
+  - node_state: created
+    order_state: NOT_PAY
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+    text_with_vars: ${message}
+    reminder_type: 下单未付款
+  - node_state: canceled
+    order_state: CANCEL
+    message: 非常遗憾您的订单被取消，如果您对我们的商品和服务有任何疑问，请随时联系我们，帮助我们更好改善。
+    text_with_vars: ${message}
+    reminder_type: 订单取消
+  - node_state: finished
+    order_state: FINISH
+    message: 小店收到飞鸽传书，得知您的宝贝已经安全抵达。有任何疑问欢迎咨询我们。如果您对这次购物体验满意，期待得到您的评价鼓励，一路相知，伴随左右~
+    text_with_vars: ${message}
+    reminder_type: 交易成功
+  - node_state: paid
+    order_state: WAIT_DELIVERY
+    message: 您好，我们已收到你的订单啦~~我们会尽快为您发货，请您耐心等待。
+    text_with_vars: ${message}
+    reminder_type: 等待出库
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - name: 获取时效标签列表
+      url: /api/admin/config2/ageing/list
+      method: GET
+      assertion: [json: {$.code: 0}]
+      extractor:
+        - json:
+            ageing_ids: $.ageings[?(@.activity_name == '')].id
+          size: 100
+          options: [DEFAULT_PATH_LEAF_TO_NULL]
+    - keyWord: 删除时效标签
+      iter:
+        ageing_id: ${ageing_ids}
+      form:
+        id: ${ageing_id}
+testMethod:
+  - name: 时效标签(固定时段-生效)-今天生效
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,0,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,0,end_time)}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、在时效标签内应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置时效标签</br>
+        开始时间：${start_time}</br>
+        结束时间：${end_time}</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - name: 添加时效标签
+        url: /api/admin/config2/ageing/add
+        headers:
+          Content-Type: multipart/form-data
+        method: POST
+        form:
+          name: ${name}
+          ageing_type: ${ageing_type}
+          start_time: ${start_time}
+          end_time: ${end_time}
+        assertion: [json: {$.code: 0}]
+        extractor:
+          - json:
+              ageing_id: $.ageing.id
+      - keyWord: 修改task内容
+        name: 设置时效标签
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='send_message')].args.ageing_id: ${ageing_id}
+      - keyWord: 通过pulsar推送订单消息
+      - keyWord: 获取催单消息
+  - name: 时效标签(固定时段-失效)-${ageing_name}
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,-1,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,-1,end_time)}
+        ageing_name: 1天前
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,1,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,1,end_time)}
+        ageing_name: 1天后
+    description: |
+      """</br>
+      用例描述：</br>
+      1、在时效标签内应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置时效标签</br>
+        开始时间：${start_time}</br>
+        结束时间：${end_time}</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - keyWord: 添加时效标签
+      - keyWord: 设置时效标签
+      - keyWord: 通过pulsar推送订单消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
+  - name: 时效标签(每日重复-生效)-2小时前到2小时后
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 2
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,everyday_start_time)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,everyday_end_time)}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、在时效标签内应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置时效标签</br>
+        开始时间：${everyday_start_time}</br>
+        结束时间：${everyday_end_time}</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      """
+    severity: NORMAL
+    step:
+      - keyWord: 添加时效标签
+        name: 添加时效标签(每日重复)
+        form:
+          everyday_start_time: ${everyday_start_time}
+          everyday_end_time: ${everyday_end_time}
+      - keyWord: 设置时效标签
+      - keyWord: 通过pulsar推送订单消息
+      - keyWord: 获取催单消息
+  - name: 时效标签(每日重复-失效)-${ageing_name}
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 2
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,everyday_start_time)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT-1H,zh_CN,everyday_end_time)}
+        ageing_name: 2小时前到1小时前
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 2
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT1H,zh_CN,everyday_start_time)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,everyday_end_time)}
+        ageing_name: 1小时后到2小时后
+    description: |
+      """</br>
+      用例描述：</br>
+      1、在时效标签内应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置时效标签</br>
+        开始时间：${everyday_start_time}</br>
+        结束时间：${everyday_end_time}</br>
+      2、创建订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - keyWord: 添加时效标签(每日重复)
+      - keyWord: 设置时效标签
+      - keyWord: 通过pulsar推送订单消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [send_message]
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
+    - name: 删除时效标签
+      url: /api/admin/config2/ageing/delete
+      headers:
+        Content-Type: multipart/form-data
+      method: POST
+      form:
+        id: ${ageing_id}
+      assertion: [json: {$.code: 0}]
+afterClass:
+  name: 测试结束后还原task
+  step:
+    - keyWord: 删除催单任务

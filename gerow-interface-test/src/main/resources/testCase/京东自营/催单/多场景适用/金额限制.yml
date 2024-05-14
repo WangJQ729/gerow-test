@@ -1,0 +1,144 @@
+name: 金额限制
+story: ${reminder_type}
+dataProvider:
+  - node_state: created
+    order_state: NOT_PAY
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+    text_with_vars: ${message}
+    reminder_type: 下单未付款
+  - node_state: finished
+    order_state: FINISH
+    message: 小店收到飞鸽传书，得知您的宝贝已经安全抵达。有任何疑问欢迎咨询我们。如果您对这次购物体验满意，期待得到您的评价鼓励，一路相知，伴随左右~
+    text_with_vars: ${message}
+    reminder_type: 交易成功
+  - node_state: paid
+    order_state: WAIT_DELIVERY
+    message: 您好，我们已收到你的订单啦~~我们会尽快为您发货，请您耐心等待。
+    text_with_vars: ${message}
+    reminder_type: 等待出库
+  - node_state: canceled
+    order_state: CANCEL
+    message: 非常遗憾您的订单被取消，如果您对我们的商品和服务有任何疑问，请随时联系我们，帮助我们更好改善。
+    text_with_vars: ${message}
+    reminder_type: 订单取消
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+testMethod:
+  - name: 金额限制-满足-${payment}
+    dataProvider:
+      - payment: 5
+      - payment: 5.01
+      - payment: 19.99
+      - payment: 20
+    description: |
+      """</br>
+      用例描述：</br>
+      1、满足金额限制的订单应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置金额限制为5-20元</br>
+      2、创建${payment}元的订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - keyWord: 修改task内容
+        name: 设置金额限制为5-20元
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='pay_amount_limit')].args.enable: true
+            $.rules[?(@.type=='pay_amount_limit')].args.min: 5
+            $.rules[?(@.type=='pay_amount_limit')].args.max: 20
+      - keyWord: 通过pulsar推送订单消息
+        name: 推送指定金额订单消息
+        bodyEditor:
+          json:
+            $.platform: ${platform}
+            $.order_id: ${__RandomOrderId(order_id)}
+            $.shop_id: ${shop_id}
+            $.buyer_id: ${__RandomName(buyer_id)}
+            $.status: ${order_state}
+            $.payment: ${__BeanShell(${payment})}
+      - keyWord: 获取催单消息
+  - name: 金额限制-不满足-${payment}
+    dataProvider:
+      - payment: 4.99
+      - payment: 20.01
+    description: |
+      """</br>
+      用例描述：</br>
+      1、不满足金额限制的订单不应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置金额限制为5-20元</br>
+      2、创建${payment}元的订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - keyWord: 设置金额限制为5-20元
+      - keyWord: 推送指定金额订单消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [pay_amount_limit]
+  - name: 金额限制-关闭-${payment}
+    dataProvider:
+      - payment: 4.99
+      - payment: 5
+      - payment: 5.01
+      - payment: 19.99
+      - payment: 20
+      - payment: 20.01
+    description: |
+      """</br>
+      用例描述：</br>
+      1、关闭金额限制后，所有金额的订单都会触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置金额限制为5-20元</br>
+      2、创建${payment}元的订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - keyWord: 修改task内容
+        name: 关闭金额限制
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_limit')].args.enable: false
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='pay_amount_limit')].args.enable: false
+            $.rules[?(@.type=='pay_amount_limit')].args.min: 5
+            $.rules[?(@.type=='pay_amount_limit')].args.max: 20
+      - keyWord: 推送指定金额订单消息
+      - keyWord: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
+afterClass:
+  name: 测试结束后还原task
+  step:
+    - keyWord: 删除催单任务

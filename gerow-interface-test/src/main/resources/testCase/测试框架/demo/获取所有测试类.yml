@@ -1,0 +1,35 @@
+name: 获取所有测试类
+dataProvider:
+  - node_state: created
+testMethod:
+  - name: 获取所有测试类
+    step:
+      - keyWord: 获取所有测试类
+      - keyWord: 获取测试类的详细信息
+      - keyWord: 获取测试方法信息
+        name: 获取beforeClass信息
+        iter:
+          method: ${beforeClass}
+      - keyWord: 获取关键字信息
+        name: 获取关键字信息-${stepKeyWord}
+      - keyWord: 获取测试方法信息
+        name: 获取before信息
+        iter:
+          method: ${before}
+      - keyWord: 获取关键字信息
+        name: 获取关键字信息-${stepKeyWord}
+      - keyWord: 获取测试方法信息
+      - keyWord: 获取关键字信息
+        name: 获取关键字信息-${stepKeyWord}
+      - keyWord: 获取测试方法信息
+        name: 获取after信息
+        iter:
+          method: ${after}
+      - keyWord: 获取关键字信息
+        name: 获取关键字信息-${stepKeyWord}
+      - keyWord: 获取测试方法信息
+        name: 获取afterClass信息
+        iter:
+          method: ${afterClass}
+      - keyWord: 获取关键字信息
+        name: 获取关键字信息-${stepKeyWord}

@@ -1,0 +1,199 @@
+name: 指定账号催单转接
+platform: 淘宝,融合版
+story: ${reminder_type}
+dataProvider:
+  - node_state: paid
+    order_state: paid
+    message: 对我们的服务满意吗？让我成为你的专属客服吧，以后有事儿您找我！
+    text_with_vars: ${message}
+    reminder_type: 专属客服已付款
+  - node_state: succeeded
+    order_state: succeeded
+    message: 对我们的服务满意吗？让我成为你的专属客服吧，以后有事儿您找我！
+    text_with_vars: ${message}
+    reminder_type: 专属客服交易成功
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - keyWord: 获取专属客服task_id
+    - keyWord: 删除其他催单任务
+    - keyWord: 获取专属客服task模板
+    - keyWord: 使用模板新建一个task
+    - keyWord: 催单设置-子账号不催单
+    - keyWord: 催单设置-子账号3不催单
+
+testMethod:
+  - name: 开启转接-子账号在线
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-开启催单转接
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取催单消息
+        name: 获取专属客服催单消息-提取转接信息
+        assertion:
+          - json:
+              $.data.messages[?(@.task_id=='${task_id}')].text_with_vars: ["${text_with_vars}"]
+              $.data.messages[?(@.order_id=='${order_id}')].content_type: [tb/subscribe_card]
+        extractor:
+          - json:
+              customer_data: $.data.messages[?(@.task_id=='${task_id}')].customer_data
+      - keyWord: 发送消息给商家-含转接内容
+        assertion:
+          - json:
+              $.custom_transfer.transfer_type: "reminder_transfer"
+              $.custom_transfer.is_transfer: true
+              $.custom_transfer.transfer_subnick_list: ["${child_seller}"]
+            need_decode: true
+  - name: 子账号在线-关闭转接
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-关闭催单转接
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取专属客服催单消息-提取转接信息
+      - keyWord: 发送消息给商家-转接关闭
+  - name: 子账号在线-关闭咨询顾客转接
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-关闭咨询顾客催单转接
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 模拟pulsar订单消息
+      - keyWord: 获取专属客服催单消息-提取转接信息
+      - keyWord: 发送消息给商家-转接关闭
+  - name: 子账号在线-开启咨询顾客转接
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-开启催单转接
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 模拟pulsar订单消息
+      - keyWord: 获取专属客服催单消息-提取转接信息
+      - keyWord: 发送消息给商家-含转接内容
+        assertion:
+          - json:
+              $.custom_transfer.transfer_type: "reminder_transfer"
+              $.custom_transfer.is_transfer: true
+              $.custom_transfer.transfer_subnick_list: ["${child_seller}"]
+            need_decode: true
+  - name: 子账号在线-开启咨询顾客转接
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-开启催单转接
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 模拟pulsar订单消息
+      - keyWord: 获取专属客服催单消息-提取转接信息
+  - name: 子账号在线-回复前关闭转接
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-开启催单转接
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取专属客服催单消息-提取转接信息
+      - keyWord: 开启催单任务-关闭催单转接
+      - keyWord: 发送消息给商家-转接列表为空
+        assertion:
+          - json:
+              $.custom_transfer.is_transfer: false
+              $.custom_transfer.transfer_subnick_list: null
+            need_decode: true
+  - name: 子账号在线-催单前关闭转接
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-开启催单转接
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 开启催单任务-关闭催单转接
+      - keyWord: 获取专属客服催单消息-转接关闭
+  - name: 开启转接-子账号不在线
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+        body: |
+          {"group_id_list":"","sub_user_name_list":"${child_seller2}"}
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-开启催单转接
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取专属客服催单消息-提取转接信息
+      - keyWord: 发送消息给商家-转接列表为空
+  - name: 开启转接-多个子账号转接-只有一个在线
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+        body: |
+          {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller2}"}
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-开启催单转接
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取专属客服催单消息-提取转接信息
+      - keyWord: 发送消息给商家-含转接内容
+  - name: 开启转接-转接列表含自己
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+        body: |
+          {"group_id_list":"","sub_user_name_list":"${child_seller},${seller_name}"}
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-开启催单转接
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 模拟pulsar订单消息
+      - keyWord: 获取专属客服催单消息-提取转接信息
+      - keyWord: 发送消息给商家-含转接内容
+        assertion:
+          - json:
+              $.custom_transfer.transfer_type: "reminder_transfer"
+              $.custom_transfer.is_transfer: true
+            need_decode: true
+          - json:
+              $.custom_transfer.transfer_subnick_list:
+                - ${child_seller}
+                - ${seller_name}
+            assertionType: AllCONTAINS
+            need_decode: true
+  - name: 开启转接-多个子账号转接-都在线
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+        body: |
+          {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller3}"}
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-开启催单转接
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取专属客服催单消息-提取转接信息
+      - keyWord: 发送消息给商家-转接给在线的子账号
+  - name: 开启转接-多个子账号转接-部分在线
+    severity: NORMAL
+    step:
+      - keyWord: 新建催单转接分组
+        body: |
+          {"group_id_list":"","sub_user_name_list":"${child_seller},${child_seller2},${child_seller3}"}
+      - keyWord: 新建分组-只有主账号
+      - keyWord: 开启催单任务-开启催单转接
+      - keyWord: 模拟pulsar订单消息-随机顾客
+      - keyWord: 获取专属客服催单消息-提取转接信息
+      - keyWord: 发送消息给商家-转接给在线的子账号
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - keyWord: 获取专属客服task_id
+    - keyWord: 删除其他催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - keyWord: 主账号发送心跳检测
+    - keyWord: 子账号发送心跳检测
+    - keyWord: 子账号3发送心跳检测

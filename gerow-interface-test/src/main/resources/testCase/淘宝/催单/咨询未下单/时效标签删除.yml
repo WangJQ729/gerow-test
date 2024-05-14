@@ -1,0 +1,95 @@
+name: 时效标签删除
+story: ${reminder_type}
+dataProvider:
+  - node_state: asked
+    reminder_type: 咨询未下单
+    text_with_vars1: 你好，还没有收到您的订单，有什么顾虑吗，可以给我说下呢，非常乐意帮你解决的哈
+beforeClass:
+  name: 获取taskID和模版
+  step:
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 获取时效标签列表
+    - keyWord: 删除时效标签
+      iter:
+        ageing_id: ${ageing_ids}
+      form:
+        id: ${ageing_id}
+
+testMethod:
+  - name: 时效标签(固定时段-生效)-今天生效-删除标签
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,0,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,0,end_time)}
+    severity: NORMAL
+    step:
+      - keyWord: 添加时效标签
+      - keyWord: 修改咨询未下单内容-设置时效标签
+      - keyWord: 删除时效标签
+      - keyWord: 发送消息给商家
+      - keyWord: 获取催单消息-消息为空
+        name: 获取催单消息-咨询未下单消息为空
+        assertion:
+          - json:
+              $.data.messages..text_with_vars: []
+      - keyWord: 根据聊天记录查询trace
+      - keyWord: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskPass')].task_pass_info: [find no reply;not enable;not enable]
+  - name: 时效标签(每日重复-生效)-2小时前到2小时后-删除标签
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 2
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
+    severity: NORMAL
+    step:
+      - keyWord: 添加时效标签(每日重复)
+      - keyWord: 修改咨询未下单内容-设置时效标签
+      - keyWord: 删除时效标签
+      - keyWord: 发送消息给商家
+      - keyWord: 获取催单消息-咨询未下单消息为空
+      - keyWord: 根据聊天记录查询trace
+      - keyWord: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskPass')].task_pass_info: [find no reply;not enable;not enable]
+  - name: 时效标签(自定义重复时段-生效)-${ageing_name}-删除标签
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 3
+        everyday_start_time: ${__timeShift(HH:mm:ss,,PT-2H,zh_CN,)}
+        everyday_end_time: ${__timeShift(HH:mm:ss,,PT2H,zh_CN,)}
+        repeat_start_date: ${__PlusDay(yyyy-MM-dd,-30,)}
+        repeat_end_date: ${__PlusDay(yyyy-MM-dd,30,)}
+        ageing_name: 2小时前到2小时后
+    severity: NORMAL
+    step:
+      - keyWord: 添加时效标签(自定义重复时段)
+      - keyWord: 修改咨询未下单内容-设置时效标签
+      - keyWord: 删除时效标签
+      - keyWord: 发送消息给商家
+      - keyWord: 获取催单消息-咨询未下单消息为空
+      - keyWord: 根据聊天记录查询trace
+      - keyWord: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskPass')].task_pass_info: [find no reply;not enable;not enable]
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 根据聊天记录查询trace
+    - keyWord: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - keyWord: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - keyWord: 主账号发送心跳检测

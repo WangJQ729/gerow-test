@@ -1,0 +1,96 @@
+name: 售后理由圈定
+story: ${reminder_type}
+dataProvider:
+  - node_state: refund
+    reminder_type: 售后理由修改
+    refund_state: taobao_refund_RefundCreated
+    message: 亲，为了加快您的退货进度，麻烦把售后理由改成：七天无理由退货呢！
+    text_with_vars: ${message}
+    bill_type: return_bill
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+
+testMethod:
+  - name: 符合圈定-多拍/错拍/不想要
+    severity: NORMAL
+    step:
+      - keyWord: 开启售后场景催单任务
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送退款消息-指定退款类型
+      - keyWord: 获取催单消息
+  - name: 符合圈定-圈定(多拍/错拍/不想要,软件故障,功能缺少,错拍/多拍/不想要)-实际${refund_reasons}
+    dataProvider:
+      - refund_reasons: 多拍/错拍/不想要
+      - refund_reasons: 软件故障
+      - refund_reasons: 功能缺少
+      - refund_reasons: 错拍/多拍/不想要
+    severity: NORMAL
+    step:
+      - keyWord: 开启售后场景催单任务
+        name: 开启售后场景催单任务-圈定多个退款原因
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='logistics_filter')].args.status: 2
+            $.rules[?(@.type=='refund_reasons')].args.reasons: [多拍/错拍/不想要,软件故障,功能缺少,错拍/多拍/不想要]
+            $.rules[?(@.type=='specify_send_seller')].args.status: 2
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送退款消息-指定退款类型
+        name: 推送退货退款消息-指定退款理由
+        bodyEditor:
+          json:
+            $.buyer_nick: ${buyer_id}
+            $.tid: ${__BeanShell(${order_id}l,)}
+            $.oid: ${__BeanShell(${__RandomOrderId(sub_order_id)}l,)}
+            $.refund_id: ${__BeanShell(${__RandomOrderId(refund_id)}l,)}
+            $.channel: ${refund_state}
+            $.reason: ${refund_reasons}
+            $.bill_type: ${bill_type}
+      - keyWord: 获取催单消息
+  - name: 不符合圈定-圈定(多拍/错拍/不想要,软件故障,功能缺少,错拍/多拍/不想要)-实际${refund_reasons}
+    dataProvider:
+      - refund_reasons: 性能故障
+      - refund_reasons: 外观/型号/参数等与描述不符
+      - refund_reasons: 服务承诺
+      - refund_reasons: 卖家发错货
+      - refund_reasons: 假冒品牌
+      - refund_reasons: 商品少件/破损/污渍等
+      - refund_reasons: 其他
+    severity: NORMAL
+    step:
+      - keyWord: 开启售后场景催单任务-圈定多个退款原因
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 推送退货退款消息-指定退款理由
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询退款trace
+      - keyWord: 查看trace详情
+        name: 查看trace详情-售后理由圈定过滤
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [refund_reasons]
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 根据订单查询退款trace
+    - keyWord: 查看trace详情
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - keyWord: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - keyWord: 主账号发送心跳检测

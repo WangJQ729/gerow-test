@@ -1,0 +1,196 @@
+name: 催单转接
+platform: 融合版
+story: ${reminder_type}
+dataProvider:
+  - node_state: send_scan_delay
+    order_state: send_scan
+    message: 您好，您的快递已经派送，麻烦尽快签收呢！
+    text_with_vars: ${message}
+    reminder_type: 派件超时
+    action: SENT_SCAN
+  - node_state: logistics_update_delay
+    order_state: got
+    message: 很抱歉，由于快递公司的原因，您的物流行进缓慢，我们会尽力督促快递公司，让您今早收到宝贝
+    text_with_vars: ${message}
+    reminder_type: 物流更新超时
+    action: GOT
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 开启催单任务
+      bodyEditor:
+        json:
+          $.id: ${task_id}
+          $.enable: true
+          $.shop_id: ${shop_id}
+          $.rules[?(@.type=='send_message')].args.state_delay: 0
+          $.rules[?(@.type=='send_message')].args.message: ${message}
+          $.rules[?(@.type=='specify_send_time_range')].args.ranges: [{"from":0, "to":86399 }]
+    - keyWord: 催单设置-子账号不催单
+    - keyWord: 催单设置-子账号3不催单
+
+testMethod:
+  - name: 开启转接-子账号在线
+    severity: NORMAL
+    step:
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+      - keyWord: 更新转接列表
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-含转接内容
+  - name: 开启转接-子账号在线-顾客回复“对的、好的”等表示肯定的消息时不转接-关闭
+    severity: NORMAL
+    step:
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+      - keyWord: 更新转接列表
+        form:
+          settings_is_begin_words_filter: false
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-固定问题-含转接内容
+  - name: 开启转接-子账号在线-顾客回复“对的、好的”等表示肯定的消息时不转接-开启
+    severity: NORMAL
+    step:
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+      - keyWord: 更新转接列表
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-固定问题-含转接内容-不转接
+  - name: 开启转接-子账号在线-催单前关闭转接
+    severity: NORMAL
+    step:
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+      - keyWord: 更新转接列表
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 客户端设置-关闭催单转接
+      - keyWord: 获取催单消息-转接关闭
+  - name: 开启转接-子账号在线-回复前关闭转接
+    links:
+      TAPD_BUG: https://www.tapd.cn/52457521/bugtrace/bugs/view?bug_id=1152457521001030132
+    severity: NORMAL
+    step:
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+      - keyWord: 更新转接列表
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 客户端设置-关闭催单转接
+      - keyWord: 发送消息给商家-转接列表为空
+        assertion:
+          - json:
+              $.custom_transfer.transfer_type: ""
+              $.custom_transfer.is_transfer: false
+              $.custom_transfer.transfer_subnick_list: null
+            need_decode: true
+  - name: 开启转接-子账号不在线
+    severity: NORMAL
+    step:
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+        bodyEditor:
+          json:
+            $.sub_user_name_list: ${child_seller2}
+      - keyWord: 更新转接列表
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-转接列表为空
+        assertion:
+          - json:
+              $.custom_transfer.transfer_type: "reminder_transfer"
+              $.custom_transfer.is_transfer: true
+              $.custom_transfer.transfer_subnick_list: null
+            need_decode: true
+  - name: 开启转接-转接列表含自己
+    enable: false
+    severity: NORMAL
+    step:
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+        bodyEditor:
+          json:
+            $.sub_user_name_list: ${child_seller},${seller_name}
+      - keyWord: 更新转接列表
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-含转接内容
+        assertion:
+          - json:
+              $.custom_transfer.transfer_type: "reminder_transfer"
+              $.custom_transfer.is_transfer: true
+            need_decode: true
+          - json:
+              $.custom_transfer.transfer_subnick_list:
+                - ${child_seller}
+                - ${seller_name}
+            assertionType: AllCONTAINS
+            need_decode: true
+  - name: 开启转接-多个子账号转接-只有一个在线
+    step:
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+        bodyEditor:
+          json:
+            $.sub_user_name_list: ${child_seller},${child_seller2}
+      - keyWord: 更新转接列表
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-含转接内容
+  - name: 开启转接-多个子账号转接-都在线
+    enable: false
+    severity: NORMAL
+    step:
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+        bodyEditor:
+          json:
+            $.sub_user_name_list: ${child_seller},${child_seller3}
+      - keyWord: 更新转接列表
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-转接给在线的子账号
+  - name: 开启转接-多个子账号转接-部分在线
+    enable: false
+    step:
+      - keyWord: 客户端设置-开启催单转接
+      - keyWord: 新建催单转接分组
+        bodyEditor:
+          json:
+            $.sub_user_name_list: ${child_seller},${child_seller2},${child_seller3}
+      - keyWord: 更新转接列表
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-回复后转接
+      - keyWord: 发送消息给商家-转接给在线的子账号
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
+    - keyWord: 清除转接列表缓存
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - keyWord: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - keyWord: 主账号发送心跳检测
+    - keyWord: 子账号发送心跳检测
+    - keyWord: 子账号3发送心跳检测

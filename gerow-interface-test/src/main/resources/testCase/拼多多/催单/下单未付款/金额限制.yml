@@ -1,0 +1,122 @@
+name: 金额限制
+dataProvider:
+  - order_state: created
+    message: 您好，您有未支付订单，请尽快支付哦
+    text_with_vars: ${message}
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - keyWord: 获取task_id
+    - keyWord: 获取老的task配置
+    - keyWord: 获取task模板
+testMethod:
+  - name: 金额限制-满足-${payment}
+    dataProvider:
+      - payment: 5
+      - payment: 5.01
+#      - payment: 15
+      - payment: 19.99
+      - payment: 20
+    description: |
+      """</br>
+      用例描述：</br>
+      1、满足金额限制的订单应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置金额限制为5-20元</br>
+      2、创建${payment}元的订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - keyWord: 修改task内容
+        name: 设置金额限制为5-20元
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='pay_amount_limit')].args.enable: true
+            $.rules[?(@.type=='pay_amount_limit')].args.min: 5
+            $.rules[?(@.type=='pay_amount_limit')].args.max: 20
+      - keyWord: 同步订单消息
+        name: 指定金额同步订单消息
+        form:
+          payment: ${payment}
+      - keyWord: 获取催单消息
+  - name: 金额限制-不满足-${payment}
+    dataProvider:
+#      - payment: 2
+      - payment: 4.99
+      - payment: 20.01
+#      - payment: 30
+#      - payment: 100
+    description: |
+      """</br>
+      用例描述：</br>
+      1、不满足金额限制的订单不应该被触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置金额限制为5-20元</br>
+      2、创建${payment}元的订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - keyWord: 设置金额限制为5-20元
+      - keyWord: 指定金额同步订单消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情
+        assertion:
+          - json:
+              $.data.traces[?(@.phase=='TaskReject')].task_end_rule: [pay_amount_limit]
+  - name: 金额限制-关闭-${payment}
+    dataProvider:
+#      - payment: 2
+      - payment: 4.99
+      - payment: 5
+      - payment: 5.01
+#      - payment: 15
+      - payment: 19.99
+      - payment: 20
+      - payment: 20.01
+#      - payment: 30
+#      - payment: 100
+    description: |
+      """</br>
+      用例描述：</br>
+      1、关闭金额限制后，所有金额的订单都会触发。</br>
+      </br>
+      测试步骤</br>
+      1、设置金额限制为5-20元</br>
+      2、创建${payment}元的订单</br>
+      3、校验催单信息</br>
+      4、校验traces</br>
+      """
+    severity: NORMAL
+    step:
+      - keyWord: 修改task内容
+        name: 关闭金额限制
+        bodyEditor:
+          json:
+            $.id: ${task_id}
+            $.enable: true
+            $.shop_id: ${shop_id}
+            $.rules[?(@.type=='send_message')].args.state_delay: 0
+            $.rules[?(@.type=='send_message')].args.message: ${message}
+            $.rules[?(@.type=='pay_amount_limit')].args.enable: false
+            $.rules[?(@.type=='pay_amount_limit')].args.min: 5
+            $.rules[?(@.type=='pay_amount_limit')].args.max: 20
+      - keyWord: 指定金额同步订单消息
+      - keyWord: 获取催单消息
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 还原催单任务
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情

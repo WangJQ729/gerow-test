@@ -1,0 +1,93 @@
+keyWord:
+  step:
+    - name: 进阶挑战用户报名
+      url: /quest/signUp
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: POST
+      body: |
+        {}
+      bodyEditor:
+        json:
+          $.questId: ${questId}
+          $.source: 1
+      assertion: [ json: { $.code: "200" } ]
+    - name: 保存用户记录
+      url: /quest/setType
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: POST
+      assertion: [ json: { $.code: "200" } ]
+    - name: 新手任务-用户完成任务
+      url: /quest/complete
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: POST
+      assertion: [ json: { $.code: "200" } ]
+    - name: 提现申请
+      url: /quest/withdraw/application
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: POST
+      assertion: [ json: { $.code: "200" } ]
+    - name: 我的记录查询接口
+      url: /quest/query/record
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: GET
+      assertion: [ json: { $.code: "200" } ]
+    - name: 获取用户任务信息
+      url: /quest/query/userInfo
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: GET
+      assertion: [ json: { $.code: "200" } ]
+    - name: 用户引导记录查询
+      url: /quest/query/user/choose/record
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: GET
+      assertion: [ json: { $.code: "200" } ]
+    - name: 用户券列表查询
+      url: /quest/query/couponList
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: GET
+      assertion: [ json: { $.code: "200" } ]
+    - name: 新手任务完成情况
+      url: /quest/query/newcommer
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: GET
+      assertion: [ json: { $.code: "200" } ]
+    - name: 新手账户余额
+      url: /quest/query/account/detail
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: GET
+      assertion: [ json: { $.code: "200" } ]
+    - name: 提现申请记录
+      url: /quest/query/withdraw/list
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: GET
+      assertion: [ json: { $.code: "200" } ]
+    - name: 进阶挑战任务列表查询
+      url: /quest/query/quest/page
+      headers:
+        X-USER-ID: ${userId}
+        lang: zh_CN
+      method: GET
+      assertion: [ json: { $.code: "200" } ]
+
