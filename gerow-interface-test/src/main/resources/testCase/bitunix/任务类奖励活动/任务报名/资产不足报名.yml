@@ -17,7 +17,7 @@ dataProvider:
     testType: 资产不足
     actStatusType: registration_in_progress
     minBalance: 999.99
-    amount: 999.98
+    balance_amount: 999.98
     code: 900010
 beforeClass:
   name: 创建活动

@@ -17,7 +17,7 @@ dataProvider:
     testType: 报名未开始
     actStatusType: pending
     minBalance: 999.99
-    amount: 999.99
+    balance_amount: 999.99
     code: 90005
 beforeClass:
   name: 创建活动

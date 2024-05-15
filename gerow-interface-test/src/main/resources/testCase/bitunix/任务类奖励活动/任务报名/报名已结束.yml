@@ -17,7 +17,7 @@ dataProvider:
     msgKey: partner.act.enroll.not.start
     testType: 报名已结束
     minBalance: 999.99
-    amount: 999.99
+    balance_amount: 999.99
     code: 90005
 beforeClass:
   name: 创建活动

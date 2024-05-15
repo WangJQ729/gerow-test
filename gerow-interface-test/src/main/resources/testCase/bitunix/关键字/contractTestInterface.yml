@@ -27,29 +27,11 @@ keyWord:
       extractor:
         - json:
             userId: $.data[0]
-    - name: 快捷注册-合伙人邀请码
-      keyWord: 快捷注册
-      bodyEditor:
-        json:
-          $.invitedCode: ${vipCode}
-    - name: 新邮箱快捷注册-合伙人邀请码
-      keyWord: 快捷注册
-      bodyEditor:
-        json:
-          $.emails:
-            - ${new_emails}
-          $.invitedCode: ${vipCode}
     - name: 快捷注册-合伙人邀请码-随机邮箱
-      keyWord: 快捷注册-合伙人邀请码
-      body: |
-        {
-            "emails": [
-                "${__RandomEmail(email)}"
-            ],
-            "password": "${password}",
-            "normalAccount": true,
-            "invitedCode": "${vipCode}"
-        }
+      keyWord: 快捷注册
+      bodyEditor:
+        json:
+          $.invitedCode: ${vipCode}
     - name: 增加合约账户资产
       url: /test/futuresproxy/inner/test/transfer
       method: POST
@@ -66,7 +48,7 @@ keyWord:
       keyWord: 增加合约账户资产
       bodyEditor:
         json:
-          $.amount: ${amount}
+          $.amount: ${balance_amount}
     - name: 通过uid获取用户token
       url: /web/test/login
       method: GET
