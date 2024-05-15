@@ -32,7 +32,7 @@ beforeClass:
     - keyWord: 市价平仓
     - keyWord: 统计活动数据
     - keyWord: 获取记录
-    - keyWord: 领取奖励
+    - keyWord: 领取奖励-多次尝试
     - keyWord: 奖励记录
     - keyWord: 快捷注册
     - keyWord: 增加合约账户资产
@@ -44,7 +44,7 @@ beforeClass:
     - keyWord: 统计活动数据
     - keyWord: 获取记录
 testMethod:
-  - name: 完成任务并领取奖励-${Accept-Language}
+  - name: 奖励已被领完-${Accept-Language}
     dataProvider:
       - code: 60025
         dataProvider:

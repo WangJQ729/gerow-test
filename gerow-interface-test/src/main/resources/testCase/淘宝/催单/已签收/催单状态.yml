@@ -1,0 +1,146 @@
+name: 催单状态
+platform: 淘宝,融合版
+story: ${reminder_type}
+dataProvider:
+  - node_state: signed
+    order_state: signed
+    message: 您在本店购买的商品已签收，如确认包裹和商品没有问题请记得确认收货哦~ 如有问题我们将竭诚为您服务
+    text_with_vars: ${message}
+    reminder_type: 已签收
+    action: SIGNED
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 开启已签收催单任务
+    - keyWord: 获取子账号4
+    - keyWord: 子账号4设置为自己和静默
+testMethod:
+  - name: ${reminder_type}-不催单-自己的客户
+    severity: NORMAL
+    step:
+      - keyWord: 发送消息给商家
+      - keyWord: 催单设置-不催单
+      - keyWord: 随机顾客发送消息给商家-固定问题
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-客户端不发送消息
+      - keyWord: 获取催单消息-消息为空
+  - name: ${reminder_type}-不催单-静默顾客
+    severity: NORMAL
+    step:
+      - keyWord: 催单设置-不催单
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
+      - keyWord: 获取催单消息-消息为空
+  - name: ${reminder_type}-不催单-别人的顾客
+    severity: NORMAL
+    step:
+      - keyWord: 催单设置-不催单
+      - keyWord: 发送消息给子账号4
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
+      - keyWord: 获取催单消息-消息为空
+  - name: ${reminder_type}-仅自己-自己的客户
+    severity: NORMAL
+    step:
+      - keyWord: 发送消息给商家
+      - keyWord: 催单设置-仅自己
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-指定订单
+  - name: ${reminder_type}-仅自己-静默客户
+    severity: NORMAL
+    step:
+      - keyWord: 催单设置-仅自己
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
+  - name: ${reminder_type}-仅自己-别人的客户
+    severity: NORMAL
+    step:
+      - keyWord: 发送消息给子账号4
+      - keyWord: 催单设置-仅自己
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
+      - keyWord: 获取催单消息-消息为空
+  - name: ${reminder_type}-仅静默-自己的客户
+    severity: NORMAL
+    step:
+      - keyWord: 发送消息给商家
+      - keyWord: 催单设置-仅静默
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-客户端不发送消息
+      - keyWord: 获取催单消息-消息为空
+  - name: ${reminder_type}-仅静默-静默顾客
+    severity: NORMAL
+    step:
+      - keyWord: 发送消息给商家
+      - keyWord: 催单设置-仅静默
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-指定订单
+  - name: ${reminder_type}-仅静默-别人的顾客
+    severity: NORMAL
+    step:
+      - keyWord: 发送消息给子账号4
+      - keyWord: 催单设置-仅静默
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
+      - keyWord: 获取催单消息-消息为空
+  - name: ${reminder_type}-自己和静默-自己的客户
+    severity: NORMAL
+    step:
+      - keyWord: 发送消息给商家
+      - keyWord: 催单设置为自己和静默
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-指定订单
+  - name: ${reminder_type}-自己和静默-静默顾客
+    severity: NORMAL
+    step:
+      - keyWord: 催单设置为自己和静默
+      - keyWord: 随机顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 获取催单消息-指定订单
+  - name: ${reminder_type}-自己和静默-别人的客户
+    severity: NORMAL
+    step:
+      - keyWord: 发送消息给子账号4
+      - keyWord: 催单设置为自己和静默
+      - keyWord: 指定顾客推送已付款订单消息
+      - keyWord: 发送物流消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-没有催单的子账号设置等待时间
+      - keyWord: 获取催单消息-消息为空
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 催单设置为自己和静默
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
+afterClass:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 催单设置为自己和静默
+    - keyWord: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - keyWord: 主账号发送心跳检测

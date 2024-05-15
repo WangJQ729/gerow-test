@@ -1,0 +1,26 @@
+name: 交易任务
+invocationCount: 1
+dataProvider:
+  - amount: 4999
+    currency: USDT
+    dtH: ${__timeShift(yyyy-MM-dd HH,,,zh_CN,)}
+    symbol: BTC-USDT
+    type: SPOT_TRADE
+    dataProvider:
+      - userId: 625e9e615cee1700017b8d32
+testMethod:
+  - name: 进阶挑战任务用户报名
+    severity: CRITICAL
+    dataProvider:
+      - questId: 625ead018cbcbe00014b7583
+    step:
+      - keyWord: 进阶挑战用户报名
+        sleep: 100
+  - name: 发送任务中心交易任务到kafka
+    severity: CRITICAL
+    step:
+      - keyWord: 发送任务中心交易任务到kafka
+        sleep: 200
+      - keyWord: 发送任务中心入金任务到kafka
+        sleep: 200
+#      - keyWord: 添加标签

@@ -5,7 +5,7 @@ dataProvider:
     award: experience
     awardAmt: 88
     couponId: 248
-    awardNumber: 10
+    awardNumber: 0
     firstRuleTarget: 100
     type: create
     actCode: gerow_${__time()}
@@ -53,19 +53,19 @@ testMethod:
       - Accept-Language: it_IT
         msg: La registrazione della campagna non è iniziata o è finita
       - Accept-Language: de_DE
-        msg: 活动报名未开始或已结束
+        msg: Die Kampagnenregistrierung hat nicht begonnen oder wurde beendet
       - Accept-Language: ja_JP
-        msg: 活动报名未开始或已结束
+        msg: イベント登録が開始されていないか、終了しています。
       - Accept-Language: ko_KR
-        msg: 活动报名未开始或已结束
+        msg: 캠페인 등록이 시작되지 않았거나 종료되었습니다.
       - Accept-Language: pl_PL
-        msg: 活动报名未开始或已结束
+        msg: Rejestracja w kampanii nie została rozpoczęta lub została zakończona
       - Accept-Language: id_ID
-        msg: 活动报名未开始或已结束
+        msg: Pendaftaran kampanye belum dimulai atau telah berakhir
       - Accept-Language: th_TH
-        msg: 活动报名未开始或已结束
+        msg: การลงทะเบียนแคมเปญยังไม่เริ่มหรือสิ้นสุด
       - Accept-Language: uk_UA
-        msg: 活动报名未开始或已结束
+        msg: Реєстрація в кампанії не розпочалася або закінчилася
     step:
       - keyWord: 活动报名-校验报名结果
 afterMethod:

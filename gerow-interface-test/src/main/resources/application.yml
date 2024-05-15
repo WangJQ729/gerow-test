@@ -1,4 +1,5 @@
-spring.main.allow-circular-references: true
+spring.groovy.template.check-template-location: false
+
 logging:
   level:
     root: INFO

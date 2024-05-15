@@ -68,7 +68,6 @@ keyWord:
             $.data.realValue[0].realValue: '0'
             $.code: '0'
     - name: 领取奖励
-      untilWait: 5
       url: /welfare/bonus/activity/goal/claim/coupon
       headers:
         Token: ${token}
@@ -81,8 +80,10 @@ keyWord:
             $.code: '0'
             $.data.bonus: '${awardAmt}'
     - keyWord: 领取奖励
+      name: 领取奖励-多次尝试
+      untilWait: 5
+    - keyWord: 领取奖励
       name: 领取奖励-校验领取结果
-      untilWait: 1
       headers:
         Token: ${token}
         Accept-Language: ${Accept-Language}

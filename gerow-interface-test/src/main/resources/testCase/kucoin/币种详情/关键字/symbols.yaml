@@ -1,0 +1,9 @@
+keyWord:
+  step:
+    - name: 获取所有交易对
+      url: /app/v1/symbols
+      method: GET
+      headers:
+        Cookie: X-TRACE=ySJbGUzAm2NXtYE4XPo1T1jNgWg9LfmKtP40DAUMqGQ=; SESSION=NjIyNTlmNjktNzQwZS00OTJjLTk2MzItYTJiOWIxNDI5M2Vh; X-CSRF-TOKEN=4e4d6408339b41b29bde1a44900caa04
+
+

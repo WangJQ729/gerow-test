@@ -1,0 +1,81 @@
+name: 时效标签删除后任务关闭
+story: ${reminder_type}
+dataProvider:
+  - node_state: created
+    order_state: created
+    message: 您好，您还有订单米有付款捏，要抓紧时间支付哦，小妹好给您优先尽快发出哦~让您美美的早些收到哦~
+    text_with_vars: ${message}
+    reminder_type: 下单未付款
+  - node_state: checkaddr
+    order_state: created
+    message: 亲，您的订单已经收到，请核对以下信息是否正确，我们将尽快为您发出！
+    text_with_vars: ${message}
+    reminder_type: 核对地址
+  - node_state: deposited
+    order_state: deposited
+    message: defualt message!
+    text_with_vars: ${message}
+    reminder_type: 已付定金未付尾款
+  - node_state: paid
+    order_state: paid
+    message: 亲，您的订单已经收到，感谢您对我们的支持，我们将尽快为您发出！
+    text_with_vars: ${message}
+    reminder_type: 已付款
+  - node_state: shipped_delay
+    order_state: paid
+    message: 由于近期订单量过大，发货小妹没能及时给您发货，实在抱歉。麻烦您耐心等待，小妹会尽快安排给您优先发货呢！
+    text_with_vars: ${message}
+    reminder_type: 发货超时
+  - node_state: send_scan
+    order_state: send_scan
+    message: 您的快递已经派件了！收货时，请检查快递的外包装是否完整，当场验货确认无误后，再签收哦！
+    text_with_vars: ${message}
+    reminder_type: 验收提醒
+  - node_state: closed
+    order_state: closed
+    message: 亲，您对宝贝有什么不满意的吗？
+    text_with_vars: ${message}
+    reminder_type: 交易取消
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+    - keyWord: 获取时效标签列表
+    - keyWord: 删除时效标签
+      iter:
+        ageing_id: ${ageing_ids}
+      form:
+        id: ${ageing_id}
+
+testMethod:
+  - name: 时效标签删除后任务关闭
+    dataProvider:
+      - name: 自动化测试_${__RandomString(8,zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890,)}
+        ageing_type: 1
+        start_time: ${__PlusDay(yyyy-MM-dd 00:00:00,0,start_time)}
+        end_time: ${__PlusDay(yyyy-MM-dd 23:59:59,0,end_time)}
+        task_status: starting
+    severity: NORMAL
+    step:
+      - keyWord: 添加时效标签
+      - keyWord: 设置时效标签
+      - keyWord: 获取催单任务时效标签状态
+      - keyWord: 删除时效标签
+      - name: 查看任务详情-任务关闭
+        untilWait: 5
+        url: /api/admin/reminder/v2/manage/task/info
+        variables:
+          task_id: ${task_id}
+        method: GET
+        assertion: [json: {$.data.enable: false}]
+afterClass:
+  name: 测试结束后删除任务
+  step:
+    - keyWord: 删除催单任务
+classHeartbeat:
+  name: 心跳检测表示客服在线
+  step:
+    - keyWord: 主账号发送心跳检测

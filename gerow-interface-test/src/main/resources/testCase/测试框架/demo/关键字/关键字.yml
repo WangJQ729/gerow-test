@@ -1,0 +1,47 @@
+keyWord:
+  step:
+    - name: 获取所有测试类
+      url: /getTestClass/taobao
+      method: GET
+      assertion:
+        - json:
+            $.code: "200"
+      extractor:
+        - json:
+            keyWord: $.data[1]
+    - name: 获取测试类的详细信息
+      url: /getTestClass/taobao/${keyWord}/${node_state}
+      method: GET
+      assertion:
+        - json:
+            $.code: "200"
+      extractor:
+        - json:
+            beforeClass: $.data[0].beforeClass
+            before: $.data[0].before
+            testMethods: $.data[0].testMethods
+            after: $.data[0].after
+            afterClass: $.data[0].afterClass
+          size: 100
+          options: [ DEFAULT_PATH_LEAF_TO_NULL ]
+    - name: 获取测试方法信息
+      iter:
+        method: ${testMethods}
+      url: /getTestMethod/taobao/${keyWord}/${method}/${node_state}
+      method: GET
+      assertion:
+        - json:
+            $.code: "200"
+      extractor:
+        - json:
+            testSteps: $.data[0].testSteps
+          size: 100
+          options: [ DEFAULT_PATH_LEAF_TO_NULL ]
+    - name: 获取关键字信息
+      iter:
+        stepKeyWord: ${testSteps}
+      url: /getKeyWord/taobao/${stepKeyWord}
+      method: GET
+      assertion:
+        - json:
+            $.code: "200"

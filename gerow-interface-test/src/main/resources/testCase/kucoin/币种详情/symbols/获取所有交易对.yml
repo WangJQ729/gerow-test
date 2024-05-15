@@ -1,0 +1,29 @@
+name: 获取所有交易对
+testMethod:
+  - name: 获取所有交易对
+    severity: CRITICAL
+    step:
+      - name: 获取所有交易对
+        url: /app/v1/symbols
+        method: GET
+        headers:
+          X-APP-VERSION: 3.58.0
+          X-DEVICE: VOG-AL00
+          X-DEVICE-NO: 2ca41350bf78c30839fc30c35c35e5cec
+          X-DEVICE-INFO: HUAWEI/VOG-AL00/HWVOG:10/HUAWEIVOG-AL00/10.1.0.162C00:user/release-keys
+          X-APP_ID: com.kubi.kucoin.debug
+          X-SYSTEM: android
+          X-IS-CN: false
+          X-SYSTEM-VERSION: 15.5
+          LANG: zh_CN
+          User-Agent: android/3.58.0
+          X-APP-TOKEN: 62b3c49fab7f1f000170701f
+          X-VERSION: gerow-test
+          Host: appapi-v2.kucoin.net
+          Connection: Keep-Alive
+          Accept-Encoding: gzip
+        extractor:
+          - json:
+              symbols: $.data[?(@.enableTrading == true && @.baseCurrency == 'BTC')].code
+            size: 10000
+            options: [DEFAULT_PATH_LEAF_TO_NULL]

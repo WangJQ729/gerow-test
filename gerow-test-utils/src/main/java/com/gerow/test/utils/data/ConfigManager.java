@@ -15,6 +15,11 @@ public class ConfigManager {
     private static Config config;
     private static ClientInfo clientInfo;
 
+    @Autowired
+    public ConfigManager(Config config, ClientInfo clientInfo) {
+        ConfigManager.config = config;
+        ConfigManager.clientInfo = clientInfo;
+    }
 
     @Autowired
     public void setConfig(Config config) {
@@ -54,20 +59,6 @@ public class ConfigManager {
         return clientInfo.getTimeOut();
     }
 
-    /**
-     * @return 账号
-     */
-    public static String getAccount() {
-        return config.getTest().get("account");
-    }
-
-
-    /**
-     * @return 密码
-     */
-    public static String getPassword() {
-        return config.getTest().get("password");
-    }
 
     /**
      * @return 参数
@@ -93,7 +84,7 @@ public class ConfigManager {
     @Configuration
     @Data
     @ConfigurationProperties(prefix = "client")
-    public class ClientInfo {
+    public static class ClientInfo {
         private Map<String, String> headers = new HashMap<>();
         private String protocol = "";
         private int timeOut = 5;

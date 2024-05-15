@@ -1,13 +1,13 @@
 name: 任务未完成
 story: welfare
 dataProvider:
-  - minBalance: 999.99
+  - minBalance: 9999999.99999999
     firstRuleName: tradingVolume
     award: experience
-    awardAmt: 8888
+    awardAmt: 88
     couponId: 248
-    awardNumber: 10
-    firstRuleTarget: 1000
+    awardNumber: 0
+    firstRuleTarget: 9999999.99999999
     type: create
     actCode: gerow_${__time()}
     actEnrollStartTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-9H,zh_CN,)}
@@ -50,7 +50,7 @@ testMethod:
           - Accept-Language: ru_RU
             msg: Невыполненные задачи
           - Accept-Language: vi_VN
-            msg: Tasks not completed
+            msg: Nhiệm vụ chưa hoàn thành
           - Accept-Language: es_ES
             msg: Tareas no completadas
           - Accept-Language: pt_PT
@@ -58,20 +58,20 @@ testMethod:
           - Accept-Language: pt_BR
             msg: Tarefas não concluídas
           - Accept-Language: it_IT
-            msg: Tasks not completed
+            msg: Attività non completate
           - Accept-Language: de_DE
-            msg: Tasks not completed
+            msg: Aufgaben nicht abgeschlossen
           - Accept-Language: ja_JP
-            msg: Tasks not completed
+            msg: タスクが完了していません
           - Accept-Language: ko_KR
-            msg: Tasks not completed
+            msg: 완료되지 않은 작업
           - Accept-Language: pl_PL
-            msg: Tasks not completed
+            msg: Zadania nie zostały ukończone
           - Accept-Language: id_ID
-            msg: Tasks not completed
+            msg: Tugas tidak selesai
           - Accept-Language: th_TH
-            msg: Tasks not completed
+            msg: งานที่ไม่เสร็จสิ้น
           - Accept-Language: uk_UA
-            msg: Tasks not completed
+            msg: Завдання не виконано
     step:
       - keyWord: 领取奖励-校验领取结果

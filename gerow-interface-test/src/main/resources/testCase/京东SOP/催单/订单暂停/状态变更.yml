@@ -1,0 +1,59 @@
+name: 状态变更
+story: ${reminder_type}
+dataProvider:
+  - node_state: paused
+    order_state: PAUSE
+    message: 订单暂停了哈
+    text_with_vars: ${message}
+    reminder_type: 订单暂停
+beforeClass:
+  name: 获取taskID和模板
+  step:
+    - keyWord: 获取所有的task_id
+    - keyWord: 获取task模板
+    - keyWord: 删除其他催单任务
+    - keyWord: 使用模板新建一个task
+testMethod:
+  - name: 状态变更为-${new_order_state_name}
+    description: |
+      """</br>
+      用例描述：</br>
+      1、开启任务会触发。</br>
+      </br>
+      测试步骤</br>
+      1、开启任务</br>
+      2、创建${reminder_type}订单</br>
+      3、校验trace最后操作为setTimer（任务已触发）</br>
+      4、订单状态变更为${new_order_state_name}</br>
+      5、校验trace（timer 到期后无后续变化）</br>
+      """
+    severity: NORMAL
+    dataProvider:
+      - new_order_state: WAIT_GOODS_RECEIVE_CONFIRM
+        new_order_state_name: 已发货
+      - new_order_state: LOCKED
+        new_order_state_name: 订单锁定
+      - new_order_state: TRADE_CANCELED
+        new_order_state_name: 订单取消
+      - new_order_state: FINISHED_L
+        new_order_state_name: 交易成功
+      - new_order_state: WAIT_SELLER_STOCK_OUT
+        new_order_state_name: 等待出库
+    step:
+      - keyWord: 设置10秒后发送催单消息
+      - keyWord: 通过pulsar推送订单消息
+      - keyWord: 根据订单查询trace
+      - keyWord: 查看trace详情-TaskSetTimer
+      - keyWord: 修改订单状态
+      - keyWord: 获取催单消息-消息为空
+      - keyWord: 查看trace详情-订单状态变更
+afterMethod:
+  name: 测试结束后查看订单trace
+  step:
+    - keyWord: 清除任务缓存
+    - keyWord: 根据订单查询trace
+    - keyWord: 查看trace详情
+afterClass:
+  name: 测试结束后删除催单任务
+  step:
+    - keyWord: 删除催单任务
