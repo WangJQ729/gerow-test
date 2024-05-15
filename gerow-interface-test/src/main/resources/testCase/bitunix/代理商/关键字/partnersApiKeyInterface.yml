@@ -1,0 +1,27 @@
+keyWord:
+  step:
+    - name: 查询用户是否为代理商下级
+      host: ${partners_host}
+      url: /partner/api/v1/openapi/validateUser
+      variables:
+        timestamp: ${time}
+      headers:
+        apiKey: ${apiKey}
+        signature: ${__digest(SHA-1,264879144${time}${apiSecret},,,)}
+        Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+        Accept: application/json, text/plain, */*
+      method: POST
+      body: |
+        account=264879144
+      assertion: [ json: { $.code: '0' } ]
+    - name: 查询代理商下级所有用户
+      host: ${partners_host}
+      url: /partner/api/v1/openapi/userList
+      method: GET
+      variables:
+        uid: ${uid}
+        timestamp: ${time}
+      headers:
+        apiKey: ${apiKey}
+        signature: ${__digest(SHA-1,${time}${uid}${apiSecret},,,)}
+      assertion: [ json: { $.code: '0' } ]

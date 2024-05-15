@@ -1,0 +1,14 @@
+name: api
+story: partners
+testMethod:
+  - name: api
+    dataProvider:
+      - apiKey: heMKGcbiggVPXdePiSYCtIydRkaEcNbFlRqHwbtJiMnyxENJsBRlmBuBxgKXfwdI
+        apiSecret: lHBYjHZkZcrnDSJasVfYBsEswUQHLemHEJvZTbstphQmfFBxUNbLlminkucmUknB
+        time: ${__time(/1000,)}
+        dataProvider:
+          - uid: 257842117
+          - uid: 294879144
+    step:
+      - keyWord: 查询代理商下级所有用户
+#      - keyWord: 查询用户是否为代理商下级

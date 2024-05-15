@@ -6,7 +6,7 @@ dataProvider:
     award: experience
     awardAmt: 88
     couponId: 248
-    awardNumber: 10
+    awardNumber: 0
     firstRuleTarget: 100
     type: create
 testMethod:
