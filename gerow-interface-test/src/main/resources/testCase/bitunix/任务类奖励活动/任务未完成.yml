@@ -34,7 +34,7 @@ beforeClass:
     - keyWord: 统计活动数据
     - keyWord: 获取记录
 testMethod:
-  - name: 未完成任务领取奖励-${Accept-Language}
+  - name: 未完成任务领取奖励
     step:
       - keyWord: 领取奖励-校验领取结果
         dataProvider:

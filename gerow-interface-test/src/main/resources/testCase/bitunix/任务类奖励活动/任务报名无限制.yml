@@ -20,11 +20,11 @@ dataProvider:
     amount: 0
     code: 0
     actId: 201777
-#beforeClass:
-#  name: 创建活动
-#  step:
-#    - keyWord: 创建任务类奖励活动
-#    - keyWord: 任务类奖励活动列表
+beforeClass:
+  name: 创建活动
+  step:
+    - keyWord: 创建任务类奖励活动
+    - keyWord: 任务类奖励活动列表
 testMethod:
   - name: 用户报名-${testType}-${Accept-Language}
     invocationCount: 1
