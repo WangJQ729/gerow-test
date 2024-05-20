@@ -1,0 +1,101 @@
+name: 任务报名指定KOL
+story: welfare
+dataProvider:
+  - actCode: gerow_${__time()}
+    actEnrollStartTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-9H,zh_CN,)}
+    actEnrollEndTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-7H,zh_CN,)}
+    actStartTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-9H,zh_CN,)}
+    actEndTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-7H,zh_CN,)}
+    actStatusType: in_progress
+    minBalance: 0
+    balance_amount: 999.99
+    msgKey: kol.code.not.matching
+    code: 900012
+    invitationCode: mqpy_bu4p
+    showId: 247847167
+    nickName: gerow.wang0
+    firstRuleName: tradingVolume
+    award: experience
+    awardAmt: 88
+    couponId: 248
+    awardNumber: 0
+    firstRuleTarget: 100
+    type: create
+    partner_email: gerow@126.com
+beforeClass:
+  name: 创建活动
+  step:
+    - keyWord: 登录partners
+    - keyWord: 获取合伙人邀请码
+    - keyWord: 创建任务类奖励活动
+      bodyEditor:
+        json:
+          $.data.invitationCode: '${invitationCode}'
+          $.data.showId: '${showId}'
+          $.data.nickName: '${nickName}'
+    - keyWord: 任务类奖励活动列表
+testMethod:
+  - name: 指定KOL
+    step:
+      - keyWord: 快捷注册
+      - keyWord: 通过uid获取用户token
+      - keyWord: 活动报名-校验报名结果
+        dataProvider:
+          - Accept-Language: en_US
+            msg: Participation is limited to users who registered with invitation code from ${nickName}.
+          - Accept-Language: zh_CN
+            msg: 仅限于，使用 ${nickName} 邀请码注册的用户参与
+          - Accept-Language: zh_TW
+            msg: 僅限於，使用 ${nickName} 邀請碼註冊的用戶參與
+          - Accept-Language: tr_TR
+            msg: Katılım ${nickName}in davet koduyla kayıt olan kullanıcılarla sınırlıdır.
+          - Accept-Language: fr_FR
+            msg: La participation est limitée aux utilisateurs qui se sont inscrits avec le code dinvitation de ${nickName}.
+          - Accept-Language: ru_RU
+            msg: Участие ограничено пользователями, зарегистрировавшимися с кодом приглашения от ${nickName}.
+          - Accept-Language: vi_VN
+            msg: Sự tham gia được giới hạn ở những người dùng đã đăng ký với mã mời từ ${nickName}.
+          - Accept-Language: es_ES
+            msg: La participación está limitada a usuarios que se registraron con el código de invitación de ${nickName}.
+          - Accept-Language: pt_PT
+            msg: A participação é limitada aos usuários que se cadastraram com o código de convite do ${nickName}.
+          - Accept-Language: pt_BR
+            msg: A participação é limitada aos usuários que se cadastraram com o código de convite do ${nickName}.
+          - Accept-Language: it_IT
+            msg: La partecipazione è limitata agli utenti che si sono registrati con il codice di invito di ${nickName}.
+          - Accept-Language: de_DE
+            msg: Die Teilnahme ist auf Benutzer beschränkt, die sich mit dem Einladungscode von ${nickName} registriert haben.
+#          - Accept-Language: ja_JP
+#            msg: 先物口座残高が ${minBalance} USDT 未満です
+          - Accept-Language: ko_KR
+            msg: 참여는 ${nickName}의 초대 코드로 등록된 사용자로 제한됩니다.
+          - Accept-Language: pl_PL
+            msg: Udział jest ograniczony do użytkowników, którzy zarejestrowali się za pomocą kodu zaproszenia od ${nickName}a.
+          - Accept-Language: id_ID
+            msg: Partisipasinya terbatas dan Anda tidak perlu mendaftar dengan kode undangan ${nickName}.
+          - Accept-Language: th_TH
+            msg: การเข้าร่วมจำกัดเฉพาะผู้ใช้ที่ลงทะเบียนด้วยรหัสเชิญจาก ${nickName}
+          - Accept-Language: uk_UA
+            msg: Udział jest ograniczony do użytkowników, którzy zarejestrowali się za pomocą kodu zaproszenia z ${nickName}.
+  - name: KOL邀请用户注册
+    dataProvider:
+      - symbol: BTCUSDT
+        amount: 0.05
+        side: ${__Random(1,2)}
+        code: 0
+        dataProvider:
+          - Accept-Language: en_US
+            msg: Success
+    step:
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 增加合约账户资产
+      - keyWord: 通过uid获取用户token
+      - keyWord: 活动报名
+      - keyWord: 市价开仓-指定交易对
+      - keyWord: 持有仓位信息
+        sleep: 2000
+      - keyWord: 市价平仓
+      - keyWord: 统计活动数据
+      - keyWord: 获取记录
+      - keyWord: 领取奖励-校验领取结果
+      - keyWord: 奖励记录
