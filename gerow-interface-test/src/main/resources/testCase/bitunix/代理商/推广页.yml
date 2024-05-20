@@ -1,0 +1,30 @@
+name: 推广页
+story: partners
+beforeClass:
+  name: 登录合伙人后台
+  step:
+    - keyWord: 登录partners
+testMethod:
+  - name: 创建推广页
+    invocationCount: 1
+    dataProvider:
+      - inviteCode: bu4p7540
+        customerInviteCode: gerow1
+        shortLink: gerow${__time()}
+        dataProvider:
+          - url: https://www.bitunix.one
+          - url: https://www.bitunix.one/contract-trade/BTCUSDT
+          - url: https://www.bitunix.one/contract-trade/ETHUSDT
+          - url: https://www.bitunix.one/contract-trade/BNBUSDT
+          - url: https://www.bitunix.one/contract-trade/XRPUSDT
+          - url: https://www.bitunix.one/contract-trade/ADAUSDT
+          - url: https://www.bitunix.one/activity/newborn-zone
+          - url: https://www.bitunix.one/activity/welfare-center
+          - url: https://www.bitunix.one/tripartiteCoin
+          - url: https://www.bitunix.one/homemarket
+          - url: https://www.bitunix.one/spot-trade/BTCUSDT
+          - url: https://www.bitunix.one/spot-trade/ETHUSDT
+          - url: https://www.bitunix.one/spot-trade/LTCUSDT
+          - url: https://www.bitunix.one/referral
+    step:
+      - keyWord: 创建推广页

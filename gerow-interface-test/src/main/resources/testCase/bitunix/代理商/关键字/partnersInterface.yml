@@ -222,4 +222,17 @@ keyWord:
         showBelow: true
         page: 1
         pageSize: 10
-      
+    - name: 创建推广页
+      host: ${partners_host}
+      url: /partner/promotional/create
+      headers:
+        Token: ${partner_token}
+      method: POST
+      body: |
+        {
+          "inviteCode": "${inviteCode}",
+          "customerInviteCode": "${customerInviteCode}",
+          "url": "${url}",
+          "shortLink": "${shortLink}"
+        }
+      assertion: [json: {$.code: '0'}]

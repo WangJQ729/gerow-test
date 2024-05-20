@@ -69,20 +69,20 @@ testMethod:
           - Accept-Language: pt_BR
             msg: O número de cupons distribuídos atingiu seu limite
           - Accept-Language: it_IT
-            msg: 优惠券发放数量已达到上限
+            msg: Il numero di coupon distribuiti ha raggiunto il suo limite
           - Accept-Language: de_DE
-            msg: 优惠券发放数量已达到上限
+            msg: Die Anzahl der verteilten Gutscheine hat ihr Limit erreicht
           - Accept-Language: ja_JP
-            msg: 优惠券发放数量已达到上限
+            msg: クーポンの発行枚数が上限に達しています。
           - Accept-Language: ko_KR
-            msg: 优惠券发放数量已达到上限
+            msg: 최대 쿠폰 수에 도달했습니다.
           - Accept-Language: pl_PL
-            msg: 优惠券发放数量已达到上限
+            msg: Liczba rozdanych kuponów osiągnęła limit.
           - Accept-Language: id_ID
-            msg: 优惠券发放数量已达到上限
+            msg: Jumlah kupon yang didistribusikan telah mencapai batasnya
           - Accept-Language: th_TH
-            msg: 优惠券发放数量已达到上限
+            msg: จำนวนคูปองที่แจกถึงขีดจำกัดแล้ว
           - Accept-Language: uk_UA
-            msg: 优惠券发放数量已达到上限
+            msg: Кількість розданих купонів досягла ліміту
     step:
       - keyWord: 领取奖励-校验领取结果

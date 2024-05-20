@@ -7,12 +7,11 @@ keyWord:
         timestamp: ${time}
       headers:
         apiKey: ${apiKey}
-        signature: ${__digest(SHA-1,264879144${time}${apiSecret},,,)}
+        signature: ${__digest(SHA-1,${uid}${time}${apiSecret},,,)}
         Content-Type: application/x-www-form-urlencoded;charset=UTF-8
         Accept: application/json, text/plain, */*
       method: POST
-      body: |
-        account=264879144
+      body: account=${uid}
       assertion: [ json: { $.code: '0' } ]
     - name: 查询代理商下级所有用户
       host: ${partners_host}
