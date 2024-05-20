@@ -1,0 +1,19 @@
+name: 推广页
+story: partners
+beforeClass:
+  name: 登录合伙人后台
+  step:
+    - keyWord: 登录partners
+testMethod:
+  - name: 创建推广页
+    invocationCount: 1
+    dataProvider:
+      - inviteCode: bu4p
+        customerInviteCode: 2485j
+        shortLink: gerow${__time()}
+        dataProvider:
+          - url: https://www.bitunix.one
+          - url: https://www.bitunix.one/tripartiteCoin
+          - url: https://www.bitunix.one
+    step:
+      - keyWord: 创建推广页

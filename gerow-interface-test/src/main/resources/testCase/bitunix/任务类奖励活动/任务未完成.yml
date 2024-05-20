@@ -18,6 +18,7 @@ dataProvider:
     symbol: BTCUSDT
     amount: 0.0005
     side: ${__Random(1,2)}
+    code: 60001
 beforeClass:
   name: 创建活动
   step:
@@ -34,8 +35,8 @@ beforeClass:
     - keyWord: 获取记录
 testMethod:
   - name: 未完成任务领取奖励-${Accept-Language}
-    dataProvider:
-      - code: 60001
+    step:
+      - keyWord: 领取奖励-校验领取结果
         dataProvider:
           - Accept-Language: en_US
             msg: Tasks not completed
@@ -73,5 +74,3 @@ testMethod:
             msg: งานที่ไม่เสร็จสิ้น
           - Accept-Language: uk_UA
             msg: Завдання не виконано
-    step:
-      - keyWord: 领取奖励-校验领取结果
