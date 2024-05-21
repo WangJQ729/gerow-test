@@ -30,10 +30,10 @@ beforeClass:
     - keyWord: 创建任务类奖励活动
       bodyEditor:
         json:
-          $.data.invitationCode: '${invitationCode}'
           $.data.showId: '${showId}'
           $.data.nickName: '${nickName}'
     - keyWord: 任务类奖励活动列表
+    - keyWord: 活动信息
 testMethod:
   - name: 指定KOL
     step:
@@ -88,6 +88,83 @@ testMethod:
             msg: Success
     step:
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 增加合约账户资产
+      - keyWord: 通过uid获取用户token
+      - keyWord: 活动报名
+      - keyWord: 市价开仓-指定交易对
+      - keyWord: 持有仓位信息
+        sleep: 2000
+      - keyWord: 市价平仓
+      - keyWord: 统计活动数据
+      - keyWord: 获取记录
+      - keyWord: 领取奖励-校验领取结果
+      - keyWord: 奖励记录
+  - name: KOL邀请用户的下级注册
+    dataProvider:
+      - symbol: BTCUSDT
+        amount: 0.05
+        side: ${__Random(1,2)}
+        code: 0
+        dataProvider:
+          - Accept-Language: en_US
+            msg: Success
+    step:
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 获取用户信息
+      - keyWord: 升级为合伙人-最高返佣
+      - keyWord: 登录partners-新合伙人
+      - keyWord: 获取合伙人邀请码
+
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 获取用户信息
+      - keyWord: 升级为合伙人-最高返佣
+      - keyWord: 登录partners-新合伙人
+      - keyWord: 获取合伙人邀请码
+
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 获取用户信息
+      - keyWord: 升级为合伙人-最高返佣
+      - keyWord: 登录partners-新合伙人
+      - keyWord: 获取合伙人邀请码
+
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 增加合约账户资产
+      - keyWord: 通过uid获取用户token
+      - keyWord: 活动报名
+      - keyWord: 市价开仓-指定交易对
+      - keyWord: 持有仓位信息
+        sleep: 2000
+      - keyWord: 市价平仓
+      - keyWord: 统计活动数据
+      - keyWord: 获取记录
+      - keyWord: 领取奖励-校验领取结果
+      - keyWord: 奖励记录
+  - name: KOL邀请用户的下级合伙人
+    dataProvider:
+      - symbol: BTCUSDT
+        amount: 0.05
+        side: ${__Random(1,2)}
+        code: 0
+        dataProvider:
+          - Accept-Language: en_US
+            msg: Success
+    step:
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 获取用户信息
+      - keyWord: 升级为合伙人-最高返佣
+      - keyWord: 登录partners-新合伙人
+      - keyWord: 获取合伙人邀请码
+
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 获取用户信息
+      - keyWord: 升级为合伙人-最高返佣
+      - keyWord: 登录partners-新合伙人
+      - keyWord: 获取合伙人邀请码
+
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 获取用户信息
+      - keyWord: 升级为合伙人-最高返佣
+
       - keyWord: 增加合约账户资产
       - keyWord: 通过uid获取用户token
       - keyWord: 活动报名

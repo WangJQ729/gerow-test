@@ -25,6 +25,7 @@ beforeClass:
   step:
     - keyWord: 创建任务类奖励活动
     - keyWord: 任务类奖励活动列表
+    - keyWord: 活动信息
 testMethod:
   - name: 用户报名-${testType}-${Accept-Language}
     invocationCount: 1

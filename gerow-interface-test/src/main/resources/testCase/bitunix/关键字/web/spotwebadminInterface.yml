@@ -75,7 +75,6 @@ keyWord:
                 "minBalance": "${minBalance}",
                 "actName": "${actCode}",
                 "actStartTime": "${actStartTime}",
-                "invitationCode": "",
                 "showId": -1,
                 "nickName": "",
                 "actEndTime": "${actEndTime}",

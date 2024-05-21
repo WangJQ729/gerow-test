@@ -20,6 +20,7 @@ beforeClass:
   step:
     - keyWord: 创建任务类奖励活动
     - keyWord: 任务类奖励活动列表
+    - keyWord: 活动信息
 testMethod:
   - name: 完成任务并领取奖励-${Accept-Language}
     dataProvider:

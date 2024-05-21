@@ -37,3 +37,10 @@ keyWord:
         - json:
             $.data.data[0].dealAmount: 5
           assertionType: GREATEROREQUALTO
+    - name: 社区活动报名
+      url: /web/trade/match/enroll
+      headers:
+        Token: ${token}
+      method: POST
+      body: |
+        {"actId":${actId}}

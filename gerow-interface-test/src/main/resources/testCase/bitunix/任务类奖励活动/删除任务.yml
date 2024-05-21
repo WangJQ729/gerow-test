@@ -50,4 +50,5 @@ testMethod:
     step:
       - keyWord: 创建任务类奖励活动
       - keyWord: 任务类奖励活动列表
+      - keyWord: 活动信息
       - keyWord: 删除任务类奖励活动-不允许删除
