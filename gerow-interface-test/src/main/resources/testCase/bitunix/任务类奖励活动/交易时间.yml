@@ -27,6 +27,7 @@ testMethod:
     step:
       - keyWord: 创建任务类奖励活动
       - keyWord: 任务类奖励活动列表
+      - keyWord: 活动信息
       - keyWord: 快捷注册
       - keyWord: 增加合约账户资产
       - keyWord: 通过uid获取用户token
@@ -55,6 +56,7 @@ testMethod:
     step:
       - keyWord: 创建任务类奖励活动
       - keyWord: 任务类奖励活动列表
+      - keyWord: 活动信息
       - keyWord: 快捷注册
       - keyWord: 增加合约账户资产-指定资产
       - keyWord: 通过uid获取用户token

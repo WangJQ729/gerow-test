@@ -2,6 +2,7 @@ story: welfare
 beforeSuite:
   name: 登录后台
   step:
+    - keyWord: 登录partnersadmin
     - keyWord: 现货后台获取登录信息
     - keyWord: 现货后台获取googleKey
     - keyWord: 登录现货后台

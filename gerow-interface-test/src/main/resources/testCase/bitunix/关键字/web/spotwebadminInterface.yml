@@ -75,6 +75,8 @@ keyWord:
                 "minBalance": "${minBalance}",
                 "actName": "${actCode}",
                 "actStartTime": "${actStartTime}",
+                "showId": -1,
+                "nickName": "",
                 "actEndTime": "${actEndTime}",
                 "actEnrollStartTime": "${actEnrollStartTime}",
                 "actEnrollEndTime": "${actEnrollEndTime}",
