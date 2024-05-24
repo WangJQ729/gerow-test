@@ -227,11 +227,11 @@ keyWord:
       url: /partner/promotional/create
       headers:
         Token: ${partner_token}
+        Accept-Language: ${Accept-Language}
       method: POST
       body: |
         {
           "inviteCode": "${inviteCode}",
-          "customerInviteCode": "${customerInviteCode}",
           "url": "${url}",
           "shortLink": "${shortLink}"
         }

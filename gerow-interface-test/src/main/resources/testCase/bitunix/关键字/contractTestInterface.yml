@@ -59,7 +59,7 @@ keyWord:
         - type: DEFAULT
           name: token
     - name: 持有仓位信息
-      untilWait: 5
+
       url: /test/futuresproxy/api/v1/position/pending
       headers:
         Type: query_by_uid

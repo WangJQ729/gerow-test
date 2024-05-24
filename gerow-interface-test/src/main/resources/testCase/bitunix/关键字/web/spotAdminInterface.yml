@@ -1,7 +1,7 @@
 keyWord:
   step:
     - name: 现货后台获取登录信息
-      host: ${spotwebadmin_host}
+      host: ${spotAdmin_host}
       url: /api/login
       method: POST
       body: |
@@ -11,18 +11,18 @@ keyWord:
         }
       extractor:
         - json:
-            spotwebadmin_userId: $.result.userId
+            spotAdmin_userId: $.result.userId
     - name: 现货后台获取googleKey
-      host: ${spotwebadmin_host}
+      host: ${spotAdmin_host}
       url: /api/get_google_key
       method: GET
       variables:
-        userId: ${spotwebadmin_userId}
+        userId: ${spotAdmin_userId}
       extractor:
         - json:
             googleKey: $.result.googleKey
     - name: 登录现货后台
-      host: ${spotwebadmin_host}
+      host: ${spotAdmin_host}
       url: /api/google_auth
       method: POST
       body: |
@@ -35,10 +35,10 @@ keyWord:
         }
       extractor:
         - json:
-            spotwebadmin_token: $.result.token
+            spotAdminUserId: $.result.token
           site: TESTSUITE
     - name: 任务类奖励活动列表-活动不存在
-      host: ${spotwebadmin_host}
+      host: ${spotAdmin_host}
       url: /api/recharge/common/act/list
       untilWait: 5
       variables:
@@ -46,7 +46,7 @@ keyWord:
         page: 1
         pageSize: 20
       headers:
-        Token: ${spotwebadmin_token}
+        Token: ${spotAdminUserId}
       method: GET
       assertion:
         - json:
@@ -63,10 +63,10 @@ keyWord:
             $.result.items[?(@.actName == '${actCode}')].status:
               - ${actStatusType}
     - name: 创建任务类奖励活动
-      host: ${spotwebadmin_host}
+      host: ${spotAdmin_host}
       url: /api/recharge/common/act/manage
       headers:
-        Token: ${spotwebadmin_token}
+        Token: ${spotAdminUserId}
       method: POST
       body: |
         {
@@ -77,6 +77,7 @@ keyWord:
                 "actStartTime": "${actStartTime}",
                 "showId": -1,
                 "nickName": "",
+                "vipLevels": "",
                 "actEndTime": "${actEndTime}",
                 "actEnrollStartTime": "${actEnrollStartTime}",
                 "actEnrollEndTime": "${actEnrollEndTime}",
@@ -133,10 +134,10 @@ keyWord:
         }
       assertion: [ json: { $.code: '0' } ]
     - name: 删除任务类奖励活动
-      host: ${spotwebadmin_host}
+      host: ${spotAdmin_host}
       url: /api/recharge/common/act/delete
       headers:
-        Token: ${spotwebadmin_token}
+        Token: ${spotAdminUserId}
       method: POST
       body: |
         {"actId":${actId}}

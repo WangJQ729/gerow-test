@@ -7,7 +7,7 @@ keyWord:
       headers:
         Token: ${token}
       body: |
-        {"amount":"0.08","side":"${__Random(1,2)}","symbol":"${__RandomEnum(BTCUSDT|ETHUSDT|LTCUSDT,)}","reductionOnly":false}
+        {"amount":"2","side":"${__Random(1,2)}","symbol":"${__RandomEnum(BTCUSDT|ICPUSDT|ETCUSDT,)}","reductionOnly":false}
       extractor:
         - json:
             orderId: $.data.orderId
@@ -28,6 +28,11 @@ keyWord:
       extractor:
         - json:
             closeOrderId: $.data.orderId
+    - name: 市价平仓-平一半
+      keyWord: 市价平仓
+      bodyEditor:
+        json:
+          $.amount: ${__BeanShell(${amount}/2)}
     - name: 历史成交查询
       url: /futures/futures/order/deals/page
       method: GET
@@ -67,4 +72,4 @@ keyWord:
         Token: ${token}
       body: |
         {"symbol":"USDT","amount":"999"}
-      assertion: [json: {$.code: 0}]
+      assertion: [ json: { $.code: 0 } ]

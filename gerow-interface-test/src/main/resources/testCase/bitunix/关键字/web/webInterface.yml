@@ -44,3 +44,6 @@ keyWord:
       method: POST
       body: |
         {"actId":${actId}}
+      assertion:
+        - json:
+            $.code: '0'

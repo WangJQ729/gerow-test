@@ -126,3 +126,51 @@ keyWord:
             $.result.items[0].platformRevenue: ${bdPlatformRevenue}
             $.result.items[0].totalCommission: ${bdTotalCommission}
             $.result.items[0].totalFee: ${bdTotalFee}
+    - name: 新建社区活动
+      host: ${partnersadmin_host}
+      url: /partner/root/activity/create
+      headers:
+        Token: ${partnersadmin_token}
+      method: POST
+      body: |
+        { "uid": ${partner_uid},
+          "titleList": [{"languageKey": "en-US","content": "${shortLink}"}],
+          "enrollStartTime": "${__timeShift(yyyy-MM-dd'T'HH:mm:ss'Z',,PT-8H-10M-60S,zh_CN,)}",
+          "enrollEndTime": "${__timeShift(yyyy-MM-dd'T'HH:mm:ss'Z',,PT-7H-55M,zh_CN,)}",
+          "startTime": "${__timeShift(yyyy-MM-dd'T'HH:mm:ss'Z',,PT-7H-54M-59S,zh_CN,)}",
+          "endTime": "${__timeShift(yyyy-MM-dd'T'HH:mm:ss'Z',,PT-7H-45M,zh_CN,)}",
+          "actType": [{"rankType":1,"tradingVolume":0,"listDisplayVolume":10},{"rankType":2,"tradingVolume":0,"listDisplayVolume":10}],
+          "actDetail": [{"languageKey": "en-US","content": "<p>测试</p>"}],
+          "futureMinBalance": 1,
+          "minJoinUser": 0,
+          "shortLink": "${shortLink}",
+          "showEntrance": true,
+          "entranceDisplay": [{"languageKey": "en-US","content": "test"}],
+          "activityEndDisplayInformation": [{"languageKey": "en-US","content": "test"}]
+        }
+      assertion: [ json: { $.code: '0' } ]
+    - name: 社区活动列表
+      host: ${partnersadmin_host}
+      url: /partner/root/activity/list
+      variables:
+        page: 1
+        pageSize: 10
+      headers:
+        Token: ${partnersadmin_token}
+      method: GET
+      assertion: [ json: { $.code: '0' } ]
+      extractor:
+        - json:
+            actId: $.result.items[?(@.shortLink == '${shortLink}')].id
+    - name: 社区活动列表-报名中
+      untilWait: 10
+      keyWord: 社区活动列表
+      assertion:
+        - json:
+            $.result.items[?(@.shortLink == '${shortLink}')].status: [2]
+    - name: 社区活动列表-活动中
+      untilWait: 600
+      keyWord: 社区活动列表
+      assertion:
+        - json:
+            $.result.items[?(@.shortLink == '${shortLink}')].status: [3]
