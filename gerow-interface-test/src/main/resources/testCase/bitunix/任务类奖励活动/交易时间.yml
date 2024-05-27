@@ -44,7 +44,7 @@ testMethod:
         actEnrollEndTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-7H,zh_CN,)}
         actStartTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-9H,zh_CN,)}
         actEndTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-7H,zh_CN,)}
-        actStatusType: registration_in_progress
+        actStatusType: in_progress
         symbol: BTCUSDT
         amount: 0.05
         balance_amount: 9999.99
