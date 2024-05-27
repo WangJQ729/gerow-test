@@ -1,0 +1,39 @@
+keyWord:
+  step:
+    - name: 合约后台获取登录信息
+      host: ${featuresAdmin_host}
+      url: /api/login
+      method: POST
+      body: |
+        {
+            "userName": "${userName}",
+            "password": "${__digest(MD5,${password})}"
+        }
+      extractor:
+        - json:
+            featuresAdminUserId: $.result.userId
+    - name: 合约后台获取googleKey
+      host: ${featuresAdmin_host}
+      url: /api/get_google_key
+      method: GET
+      variables:
+        userId: ${featuresAdminUserId}
+      extractor:
+        - json:
+            googleKey: $.result.googleKey
+    - name: 登录合约后台
+      host: ${featuresAdmin_host}
+      url: /api/google_auth
+      method: POST
+      body: |
+        {
+            "googleCode": "${__GoogleAuthenticator(${featuresAdminGoogleCode})}",
+            "userName": "${userName}",
+            "password": "${__digest(MD5,${password})}",
+            "authType": 2,
+            "googleKey": "${googleKey}"
+        }
+      extractor:
+        - json:
+            featuresAdminToken: $.result.token
+          site: TESTSUITE

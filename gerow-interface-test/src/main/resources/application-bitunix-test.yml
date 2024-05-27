@@ -5,7 +5,9 @@ data:
     partners_host: http://partners.test.searchalpha.xyz
     partnersadmin_host: http://partnersadmin.test.searchalpha.xyz
     bdadmin_host: http://bdadmin.test.searchalpha.xyz
-    spotwebadmin_host: http://spotwebadmin.test.searchalpha.xyz
+    spotAdmin_host: http://spotwebadmin.test.searchalpha.xyz
+    featuresAdmin_host: http://futureswebadmin.test.searchalpha.xyz
+    web_host: http://www.test.searchalpha.xyz
     partnersadmin_account: admin
     partnersadmin_password: admin
     partner_email: gerow@126.com
@@ -14,8 +16,12 @@ data:
     userName: gerow.wang@bitunix.io
     password: Aa123456
     spotAdminGoogleCode: OQNW3ZHMS7UIVO2F
+    featuresAdminGoogleCode: ZXHYKFQ6PGTM72V7
+    Accept-Language: zh_CN
+    couponId: 934
 client:
   protocol: http
   timeOut: 30
   headers:
     Content-Type: "application/json;charset=UTF-8"
+    Accept-Language: zh_CN

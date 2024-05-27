@@ -23,6 +23,7 @@ keyWord:
       extractor:
         - json:
             partner_uid: $.result.uid
+            partner_name: $.result.username
           site: TESTSUITE
     - name: 获取合伙人邀请码
       host: ${partners_host}
@@ -227,11 +228,11 @@ keyWord:
       url: /partner/promotional/create
       headers:
         Token: ${partner_token}
+        Accept-Language: ${Accept-Language}
       method: POST
       body: |
         {
           "inviteCode": "${inviteCode}",
-          "customerInviteCode": "${customerInviteCode}",
           "url": "${url}",
           "shortLink": "${shortLink}"
         }

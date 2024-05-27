@@ -5,7 +5,6 @@ dataProvider:
     firstRuleName: tradingVolume
     award: experience
     awardAmt: 88
-    couponId: 248
     awardNumber: 1
     firstRuleTarget: 1000
     type: create

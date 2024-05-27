@@ -1,0 +1,61 @@
+name: 任务报名限制VIP等级
+story: welfare
+dataProvider:
+  - firstRuleName: tradingVolume
+    award: experience
+    awardAmt: 88
+    awardNumber: 0
+    firstRuleTarget: 100
+    type: create
+    actEnrollStartTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-8H,zh_CN,)}
+    actEnrollEndTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-7H,zh_CN,)}
+    actStartTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-7H,zh_CN,)}
+    actEndTime: ${__timeShift(yyyy-MM-dd'T'HH:mm:ss.000'Z',,PT-5H,zh_CN,)}
+    actStatusType: pending
+    msgKey: vip.level.not.matching
+    minBalance: 0
+testMethod:
+  - name: 报名-限制VIP等级-${vipLevel}
+    dataProvider:
+      - code: 0
+        Accept-Language: zh_CN
+        actCode: gerow_${__time()}
+        msg: 成功
+        dataProvider:
+          - vipLevel: 6|5
+            dataProvider:
+              - realVipLevel: 6
+              - realVipLevel: 5
+          - vipLevel: 0
+            dataProvider:
+              - realVipLevel: 0
+    step:
+      - keyWord: 创建任务类奖励活动-指定vip等级
+      - keyWord: 任务类奖励活动列表
+      - keyWord: 活动信息
+      - keyWord: 快捷注册
+      - keyWord: 通过uid获取用户token
+      - keyWord: 修改vip等级
+      - keyWord: 活动报名-校验报名结果
+  - name: 报名-限制VIP等级${vipLevel}-用户
+    dataProvider:
+      - code: 900013
+        Accept-Language: vi-VN
+        msg: Rất tiếc, cấp VIP của bạn không đáp ứng được yêu cầu để vào.
+        dataProvider:
+          - actCode: gerow_${__time()}
+            vipLevel: 5|6
+            dataProvider:
+              - realVipLevel: 4
+              - realVipLevel: 3
+              - realVipLevel: 2
+              - realVipLevel: 1
+              - realVipLevel: 0
+    step:
+      - keyWord: 创建任务类奖励活动-指定vip等级
+      - keyWord: 任务类奖励活动列表
+      - keyWord: 活动信息
+      - keyWord: 快捷注册
+      - keyWord: 通过uid获取用户token
+      - keyWord: 修改vip等级
+      - keyWord: 活动报名-校验报名结果

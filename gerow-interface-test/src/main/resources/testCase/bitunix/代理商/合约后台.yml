@@ -1,0 +1,8 @@
+name: 合约后台
+story: partners
+testMethod:
+  - name: 合约后台登录
+    step:
+      - keyWord: 合约后台获取登录信息
+      - keyWord: 合约后台获取googleKey
+      - keyWord: 登录合约后台

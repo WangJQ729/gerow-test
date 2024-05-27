@@ -5,7 +5,8 @@ data:
     partners_host: https://partners.bitunix.one
     partnersadmin_host: https://partnersadmin.bitunix.one
     bdadmin_host: https://bdadmin.bitunix.one
-    spotwebadmin_host: https://spotwebadmin.bitunix.one
+    spotAdmin_host: https://spotwebadmin.bitunix.one
+    web_host: https://www.bitunix.one
     partnersadmin_account: admin
     partnersadmin_password: admin
     partner_email: gerow@126.com
@@ -14,6 +15,7 @@ data:
     userName: gerow.wang@bitunix.io
     password: Aa123456
     spotAdminGoogleCode: 6XYRQBKYF2NCLSCF
+    couponId: 248
 client:
   protocol: https
   timeOut: 30

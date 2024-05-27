@@ -1,30 +1,78 @@
 name: 推广页
 story: partners
+dataProvider:
+  - inviteCode: p4yc
+  - inviteCode: p4yc3249
+  - inviteCode: p4yc8200
+  - inviteCode: p4yc9097
+  - inviteCode: p4yc3596
 beforeClass:
   name: 登录合伙人后台
   step:
     - keyWord: 登录partners
 testMethod:
   - name: 创建推广页
-    invocationCount: 1
     dataProvider:
-      - inviteCode: bu4p7540
-        customerInviteCode: gerow1
-        shortLink: gerow${__time()}
+      - shortLink: gerow${__time()}
         dataProvider:
-          - url: https://www.bitunix.one
-          - url: https://www.bitunix.one/contract-trade/BTCUSDT
-          - url: https://www.bitunix.one/contract-trade/ETHUSDT
-          - url: https://www.bitunix.one/contract-trade/BNBUSDT
-          - url: https://www.bitunix.one/contract-trade/XRPUSDT
-          - url: https://www.bitunix.one/contract-trade/ADAUSDT
-          - url: https://www.bitunix.one/activity/newborn-zone
-          - url: https://www.bitunix.one/activity/welfare-center
-          - url: https://www.bitunix.one/tripartiteCoin
-          - url: https://www.bitunix.one/homemarket
-          - url: https://www.bitunix.one/spot-trade/BTCUSDT
-          - url: https://www.bitunix.one/spot-trade/ETHUSDT
-          - url: https://www.bitunix.one/spot-trade/LTCUSDT
-          - url: https://www.bitunix.one/referral
+          - url: ${web_host}
+          - url: ${web_host}/contract-trade/BTCUSDT
+          - url: ${web_host}/contract-trade/ETHUSDT
+          - url: ${web_host}/contract-trade/BNBUSDT
+          - url: ${web_host}/contract-trade/XRPUSDT
+          - url: ${web_host}/contract-trade/ADAUSDT
+          - url: ${web_host}/activity/newborn-zone
+          - url: ${web_host}/activity/welfare-center
+          - url: ${web_host}/tripartiteCoin
+          - url: ${web_host}/referral
+          - url: ${web_host}/homemarket
+          - url: ${web_host}/spot-trade/BTCUSDT
+          - url: ${web_host}/spot-trade/ETHUSDT
+          - url: ${web_host}/spot-trade/LTCUSDT
+          - url: ${web_host}/browser/activity/partner-trading?actCode=gerow1716546569255
     step:
       - keyWord: 创建推广页
+  - name: 页面名称已存在-${Accept-Language}
+    dataProvider:
+      - shortLink: gerow1
+        url: ${web_host}/browser/activity/partner-trading?actCode=gerow1716546569258
+        code: '30041'
+    step:
+      - keyWord: 创建推广页
+        dataProvider:
+          - Accept-Language: en_US
+            msg: Short link already existed, please enter again.
+          - Accept-Language: zh_CN
+            msg: 页面名称已存在，请重新输入
+          - Accept-Language: zh_TW
+            msg: 頁面名稱已存在，請重新輸入
+          - Accept-Language: ru-RU
+            msg: Короткая ссылка уже существовала, пожалуйста, введите еще раз.
+          - Accept-Language: tr-TR
+            msg: Kısa bağlantı zaten mevcut, lütfen tekrar girin.
+        assertion:
+          - json:
+              $.msg: ${msg}
+              $.code: ${code}
+  - name: 邀请码链接已存在-${Accept-Language}
+    dataProvider:
+      - shortLink: gerow${__time()}
+        url: ${web_host}/register
+        code: '30042'
+    step:
+      - keyWord: 创建推广页
+        dataProvider:
+          - Accept-Language: en_US
+            msg: Promotion page already exists, please do not create it repeatedly.
+          - Accept-Language: zh_CN
+            msg: 推广页面已存在，请勿重复创建
+          - Accept-Language: zh_TW
+            msg: 推廣頁面已存在，請勿重複創建
+          - Accept-Language: ru-RU
+            msg: Промо-страница уже существует, пожалуйста, не создавайте ее повторно.
+          - Accept-Language: tr-TR
+            msg: Promosyon sayfası zaten mevcut, lütfen tekrar tekrar oluşturmayın.
+        assertion:
+          - json:
+              $.msg: ${msg}
+              $.code: ${code}
