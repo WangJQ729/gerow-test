@@ -17,9 +17,11 @@ data:
     password: Aa123456
     spotAdminGoogleCode: OQNW3ZHMS7UIVO2F
     featuresAdminGoogleCode: ZXHYKFQ6PGTM72V7
-    Accept-Language: en_US
+    Accept-Language: zh_CN
+    couponId: 934
 client:
   protocol: http
   timeOut: 30
   headers:
     Content-Type: "application/json;charset=UTF-8"
+    Accept-Language: zh_CN

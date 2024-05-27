@@ -41,7 +41,7 @@ keyWord:
       body: |
         {
             "uid": ${userId},
-            "amount": 999.99,
+            "amount": 9999.99,
             "coin": "USDT"
         }
     - name: 增加合约账户资产-指定资产
@@ -59,7 +59,7 @@ keyWord:
         - type: DEFAULT
           name: token
     - name: 持有仓位信息
-
+      untilWait: 5
       url: /test/futuresproxy/api/v1/position/pending
       headers:
         Type: query_by_uid

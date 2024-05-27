@@ -74,9 +74,10 @@ keyWord:
         Token: ${partnersadmin_token}
       method: POST
       body: |
-        {"bdUid":284,"uid":${partner_uid}}
-      assertion: [json: {$.code: '0'}]
+        {"bdUid":1,"uid":${partner_uid}}
+      assertion: [ json: { $.code: '0' } ]
     - name: BD统计
+      untilWait: 5
       host: ${partnersadmin_host}
       url: /partner/root/get_bd_team_information
       method: GET
@@ -92,12 +93,19 @@ keyWord:
         orderDirection: DESC
       extractor:
         - json:
-            bdTradeAmount: $.result.items[0].totalTradeAmount
             bdTotalPartners: $.result.items[0].totalPartners
             bdTeamSize: $.result.items[0].teamSize
+            #新增用户
             bdNewUser: $.result.items[0].newUser
+            #总交易额
+            bdTradeAmount: $.result.items[0].totalTradeAmount
+            #交易人数
+            bdTotalTradeUsers: $.result.items[0].totalTradeUsers
+            # 平台收益
             bdPlatformRevenue: $.result.items[0].platformRevenue
+            # 佣金总计
             bdTotalCommission: $.result.items[0].totalCommission
+            # 总手续费
             bdTotalFee: $.result.items[0].totalFee
     - keyWord: BD统计
       name: BD统计-校验新增合伙人
@@ -111,10 +119,14 @@ keyWord:
       name: BD统计-用户合伙人邀请码注册
       assertion:
         - json:
-            $.result.items[0].teamSize: ${__BeanShell(${bdTeamSize} + 1)}
-            $.result.items[0].totalPartners: ${bdTotalPartners}
-            $.result.items[0].totalTradeAmount: ${bdTradeAmount}
             $.result.items[0].newUser: ${__BeanShell(${bdNewUser} + 1)}
+            $.result.items[0].teamSize: ${__BeanShell(${bdTeamSize} + 1)}
+            $.result.items[0].totalTradeAmount: ${bdTradeAmount}
+            $.result.items[0].totalTradeUsers: ${bdTotalTradeUsers}
+            $.result.items[0].platformRevenue: ${bdPlatformRevenue}
+            $.result.items[0].totalCommission: ${bdTotalCommission}
+            $.result.items[0].totalFee: ${bdTotalFee}
+            $.result.items[0].totalPartners: ${bdTotalPartners}
     - name: BD统计-团队人数不变
       keyWord: BD统计
       assertion:
@@ -126,6 +138,17 @@ keyWord:
             $.result.items[0].platformRevenue: ${bdPlatformRevenue}
             $.result.items[0].totalCommission: ${bdTotalCommission}
             $.result.items[0].totalFee: ${bdTotalFee}
+    - name: BD统计-用户交易
+      keyWord: BD统计
+      assertion:
+        - json:
+            $.result.items[0].totalTradeAmount: ${__BeanShell(${bdTradeAmount} +${makerTradeAmount})}
+            $.result.items[0].totalTradeUsers: ${__BeanShell(${bdTotalTradeUsers} + 1)}
+            $.result.items[0].platformRevenue: ${__BeanShell(${bdPlatformRevenue} + ${openDealFee} * 0.05)}
+            $.result.items[0].totalCommission: ${__BeanShell(${bdTotalCommission} + ${openDealFee} * 0.95)}
+            $.result.items[0].totalFee: ${__BeanShell(${bdTotalFee} + ${openDealFee})}
+            $.result.items[0].totalPartners: ${bdTotalPartners}
+          assertionType: EIGHTDECIMALPLACES
     - name: 新建社区活动
       host: ${partnersadmin_host}
       url: /partner/root/activity/create
@@ -167,10 +190,10 @@ keyWord:
       keyWord: 社区活动列表
       assertion:
         - json:
-            $.result.items[?(@.shortLink == '${shortLink}')].status: [2]
+            $.result.items[?(@.shortLink == '${shortLink}')].status: [ 2 ]
     - name: 社区活动列表-活动中
       untilWait: 600
       keyWord: 社区活动列表
       assertion:
         - json:
-            $.result.items[?(@.shortLink == '${shortLink}')].status: [3]
+            $.result.items[?(@.shortLink == '${shortLink}')].status: [ 3 ]

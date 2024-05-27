@@ -1,4 +1,4 @@
-name: BD交易额
+name: BD统计
 story: partners
 invocationCount: 1
 beforeMethod:
@@ -50,7 +50,7 @@ testMethod:
               $.result.items[0].makerRebate: ${__BeanShell(${openDealFee} * ${futureSelfRatio} / 100)}
             assertionType: EIGHTDECIMALPLACES
       - keyWord: 获取本月交易额-校验交易额
-      - keyWord: BD统计
+      - keyWord: BD统计-用户交易
       - keyWord: 获取团队佣金
         assertion:
           - json:
@@ -72,11 +72,5 @@ testMethod:
           - json:
               $.result.items[0].totalCommission: ${__BeanShell(${totalCommission} + ${closeDealFee} * ${bdFutureRatio} / 100)}
             assertionType: EIGHTDECIMALPLACES
-      - keyWord: 变更BD
       - keyWord: 代理商后台更新返佣统计
-      - keyWord: BD统计
-      - keyWord: 获取本月交易额
-        assertion:
-          - json:
-              $.result.transactionAmountMonth: ${oldTransactionAmountMonth}
-            assertionType: EIGHTDECIMALPLACES
+      - keyWord: BD统计-用户交易

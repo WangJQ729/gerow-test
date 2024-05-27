@@ -23,6 +23,7 @@ keyWord:
       extractor:
         - json:
             partner_uid: $.result.uid
+            partner_name: $.result.username
           site: TESTSUITE
     - name: 获取合伙人邀请码
       host: ${partners_host}

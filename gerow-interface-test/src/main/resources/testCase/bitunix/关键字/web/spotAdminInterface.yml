@@ -133,6 +133,11 @@ keyWord:
             }
         }
       assertion: [ json: { $.code: '0' } ]
+    - name: 创建任务类奖励活动-指定vip等级
+      keyWord: 创建任务类奖励活动
+      bodyEditor:
+        json:
+          $.data.vipLevels: ${vipLevel}
     - name: 删除任务类奖励活动
       host: ${spotAdmin_host}
       url: /api/recharge/common/act/delete
@@ -148,3 +153,16 @@ keyWord:
         - json:
             $.code: 2
             $.message: 当前状态不允许删除
+    - name: 修改vip等级
+      host: ${spotAdmin_host}
+      url: /api/user/vip/set_vip
+      headers:
+        Token: ${spotAdminUserId}
+      method: POST
+      body: |
+        {
+        "vipLevel": ${realVipLevel},
+        "expireTime": ${__groovy((long)(${__timeShift(,,P7D,,)}/1000),)},
+        "uid": ${userId}
+        }
+      assertion: [ json: { $.code: '0' } ]
