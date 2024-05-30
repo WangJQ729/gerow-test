@@ -119,6 +119,7 @@ testMethod:
       - keyWord: 市价平仓
       - keyWord: U本位合约历史委托-平仓
       - keyWord: 代理商后台更新返佣统计
+      - keyWord: 代理商后台差价佣金统计
       - keyWord: 直客佣金查询-平仓
         assertion:
           - json:

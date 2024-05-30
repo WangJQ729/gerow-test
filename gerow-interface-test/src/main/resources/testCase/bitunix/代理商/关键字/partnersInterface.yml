@@ -52,7 +52,7 @@ keyWord:
     - name: 升级为合伙人-最高返佣
       keyWord: 升级为合伙人
       body: |
-        {"uid":${userId},"nickName":"${email}","futureRatio":${futureSelfRatio},"exchangeRatio":${exchangeSelfRatio}}
+        {"uid":${userId},"nickName":"${email}","futureRatio":${totalFutureRatio},"exchangeRatio":${totalExchangeRatio}}
     - name: 新用户升级为合伙人
       keyWord: 升级为合伙人
       bodyEditor:
