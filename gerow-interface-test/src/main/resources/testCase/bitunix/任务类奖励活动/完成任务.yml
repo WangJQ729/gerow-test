@@ -23,9 +23,7 @@ beforeClass:
 testMethod:
   - name: 完成任务并领取奖励-${Accept-Language}
     dataProvider:
-      - symbol: BTCUSDT
-        amount: 0.05
-        side: ${__Random(1,2)}
+      - side: ${__Random(1,2)}
         code: 0
         dataProvider:
           - Accept-Language: en_US

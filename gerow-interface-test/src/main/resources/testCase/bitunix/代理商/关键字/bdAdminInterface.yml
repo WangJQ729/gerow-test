@@ -66,7 +66,7 @@ keyWord:
       keyWord: 获取本月交易额
       assertion:
         - json:
-            $.result.transactionAmountMonth: ${__BeanShell(${oldTransactionAmountMonth} + ${makerTradeAmount})}
+            $.result.transactionAmountMonth: ${__groovy(${oldTransactionAmountMonth} + ${makerTradeAmount})}
           assertionType: EIGHTDECIMALPLACES
       extractor:
         - json:

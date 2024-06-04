@@ -7,7 +7,7 @@ keyWord:
       headers:
         Token: ${token}
       body: |
-        {"amount":"0.5","side":"${__Random(1,2)}","symbol":"${__RandomEnum(BTCUSDT,)}","reductionOnly":false}
+        {"amount":"0.5","side":"${__Random(1,2)}","symbol":"${symbol}","reductionOnly":false}
       extractor:
         - json:
             orderId: $.data.orderId
@@ -32,7 +32,7 @@ keyWord:
       keyWord: 市价平仓
       bodyEditor:
         json:
-          $.amount: ${__BeanShell(${amount}/2)}
+          $.amount: ${__groovy(${amount}/2)}
     - name: 历史成交查询
       url: /futures/futures/order/deals/page
       method: GET
