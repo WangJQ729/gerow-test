@@ -1,8 +1,6 @@
 name: 用户交易
 story: partners
 invocationCount: 1
-dataProvider:
-  - userId: 16281
 beforeClass:
   name: 登录合伙人系统
   step:

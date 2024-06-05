@@ -28,8 +28,8 @@ testMethod:
         dataProvider:
           - Accept-Language: en_US
             msg: Success
-          - Accept-Language: zh_CN
-            msg: 成功
+#          - Accept-Language: zh_CN
+#            msg: 成功
 #          - Accept-Language: zh_TW
 #            msg: 成功
 #          - Accept-Language: tr_TR

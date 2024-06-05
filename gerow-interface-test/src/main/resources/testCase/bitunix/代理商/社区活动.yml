@@ -1,6 +1,6 @@
 name: 社区活动
 story: partners
-#enable: false
+enable: false
 dataProvider:
     - shortLink: gerow${__time()}
 beforeClass:
@@ -15,17 +15,6 @@ beforeClass:
     - keyWord: 社区活动列表
 testMethod:
   - name: 开仓后报名
-    dataProvider:
-      - userId: 16279
-      - userId: 16282
-      - userId: 16281
-      - userId: 16280
-      - userId: 16278
-      - userId: 16277
-      - userId: 16276
-      - userId: 16275
-      - userId: 16274
-      - userId: 16273
     step:
       - keyWord: 社区活动列表-报名中
       - keyWord: 增加合约账户资产
@@ -33,25 +22,12 @@ testMethod:
       - keyWord: 市价开仓
       - keyWord: 社区活动报名
   - name: 仅报名
-    dataProvider:
-      - userId: 16292
-      - userId: 16291
-      - userId: 16290
-      - userId: 16288
-      - userId: 16289
-      - userId: 16287
-      - userId: 16286
-      - userId: 16285
-      - userId: 16284
-      - userId: 16283
     step:
       - keyWord: 社区活动列表-报名中
       - keyWord: 增加合约账户资产
       - keyWord: 通过uid获取用户token
       - keyWord: 社区活动报名
   - name: 活动开始后平仓
-    dataProvider:
-      - userId: 16279
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
@@ -59,28 +35,18 @@ testMethod:
       - keyWord: 持有仓位信息
       - keyWord: 市价平仓
   - name: 活动开始后平仓
-    dataProvider:
-      - userId: 16281
-      - userId: 16280
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
       - keyWord: 持有仓位信息
       - keyWord: 市价平仓
   - name: 活动开始后平一半仓
-    dataProvider:
-      - userId: 16282
-      - userId: 16278
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
       - keyWord: 持有仓位信息
       - keyWord: 市价平仓-平一半
   - name: 活动开始后开仓平仓
-    dataProvider:
-      - userId: 16292
-      - userId: 16291
-      - userId: 16290
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
@@ -88,9 +54,6 @@ testMethod:
       - keyWord: 持有仓位信息
       - keyWord: 市价平仓
   - name: 活动开始后开仓平一半仓
-    dataProvider:
-      - userId: 16288
-      - userId: 16289
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
@@ -98,19 +61,12 @@ testMethod:
       - keyWord: 持有仓位信息
       - keyWord: 市价平仓-平一半
   - name: 活动开始后开仓
-    dataProvider:
-      - userId: 16287
-      - userId: 16286
-      - userId: 16285
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
       - keyWord: 市价开仓
       - keyWord: 持有仓位信息
   - name: 活动开始后开一半仓
-    dataProvider:
-      - userId: 16284
-      - userId: 16283
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token

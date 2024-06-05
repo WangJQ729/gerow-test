@@ -1,13 +1,13 @@
 data:
   test:
     platform: bitunix
-    host: api.test.searchalpha.xyz
-    partners_host: http://partners.test.searchalpha.xyz
-    partnersadmin_host: http://partnersadmin.test.searchalpha.xyz
-    bdadmin_host: http://bdadmin.test.searchalpha.xyz
-    spotAdmin_host: http://spotwebadmin.test.searchalpha.xyz
-    featuresAdmin_host: http://futureswebadmin.test.searchalpha.xyz
-    web_host: http://www.test.searchalpha.xyz
+    host: api.testa.searchalpha.xyz
+    partners_host: http://partners.testa.searchalpha.xyz
+    partnersadmin_host: http://partnersadmin.testa.searchalpha.xyz
+    bdadmin_host: http://bdadmin.testa.searchalpha.xyz
+    spotAdmin_host: http://spotwebadmin.testa.searchalpha.xyz
+    featuresAdmin_host: http://futureswebadmin.testa.searchalpha.xyz
+    web_host: http://www.testa.searchalpha.xyz
     partnersadmin_account: admin
     partnersadmin_password: admin
     partner_email: gerow@126.com
@@ -15,13 +15,13 @@ data:
     bd_name: gerow
     userName: gerow.wang@bitunix.io
     password: Aa123456
-    spotAdminGoogleCode: OQNW3ZHMS7UIVO2F
+    spotAdminGoogleCode: GGMNJZXCIFVBO6F5
     featuresAdminGoogleCode: ZXHYKFQ6PGTM72V7
     Accept-Language: zh_CN
-    couponId: 934
+    couponId: 3
     symbol: BTCUSDT
     amount: 0.05
-    userId: 16281
+    userId: 49629
 client:
   protocol: http
   timeOut: 30

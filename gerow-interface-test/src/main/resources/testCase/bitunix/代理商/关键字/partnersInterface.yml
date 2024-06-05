@@ -186,10 +186,11 @@ keyWord:
         - json:
             $.code: '0'
     - name: 代理商后台返佣发放
+      sleep: 500
       host: ${partners_host}
       url: /partner/rebate/distribute
       variables:
-        startTime: ${__groovy(${__time()} - 2 * 60 * 1000}
+        startTime: ${__groovy(${__time()} - 2 * 60 * 60 * 1000)}
         endTime: ${__time()}
       headers:
         Token: ${partner_token}
@@ -243,6 +244,7 @@ keyWord:
         }
       assertion: [json: {$.code: '0'}]
     - name: 分后台佣金发放查询
+      untilWait: 30
       host: ${partners_host}
       url: /partner/rebate/statistics/list
       headers:
@@ -252,6 +254,8 @@ keyWord:
         showBelow: true
         page: 1
         pageSize: 10
+        tradeType: futures
+        symbol: ${symbol}
         minSentTime: ${__timeShift(yyyy-MM-dd,,P-1D,zh_CN,)}T16:00:00.000Z
         maxSentTime: ${__timeShift(yyyy-MM-dd,,,zh_CN,)}T16:00:00.000Z
       assertion: [json: {$.code: '0'}]
