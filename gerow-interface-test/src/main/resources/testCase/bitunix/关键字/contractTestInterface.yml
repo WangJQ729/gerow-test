@@ -32,6 +32,15 @@ keyWord:
       bodyEditor:
         json:
           $.invitedCode: ${vipCode}
+          $.emails:
+            - ${__RandomEmail(email)}
+    - keyWord: 快捷注册
+      name: 快捷注册-非默认邀请码
+      bodyEditor:
+        json:
+          $.invitedCode: ${not_default_vipCode}
+          $.emails:
+            - ${__RandomEmail(email)}
     - name: 增加合约账户资产
       url: /test/futuresproxy/inner/test/transfer
       method: POST
@@ -59,7 +68,7 @@ keyWord:
         - type: DEFAULT
           name: token
     - name: 持有仓位信息
-      untilWait: 5
+#      untilWait: 5
       url: /test/futuresproxy/api/v1/position/pending
       headers:
         Type: query_by_uid

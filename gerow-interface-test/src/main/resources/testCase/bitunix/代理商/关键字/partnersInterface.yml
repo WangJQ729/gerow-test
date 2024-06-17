@@ -59,11 +59,11 @@ keyWord:
         json:
           $.futureRatio: ${futureRatio}
           $.exchangeRatio: ${exchangeRatio}
-          $.nickName: ${nickName}
+          $.nickName: ${email}
     - name: 新用户升级为合伙人-修改返佣比例
       keyWord: 升级为合伙人
       body: |
-        {"uid":${userId},"nickName":"${nickName}","futureRatio":${__groovy(${futureSelfRatio} - 10)},"exchangeRatio":${__groovy(${exchangeSelfRatio} - 10)}}
+        {"uid":${userId},"nickName":"${email}","futureRatio":${__groovy(${futureSelfRatio} - 10)},"exchangeRatio":${__groovy(${exchangeSelfRatio} - 10)}}
     - name: 直客佣金查询
       host: ${partners_host}
       url: /partner/rebate/userRebate/list
@@ -229,6 +229,18 @@ keyWord:
         showBelow: true
         page: 1
         pageSize: 10
+    - name: 获取合伙人非默认邀请码
+      host: ${partners_host}
+      url: /partner/invite/page
+      headers:
+        Token: ${partner_token}
+      method: POST
+      body: |
+        {"page":1,"pageSize":10}
+      assertion: [json: {$.code: '0'}]
+      extractor:
+        - json:
+            not_default_vipCode: $.result.items[?(@.isDefault == false)].vipCode
     - name: 创建推广页
       host: ${partners_host}
       url: /partner/promotional/create

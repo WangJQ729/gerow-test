@@ -1,0 +1,132 @@
+name: 社区活动_奖池配置
+story: partners
+enable: true
+dataProvider:
+  - balance_amount: 888
+    symbol: BTCUSDT
+#    partner_email: gerow1717588617780@163.com
+#    actId: 35
+#    shortLink: gerow1718589671507
+    shortLink: gerow${__time()}
+beforeClass:
+  name: 创建社区活动
+  step:
+    - keyWord: 登录partners
+    - keyWord: 获取合伙人信息
+    - keyWord: 登录partnersadmin
+    - keyWord: 获取合伙人邀请码
+    - keyWord: 合伙人列表
+    - keyWord: 新建社区活动-配置奖池
+    - keyWord: 社区活动列表
+testMethod:
+  - name: 注册并报名
+    invocationCount: 50
+    step:
+      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 增加合约账户资产-指定资产
+      - keyWord: 社区活动列表-报名中
+      - keyWord: 通过uid获取用户token
+      - keyWord: 社区活动报名
+  - name: 仅报名
+    dataProvider:
+      - userId: 14366
+      - userId: 14365
+      - userId: 14364
+      - userId: 14363
+      - userId: 14362
+      - userId: 14361
+      - userId: 14360
+      - userId: 14359
+      - userId: 14358
+      - userId: 14357
+    step:
+      #      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
+      - keyWord: 增加合约账户资产-指定资产
+      - keyWord: 社区活动列表-报名中
+      - keyWord: 通过uid获取用户token
+      - keyWord: 社区活动报名
+  - name: 开仓后报名
+    dataProvider:
+      - side: ${__Random(1,2)}
+        amount: ${__groovy(${__Random(100,9999)} * 0.0001)}
+        dataProvider:
+          - userId: 14356
+          - userId: 14355
+          - userId: 14354
+          - userId: 14353
+          - userId: 14352
+          - userId: 14351
+          - userId: 14350
+          - userId: 14349
+          - userId: 14348
+          - userId: 14347
+    step:
+      - keyWord: 社区活动列表-报名中
+      - keyWord: 增加合约账户资产
+      - keyWord: 通过uid获取用户token
+      - keyWord: 市价开仓-指定交易对
+      - keyWord: 社区活动报名
+  - name: 社区活动列表-活动中
+    step:
+      - keyWord: 社区活动列表-活动中
+      - keyWord: 社区活动列表-活动中
+        sleep: 130000
+  - name: 活动开始后平仓
+    dataProvider:
+      - userId: 14356
+      - userId: 14355
+      - userId: 14354
+      - userId: 14353
+      - userId: 14352
+    step:
+      - keyWord: 社区活动列表-活动中
+      - keyWord: 通过uid获取用户token
+      - keyWord: 持有仓位信息
+      - keyWord: 市价平仓
+  - name: 活动开始后平仓开仓
+    invocationCount: 1
+    dataProvider:
+      - side: ${__Random(1,2)}
+        amount: ${__groovy(${__Random(100,9999)} * 0.0001)}
+        dataProvider:
+          - userId: 14351
+          - userId: 14350
+          - userId: 14349
+          - userId: 14348
+          - userId: 14347
+    step:
+      - keyWord: 通过uid获取用户token
+      - keyWord: 持有仓位信息
+      - keyWord: 市价平仓
+      - keyWord: 市价开仓-指定交易对
+  - name: 活动开始后开仓
+    dataProvider:
+      - side: ${__Random(1,2)}
+        amount: ${__groovy(${__Random(100,9999)} * 0.0001)}
+        dataProvider:
+          - userId: 14366
+          - userId: 14365
+          - userId: 14364
+          - userId: 14363
+          - userId: 14362
+    step:
+      - keyWord: 社区活动列表-活动中
+      - keyWord: 通过uid获取用户token
+      - keyWord: 市价开仓-指定交易对
+      - keyWord: 持有仓位信息
+  - name: 活动开始后开仓平仓
+    dataProvider:
+      - side: ${__Random(1,2)}
+        amount: ${__groovy(${__Random(100,9999)} * 0.0001)}
+        dataProvider:
+          - userId: 14361
+          - userId: 14360
+          - userId: 14359
+          - userId: 14358
+          - userId: 14357
+    step:
+      - keyWord: 社区活动列表-活动中
+      - keyWord: 通过uid获取用户token
+      - keyWord: 市价开仓-指定交易对
+      - keyWord: 持有仓位信息
+      - keyWord: 市价平仓

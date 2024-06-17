@@ -7,7 +7,7 @@ keyWord:
       headers:
         Token: ${token}
       body: |
-        {"amount":"0.5","side":"${__Random(1,2)}","symbol":"${symbol}","reductionOnly":false}
+        {"amount":"0.08","side":"${__Random(1,2)}","symbol":"${symbol}","reductionOnly":false}
       extractor:
         - json:
             orderId: $.data.orderId
@@ -17,22 +17,27 @@ keyWord:
         json:
           $.amount: '${amount}'
           $.side: '${side}'
-          $.symbol: ${symbol}
+          $.symbol: '${symbol}'
     - name: 市价平仓
+      url: /futures/futures/position/close/market/all
+      method: POST
+      headers:
+        Token: ${token}
+      body: |
+        {"symbol":"${market}","positionId":"${position_id}"}
+      extractor:
+        - json:
+            closeOrderId: $.data.orderId
+    - name: 市价平仓-平一半
       url: /futures/futures/position/close/market
       method: POST
       headers:
         Token: ${token}
       body: |
-        {"symbol":"${market}","side":${side},"amount":"${amount}","price":"","positionId":"${position_id}"}
+        {"symbol":"${market}","side":${side},"amount":"${__groovy(${amount}/2)}","price":"","positionId":"${position_id}"}
       extractor:
         - json:
             closeOrderId: $.data.orderId
-    - name: 市价平仓-平一半
-      keyWord: 市价平仓
-      bodyEditor:
-        json:
-          $.amount: ${__groovy(${amount}/2)}
     - name: 历史成交查询
       url: /futures/futures/order/deals/page
       method: GET
