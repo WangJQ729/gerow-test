@@ -69,7 +69,7 @@ keyWord:
       url: /partner/rebate/userRebate/list
       headers:
         Token: ${partner_token}
-      untilWait: 5
+      untilWait: 10
       variables:
         page: 1
         pageSize: 10
@@ -297,7 +297,7 @@ keyWord:
           assertionType: EIGHTDECIMALPLACES
     - name: 直客合约历史委托
       url: /partner/trade/order/history
-      untilWait: 5
+      untilWait: 10
       host: ${partners_host}
       headers:
         Token: ${partner_token}
@@ -313,3 +313,31 @@ keyWord:
       extractor:
         - json:
             openDealFee: $.result.items[0].fee
+    - name: 差价佣金查询
+      url: /partner/rebate/partnerSubRebate/list
+      untilWait: 10
+      host: ${partners_host}
+      headers:
+        Token: ${partner_token}
+      method: GET
+      variables:
+        showBelow: false
+        page: 1
+        pageSize: 10
+        rebateUid: ${userId}
+      assertion:
+        - json:
+            $.result.items[0].makerFee: ${openDealFee}
+            $.result.items[0].makerRealFee: ${openDealFee}
+            $.result.items[0].rebateRatio: ${__groovy((${totalFutureRatio} - ${futureRatio}) / 100)}
+            $.result.items[0].makerRebate: ${__groovy(${openDealFee} * (${totalFutureRatio} - ${futureRatio}) / 100)}
+          assertionType: EIGHTDECIMALPLACES
+    - keyWord: 差价佣金查询
+      name: 差价佣金查询-平仓
+      assertion:
+        - json:
+            $.result.items[0].makerFee: ${closeDealFee}
+            $.result.items[0].makerRealFee: ${closeDealFee}
+            $.result.items[0].rebateRatio: ${__groovy((${totalFutureRatio} - ${futureRatio}) / 100)}
+            $.result.items[0].makerRebate: ${__groovy(${closeDealFee} * (${totalFutureRatio} - ${futureRatio}) / 100)}
+          assertionType: EIGHTDECIMALPLACES

@@ -99,7 +99,7 @@ keyWord:
         - json:
             followerToken: $.data
     - name: 持有仓位信息
-      untilWait: 2
+      untilWait: 10
       url: /test/futuresproxy/api/v1/position/pending
       headers:
         Type: query_by_uid

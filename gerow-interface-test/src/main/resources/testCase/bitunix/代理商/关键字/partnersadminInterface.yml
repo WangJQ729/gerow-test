@@ -99,7 +99,7 @@ keyWord:
         {"bdUid":1,"uid":${partner_uid}}
       assertion: [ json: { $.code: '0' } ]
     - name: BD统计
-      untilWait: 5
+      untilWait: 10
       host: ${partnersadmin_host}
       url: /partner/root/get_bd_team_information
       method: GET

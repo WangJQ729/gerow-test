@@ -63,12 +63,16 @@ testMethod:
       - keyWord: 持有仓位信息
       - keyWord: U本位合约历史委托
       - keyWord: 代理商后台返佣发放
+      - keyWord: 代理商后台差价佣金统计
       - keyWord: 佣金发放明细
       - keyWord: 分后台佣金发放查询-合伙人开仓
       - keyWord: 合伙人佣金查询-首单
+      - keyWord: 差价佣金查询
       - keyWord: 市价平仓
       - keyWord: U本位合约历史委托-平仓
       - keyWord: 代理商后台返佣发放
+      - keyWord: 代理商后台差价佣金统计
       - keyWord: 佣金发放明细
       - keyWord: 分后台佣金发放查询-合伙人平仓
       - keyWord: 合伙人佣金查询-平仓
+      - keyWord: 差价佣金查询-平仓
