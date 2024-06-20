@@ -1,6 +1,6 @@
 name: 平仓
 story: partners
-#enable: false
+enable: false
 invocationCount: 2
 testMethod:
   - name: 平仓

@@ -1,0 +1,10 @@
+name: 佣金发放
+story: partners
+beforeClass:
+  name: 登录合伙人后台
+  step:
+    - keyWord: 登录partners
+testMethod:
+  - name: 代理商后台返佣发放
+    step:
+      - keyWord: 代理商后台返佣发放

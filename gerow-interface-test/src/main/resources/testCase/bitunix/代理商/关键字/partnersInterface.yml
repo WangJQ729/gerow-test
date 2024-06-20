@@ -88,7 +88,7 @@ keyWord:
       assertion:
         - json:
             $.result.items[0].makerFee: ${openDealFee}
-            $.result.items[0].makerRebate: ${__groovy(${openDealFee} * (${totalExchangeRatio} - ${futureRatio}) / 100)}
+            $.result.items[0].makerRebate: ${__groovy(${openDealFee} * (${totalFutureRatio} - ${futureRatio}) / 100)}
           assertionType: EIGHTDECIMALPLACES
     - name: 合伙人佣金查询-首单
       keyWord: 直客佣金查询
@@ -109,14 +109,14 @@ keyWord:
       assertion:
         - json:
             $.result.items[0].makerFee: ${__groovy(${makerFee} + ${openDealFee})}
-            $.result.items[0].makerRebate: ${__groovy(${makerRebate} + ${openDealFee} *  (${totalExchangeRatio} - ${futureRatio}) / 100)}
+            $.result.items[0].makerRebate: ${__groovy(${makerRebate} + ${openDealFee} *  (${totalFutureRatio} - ${futureRatio}) / 100)}
           assertionType: EIGHTDECIMALPLACES
     - name: 直客佣金查询-平仓
       keyWord: 直客佣金查询
       assertion:
         - json:
             $.result.items[0].makerFee: ${__groovy(${makerFee} + ${closeDealFee})}
-            $.result.items[0].makerRebate: ${__groovy(${makerRebate} + ${closeDealFee} * (${totalExchangeRatio} - ${futureRatio})/ 100)}
+            $.result.items[0].makerRebate: ${__groovy(${makerRebate} + ${closeDealFee} * (${totalFutureRatio} - ${futureRatio})/ 100)}
           assertionType: EIGHTDECIMALPLACES
     - name: 直客佣金查询-获取现货交易数据
       keyWord: 直客佣金查询
@@ -190,19 +190,10 @@ keyWord:
       host: ${partners_host}
       url: /partner/rebate/distribute
       variables:
-        startTime: ${__groovy(${__time()} - 2 * 60 * 60 * 1000)}
+        startTime: ${__groovy(${__time()} - 24 * 60 * 60 * 1000)}
         endTime: ${__time()}
       headers:
         Token: ${partner_token}
-      method: GET
-      assertion:
-        - json:
-            $.code: '0'
-    - name: 代理商后台更新返佣统计
-      sleep: 2000
-      untilWait: 30
-      host: ${partners_host}
-      url: /partner/rebate/createRecord
       method: GET
       assertion:
         - json:
@@ -268,17 +259,17 @@ keyWord:
         pageSize: 10
         tradeType: futures
         symbol: ${symbol}
-        minSentTime: ${__timeShift(yyyy-MM-dd,,P-1D,zh_CN,)}T16:00:00.000Z
-        maxSentTime: ${__timeShift(yyyy-MM-dd,,,zh_CN,)}T16:00:00.000Z
+#        minSentTime: ${__timeShift(yyyy-MM-dd,,P-1D,zh_CN,)}T16:00:00.000Z
+#        maxSentTime: ${__timeShift(yyyy-MM-dd,,,zh_CN,)}T16:00:00.000Z
       assertion: [json: {$.code: '0'}]
       extractor:
         - json:
-            tradeAmount: $.result.items[?(@.symbol=='${symbol}' && @.tradeType=='futures')].tradeAmount
-            realFee: $.result.items[?(@.symbol=='${symbol}' && @.tradeType=='futures')].realFee
-            fee: $.result.items[?(@.symbol=='${symbol}' && @.tradeType=='futures')].fee
-            userRebate: $.result.items[?(@.symbol=='${symbol}' && @.tradeType=='futures')].userRebate
-            partnerRebate: $.result.items[?(@.symbol=='${symbol}' && @.tradeType=='futures')].partnerRebate
-            subPartnerRebate: $.result.items[?(@.symbol=='${symbol}' && @.tradeType=='futures')].subPartnerRebate
+            tradeAmount: $.result.items[0].tradeAmount
+            realFee: $.result.items[0].realFee
+            fee: $.result.items[0].fee
+            userRebate: $.result.items[0].userRebate
+            partnerRebate: $.result.items[0].partnerRebate
+            subPartnerRebate: $.result.items[0].subPartnerRebate
           ignore: true
     - name: 分后台佣金发放查询-直客开仓
       keyWord: 分后台佣金发放查询
@@ -304,3 +295,21 @@ keyWord:
         - json:
             $.result.items[0].subPartnerRebate: ${__groovy(${subPartnerRebate} + ${closeDealFee} * (${totalFutureRatio} - ${futureRatio}) / 100)}
           assertionType: EIGHTDECIMALPLACES
+    - name: 直客合约历史委托
+      url: /partner/trade/order/history
+      untilWait: 5
+      host: ${partners_host}
+      headers:
+        Token: ${partner_token}
+      method: GET
+      variables:
+        showBelow: false
+        page: 1
+        pageSize: 10
+        tradeType: futures
+        symbol: ${symbol}
+        uid: ${userId}
+      assertion: [ json: { $.code: '0' } ]
+      extractor:
+        - json:
+            openDealFee: $.result.items[0].fee

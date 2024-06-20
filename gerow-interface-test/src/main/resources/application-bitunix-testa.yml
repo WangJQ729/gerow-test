@@ -19,9 +19,10 @@ data:
     featuresAdminGoogleCode: ZXHYKFQ6PGTM72V7
     Accept-Language: zh_CN
     couponId: 3
-    symbol: BTCUSDT
-    amount: 0.05
+    symbol: 1000SHIBUSDT
+    amount: 888
     userId: 49650
+    traderParentUid: 50686
 client:
   protocol: http
   timeOut: 30
