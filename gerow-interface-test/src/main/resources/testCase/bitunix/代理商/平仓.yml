@@ -1,31 +1,28 @@
 name: 平仓
 story: partners
-enable: false
-invocationCount: 2
+invocationCount: 1
 testMethod:
   - name: 平仓
+    enable: false
     dataProvider:
       - userId: 13664
-      - userId: 13663
-      - userId: 13662
-      - userId: 13661
-      - userId: 13660
-      - userId: 13659
-      - userId: 13658
-      - userId: 13657
-      - userId: 13656
-      - userId: 13655
-      - userId: 13674
-      - userId: 13673
-      - userId: 13672
-      - userId: 13671
-      - userId: 13670
-      - userId: 13669
-      - userId: 13668
-      - userId: 13667
-      - userId: 13666
-      - userId: 13665
     step:
       - keyWord: 通过uid获取用户token
       - keyWord: 持有仓位信息
       - keyWord: 市价平仓
+  - name: 取消带单
+    dataProvider:
+      - userId: 50881
+    step:
+      - keyWord: 通过uid获取用户token
+      - keyWord: 获取子账户Uid
+        headers:
+          Token: ${token}
+      - keyWord: 获取带单子账户token
+        iter:
+          subAccountUid: ${subAccountUids}
+        headers:
+          Token: ${token}
+      - keyWord: 取消带单
+        headers:
+          Token: ${token}

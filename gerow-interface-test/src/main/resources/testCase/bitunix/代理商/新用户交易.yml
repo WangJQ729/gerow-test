@@ -12,7 +12,7 @@ beforeClass:
 testMethod:
   - name: 现货
     dataProvider:
-      - spotSymbols: ${__RandomEnum(LTC)}
+      - spotSymbols: ${__RandomEnum(BTC,)}
     step:
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱
       - keyWord: 分后台获取用户信息
@@ -54,6 +54,7 @@ testMethod:
         exchangeRatio: 30
     step:
       - keyWord: 代理商后台返佣发放
+      - keyWord: 代理商后台差价佣金统计
       - keyWord: 分后台佣金发放查询
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱
       - keyWord: 增加合约账户资产

@@ -176,28 +176,6 @@ keyWord:
       assertion:
         - json:
             $.code: '0'
-    - name: 代理商后台差价佣金统计
-      host: ${partners_host}
-      url: /partner/rebate/partnerSubStatistic
-      headers:
-        Token: ${partner_token}
-      method: GET
-      assertion:
-        - json:
-            $.code: '0'
-    - name: 代理商后台返佣发放
-      sleep: 500
-      host: ${partners_host}
-      url: /partner/rebate/distribute
-      variables:
-        startTime: ${__groovy(${__time()} - 24 * 60 * 60 * 1000)}
-        endTime: ${__time()}
-      headers:
-        Token: ${partner_token}
-      method: GET
-      assertion:
-        - json:
-            $.code: '0'
     - name: 佣金发放明细
       host: ${partners_host}
       url: /partner/rebate/detail/list

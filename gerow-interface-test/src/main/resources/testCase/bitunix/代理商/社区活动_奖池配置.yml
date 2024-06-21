@@ -19,27 +19,18 @@ beforeClass:
     - keyWord: 新建社区活动-配置奖池
     - keyWord: 社区活动列表
 testMethod:
-  - name: 注册并报名
-    invocationCount: 50
-    step:
-      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
-      - keyWord: 增加合约账户资产-指定资产
-      - keyWord: 社区活动列表-报名中
-      - keyWord: 通过uid获取用户token
-      - keyWord: 社区活动报名
   - name: 仅报名
-    enable: false
     dataProvider:
-      - userId: 14366
-      - userId: 14365
-      - userId: 14364
-      - userId: 14363
-      - userId: 14362
-      - userId: 14361
-      - userId: 14360
-      - userId: 14359
-      - userId: 14358
-      - userId: 14357
+      - userId: 50948
+      - userId: 50945
+      - userId: 50943
+      - userId: 50941
+      - userId: 50938
+      - userId: 50936
+      - userId: 50934
+      - userId: 50931
+      - userId: 50929
+      - userId: 50927
     step:
       #      - keyWord: 快捷注册-合伙人邀请码-随机邮箱
       - keyWord: 增加合约账户资产-指定资产
@@ -51,16 +42,16 @@ testMethod:
       - side: ${__Random(1,2)}
         amount: ${__groovy(${__Random(100,9999)} * 0.0001)}
         dataProvider:
-          - userId: 14356
-          - userId: 14355
-          - userId: 14354
-          - userId: 14353
-          - userId: 14352
-          - userId: 14351
-          - userId: 14350
-          - userId: 14349
-          - userId: 14348
-          - userId: 14347
+          - userId: 50924
+          - userId: 50922
+          - userId: 50920
+          - userId: 50917
+          - userId: 50915
+          - userId: 50914
+          - userId: 50913
+          - userId: 50912
+          - userId: 50908
+          - userId: 50906
     step:
       - keyWord: 社区活动列表-报名中
       - keyWord: 增加合约账户资产
@@ -74,11 +65,11 @@ testMethod:
         sleep: 130000
   - name: 活动开始后平仓
     dataProvider:
-      - userId: 14356
-      - userId: 14355
-      - userId: 14354
-      - userId: 14353
-      - userId: 14352
+      - userId: 50914
+      - userId: 50913
+      - userId: 50912
+      - userId: 50908
+      - userId: 50906
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
@@ -90,11 +81,11 @@ testMethod:
       - side: ${__Random(1,2)}
         amount: ${__groovy(${__Random(100,9999)} * 0.0001)}
         dataProvider:
-          - userId: 14351
-          - userId: 14350
-          - userId: 14349
-          - userId: 14348
-          - userId: 14347
+          - userId: 50924
+          - userId: 50922
+          - userId: 50920
+          - userId: 50917
+          - userId: 50915
     step:
       - keyWord: 通过uid获取用户token
       - keyWord: 持有仓位信息
@@ -105,11 +96,11 @@ testMethod:
       - side: ${__Random(1,2)}
         amount: ${__groovy(${__Random(100,9999)} * 0.0001)}
         dataProvider:
-          - userId: 14366
-          - userId: 14365
-          - userId: 14364
-          - userId: 14363
-          - userId: 14362
+          - userId: 50936
+          - userId: 50934
+          - userId: 50931
+          - userId: 50929
+          - userId: 50927
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
@@ -120,11 +111,11 @@ testMethod:
       - side: ${__Random(1,2)}
         amount: ${__groovy(${__Random(100,9999)} * 0.0001)}
         dataProvider:
-          - userId: 14361
-          - userId: 14360
-          - userId: 14359
-          - userId: 14358
-          - userId: 14357
+          - userId: 50948
+          - userId: 50945
+          - userId: 50943
+          - userId: 50941
+          - userId: 50938
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
