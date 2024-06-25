@@ -38,6 +38,7 @@ testMethod:
       - keyWord: 代理商后台差价佣金统计
       - keyWord: 佣金发放明细
       - keyWord: 分后台佣金发放查询-合伙人开仓
+      - keyWord: 合伙人佣金查询-首单
       - keyWord: 差价佣金查询
       - keyWord: 带单子账户持有仓位信息
       - keyWord: 带单子账户平仓
@@ -49,14 +50,7 @@ testMethod:
       - keyWord: 代理商后台差价佣金统计
       - keyWord: 佣金发放明细
       - keyWord: 分后台佣金发放查询-合伙人平仓
-      - keyWord: 差价佣金查询
-        assertion:
-          - json:
-              $.result.items[0].makerFee: ${openDealFee}
-              $.result.items[0].makerRealFee: ${openDealFee}
-              $.result.items[0].rebateRatio: ${__groovy((${totalFutureRatio} - ${futureRatio}) / 100)}
-              $.result.items[0].makerRebate: ${__groovy(${openDealFee} * (${totalFutureRatio} - ${futureRatio}) / 100)}
-            assertionType: EIGHTDECIMALPLACES
+      - keyWord: 差价佣金查询-平仓
       - keyWord: 合伙人佣金查询-平仓
 afterClass:
   name: 获取taskID和模板

@@ -6,7 +6,7 @@ keyWord:
         Token: ${token}
       method: POST
       body: |
-        {"side":"2","price":0,"volume":"99","base":"${spotSymbols}","quote":"USDT","type":"2"}
+        {"side":"2","price":0,"volume":"99","base":"${spotSymbol}","quote":"USDT","type":"2"}
       assertion: [json: {$.code: '0'}]
     - name: web现货历史委托
       url: /web/api/v1/order/history/page
@@ -19,7 +19,7 @@ keyWord:
             "page": 1,
             "pageSize": 10,
             "side": null,
-            "base": "${spotSymbols}",
+            "base": "${spotSymbol}",
             "quote": null,
             "type": null,
             "status": null,

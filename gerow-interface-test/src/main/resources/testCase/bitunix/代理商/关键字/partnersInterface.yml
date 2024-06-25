@@ -121,7 +121,7 @@ keyWord:
     - name: 直客佣金查询-获取现货交易数据
       keyWord: 直客佣金查询
       variables:
-        coin: ${spotSymbols}
+        coin: ${spotSymbol}
         tradeType: exchange
       extractor:
         - json:
@@ -134,6 +134,9 @@ keyWord:
       keyWord: 直客佣金查询-获取现货交易数据
       assertion:
         - json:
+            $.result.items[0].coin: ${spotSymbol}
+        - json:
+            $.result.items[0].coin: ${spotSymbol}
             $.result.items[0].takerRebate: ${__groovy(${takerRebate} + ${webFee} * (${totalExchangeRatio} - ${exchangeRatio}) / 100)}
             $.result.items[0].takerFee: ${__groovy(${takerFee} + ${webFee})}
             $.result.items[0].takerRealFee: ${__groovy(${takerRealFee} + ${webFee})}
@@ -256,7 +259,7 @@ keyWord:
             $.result.items[0].userRebate: ${__groovy(${userRebate} + ${openDealFee} * ${totalFutureRatio} / 100)}
           assertionType: EIGHTDECIMALPLACES
     - name: 分后台佣金发放查询-直客平仓
-      keyWord: 总后台佣金发放查询
+      keyWord: 分后台佣金发放查询
       assertion:
         - json:
             $.result.items[0].userRebate: ${__groovy(${userRebate} + ${closeDealFee} * ${totalFutureRatio} / 100)}

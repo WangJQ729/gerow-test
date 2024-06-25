@@ -1,6 +1,5 @@
 name: 社区活动_报名
 story: partners
-enable: true
 dataProvider:
   - shortLink: gerow${__time()}
     balance_amount: 888

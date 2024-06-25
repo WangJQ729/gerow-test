@@ -1,10 +1,10 @@
 name: 社区活动
 story: partners
-enable: false
+#enable: false
 dataProvider:
-    - shortLink: gerow${__time()}
-      partner_email: gerow1717582020848@bitunix.com
-      balance_amount: 88888
+  - shortLink: gerow${__time()}
+    #      partner_email: gerow1717582020848@bitunix.com
+    balance_amount: 88888
 beforeClass:
   name: 登录合伙人后台
   step:
@@ -18,16 +18,16 @@ beforeClass:
 testMethod:
   - name: 开仓后报名
     dataProvider:
-      - userId: 13499
-      - userId: 13498
-      - userId: 13497
-      - userId: 13496
-      - userId: 13495
-      - userId: 13494
-      - userId: 13493
-      - userId: 13492
-      - userId: 13491
-      - userId: 13490
+      - userId: 51155
+      - userId: 51141
+      - userId: 51136
+      - userId: 51134
+      - userId: 51126
+      - userId: 51122
+      - userId: 51120
+      - userId: 51112
+      - userId: 51107
+      - userId: 51105
     step:
       - keyWord: 社区活动列表-报名中
       - keyWord: 增加合约账户资产
@@ -36,16 +36,16 @@ testMethod:
       - keyWord: 社区活动报名
   - name: 仅报名
     dataProvider:
-      - userId: 13489
-      - userId: 13488
-      - userId: 13487
-      - userId: 13486
-      - userId: 13485
-      - userId: 13484
-      - userId: 13483
-      - userId: 13482
-      - userId: 13481
-      - userId: 13480
+      - userId: 51101
+      - userId: 51099
+      - userId: 51097
+      - userId: 51092
+      - userId: 51090
+      - userId: 51084
+      - userId: 51079
+      - userId: 51077
+      - userId: 51075
+      - userId: 51071
     step:
       - keyWord: 社区活动列表-报名中
       - keyWord: 增加合约账户资产
@@ -53,11 +53,11 @@ testMethod:
       - keyWord: 社区活动报名
   - name: 活动开始后平仓
     dataProvider:
-      - userId: 13499
-      - userId: 13498
-      - userId: 13497
-      - userId: 13496
-      - userId: 13495
+      - userId: 51084
+      - userId: 51079
+      - userId: 51077
+      - userId: 51075
+      - userId: 51071
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
@@ -66,11 +66,11 @@ testMethod:
       - keyWord: 市价平仓
   - name: 活动开始后平仓开仓
     dataProvider:
-      - userId: 13494
-      - userId: 13493
-      - userId: 13492
-      - userId: 13491
-      - userId: 13490
+      - userId: 51101
+      - userId: 51099
+      - userId: 51097
+      - userId: 51092
+      - userId: 51090
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
@@ -78,11 +78,11 @@ testMethod:
       - keyWord: 市价平仓
   - name: 活动开始后开仓平仓
     dataProvider:
-      - userId: 13489
-      - userId: 13488
-      - userId: 13487
-      - userId: 13486
-      - userId: 13485
+      - userId: 51122
+      - userId: 51120
+      - userId: 51112
+      - userId: 51107
+      - userId: 51105
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token
@@ -91,11 +91,11 @@ testMethod:
       - keyWord: 市价平仓
   - name: 活动开始后开仓
     dataProvider:
-      - userId: 13484
-      - userId: 13483
-      - userId: 13482
-      - userId: 13481
-      - userId: 13480
+      - userId: 51155
+      - userId: 51141
+      - userId: 51136
+      - userId: 51134
+      - userId: 51126
     step:
       - keyWord: 社区活动列表-活动中
       - keyWord: 通过uid获取用户token

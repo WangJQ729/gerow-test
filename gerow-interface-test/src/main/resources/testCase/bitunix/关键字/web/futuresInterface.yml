@@ -80,5 +80,5 @@ keyWord:
       headers:
         Token: ${token}
       body: |
-        {"symbol":"USDT","amount":"999"}
+        {"symbol":"USDT","amount":"9999"}
       assertion: [ json: { $.code: 0 } ]

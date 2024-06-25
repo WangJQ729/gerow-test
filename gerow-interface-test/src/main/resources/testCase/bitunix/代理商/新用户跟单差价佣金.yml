@@ -1,6 +1,8 @@
 name: 新用户跟单差价佣金
 story: partners
 invocationCount: 1
+dataProvider:
+  - partner_email: gerow1718961189004@aliyun.com
 beforeClass:
   name: 登录合伙人后台
   step:
@@ -14,16 +16,17 @@ beforeClass:
     - keyWord: 取消带单
     - keyWord: 申请成为交易员
     - keyWord: 获取带单子账户token
+    - keyWord: 代理商后台返佣发放
+    - keyWord: 代理商后台差价佣金统计
+    - keyWord: 佣金发放明细
+    - keyWord: 分后台佣金发放查询
 testMethod:
-  - name: 用户跟单交易
+  - name: 用户加入跟单交易
+    invocationCount: 1
     dataProvider:
       - futureRatio: 20
         exchangeRatio: 30
     step:
-      - keyWord: 代理商后台返佣发放
-      - keyWord: 代理商后台差价佣金统计
-      - keyWord: 佣金发放明细
-      - keyWord: 分后台佣金发放查询
       - keyWord: 快捷注册-合伙人邀请码-随机邮箱
       - keyWord: 升级为合伙人
       - keyWord: 分后台获取用户信息
@@ -31,6 +34,8 @@ testMethod:
       - keyWord: 通过uid获取用户token
       - keyWord: 合约划转现货
       - keyWord: 加入跟单
+  - name: 带单账户交易
+    step:
       - keyWord: 带单子账户市价开仓
       - keyWord: 带单子账户持有仓位信息
       - keyWord: 获取跟单子账户token
@@ -39,6 +44,7 @@ testMethod:
       - keyWord: 代理商后台差价佣金统计
       - keyWord: 佣金发放明细
       - keyWord: 分后台佣金发放查询-合伙人开仓
+      - keyWord: 合伙人佣金查询-首单
       - keyWord: 差价佣金查询
       - keyWord: 带单子账户持有仓位信息
       - keyWord: 带单子账户平仓
@@ -50,14 +56,7 @@ testMethod:
       - keyWord: 代理商后台差价佣金统计
       - keyWord: 佣金发放明细
       - keyWord: 分后台佣金发放查询-合伙人平仓
-      - keyWord: 差价佣金查询
-        assertion:
-          - json:
-              $.result.items[0].makerFee: ${openDealFee}
-              $.result.items[0].makerRealFee: ${openDealFee}
-              $.result.items[0].rebateRatio: ${__groovy((${totalFutureRatio} - ${futureRatio}) / 100)}
-              $.result.items[0].makerRebate: ${__groovy(${openDealFee} * (${totalFutureRatio} - ${futureRatio}) / 100)}
-            assertionType: EIGHTDECIMALPLACES
+      - keyWord: 差价佣金查询-平仓
       - keyWord: 合伙人佣金查询-平仓
 afterClass:
   name: 获取taskID和模板
